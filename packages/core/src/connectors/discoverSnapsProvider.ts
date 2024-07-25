@@ -1,7 +1,10 @@
-import type { EIP6963AnnounceProviderEvent } from "@metamask/providers";
+import type {
+  EIP6963AnnounceProviderEvent,
+  MetaMaskInpageProvider,
+} from "@metamask/providers";
 
 export const discoverSnapsProvider = () => {
-  return new Promise((resolve, reject) => {
+  return new Promise<MetaMaskInpageProvider>((resolve, reject) => {
     if (typeof globalThis.window === "undefined") {
       reject(new Error("No window object found"));
       return;

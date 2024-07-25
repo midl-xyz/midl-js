@@ -30,7 +30,6 @@ export type Config = {
   readonly chain: EVMChain;
   readonly connectors: Connector[];
   readonly network: BitcoinNetwork | undefined;
-  readonly privateKey?: string;
   setState(state: ConfigAtom): void;
   subscribe(callback: (newState: ConfigAtom | undefined) => void): () => void;
   _internal: {
@@ -41,7 +40,7 @@ export type Config = {
 
 export type ConfigAtom = {
   readonly network: BitcoinNetwork;
-  readonly privateKey?: string;
+  readonly installedSnap?: unknown;
 };
 
 const configStore = createStore();
@@ -55,6 +54,13 @@ export const createConfig = (params: ConfigParams): Config => {
   const connectors = params.connectors.map(createConnectorFn =>
     createConnectorFn({
       network,
+      setState: (state: Partial<ConfigAtom>) => {
+        configStore.set(configAtom, {
+          ...(configStore.get(configAtom) || ({} as ConfigAtom)),
+          ...state,
+        });
+      },
+      getState: () => configStore.get(configAtom) as ConfigAtom,
     })
   );
 
@@ -63,9 +69,6 @@ export const createConfig = (params: ConfigParams): Config => {
     chain: params.chain,
     get network() {
       return configStore.get(configAtom)?.network;
-    },
-    get privateKey() {
-      return configStore.get(configAtom)?.privateKey;
     },
     setState: (state: ConfigAtom) => {
       configStore.set(configAtom, state);

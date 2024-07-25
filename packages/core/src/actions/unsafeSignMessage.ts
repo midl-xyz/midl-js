@@ -13,7 +13,8 @@ export const unsafeSignMessage = (
   { message }: UnsafeSignMessageParams
 ) => {
   const buffer = Buffer.from(message, "hex");
-  const { privateKey } = config;
+  //   const { privateKey } = config;
+  const privateKey = "";
 
   if (!privateKey) {
     throw new Error("Private key is required to sign a message.");

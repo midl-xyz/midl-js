@@ -2,6 +2,7 @@
   "name": "@midl-xyz/midl-js",
   "private": true,
   "description": "",
+  "packageManager": "pnpm@9.1.4",
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
     "jsdom": "^24.1.1",

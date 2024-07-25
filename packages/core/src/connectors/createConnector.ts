@@ -1,4 +1,4 @@
-import type { BitcoinNetwork, ConfigAtom } from "~/createConfig";
+import type { BitcoinNetwork, Config, ConfigAtom } from "~/createConfig";
 
 export type Connector = {
   readonly id: string;
@@ -10,7 +10,11 @@ export type Connector = {
   getNetwork(): Promise<BitcoinNetwork>;
 };
 
-export type CreateConnectorFn = (config: ConfigAtom) => Connector;
+export type CreateConnectorFn = (config: {
+  network: BitcoinNetwork;
+  setState: (state: Partial<ConfigAtom>) => void;
+  getState: () => ConfigAtom;
+}) => Connector;
 
 export const createConnector = (createConnectorFn: CreateConnectorFn) => {
   return createConnectorFn;
