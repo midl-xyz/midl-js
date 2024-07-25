@@ -1,0 +1,62 @@
+import { describe, expect, it, vi } from "vitest";
+import { type BitcoinNetwork, createConfig } from "~/createConfig";
+import { regtest } from "~/networks";
+
+describe("core | createConfig", () => {
+  it("should create a config", () => {
+    const config = createConfig({
+      networks: [regtest],
+      chain: {
+        chainId: 1,
+        rpcUrls: ["http://localhost:8545"],
+      },
+      connectors: [],
+    });
+
+    expect(config.network).toEqual(regtest);
+  });
+
+  it("should set the network", () => {
+    const mockNetwork: BitcoinNetwork = {
+      network: "testnet",
+      rpcUrl: "http://localhost:183",
+    };
+
+    const config = createConfig({
+      networks: [regtest, mockNetwork],
+      chain: {
+        chainId: 1,
+        rpcUrls: ["http://localhost:8545"],
+      },
+      connectors: [],
+    });
+
+    config.setState({ network: mockNetwork });
+
+    expect(config.network).toEqual(mockNetwork);
+  });
+
+  it("should subscribe to changes", () => {
+    const mockNetwork: BitcoinNetwork = {
+      network: "testnet",
+      rpcUrl: "http://localhost:183",
+    };
+
+    const config = createConfig({
+      networks: [regtest, mockNetwork],
+      chain: {
+        chainId: 1,
+        rpcUrls: ["http://localhost:8545"],
+      },
+      connectors: [],
+    });
+
+    const callback = vi.fn();
+
+    config.subscribe(callback);
+
+    config.setState({ network: mockNetwork });
+
+    expect(callback).toHaveBeenCalledWith({ network: mockNetwork });
+  });
+});
