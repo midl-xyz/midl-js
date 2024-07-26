@@ -5,7 +5,11 @@ type SnapParams = {
   target: "midlBTCSnap";
 };
 
-export const snap = ({ target = "midlBTCSnap" }: SnapParams) => {
+export const snap = (
+  { target }: SnapParams = {
+    target: "midlBTCSnap",
+  }
+) => {
   const targetMap = {
     midlBTCSnap: {
       id: "midlBTCSnap",
