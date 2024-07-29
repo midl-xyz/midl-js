@@ -65,3 +65,5 @@ node_modules/
 
 # Build
 dist
+
+.vscode
