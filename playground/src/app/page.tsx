@@ -1,11 +1,6 @@
 "use client";
 
-import dynamic from "next/dynamic";
-
-const HomePage = dynamic(
-  () => import("~/pages/HomePage").then(m => m.HomePage),
-  { ssr: false }
-);
+import { HomePage } from "~/pages/HomePage";
 
 export default function Page() {
   return <HomePage />;

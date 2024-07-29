@@ -1,4 +1,3 @@
-import * as ecc from "tiny-secp256k1";
 import type { Config } from "~/createConfig";
 
 export type UnsafeSignMessageParams = {
@@ -8,10 +7,12 @@ export type UnsafeSignMessageParams = {
 /**
  * Signs a message using the provided private key using the secp256k1 elliptic curve.
  */
-export const unsafeSignMessage = (
+export const unsafeSignMessage = async (
   config: Config,
   { message }: UnsafeSignMessageParams
 ) => {
+  const ecc = await import("tiny-secp256k1");
+
   const buffer = Buffer.from(message, "hex");
   //   const { privateKey } = config;
   const privateKey = "";

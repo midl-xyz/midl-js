@@ -4,7 +4,7 @@ import { createConfig } from "~/createConfig";
 import { regtest } from "~/networks";
 
 describe("core | actions | unsafeSignMessage", () => {
-  it.skip("should sign a message", () => {
+  it.skip("should sign a message", async () => {
     const config = createConfig({
       networks: [regtest],
       chain: {
@@ -14,7 +14,7 @@ describe("core | actions | unsafeSignMessage", () => {
       connectors: [],
     });
 
-    const result = unsafeSignMessage(config, { message: "Hello World!" });
+    const result = await unsafeSignMessage(config, { message: "Hello World!" });
     expect(result).toEqual("Hello World!");
   });
 });

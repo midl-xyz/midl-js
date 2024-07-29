@@ -1,6 +1,6 @@
-"use client";
-
 import { createConfig, regtest, snap } from "@midl-xyz/midl-js-core";
+import { useAtom } from "jotai";
+import { useEffect, useState } from "react";
 import { VStack } from "styled-system/jsx";
 import { Button, Card } from "~/shared/ui/components";
 
@@ -14,6 +14,14 @@ const config = createConfig({
 });
 
 export const HomePage = () => {
+  const [address, setAddress] = useState<string | undefined>();
+
+  useEffect(() => {
+    config.subscribe(newState => {
+      setAddress(newState?.publicKey);
+    });
+  });
+
   const onConnect = async () => {
     const [snapConnector] = config.connectors;
     await snapConnector.connect();
@@ -26,6 +34,14 @@ export const HomePage = () => {
           <Card.Title>Midl.JS Playground</Card.Title>
         </Card.Header>
         <Card.Body>
+          {address ? (
+            <Card.Description>
+              Connected to Snap with address: {address}
+            </Card.Description>
+          ) : (
+            <Card.Description>Not connected to Snap</Card.Description>
+          )}
+
           <Button onClick={onConnect}>Connect to Snap</Button>
         </Card.Body>
       </Card.Root>

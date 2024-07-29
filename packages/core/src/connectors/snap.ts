@@ -1,3 +1,4 @@
+import type { MetaMaskInpageProvider } from "@metamask/providers";
 import { createConnector } from "~/connectors/createConnector";
 import { discoverSnapsProvider } from "~/connectors/discoverSnapsProvider";
 
@@ -20,7 +21,17 @@ export const snap = (
         version: undefined,
       },
       provider() {
-        return discoverSnapsProvider();
+        let mmProvider: MetaMaskInpageProvider | undefined;
+
+        return (async () => {
+          if (mmProvider) {
+            return mmProvider;
+          }
+
+          mmProvider = await discoverSnapsProvider();
+
+          return mmProvider;
+        })();
       },
     },
   };
@@ -45,24 +56,50 @@ export const snap = (
       async connect() {
         const snapProvider = await provider();
 
-        const data = await snapProvider.request({
+        const data = (await snapProvider.request({
           method: "wallet_requestSnaps",
           params: {
             [snap.id]: snap.version ? { version: snap.version } : {},
           },
-        });
+        })) as GetSnapsResponse;
+
+        const publicKey = (await snapProvider.request({
+          method: "wallet_invokeSnap",
+          params: {
+            snapId: snap.id,
+            request: {
+              method: "getAccounts",
+              params: {},
+            },
+          },
+        })) as string;
 
         config.setState({
-          installedSnap: data,
+          installedSnap: data[snap.id],
+          publicKey,
         });
+
+        return this.getAccount();
       },
       async disconnect() {
         config.setState({
           installedSnap: undefined,
         });
       },
-      async getAccounts() {
-        throw new Error("Not implemented");
+      getAccount() {
+        const { publicKey } = config.getState();
+
+        if (!publicKey) {
+          throw new Error("Public key is required to get account.");
+        }
+
+        // TODO: generate the address from the public key
+        return {
+          publicKey: publicKey.startsWith("0x")
+            ? publicKey.slice(2)
+            : publicKey,
+          address: publicKey,
+        };
       },
       async getNetwork() {
         return config.getState().network;

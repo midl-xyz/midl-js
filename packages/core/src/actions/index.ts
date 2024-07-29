@@ -1,2 +1,1 @@
-
-export * from './unsafeSignMessage';
+export * from "./unsafeSignMessage";

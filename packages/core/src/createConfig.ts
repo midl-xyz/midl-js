@@ -40,7 +40,8 @@ export type Config = {
 
 export type ConfigAtom = {
   readonly network: BitcoinNetwork;
-  readonly installedSnap?: unknown;
+  readonly installedSnap?: GetSnapsResponse[string];
+  readonly publicKey?: string;
 };
 
 const configStore = createStore();
