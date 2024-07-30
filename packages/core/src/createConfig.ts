@@ -1,4 +1,5 @@
-import { atom, createStore } from "jotai";
+import { createStore, type PrimitiveAtom } from "jotai";
+import { atomWithReset, atomWithStorage } from "jotai/utils";
 import type { Connector, CreateConnectorFn } from "~/connectors";
 
 export type BitcoinNetwork = {
@@ -23,6 +24,7 @@ type ConfigParams = {
   networks: BitcoinNetwork[];
   chain: EVMChain;
   connectors: CreateConnectorFn[];
+  persist?: boolean;
 };
 
 export type Config = {
@@ -33,7 +35,7 @@ export type Config = {
   setState(state: ConfigAtom): void;
   subscribe(callback: (newState: ConfigAtom | undefined) => void): () => void;
   _internal: {
-    configAtom: typeof configAtom;
+    configAtom: PrimitiveAtom<ConfigAtom>;
     configStore: typeof configStore;
   };
 };
@@ -45,12 +47,17 @@ export type ConfigAtom = {
 };
 
 const configStore = createStore();
-const configAtom = atom<ConfigAtom>();
 
 export const createConfig = (params: ConfigParams): Config => {
   const [network] = params.networks;
 
-  configStore.set(configAtom, { network });
+  const configAtom = params.persist
+    ? atomWithStorage<ConfigAtom>("midl-js", {
+        network,
+      } as ConfigAtom)
+    : atomWithReset<ConfigAtom>({
+        network,
+      } as ConfigAtom);
 
   const connectors = params.connectors.map(createConnectorFn =>
     createConnectorFn({

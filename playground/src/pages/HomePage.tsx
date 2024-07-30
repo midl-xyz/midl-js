@@ -10,6 +10,7 @@ const config = createConfig({
     rpcUrls: ["https://rpc2.sepolia.org"],
   },
   networks: [regtest],
+  persist: true,
   connectors: [snap()],
 });
 
@@ -17,7 +18,17 @@ export const HomePage = () => {
   const [address, setAddress] = useState<string | undefined>();
 
   useEffect(() => {
-    config.subscribe(newState => {
+    const [snapConnector] = config.connectors;
+
+    try {
+      const publicKey = snapConnector.getAccount();
+      console.log(publicKey);
+      setAddress(publicKey.address);
+    } catch (error) {
+      console.log(error);
+    }
+
+    return config.subscribe(newState => {
       setAddress(newState?.publicKey);
     });
   });

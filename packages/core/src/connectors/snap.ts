@@ -20,10 +20,10 @@ export const snap = (
         id: "local:http://localhost:8080",
         version: undefined,
       },
-      provider() {
+      provider: (() => {
         let mmProvider: MetaMaskInpageProvider | undefined;
 
-        return (async () => {
+        return async () => {
           if (mmProvider) {
             return mmProvider;
           }
@@ -31,8 +31,8 @@ export const snap = (
           mmProvider = await discoverSnapsProvider();
 
           return mmProvider;
-        })();
-      },
+        };
+      })(),
     },
   };
 
@@ -41,6 +41,21 @@ export const snap = (
   };
 
   const { id, name, provider, snap } = getTarget();
+
+  const requestPublicKey = async (): Promise<string> => {
+    const snapProvider = await provider();
+
+    return (await snapProvider.request({
+      method: "wallet_invokeSnap",
+      params: {
+        snapId: snap.id,
+        request: {
+          method: "getAccounts",
+          params: {},
+        },
+      },
+    })) as string;
+  };
 
   return createConnector(config => {
     return {
@@ -63,16 +78,7 @@ export const snap = (
           },
         })) as GetSnapsResponse;
 
-        const publicKey = (await snapProvider.request({
-          method: "wallet_invokeSnap",
-          params: {
-            snapId: snap.id,
-            request: {
-              method: "getAccounts",
-              params: {},
-            },
-          },
-        })) as string;
+        const publicKey = await requestPublicKey();
 
         config.setState({
           installedSnap: data[snap.id],

@@ -1,10 +1,18 @@
 // @vitest-environment jsdom
 
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
 import { snap } from "~/connectors/snap";
 import { regtest } from "~/networks";
 
 describe("core | connectors | snap", () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   it("should use default snap target", () => {
     const createConnector = snap();
     const setState = vi.fn();
@@ -21,8 +29,12 @@ describe("core | connectors | snap", () => {
 
   it("should connect to snap", async () => {
     const createConnector = snap();
+    const publicKey = "0x1234567890";
+
     const setState = vi.fn();
-    const getState = vi.fn();
+    const getState = vi.fn().mockReturnValue({
+      publicKey,
+    });
 
     const connector = createConnector({
       network: regtest,
@@ -33,9 +45,17 @@ describe("core | connectors | snap", () => {
     const promise = connector.connect();
 
     const mockProvider = {
-      request: vi.fn().mockReturnValue({
-        id: "local:http://localhost:8080",
-        version: undefined,
+      request: vi.fn().mockImplementation(async params => {
+        if (params.method === "wallet_requestSnaps") {
+          return {
+            "local:http://localhost:8080": {
+              id: "local:http://localhost:8080",
+              version: undefined,
+            },
+          };
+        }
+
+        return publicKey;
       }),
     };
 
@@ -50,6 +70,8 @@ describe("core | connectors | snap", () => {
       })
     );
 
+    vi.advanceTimersByTime(5000);
+
     await promise;
 
     expect(setState).toHaveBeenCalledWith({
@@ -57,6 +79,7 @@ describe("core | connectors | snap", () => {
         id: "local:http://localhost:8080",
         version: undefined,
       },
+      publicKey,
     });
   });
 });

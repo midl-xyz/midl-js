@@ -1,3 +1,5 @@
+// @vitest-environment jsdom
+
 import { describe, expect, it, vi } from "vitest";
 import { type BitcoinNetwork, createConfig } from "~/createConfig";
 import { regtest } from "~/networks";
@@ -58,5 +60,33 @@ describe("core | createConfig", () => {
     config.setState({ network: mockNetwork });
 
     expect(callback).toHaveBeenCalledWith({ network: mockNetwork });
+  });
+
+  it("should persist the state", () => {
+    const setItem = vi.spyOn(Storage.prototype, "setItem");
+
+    const config = createConfig({
+      networks: [regtest],
+      chain: {
+        chainId: 1,
+        rpcUrls: ["http://localhost:8545"],
+      },
+      connectors: [],
+      persist: true,
+    });
+
+    const mockNetwork: BitcoinNetwork = {
+      network: "testnet",
+      rpcUrl: "http://localhost:183",
+    };
+
+    config.setState({ network: mockNetwork });
+
+    expect(setItem).toHaveBeenCalledWith(
+      "midl-js",
+      JSON.stringify({ network: mockNetwork })
+    );
+
+    setItem.mockClear();
   });
 });
