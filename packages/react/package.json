@@ -1,0 +1,40 @@
+{
+    "name": "@midl-xyz/midl-js-react",
+    "version": "0.0.1",
+    "scripts": {
+        "build": "pkgroll",
+        "dev": "pkgroll --watch",
+        "test": "vitest"
+    },
+    "type": "commonjs",
+    "main": "dist/index.js",
+    "module": "dist/index.mjs",
+    "types": "dist/index.d.cts",
+    "files": [
+        "dist"
+    ],
+    "exports": {
+        "require": {
+            "types": "./dist/index.d.cts",
+            "default": "./dist/index.js"
+        },
+        "import": {
+            "types": "./dist/index.d.mts",
+            "default": "./dist/index.mjs"
+        }
+    },
+    "devDependencies": {
+        "@midl-xyz/midl-js-config": "workspace:^",
+        "@types/react": "^18",
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1"
+    },
+    "dependencies": {
+        "@midl-xyz/midl-js-core": "workspace:^",
+        "@tanstack/react-query": "^5.51.15"
+    },
+    "peerDependencies": {
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1"
+    }
+}
