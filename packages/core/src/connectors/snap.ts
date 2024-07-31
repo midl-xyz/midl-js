@@ -68,6 +68,9 @@ export const snap = (
       get type() {
         return "snap";
       },
+      async provider() {
+        return provider();
+      },
       async connect() {
         const snapProvider = await provider();
 
@@ -83,6 +86,7 @@ export const snap = (
         config.setState({
           installedSnap: data[snap.id],
           publicKey,
+          connection: this.id,
         });
 
         return this.getAccount();
@@ -90,15 +94,12 @@ export const snap = (
       async disconnect() {
         config.setState({
           installedSnap: undefined,
+          publicKey: undefined,
+          connection: undefined,
         });
       },
-      getAccount() {
-        const { publicKey } = config.getState();
-
-        if (!publicKey) {
-          throw new Error("Public key is required to get account.");
-        }
-
+      async getAccount() {
+        const publicKey = await requestPublicKey();
         // TODO: generate the address from the public key
         return {
           publicKey: publicKey.startsWith("0x")

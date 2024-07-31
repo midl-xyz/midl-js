@@ -1,3 +1,4 @@
+import type { MetaMaskInpageProvider } from "@metamask/providers";
 import { createStore, type PrimitiveAtom } from "jotai";
 import { atomWithReset, atomWithStorage } from "jotai/utils";
 import type { Connector, CreateConnectorFn } from "~/connectors";
@@ -32,7 +33,9 @@ export type Config = {
   readonly chain: EVMChain;
   readonly connectors: Connector[];
   readonly network: BitcoinNetwork | undefined;
+  readonly currentConnection?: Connector;
   setState(state: ConfigAtom): void;
+  getState(): ConfigAtom;
   subscribe(callback: (newState: ConfigAtom | undefined) => void): () => void;
   _internal: {
     configAtom: PrimitiveAtom<ConfigAtom>;
@@ -44,6 +47,7 @@ export type ConfigAtom = {
   readonly network: BitcoinNetwork;
   readonly installedSnap?: GetSnapsResponse[string];
   readonly publicKey?: string;
+  readonly connection?: string;
 };
 
 const configStore = createStore();
@@ -52,9 +56,14 @@ export const createConfig = (params: ConfigParams): Config => {
   const [network] = params.networks;
 
   const configAtom = params.persist
-    ? atomWithStorage<ConfigAtom>("midl-js", {
-        network,
-      } as ConfigAtom)
+    ? atomWithStorage<ConfigAtom>(
+        "midl-js",
+        {
+          network,
+        } as ConfigAtom,
+        undefined,
+        { getOnInit: true }
+      )
     : atomWithReset<ConfigAtom>({
         network,
       } as ConfigAtom);
@@ -86,6 +95,12 @@ export const createConfig = (params: ConfigParams): Config => {
       return configStore.sub(configAtom, () => {
         callback(configStore.get(configAtom));
       });
+    },
+    getState: () => configStore.get(configAtom),
+    get currentConnection() {
+      return this.connectors.find(
+        connector => connector.id === configStore.get(configAtom)?.connection
+      );
     },
     _internal: {
       configAtom,

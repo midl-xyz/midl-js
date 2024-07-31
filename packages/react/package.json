@@ -24,6 +24,7 @@
         }
     },
     "devDependencies": {
+        "@metamask/providers": "^17.1.1",
         "@midl-xyz/midl-js-config": "workspace:^",
         "@types/react": "^18",
         "react": "^18.3.1",
@@ -31,7 +32,8 @@
     },
     "dependencies": {
         "@midl-xyz/midl-js-core": "workspace:^",
-        "@tanstack/react-query": "^5.51.15"
+        "@tanstack/react-query": "^5.51.15",
+        "jotai": "^2.9.1"
     },
     "peerDependencies": {
         "react": "^18.3.1",

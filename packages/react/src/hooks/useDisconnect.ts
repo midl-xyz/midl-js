@@ -1,14 +1,12 @@
 import { useMutation } from "@tanstack/react-query";
 import { useMidlContext } from "~/context";
 
-export const useConnect = () => {
+export const useDisconnect = () => {
   const { config } = useMidlContext();
 
   return useMutation({
     mutationFn: async () => {
-      const [snapConnector] = config.connectors;
-
-      return snapConnector.connect();
+      return config.currentConnection?.disconnect();
     },
   });
 };

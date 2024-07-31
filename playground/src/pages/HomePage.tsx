@@ -1,41 +1,33 @@
-import { createConfig, regtest, snap } from "@midl-xyz/midl-js-core";
-import { useAtom } from "jotai";
-import { useEffect, useState } from "react";
-import { VStack } from "styled-system/jsx";
-import { Button, Card } from "~/shared/ui/components";
-
-const config = createConfig({
-  chain: {
-    chainId: 11155111,
-    rpcUrls: ["https://rpc2.sepolia.org"],
-  },
-  networks: [regtest],
-  persist: true,
-  connectors: [snap()],
-});
+import { HStack, VStack } from "styled-system/jsx";
+import { Button, Card, Text } from "~/shared/ui/components";
+import {
+  useConnect,
+  useAccount,
+  useDisconnect,
+  useUnsafeSignMessage,
+} from "@midl-xyz/midl-js-react";
+import { css } from "styled-system/css";
 
 export const HomePage = () => {
-  const [address, setAddress] = useState<string | undefined>();
+  const { mutateAsync } = useConnect();
+  const { data: account } = useAccount();
+  const { mutateAsync: disconnect } = useDisconnect();
+  const {
+    mutateAsync: unsafeSignMessage,
+    data,
+    isPending,
+  } = useUnsafeSignMessage();
 
-  useEffect(() => {
-    const [snapConnector] = config.connectors;
+  const onConnect = () => {
+    mutateAsync();
+  };
 
-    try {
-      const publicKey = snapConnector.getAccount();
-      console.log(publicKey);
-      setAddress(publicKey.address);
-    } catch (error) {
-      console.log(error);
-    }
+  const onDisconnect = () => {
+    disconnect();
+  };
 
-    return config.subscribe(newState => {
-      setAddress(newState?.publicKey);
-    });
-  });
-
-  const onConnect = async () => {
-    const [snapConnector] = config.connectors;
-    await snapConnector.connect();
+  const onSignMessage = () => {
+    unsafeSignMessage("Hello, Midl!");
   };
 
   return (
@@ -45,16 +37,47 @@ export const HomePage = () => {
           <Card.Title>Midl.JS Playground</Card.Title>
         </Card.Header>
         <Card.Body>
-          {address ? (
+          {account ? (
             <Card.Description>
-              Connected to Snap with address: {address}
+              Connected to Snap with address: {account?.publicKey}
             </Card.Description>
           ) : (
             <Card.Description>Not connected to Snap</Card.Description>
           )}
 
-          <Button onClick={onConnect}>Connect to Snap</Button>
+          {data && (
+            <VStack gap={4} mt={8}>
+              <Text>Signed result:</Text>
+              <code
+                className={css({
+                  bg: "bg.subtle",
+                  p: 4,
+                  borderRadius: "md",
+                  color: "fg.subtle",
+                  whiteSpace: "pre-wrap",
+                  maxWidth: "100%",
+                  wordBreak: "break-all",
+                  fontSize: "xs",
+                })}
+              >
+                {JSON.stringify(data, null, 4)}
+              </code>
+            </VStack>
+          )}
         </Card.Body>
+        <Card.Footer>
+          <HStack>
+            {account && (
+              <Button onClick={onSignMessage} loading={isPending}>
+                Sign message
+              </Button>
+            )}
+
+            <Button onClick={account ? onDisconnect : onConnect}>
+              {account ? "Disconnect" : "Connect"}
+            </Button>
+          </HStack>
+        </Card.Footer>
       </Card.Root>
     </VStack>
   );

@@ -3,7 +3,7 @@
   "include": ["./src/**/*.ts", "src/context.tsx"],
   "compilerOptions": {
     "baseUrl": ".",
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "paths": {
       "~/*": ["./src/*"]
     }

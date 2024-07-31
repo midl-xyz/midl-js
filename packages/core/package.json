@@ -30,6 +30,7 @@
     "@metamask/providers": "^17.1.1",
     "bitcoinjs-lib": "^6.1.6",
     "jotai": "^2.9.1",
-    "tiny-secp256k1": "^2.2.3"
+    "tiny-secp256k1": "^2.2.3",
+    "viem": "^2.18.6"
   }
 }
