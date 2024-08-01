@@ -5,10 +5,12 @@ export const useConnect = () => {
   const { config } = useMidlContext();
 
   return useMutation({
-    mutationFn: async () => {
-      const [snapConnector] = config.connectors;
+    mutationFn: async ({ id }: { id?: string }) => {
+      const connector =
+        config.connectors.find(connector => connector.id === id) ??
+        config.connectors[0];
 
-      return snapConnector.connect();
+      return connector.connect();
     },
   });
 };

@@ -9,7 +9,7 @@ export const useAccount = () => {
   return useQuery({
     queryKey: ["account", currentConnection],
     queryFn: async () => {
-      const data = await currentConnection?.getAccount();
+      const data = await currentConnection?.getAccounts();
 
       return data ?? null;
     },

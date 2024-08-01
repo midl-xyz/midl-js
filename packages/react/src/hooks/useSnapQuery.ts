@@ -1,4 +1,4 @@
-import { invokeSnap } from "@midl-xyz/midl-js-core";
+import { invoke } from "@midl-xyz/midl-js-core";
 import { useQuery } from "@tanstack/react-query";
 import { useMidlContext } from "~/context";
 
@@ -11,7 +11,7 @@ export const useSnapQuery = <T>(
   return useQuery({
     queryKey: ["snap", method, params],
     queryFn: async () => {
-      return invokeSnap<T>(config, {
+      return invoke<T>(config, {
         method,
         params,
       });

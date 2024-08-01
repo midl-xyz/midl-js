@@ -1,7 +1,13 @@
 "use client";
 
-import { createConfig, regtest, snap } from "@midl-xyz/midl-js-core";
+import {
+  createConfig,
+  regtest,
+  snap,
+  satsConnect,
+} from "@midl-xyz/midl-js-core";
 import { MidlProvider } from "@midl-xyz/midl-js-react";
+import dynamic from "next/dynamic";
 import { HomePage } from "~/pages/HomePage";
 
 const config = createConfig({
@@ -11,7 +17,7 @@ const config = createConfig({
   },
   networks: [regtest],
   persist: true,
-  connectors: [snap()],
+  connectors: [satsConnect(), snap()],
 });
 
 export default function Page() {

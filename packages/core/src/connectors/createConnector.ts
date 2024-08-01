@@ -1,4 +1,3 @@
-import type { MetaMaskInpageProvider } from "@metamask/providers";
 import type { BitcoinNetwork, ConfigAtom } from "~/createConfig";
 
 type Account = {
@@ -6,15 +5,20 @@ type Account = {
   readonly publicKey: string;
 };
 
+export enum ConnectorType {
+  Snap = "snap",
+  SatsConnect = "satsConnect",
+}
+
 export type Connector = {
   readonly id: string;
   readonly name: string;
-  readonly type: string;
-  provider(): Promise<MetaMaskInpageProvider>;
-  connect(): Promise<Account>;
+  readonly type: ConnectorType;
+  connect(): Promise<Account[]>;
   disconnect(): Promise<void>;
-  getAccount(): Promise<Account>;
+  getAccounts(): Promise<Account[]>;
   getNetwork(): Promise<BitcoinNetwork>;
+  request(data: unknown): unknown;
 };
 
 export type CreateConnectorFn = (config: {

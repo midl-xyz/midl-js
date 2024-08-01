@@ -1,5 +1,8 @@
-import type { MetaMaskInpageProvider } from "@metamask/providers";
-import { createConnector } from "~/connectors/createConnector";
+import type {
+  MetaMaskInpageProvider,
+  RequestArguments,
+} from "@metamask/providers";
+import { ConnectorType, createConnector } from "~/connectors/createConnector";
 import { discoverSnapsProvider } from "~/connectors/discoverSnapsProvider";
 
 type SnapParams = {
@@ -66,10 +69,11 @@ export const snap = (
         return name;
       },
       get type() {
-        return "snap";
+        return ConnectorType.Snap;
       },
-      async provider() {
-        return provider();
+      async request(request: RequestArguments) {
+        const snapProvider = await provider();
+        return snapProvider.request(request);
       },
       async connect() {
         const snapProvider = await provider();
@@ -89,7 +93,7 @@ export const snap = (
           connection: this.id,
         });
 
-        return this.getAccount();
+        return this.getAccounts();
       },
       async disconnect() {
         config.setState({
@@ -98,15 +102,17 @@ export const snap = (
           connection: undefined,
         });
       },
-      async getAccount() {
+      async getAccounts() {
         const publicKey = await requestPublicKey();
         // TODO: generate the address from the public key
-        return {
-          publicKey: publicKey.startsWith("0x")
-            ? publicKey.slice(2)
-            : publicKey,
-          address: publicKey,
-        };
+        return [
+          {
+            publicKey: publicKey.startsWith("0x")
+              ? publicKey.slice(2)
+              : publicKey,
+            address: publicKey,
+          },
+        ];
       },
       async getNetwork() {
         return config.getState().network;

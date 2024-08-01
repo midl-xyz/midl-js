@@ -1,2 +1,2 @@
-export * from "./invokeSnap";
+export * from "./invoke";
 export * from "./unsafeSignMessage";

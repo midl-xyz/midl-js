@@ -1,9 +1,14 @@
 import { keccak256, toHex } from "viem";
-import { invokeSnap } from "~/actions/invokeSnap";
+import { invoke } from "~/actions/invoke";
 import type { Config } from "~/createConfig";
 
 export type UnsafeSignMessageParams = {
   message: string;
+};
+
+export type UnsafeSignMessageResponse = {
+  signature: string;
+  recoveryId: number;
 };
 
 /**
@@ -12,9 +17,9 @@ export type UnsafeSignMessageParams = {
 export const unsafeSignMessage = (
   config: Config,
   { message }: UnsafeSignMessageParams
-) => {
-  return invokeSnap<{ signature: string; recoveryId: number }>(config, {
-    method: "signMessage",
+): Promise<UnsafeSignMessageResponse> => {
+  return invoke<UnsafeSignMessageResponse>(config, {
+    method: "unsafeSignMessage",
     params: {
       message: keccak256(toHex(message)).slice(2),
     },

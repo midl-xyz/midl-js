@@ -5,6 +5,7 @@ import {
   useAccount,
   useDisconnect,
   useUnsafeSignMessage,
+  useMidlContext,
 } from "@midl-xyz/midl-js-react";
 import { css } from "styled-system/css";
 
@@ -17,9 +18,10 @@ export const HomePage = () => {
     data,
     isPending,
   } = useUnsafeSignMessage();
+  const { config } = useMidlContext();
 
-  const onConnect = () => {
-    mutateAsync();
+  const onConnect = (id?: string) => {
+    mutateAsync({ id });
   };
 
   const onDisconnect = () => {
@@ -66,16 +68,21 @@ export const HomePage = () => {
           )}
         </Card.Body>
         <Card.Footer>
-          <HStack>
+          <HStack flexWrap="wrap">
             {account && (
               <Button onClick={onSignMessage} loading={isPending}>
                 Sign message
               </Button>
             )}
 
-            <Button onClick={account ? onDisconnect : onConnect}>
-              {account ? "Disconnect" : "Connect"}
-            </Button>
+            {!account &&
+              config.connectors.map(it => (
+                <Button key={it.id} onClick={() => onConnect(it.id)}>
+                  Connect {it.name}
+                </Button>
+              ))}
+
+            {account && <Button onClick={onDisconnect}>Disconnect</Button>}
           </HStack>
         </Card.Footer>
       </Card.Root>
