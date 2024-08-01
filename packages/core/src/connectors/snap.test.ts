@@ -2,6 +2,7 @@
 
 import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
 import { snap } from "~/connectors/snap";
+import { AddressPurpose } from "~/constants";
 import { regtest } from "~/networks";
 
 describe("core | connectors | snap", () => {
@@ -42,7 +43,7 @@ describe("core | connectors | snap", () => {
       getState,
     });
 
-    const promise = connector.connect();
+    const promise = connector.connect({ purposes: [AddressPurpose.Payment] });
 
     const mockProvider = {
       request: vi.fn().mockImplementation(async params => {

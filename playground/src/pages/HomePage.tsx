@@ -8,9 +8,12 @@ import {
   useMidlContext,
 } from "@midl-xyz/midl-js-react";
 import { css } from "styled-system/css";
+import { AddressPurpose } from "@midl-xyz/midl-js-core";
 
 export const HomePage = () => {
-  const { mutateAsync } = useConnect();
+  const { mutateAsync } = useConnect({
+    purposes: [AddressPurpose.Payment, AddressPurpose.Ordinals],
+  });
   const { data: account } = useAccount();
   const { mutateAsync: disconnect } = useDisconnect();
   const {
@@ -41,7 +44,7 @@ export const HomePage = () => {
         <Card.Body>
           {account ? (
             <Card.Description>
-              Connected to Snap with address: {account?.publicKey}
+              Connected to Snap with address: {account[0].address}
             </Card.Description>
           ) : (
             <Card.Description>Not connected to Snap</Card.Description>

@@ -1,4 +1,8 @@
-import { ConnectorType, createConnector } from "~/connectors/createConnector";
+import {
+  type Account,
+  ConnectorType,
+  createConnector,
+} from "~/connectors/createConnector";
 import Wallet, { AddressPurpose } from "sats-connect";
 import { regtest } from "~/networks";
 
@@ -21,9 +25,9 @@ export const satsConnect = () => {
       }) => {
         return Wallet.request(method, params);
       },
-      connect: async () => {
+      connect: async ({ purposes }) => {
         const data = await Wallet.request("getAccounts", {
-          purposes: [AddressPurpose.Payment],
+          purposes,
         });
 
         if (data.status === "error") {
@@ -35,12 +39,9 @@ export const satsConnect = () => {
           publicKey: data.result[0].publicKey,
         });
 
-        return [
-          {
-            address: data.result[0].address,
-            publicKey: data.result[0].publicKey,
-          },
-        ];
+        return data.result.map(
+          ({ walletType, ...account }) => account
+        ) as Account[];
       },
       disconnect: async () => {
         await Wallet.request("wallet_renouncePermissions", undefined);
@@ -63,12 +64,7 @@ export const satsConnect = () => {
           throw data.error;
         }
 
-        return [
-          {
-            address: data.result.addresses[0].address,
-            publicKey: data.result.addresses[0].publicKey,
-          },
-        ];
+        return data.result.addresses as Account[];
       },
     };
   });

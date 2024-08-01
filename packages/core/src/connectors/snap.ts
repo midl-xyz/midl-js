@@ -4,6 +4,7 @@ import type {
 } from "@metamask/providers";
 import { ConnectorType, createConnector } from "~/connectors/createConnector";
 import { discoverSnapsProvider } from "~/connectors/discoverSnapsProvider";
+import { AddressPurpose } from "~/constants";
 
 type SnapParams = {
   target: "midlBTCSnap";
@@ -75,7 +76,7 @@ export const snap = (
         const snapProvider = await provider();
         return snapProvider.request(request);
       },
-      async connect() {
+      async connect({ purposes }) {
         const snapProvider = await provider();
 
         const data = (await snapProvider.request({
@@ -111,6 +112,8 @@ export const snap = (
               ? publicKey.slice(2)
               : publicKey,
             address: publicKey,
+            purpose: AddressPurpose.Payment,
+            addressType: "p2pkh",
           },
         ];
       },
