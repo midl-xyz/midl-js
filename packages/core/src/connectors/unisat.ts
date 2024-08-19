@@ -98,12 +98,24 @@ class UnisatConnector implements Connector {
     };
   }
 
-  async signPSBT(params: SignPSBTParams): Promise<SignPSBTResponse> {
+  async signPSBT({
+    psbt,
+    signInputs,
+  }: SignPSBTParams): Promise<SignPSBTResponse> {
     if (typeof window.unisat === "undefined") {
       throw new Error("Unisat not found");
     }
 
-    const signature = await window.unisat.signPsbt(params.psbt);
+    const toSignInputs = Object.keys(signInputs).flatMap(address =>
+      signInputs[address].map(index => ({
+        address: address,
+        index: index,
+      }))
+    );
+
+    const signature = await window.unisat.signPsbt(psbt, {
+      toSignInputs,
+    });
 
     return {
       psbt: signature,

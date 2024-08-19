@@ -101,12 +101,13 @@ class SatsConnectConnector implements Connector {
     return accounts as Account[];
   }
 
-  async signPSBT({ psbt, key }: SignPSBTParams): Promise<SignPSBTResponse> {
+  async signPSBT({
+    psbt,
+    signInputs,
+  }: SignPSBTParams): Promise<SignPSBTResponse> {
     const response = await Wallet.request("signPsbt", {
       psbt: psbt,
-      signInputs: {
-        [key]: [0],
-      },
+      signInputs,
     });
 
     if (response.status === "error") {

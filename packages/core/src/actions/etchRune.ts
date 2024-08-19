@@ -161,7 +161,9 @@ export const etchRune = async (
 
   const data = await signPSBT(config, {
     psbt: psbtData,
-    key: account.address,
+    signInputs: {
+      [account.address]: [0],
+    },
   });
 
   return data;

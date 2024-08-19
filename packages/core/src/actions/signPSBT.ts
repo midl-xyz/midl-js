@@ -2,7 +2,7 @@ import type { Config } from "~/createConfig";
 
 export type SignPSBTParams = {
   psbt: string;
-  key: string;
+  signInputs: Record<string, number[]>;
 };
 
 export type SignPSBTResponse = {
