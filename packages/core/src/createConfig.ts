@@ -1,7 +1,6 @@
-import type { MetaMaskInpageProvider } from "@metamask/providers";
 import { createStore, type PrimitiveAtom } from "jotai";
 import { atomWithReset, atomWithStorage } from "jotai/utils";
-import type { Connector, CreateConnectorFn } from "~/connectors";
+import type { Account, Connector, CreateConnectorFn } from "~/connectors";
 
 export type BitcoinNetwork = {
   network: "bitcoin" | "testnet" | "regtest";
@@ -34,7 +33,7 @@ export type Config = {
   readonly connectors: Connector[];
   readonly network: BitcoinNetwork | undefined;
   readonly currentConnection?: Connector;
-  setState(state: ConfigAtom): void;
+  setState(state: Partial<ConfigAtom>): void;
   getState(): ConfigAtom;
   subscribe(callback: (newState: ConfigAtom | undefined) => void): () => void;
   _internal: {
@@ -48,6 +47,7 @@ export type ConfigAtom = {
   readonly installedSnap?: GetSnapsResponse[string];
   readonly publicKey?: string;
   readonly connection?: string;
+  readonly accounts?: Account[];
 };
 
 const configStore = createStore();
@@ -67,6 +67,14 @@ export const createConfig = (params: ConfigParams): Config => {
     : atomWithReset<ConfigAtom>({
         network,
       } as ConfigAtom);
+
+  const state = configStore.get(configAtom);
+  if (!params.networks.includes(state?.network)) {
+    configStore.set(configAtom, {
+      ...state,
+      network,
+    });
+  }
 
   const connectors = params.connectors.map(createConnectorFn =>
     createConnectorFn({

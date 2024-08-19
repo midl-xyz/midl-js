@@ -2,12 +2,12 @@
 
 import {
   createConfig,
-  regtest,
-  snap,
+  mainnet,
   satsConnect,
+  testnet,
+  unisat,
 } from "@midl-xyz/midl-js-core";
 import { MidlProvider } from "@midl-xyz/midl-js-react";
-import dynamic from "next/dynamic";
 import { HomePage } from "~/pages/HomePage";
 
 const config = createConfig({
@@ -15,9 +15,9 @@ const config = createConfig({
     chainId: 11155111,
     rpcUrls: ["https://rpc2.sepolia.org"],
   },
-  networks: [regtest],
+  networks: [testnet, mainnet],
   persist: true,
-  connectors: [satsConnect(), snap()],
+  connectors: [unisat(), satsConnect()],
 });
 
 export default function Page() {
