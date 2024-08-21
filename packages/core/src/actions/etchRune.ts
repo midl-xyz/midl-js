@@ -10,11 +10,13 @@ import {
 } from "runelib";
 import type { Config } from "~/createConfig";
 import { extractXCoordinate, formatRuneName } from "~/utils";
-import { networks, payments, Psbt, script } from "bitcoinjs-lib";
+import { initEccLib, networks, payments, Psbt, script } from "bitcoinjs-lib";
 import type { Taptree } from "bitcoinjs-lib/src/types";
 import { AddressPurpose } from "~/constants";
 import { getUTXOs } from "~/actions/getUTXOs";
 import { signPSBT } from "~/actions/signPSBT";
+import coinselect from "bitcoinselect";
+import { getFeeRate } from "~/actions/getFeeRate";
 
 export type EtchRuneParams = {
   name: string;
@@ -28,13 +30,25 @@ export type EtchRuneParams = {
 
 const ETCHING_SCRIPT_VERSION = 192;
 const RUNE_MAGIC_VALUE = 546;
+const ETCHING_TX_SIZE = 250;
 
 export const etchRune = async (
   config: Config,
-  { content, name, address, amount, cap, symbol }: EtchRuneParams
+  {
+    content,
+    name,
+    address,
+    amount,
+    cap,
+    symbol,
+    feeRate: customFeeRate,
+  }: EtchRuneParams
 ) => {
   const inscription = new EtchInscription();
   const runeName = formatRuneName(name);
+  const feeRate = customFeeRate || (await getFeeRate(config)).hourFee;
+
+  await import("tiny-secp256k1").then(initEccLib);
 
   if (!config.currentConnection) {
     throw new Error("No connection");
@@ -46,7 +60,9 @@ export const etchRune = async (
 
   const network = networks[config.network.network];
   const accounts = await config.currentConnection.getAccounts();
-  const account = accounts.find(account => account.address === address);
+  const account = address
+    ? accounts.find(account => account.address === address)
+    : accounts.find(account => account.purpose === AddressPurpose.Payment);
   const ordinalsAccount = accounts.find(
     account => account.purpose === AddressPurpose.Ordinals
   );
@@ -120,42 +136,119 @@ export const etchRune = async (
 
   const stone = new Runestone([], some(etching), none(), none());
 
-  const psbt = new Psbt({ network });
+  const psbtFunding = new Psbt({ network });
 
-  const utxos = await getUTXOs(config, account.address);
+  const fundingUTXOs = await getUTXOs(config, account.address);
 
-  psbt.addInput({
-    hash: utxos[0].txid,
-    index: utxos[0].vout,
-    witnessUtxo: {
-      value: utxos[0].value,
-      // biome-ignore lint/style/noNonNullAssertion: output is defined
-      script: scriptP2TR.output!,
-    },
-    tapLeafScript: [
+  const selectedFundingUTXOs = coinselect(
+    fundingUTXOs,
+    [
       {
-        leafVersion: ETCHING_SCRIPT_VERSION,
-        script: etchingRedeem.output,
-        // biome-ignore lint/style/noNonNullAssertion: witness is defined
-        controlBlock: etchingP2TR.witness![etchingP2TR.witness!.length - 1],
+        address: scriptP2TR.address,
+        value: RUNE_MAGIC_VALUE + feeRate * ETCHING_TX_SIZE,
       },
     ],
+    feeRate
+  );
+
+  console.log(selectedFundingUTXOs.inputs);
+
+  if (!selectedFundingUTXOs.inputs || !selectedFundingUTXOs.outputs) {
+    throw new Error("No funding inputs or outputs");
+  }
+
+  const { redeem } = payments.p2sh({
+    redeem: payments.p2wpkh({ pubkey: Buffer.from(account.publicKey, "hex") }),
   });
 
-  psbt.addOutput({
-    script: stone.encipher(),
-    value: 0,
+  for (const input of selectedFundingUTXOs.inputs) {
+    const hex = await fetch(
+      `${config.network.rpcUrl}/tx/${input.txid}/hex`
+    ).then(response => response.text());
+
+    psbtFunding.addInput({
+      hash: input.txid as string,
+      index: input.vout,
+      nonWitnessUtxo: Buffer.from(hex, "hex"),
+      redeemScript: redeem?.output,
+    });
+  }
+
+  for (const output of selectedFundingUTXOs.outputs) {
+    psbtFunding.addOutput(
+      output as Parameters<typeof psbtFunding.addOutput>[0]
+    );
+  }
+
+  const psbtFundingData = psbtFunding.toBase64();
+
+  const fundingData = await signPSBT(config, {
+    psbt: psbtFundingData,
+    signInputs: {
+      [account.address]: [0],
+    },
   });
 
-  psbt.addOutput({
-    address: ordinalsAccount.address,
-    value: RUNE_MAGIC_VALUE,
-  });
+  const signedFundingPSBT = Psbt.fromBase64(fundingData.psbt);
 
-  psbt.addOutput({
-    address: account.address,
-    value: 0,
-  });
+  signedFundingPSBT.finalizeAllInputs();
+
+  const fundingTx = signedFundingPSBT.extractTransaction();
+
+  const psbt = new Psbt({ network });
+
+  const selectedUTXOs = coinselect(
+    [
+      {
+        txid: fundingTx.getId(),
+        vout: 0,
+        value: RUNE_MAGIC_VALUE + feeRate * ETCHING_TX_SIZE,
+      },
+    ],
+    [
+      {
+        address: ordinalsAccount.address,
+        value: RUNE_MAGIC_VALUE,
+      },
+      {
+        script: stone.encipher(),
+        value: 0,
+      },
+    ],
+    feeRate
+  );
+
+  if (!selectedUTXOs.inputs || !selectedUTXOs.outputs) {
+    throw new Error("No inputs or outputs");
+  }
+
+  for (const input of selectedUTXOs.inputs) {
+    psbt.addInput({
+      hash: input.txid as string,
+      index: input.vout,
+      witnessUtxo: {
+        value: input.value,
+        // biome-ignore lint/style/noNonNullAssertion: <explanation>
+        script: scriptP2TR.output!,
+      },
+      tapLeafScript: [
+        {
+          leafVersion: etchingRedeem.redeemVersion,
+          script: etchingRedeem.output,
+          // biome-ignore lint/style/noNonNullAssertion: witness is defined
+          controlBlock: etchingP2TR.witness![etchingP2TR.witness!.length - 1],
+        },
+      ],
+    });
+  }
+
+  for (const output of selectedUTXOs.outputs) {
+    if (!output.address) {
+      output.address = account.address;
+    }
+
+    psbt.addOutput(output as Parameters<typeof psbt.addOutput>[0]);
+  }
 
   const psbtData = psbt.toBase64();
 
@@ -166,5 +259,12 @@ export const etchRune = async (
     },
   });
 
-  return data;
+  const signedPSBT = Psbt.fromBase64(data.psbt);
+
+  signedPSBT.finalizeAllInputs();
+
+  return {
+    etchingTx: signedPSBT.extractTransaction().toHex(),
+    fundingTx: fundingTx.toHex(),
+  };
 };

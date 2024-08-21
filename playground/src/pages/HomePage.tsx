@@ -7,9 +7,10 @@ import {
   useMidlContext,
   useSignMessage,
   useUTXOs,
+  useEtchRune,
 } from "@midl-xyz/midl-js-react";
 import { css } from "styled-system/css";
-import { AddressPurpose } from "@midl-xyz/midl-js-core";
+import { AddressPurpose, broadcastTransaction } from "@midl-xyz/midl-js-core";
 
 export const HomePage = () => {
   const { mutateAsync } = useConnect({
@@ -20,6 +21,8 @@ export const HomePage = () => {
 
   const { config } = useMidlContext();
   const { mutateAsync: signMessage, data, isPending } = useSignMessage();
+
+  const { mutateAsync: etchRune, data: etchRuneResult } = useEtchRune();
 
   const { data: utxos } = useUTXOs(accounts?.[0]?.address);
 
@@ -33,6 +36,14 @@ export const HomePage = () => {
 
   const onSignMessage = () => {
     signMessage({ message: "Hello, Midl!" });
+  };
+
+  const onEtchRune = () => {
+    etchRune();
+  };
+
+  const onBroadcast = () => {
+    broadcastTransaction(config, etchRuneResult as unknown as string);
   };
 
   return (
@@ -50,7 +61,7 @@ export const HomePage = () => {
             <Card.Description>Not connected to Snap</Card.Description>
           )}
 
-          {data && (
+          {(data || etchRuneResult) && (
             <VStack gap={4} mt={8}>
               <Text>Signed result:</Text>
               <code
@@ -66,6 +77,7 @@ export const HomePage = () => {
                 })}
               >
                 {JSON.stringify(data, null, 4)}
+                {JSON.stringify(etchRuneResult, null, 4)}
               </code>
             </VStack>
           )}
@@ -83,6 +95,9 @@ export const HomePage = () => {
                 <code className={css({ fontSize: "xs" })}>
                   UTXOs: {utxos?.length || 0}
                 </code>
+                <Button onClick={onEtchRune}>Etch Rune</Button>
+
+                <Button onClick={onBroadcast}>Broadcast</Button>
 
                 <Button onClick={onSignMessage} loading={isPending}>
                   Sign message

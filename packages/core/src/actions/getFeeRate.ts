@@ -13,6 +13,6 @@ export const getFeeRate = async (config: Config): Promise<FeeRate> => {
     throw new Error("No network");
   }
 
-  const data = await fetch(`${config.network.rpcUrl}/fees/recommended`);
+  const data = await fetch(`${config.network.rpcUrl}/v1/fees/recommended`);
   return data.json();
 };

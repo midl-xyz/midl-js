@@ -80,6 +80,9 @@ importers:
       bitcoinjs-lib:
         specifier: ^6.1.6
         version: 6.1.6
+      bitcoinselect:
+        specifier: ^1.0.0
+        version: 1.0.0
       coinselect:
         specifier: ^3.1.13
         version: 3.1.13
@@ -3006,6 +3009,9 @@ packages:
   bitcoinjs-message@2.2.0:
     resolution: {integrity: sha512-103Wy3xg8Y9o+pdhGP4M3/mtQQuUWs6sPuOp1mYphSUoSMHjHTlkj32K4zxU8qMH0Ckv23emfkGlFWtoWZ7YFA==}
     engines: {node: '>=0.10'}
+
+  bitcoinselect@1.0.0:
+    resolution: {integrity: sha512-cEE3WlX3Mz8qz6eztSpWxJ2iy7HS/dPgXOT/hGRxQyVOsGOyW30DgajlsxaWZAUSUku6rpfXvJlRIKmTwAuXGw==}
 
   bn.js@4.12.0:
     resolution: {integrity: sha512-c98Bf3tPniI+scsdk237ku1Dc3ujXQTSgyiPUDEOe7tRkhrqridvh8klBv0HCEso1OLOYcHuCv/cS6DNxKH+ZA==}
@@ -11232,6 +11238,8 @@ snapshots:
       create-hash: 1.2.0
       secp256k1: 3.8.0
       varuint-bitcoin: 1.1.2
+
+  bitcoinselect@1.0.0: {}
 
   bn.js@4.12.0: {}
 

@@ -4,10 +4,12 @@ type UTXO = {
   readonly txid: string;
   readonly vout: number;
   readonly value: number;
-  readonly address: string;
-  readonly scriptPubKey: string;
-  readonly blockHeight: number;
-  readonly confirmations: number;
+  readonly status: {
+    readonly confirmed: boolean;
+    readonly block_height: number;
+    readonly block_hash: string;
+    readonly block_time: number;
+  };
 };
 
 export const getUTXOs = async (
