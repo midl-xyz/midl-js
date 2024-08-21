@@ -173,6 +173,10 @@ export const etchRune = async (
   }
 
   for (const output of selectedFundingUTXOs.outputs) {
+    if (!output.address) {
+      output.address = account.address;
+    }
+
     psbtFunding.addOutput(
       output as Parameters<typeof psbtFunding.addOutput>[0]
     );
