@@ -4,3 +4,5 @@ export * from "./getFeeRate";
 export * from "./signPSBT";
 export * from "./etchRune";
 export * from "./broadcastTransaction";
+export * from "./getRuneUTXO";
+export * from "./edictRune";

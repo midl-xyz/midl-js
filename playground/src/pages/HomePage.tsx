@@ -7,6 +7,7 @@ import {
   useMidlContext,
   useSignMessage,
   useUTXOs,
+  useEdictRune,
   useEtchRune,
 } from "@midl-xyz/midl-js-react";
 import { css } from "styled-system/css";
@@ -23,6 +24,7 @@ export const HomePage = () => {
   const { mutateAsync: signMessage, data, isPending } = useSignMessage();
 
   const { mutateAsync: etchRune, data: etchRuneResult } = useEtchRune();
+  const { mutateAsync: edictRune, data: edictRuneResult } = useEdictRune();
 
   const { data: utxos } = useUTXOs(accounts?.[0]?.address);
 
@@ -45,6 +47,8 @@ export const HomePage = () => {
   const onBroadcast = () => {
     broadcastTransaction(config, etchRuneResult as unknown as string);
   };
+
+  console.log("edictRuneResult", edictRuneResult);
 
   return (
     <VStack height="100%" alignItems="center" justifyContent="center">
@@ -96,6 +100,19 @@ export const HomePage = () => {
                   UTXOs: {utxos?.length || 0}
                 </code>
                 <Button onClick={onEtchRune}>Etch Rune</Button>
+
+                <Button
+                  onClick={() =>
+                    edictRune({
+                      runeId: "2873407:1535",
+                      receiver:
+                        "tb1p22w0r4lwjfw7frr66ghvrqweaznh2sx4cjw20lke0wldjq0up32stlzlp4",
+                      amount: 1,
+                    })
+                  }
+                >
+                  Edict Rune
+                </Button>
 
                 <Button onClick={onBroadcast}>Broadcast</Button>
 

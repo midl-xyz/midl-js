@@ -5,6 +5,7 @@ import type { Account, Connector, CreateConnectorFn } from "~/connectors";
 export type BitcoinNetwork = {
   network: "bitcoin" | "testnet" | "regtest";
   rpcUrl: string;
+  runesUrl: string;
 };
 
 export type EVMChain = {

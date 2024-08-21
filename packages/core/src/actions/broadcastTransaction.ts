@@ -10,12 +10,13 @@ export const broadcastTransaction = async (
 
   const data = await fetch(`${config.network.rpcUrl}/tx`, {
     method: "POST",
-    body: JSON.stringify({ txHex }),
+    body: txHex,
     headers: {
       "Content-Type": "application/json",
     },
   });
 
   const txid = await data.json();
-  return txid;
+
+  return txid as string;
 };

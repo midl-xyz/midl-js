@@ -7,6 +7,14 @@ const nextConfig = {
     };
     return config;
   },
+  rewrites() {
+    return [
+      {
+        source: "/api/runes/:path*",
+        destination: "https://api-testnet.unisat.io/query-v4/:path*",
+      },
+    ];
+  },
 };
 
 export default nextConfig;
