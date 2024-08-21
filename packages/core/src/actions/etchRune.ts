@@ -151,8 +151,6 @@ export const etchRune = async (
     feeRate
   );
 
-  console.log(selectedFundingUTXOs.inputs);
-
   if (!selectedFundingUTXOs.inputs || !selectedFundingUTXOs.outputs) {
     throw new Error("No funding inputs or outputs");
   }
