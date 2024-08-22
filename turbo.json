@@ -11,6 +11,11 @@
             "outputs": [
                 "dist"
             ]
+        },
+        "test": {
+            "dependsOn": [
+                "^build"
+            ]
         }
     }
 }
