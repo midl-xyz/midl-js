@@ -1,0 +1,86 @@
+---
+sidebar_position: 1
+---
+
+import { NPMInstall } from '@site/src/components/npm-install';
+
+
+# Getting Started
+
+Install Midl.js via your package manager of choice.
+
+<NPMInstall packages={[
+    '@midl-xyz/midl-js-core',
+    '@midl-xyz/midl-js-react', 
+   ]} 
+/>
+
+
+## Create config    
+
+Create and export a new Midl.js config file in your project.
+
+```ts
+import {createConfig, testnet, mainnet, satsConnect} from '@midl-xyz/midl-js-core';
+
+export const config = createConfig({
+    networks: [testnet, mainnet],
+    chain: {
+        chainId: 1,
+        rpcUrls: ['https://mainnet.infura.io/v3/your-infura-key'],
+    },
+    connectors: [satsConnect]
+});
+```
+
+## Wrap your app with Context Provider
+
+Wrap your app with the Midl.js context provider.
+
+```tsx
+import {MidlProvider} from '@midl-xyz/midl-js-react';
+import {config} from './config';
+
+function App() {
+    return (
+        <MidlProvider config={config}>
+            {/* Your app here */}
+        </MidlProvider>
+    );
+}
+```
+
+
+## Use Midl.js hooks
+
+Use Midl.js hooks to interact with the blockchain.
+
+```tsx
+import {useConnect, useAccounts} from '@midl-xyz/midl-js-react';
+
+function Page () {
+    const {connect, connectors} = useConnect();
+    const {accounts, isConnected} = useAccounts();
+
+    return (
+        <div>
+            {connectors.map(connector => (
+                <button key={connector.name} onClick={() => connect(connector.name)}>
+                    {connector.name}
+                </button>
+            ))}
+
+            {isConnected && (
+                <div>
+                    <h2>Accounts</h2>
+                    <ul>
+                        {accounts.map(account => (
+                            <li key={account}>{account}</li>
+                        ))}
+                    </ul>
+                </div>
+            )}
+        </div>
+    );
+}
+```

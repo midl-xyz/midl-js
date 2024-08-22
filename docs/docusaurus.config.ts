@@ -3,9 +3,10 @@ import type { Config } from "@docusaurus/types";
 import type * as Preset from "@docusaurus/preset-classic";
 
 const config: Config = {
-  title: "My Site",
-  tagline: "Dinosaurs are cool",
-  favicon: "img/favicon.ico",
+  title: "MIDL.js",
+  tagline:
+    "Type-safe, declarative and composable library for building Bitcoin decentralized applications.",
+  favicon: "img/logo.svg",
 
   // Set the production url of your site here
   url: "https://your-docusaurus-site.example.com",
@@ -62,13 +63,14 @@ const config: Config = {
       logo: {
         alt: "My Site Logo",
         src: "img/logo.svg",
+        srcDark: "img/logo-dark.svg",
       },
       items: [
         {
           type: "docSidebar",
           sidebarId: "tutorialSidebar",
           position: "left",
-          label: "Tutorial",
+          label: "Docs",
         },
         { to: "/blog", label: "Blog", position: "left" },
         {
@@ -85,7 +87,7 @@ const config: Config = {
           title: "Docs",
           items: [
             {
-              label: "Tutorial",
+              label: "Introduction",
               to: "/docs/intro",
             },
           ],
