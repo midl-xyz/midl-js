@@ -1,0 +1,34 @@
+---
+sidebar_position: 2
+---
+
+# Configuration
+
+## Import
+
+```ts
+import {createConfig} from '@midl-xyz/midl-js-core';
+```
+
+## Usage
+
+Create and export a new Midl.js config file in your project.
+
+```ts
+import {createConfig, testnet, mainnet, satsConnect} from '@midl-xyz/midl-js-core';
+
+export const config = createConfig({
+    networks: [testnet, mainnet],
+    chain: {
+        chainId: 1,
+        rpcUrls: ['https://mainnet.infura.io/v3/your-infura-key'],
+    },
+    connectors: [satsConnect]
+});
+```
+
+## Parameters
+
+- `networks`: An array of network objects.
+- `chain`: An object with the chain ID and RPC URLs.
+- `connectors`: An array of connectors.

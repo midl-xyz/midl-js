@@ -5,7 +5,7 @@ import type * as Preset from "@docusaurus/preset-classic";
 const config: Config = {
   title: "MIDL.js",
   tagline:
-    "Type safe, declarative and composable library for building Bitcoin decentralized applications.",
+    "Type-safe, declarative and composable library for building Bitcoin decentralized applications.",
   favicon: "img/logo.svg",
 
   // Set the production url of your site here

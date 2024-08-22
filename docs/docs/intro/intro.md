@@ -4,44 +4,21 @@ sidebar_position: 1
 
 # Introduction
 
-Let's discover **Docusaurus in less than 5 minutes**.
+Welcome to **Midl.js** documentation! Midl.js is a JavaScript library that makes it easy to interact with the Bitcoin and Midl Protocol. It provides a simple and intuitive API to interact with the blockchain, manage accounts, and sign transactions.
 
-## Getting Started
+## Features
 
-Get started by **creating a new site**.
+- **Simple API**: Midl.js provides a simple and intuitive API to interact with the blockchain.
+- **TypeScript Support**: Midl.js is written in TypeScript and provides type definitions.
+- **React Hooks**: Midl.js provides React hooks to interact with the blockchain in your React app.
 
-Or **try Docusaurus immediately** with **[docusaurus.new](https://docusaurus.new)**.
+## Prerequisites
 
-### What you'll need
+Before you start using Midl.js, you need to have the following:
 
-- [Node.js](https://nodejs.org/en/download/) version 18.0 or above:
-  - When installing Node.js, you are recommended to check all checkboxes related to dependencies.
+- **Node.js**: Midl.js requires Node.js to run. You can download Node.js from the [official website](https://nodejs.org/).
+- **pnpm or npm or yarn**: Midl.js is distributed as a set of packages on npm. You can install Midl.js using pnpm, npm, or yarn.
 
-## Generate a new site
+## Contributing
 
-Generate a new Docusaurus site using the **classic template**.
-
-The classic template will automatically be added to your project after you run the command:
-
-```bash
-npm init docusaurus@latest my-website classic
-```
-
-You can type this command into Command Prompt, Powershell, Terminal, or any other integrated terminal of your code editor.
-
-The command also installs all necessary dependencies you need to run Docusaurus.
-
-## Start your site
-
-Run the development server:
-
-```bash
-cd my-website
-npm run start
-```
-
-The `cd` command changes the directory you're working with. In order to work with your newly created Docusaurus site, you'll need to navigate the terminal there.
-
-The `npm run start` command builds your website locally and serves it through a development server, ready for you to view at http://localhost:3000/.
-
-Open `docs/intro.md` (this page) and edit some lines: the site **reloads automatically** and displays your changes.
+If you find a bug or have a feature request, please open an issue on GitHub. If you want to contribute, please follow the [contributing guidelines](https://github.com/midl-xyz/midl-js/blob/main/CONTRIBUTING.md).
