@@ -18,6 +18,8 @@
     "@docusaurus/core": "3.4.0",
     "@docusaurus/preset-classic": "3.4.0",
     "@mdx-js/react": "^3.0.0",
+    "@midl-xyz/midl-js-core": "workspace:^",
+    "@midl-xyz/midl-js-react": "workspace:^",
     "clsx": "^2.0.0",
     "prism-react-renderer": "^2.3.0",
     "react": "^18.0.0",
@@ -27,6 +29,7 @@
     "@docusaurus/module-type-aliases": "3.4.0",
     "@docusaurus/tsconfig": "3.4.0",
     "@docusaurus/types": "3.4.0",
+    "react-docgen-typescript": "^2.2.2",
     "typescript": "~5.2.2"
   },
   "browserslist": {

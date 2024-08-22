@@ -1,0 +1,32 @@
+# useAccounts
+
+Hook to get the connected accounts.
+
+## Usage
+
+```tsx
+import {useAccounts} from '@midl-xyz/midl-js-react';
+
+function App () {
+    const {accounts, isConnected, isConnecting} = useAccounts();
+
+    return (
+        <div>
+            {accounts.map(account => (
+                <div key={account.address}>{account.address}</div>
+            ))}
+        </div>
+    );
+}
+```
+
+
+## Returns
+
+- **accounts**: [`Account[]`](/docs/glossary/types#account) - The connected accounts.
+- **isConnected**: `boolean` - Whether the user is connected to a wallet or not.
+- **isConnecting**: `boolean` - Whether the user is connecting to a wallet or not.
+- **connector**: [`Connector`](/docs/glossary/types#connector) - The connector used to connect to the wallet.
+- **network**: [`BitcoinNetwork`](/docs/glossary/types#bitcoinnetwork) - The network the user is connected to.
+- **chain**: [`Chain`](/docs/glossary/types#chain) - The chain the user is connected to.
+- **status**: `connecting | connected | disconnected` - The status of the connection.

@@ -1,0 +1,25 @@
+# useSignMessage
+
+Hook to sign a message with the connected accounts.
+
+## Usage
+
+```tsx
+import {useSignMessage} from '@midl-xyz/midl-js-react';
+
+function App () {
+    const {signMessage, isSigning} = useSignMessage();
+
+    return (
+        <div>
+            <button onClick={() => signMessage('Hello, World!')} disabled={isSigning}>
+                Sign Message
+            </button>
+        </div>
+    );
+}
+```
+
+## Returns
+
+- **signMessage**: `(message: string) => Promise<string>` - Function to sign a message.

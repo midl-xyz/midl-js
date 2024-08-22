@@ -47,6 +47,12 @@ importers:
       '@mdx-js/react':
         specifier: ^3.0.0
         version: 3.0.1(@types/react@18.3.3)(react@18.3.1)
+      '@midl-xyz/midl-js-core':
+        specifier: workspace:^
+        version: link:../packages/core
+      '@midl-xyz/midl-js-react':
+        specifier: workspace:^
+        version: link:../packages/react
       clsx:
         specifier: ^2.0.0
         version: 2.1.1
@@ -69,6 +75,9 @@ importers:
       '@docusaurus/types':
         specifier: 3.4.0
         version: 3.4.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-docgen-typescript:
+        specifier: ^2.2.2
+        version: 2.2.2(typescript@5.2.2)
       typescript:
         specifier: ~5.2.2
         version: 5.2.2
@@ -5999,6 +6008,11 @@ packages:
     peerDependenciesMeta:
       typescript:
         optional: true
+
+  react-docgen-typescript@2.2.2:
+    resolution: {integrity: sha512-tvg2ZtOpOi6QDwsb3GZhOjDkkX0h8Z2gipvTg6OVMUyoYoURhEiRNePT8NZItTVCDh39JJHnLdfCOkzoLbFnTg==}
+    peerDependencies:
+      typescript: '>= 4.3.x'
 
   react-dom@18.3.1:
     resolution: {integrity: sha512-5m4nQKp+rZRb09LNH59GM4BxTh9251/ylbKIbpe7TpGxfJ+9kv6BLkLBXIjjspbgbnIBNqlI23tRnTWT0snUIw==}
@@ -14974,6 +14988,10 @@ snapshots:
       - eslint
       - supports-color
       - vue-template-compiler
+
+  react-docgen-typescript@2.2.2(typescript@5.2.2):
+    dependencies:
+      typescript: 5.2.2
 
   react-dom@18.3.1(react@18.3.1):
     dependencies:

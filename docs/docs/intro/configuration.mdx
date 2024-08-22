@@ -29,6 +29,23 @@ export const config = createConfig({
 
 ## Parameters
 
-- `networks`: An array of network objects.
-- `chain`: An object with the chain ID and RPC URLs.
-- `connectors`: An array of connectors.
+### networks
+
+- **Type**: [`BitcoinNetwork[]`](/docs/glossary/types#bitcoinnetwork)
+- **Description**: Bitcoin networks to use in the application.
+
+### chain
+
+- **Type**: [`Chain`](/docs/glossary/types#chain)
+- **Description**: The underlaying EVM chain to use in the application.
+
+### connectors
+
+- **Type**: [`Connector[]`](/docs/glossary/types#connector)
+- **Description**: Connectors to use to connect wallets to the application.
+
+### persist (optional)
+
+- **Type**: `boolean`
+- **Default**: `true`
+- **Description**: Persist the configuration to local storage.

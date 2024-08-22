@@ -1,0 +1,25 @@
+---
+sidebar_position: 2
+---
+
+# Types
+
+
+## BitcoinNetwork
+
+```ts
+type BitcoinNetwork = {
+    name: string;
+    chainId: number;
+    networkId: number;
+    rpcUrls: string[];
+    blockExplorerUrls: string[];
+    nativeCurrency: {
+        name: string;
+        symbol: string;
+        decimals: number;
+    };
+    chainName: string;
+    iconUrls: string[];
+};
+```
