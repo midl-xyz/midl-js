@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - ci/*
 
 jobs:
   build-and-publish:
@@ -21,7 +22,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'pnpm'
 
       - name: Install pnpm
         run: npm install -g pnpm
