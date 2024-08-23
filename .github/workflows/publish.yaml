@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - ci/*
 
 jobs:
   build-and-publish:
@@ -21,7 +22,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'pnpm'
 
       - name: Install pnpm
         run: npm install -g pnpm
@@ -30,10 +30,10 @@ jobs:
         run: pnpm install
 
       - name: Build packages
-        run: pnpm turbo run build
+        run: pnpm turbo run build --filter="./packages/*"
 
       - name: Run tests
-        run: pnpm turbo run test
+        run: pnpm turbo run test --filter="./packages/*"
 
       - name: Generate and apply changesets
         run: |
@@ -45,7 +45,7 @@ jobs:
           echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> ~/.npmrc
 
       - name: Publish packages
-        run: pnpm publish -r
+        run: pnpm publish -r --filter="./packages/*"
 
       - name: Clean up .npmrc
         run: rm ~/.npmrc
