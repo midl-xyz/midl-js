@@ -1,6 +1,6 @@
 {
   "name": "@midl-xyz/midl-js-playground",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "scripts": {
     "prepare": "panda codegen",
@@ -13,6 +13,7 @@
     "@ark-ui/react": "^3.6.2",
     "@midl-xyz/midl-js-core": "workspace:^",
     "@midl-xyz/midl-js-react": "workspace:^",
+    "@tanstack/react-query": "*",
     "jotai": "^2.9.1",
     "next": "14.2.5",
     "react": "^18",

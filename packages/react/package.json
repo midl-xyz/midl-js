@@ -1,6 +1,6 @@
 {
     "name": "@midl-xyz/midl-js-react",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "scripts": {
         "build": "pkgroll",
         "dev": "pkgroll --watch",
@@ -30,15 +30,16 @@
         "bitcoinjs-lib": "^6.1.6",
         "bitcoinjs-message": "^2.2.0",
         "react": "^18.3.1",
-        "react-dom": "^18.3.1"
+        "react-dom": "^18.3.1",
+        "@tanstack/react-query": "*"
     },
     "dependencies": {
         "@midl-xyz/midl-js-core": "workspace:^",
-        "@tanstack/react-query": "^5.51.15",
         "jotai": "^2.9.1"
     },
     "peerDependencies": {
         "react": "^18.3.1",
-        "react-dom": "^18.3.1"
+        "react-dom": "^18.3.1",
+        "@tanstack/react-query": "*"
     }
 }
