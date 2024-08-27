@@ -9,7 +9,16 @@ Hook to disconnect from a wallet.
 import {useDisconnect} from '@midl-xyz/midl-js-react';
 
 function App () {
-    // TODO: Add usage here
+    const {disconnect} = useDisconnect()
+
+    return (
+        <button onClick={disconnect}>Disconnect</button>
+    )
 }
 
 ```
+
+## Returns
+
+- **disconnect**: `() => void` - Function to disconnect from a wallet.
+- **disconnectAsync**: `() => Promise<void>` - Function to disconnect from a wallet asynchronously.

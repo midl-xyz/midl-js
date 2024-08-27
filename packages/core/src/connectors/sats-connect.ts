@@ -17,7 +17,7 @@ import { isCorrectAddress } from "~/utils";
 
 class SatsConnectConnector implements Connector {
   public readonly id = "sats-connect";
-  public readonly name = "Sats Connect";
+  public readonly name = "Xverse";
   public readonly type = ConnectorType.SatsConnect;
 
   constructor(private config: CreateConnectorConfig) {}
