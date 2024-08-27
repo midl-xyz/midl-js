@@ -4,19 +4,30 @@ import {
   SignMessageProtocol,
   type SignMessageResponse,
 } from "@midl-xyz/midl-js-core";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, type UseMutationOptions } from "@tanstack/react-query";
 import { useMidlContext } from "~/context";
 
-export const useSignMessage = () => {
+type SignMessageVariables = {
+  message: string;
+  address?: string;
+};
+type SignMessageError = Error;
+type SignMessageData = SignMessageResponse;
+
+type UseSignMessageParams = {
+  mutation?: Omit<
+    UseMutationOptions<SignMessageData, SignMessageError, SignMessageVariables>,
+    "mutationFn"
+  >;
+};
+
+export const useSignMessage = ({ mutation }: UseSignMessageParams = {}) => {
   const { config } = useMidlContext();
 
-  return useMutation<
-    SignMessageResponse,
-    Error,
-    {
-      message: string;
-      address?: string;
-    }
+  const { mutate, mutateAsync, ...rest } = useMutation<
+    SignMessageData,
+    SignMessageError,
+    SignMessageVariables
   >({
     mutationFn: async ({ message, address }) => {
       let signingAddress = address;
@@ -45,5 +56,12 @@ export const useSignMessage = () => {
         protocol: SignMessageProtocol.Ecdsa,
       });
     },
+    ...mutation,
   });
+
+  return {
+    signMessage: mutate,
+    signMessageAsync: mutateAsync,
+    ...rest,
+  };
 };

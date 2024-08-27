@@ -7,7 +7,7 @@ export const useUTXOs = (address?: string) => {
 
   const skipQuery = !config.network || !config.currentConnection || !address;
 
-  return useQuery({
+  const { data, ...rest } = useQuery({
     queryKey: ["utxos", address],
     queryFn: async () => {
       // biome-ignore lint/style/noNonNullAssertion: skip query if no address
@@ -15,4 +15,9 @@ export const useUTXOs = (address?: string) => {
     },
     enabled: !skipQuery,
   });
+
+  return {
+    utxos: data,
+    ...rest,
+  };
 };
