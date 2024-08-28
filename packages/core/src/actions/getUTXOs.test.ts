@@ -14,6 +14,7 @@ import * as bitcoin from "bitcoinjs-lib";
 import ECPairFactory from "ecpair";
 import * as ecc from "tiny-secp256k1";
 import { getUTXOs } from "~/actions/getUTXOs";
+import { devnet } from "~/chains";
 
 const ECPair = ECPairFactory(ecc);
 
@@ -38,10 +39,7 @@ describe("core | actions | getUTXOs", () => {
   it("should get UTXOs", async () => {
     const config = createConfig({
       networks: [regtest],
-      chain: {
-        chainId: 1,
-        rpcUrls: ["http://localhost:8545"],
-      },
+      chain: devnet,
       connectors: [],
     });
 

@@ -59,8 +59,6 @@ const config: Config = {
     // Replace with your project's social card
     colorMode: {
       defaultMode: "dark",
-      disableSwitch: true,
-      respectPrefersColorScheme: false,
     },
     image: "img/docusaurus-social-card.jpg",
     navbar: {
@@ -79,7 +77,7 @@ const config: Config = {
         },
         { to: "/blog", label: "Blog", position: "left" },
         {
-          href: "https://github.com/facebook/docusaurus",
+          href: "https://github.com/midl-xyz/midl-js",
           label: "GitHub",
           position: "right",
         },
