@@ -38,5 +38,5 @@ function App () {
 
 ## Returns
 
-- **signPSBT**: `(params: {psbt: string, signInputs: {[address: string]: number[]}}) => Promise<string>` - Function to sign PSBT.
-- **signPSBTAsync**: `(params: {psbt: string, signInputs: {[address: string]: number[]}}) => Promise<string>` - Function to sign PSBT asynchronously.
+- **signPSBT**: `(params: {psbt: string, signInputs: {[address: string]: number[]}}, publish?: boolean) => Promise<string>` - Function to sign PSBT.
+- **signPSBTAsync**: `(params: {psbt: string, signInputs: {[address: string]: number[]}}, publish?: boolean) => Promise<string>` - Function to sign PSBT asynchronously.

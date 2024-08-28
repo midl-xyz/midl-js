@@ -28,7 +28,9 @@ export interface Connector {
   getAccounts(): Promise<Account[]>;
   getNetwork(): Promise<BitcoinNetwork>;
   signMessage(params: SignMessageParams): Promise<SignMessageResponse>;
-  signPSBT(params: SignPSBTParams): Promise<SignPSBTResponse>;
+  signPSBT(
+    params: Omit<SignPSBTParams, "publish">
+  ): Promise<Omit<SignPSBTResponse, "txId">>;
 }
 
 export type CreateConnectorConfig = {
