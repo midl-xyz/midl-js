@@ -77,10 +77,6 @@ describe.skip("core | connectors | snap", () => {
 
     expect(setState).toHaveBeenCalledWith({
       connection: "midlBTCSnap",
-      installedSnap: {
-        id: "local:http://localhost:8080",
-        version: undefined,
-      },
       publicKey,
     });
   });

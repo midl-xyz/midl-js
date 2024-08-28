@@ -2,6 +2,7 @@
 
 import {
   createConfig,
+  devnet,
   mainnet,
   satsConnect,
   testnet,
@@ -13,10 +14,7 @@ import { useState } from "react";
 import { HomePage } from "~/pages/HomePage";
 
 const config = createConfig({
-  chain: {
-    chainId: 11155111,
-    rpcUrls: ["https://rpc2.sepolia.org"],
-  },
+  chain: devnet,
   networks: [testnet, mainnet],
   persist: true,
   connectors: [unisat(), satsConnect()],

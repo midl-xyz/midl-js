@@ -1,6 +1,7 @@
 import { createStore, type PrimitiveAtom } from "jotai";
 import { atomWithReset, atomWithStorage } from "jotai/utils";
 import type { Account, Connector, CreateConnectorFn } from "~/connectors";
+import type { Chain } from "~/types/chain";
 
 export type BitcoinNetwork = {
   network: "bitcoin" | "testnet" | "regtest";
@@ -8,29 +9,16 @@ export type BitcoinNetwork = {
   runesUrl: string;
 };
 
-export type EVMChain = {
-  chainId: number;
-  rpcUrls: string[];
-  name?: string;
-  blockExplorerUrls?: string[];
-  nativeCurrency?: {
-    name: string;
-    symbol: string;
-    decimals: number;
-  };
-  iconUrls?: string[];
-};
-
 type ConfigParams = {
   networks: BitcoinNetwork[];
-  chain: EVMChain;
+  chain: Chain;
   connectors: CreateConnectorFn[];
   persist?: boolean;
 };
 
 export type Config = {
   readonly networks: BitcoinNetwork[];
-  readonly chain: EVMChain;
+  readonly chain?: Chain;
   readonly connectors: Connector[];
   readonly network: BitcoinNetwork | undefined;
   readonly currentConnection?: Connector;
@@ -45,7 +33,6 @@ export type Config = {
 
 export type ConfigAtom = {
   readonly network: BitcoinNetwork;
-  readonly installedSnap?: GetSnapsResponse[string];
   readonly publicKey?: string;
   readonly connection?: string;
   readonly accounts?: Account[];

@@ -9,8 +9,12 @@ describe("core | createConfig", () => {
     const config = createConfig({
       networks: [regtest],
       chain: {
-        chainId: 1,
-        rpcUrls: ["http://localhost:8545"],
+        id: 1,
+        rpcUrls: {
+          default: {
+            http: ["http://localhost:8545"],
+          },
+        },
       },
       connectors: [],
     });
@@ -22,13 +26,18 @@ describe("core | createConfig", () => {
     const mockNetwork: BitcoinNetwork = {
       network: "testnet",
       rpcUrl: "http://localhost:183",
+      runesUrl: "http://localhost:183",
     };
 
     const config = createConfig({
       networks: [regtest, mockNetwork],
       chain: {
-        chainId: 1,
-        rpcUrls: ["http://localhost:8545"],
+        id: 1,
+        rpcUrls: {
+          default: {
+            http: ["http://localhost:8545"],
+          },
+        },
       },
       connectors: [],
     });
@@ -42,13 +51,18 @@ describe("core | createConfig", () => {
     const mockNetwork: BitcoinNetwork = {
       network: "testnet",
       rpcUrl: "http://localhost:183",
+      runesUrl: "http://localhost:183",
     };
 
     const config = createConfig({
       networks: [regtest, mockNetwork],
       chain: {
-        chainId: 1,
-        rpcUrls: ["http://localhost:8545"],
+        id: 1,
+        rpcUrls: {
+          default: {
+            http: ["http://localhost:8545"],
+          },
+        },
       },
       connectors: [],
     });
@@ -68,8 +82,12 @@ describe("core | createConfig", () => {
     const config = createConfig({
       networks: [regtest],
       chain: {
-        chainId: 1,
-        rpcUrls: ["http://localhost:8545"],
+        id: 1,
+        rpcUrls: {
+          default: {
+            http: ["http://localhost:8545"],
+          },
+        },
       },
       connectors: [],
       persist: true,
@@ -78,6 +96,7 @@ describe("core | createConfig", () => {
     const mockNetwork: BitcoinNetwork = {
       network: "testnet",
       rpcUrl: "http://localhost:183",
+      runesUrl: "http://localhost:183",
     };
 
     config.setState({ network: mockNetwork });
