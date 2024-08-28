@@ -1,5 +1,14 @@
 # @midl-xyz/midl-js-docs
 
+## 0.0.4
+
+### Patch Changes
+
+- add useBroadcastTranscation hook
+- Updated dependencies
+  - @midl-xyz/midl-js-react@0.0.5
+  - @midl-xyz/midl-js-core@0.0.3
+
 ## 0.0.3
 
 ### Patch Changes
