@@ -8,8 +8,12 @@ const queryClient = new QueryClient();
 const config = createConfig({
   networks: [testnet],
   chain: {
-    chainId: 11155111,
-    rpcUrls: ["https://rpc2.sepolia.org"],
+    id: 11155111,
+    rpcUrls: {
+      default: {
+        http: ["https://rpc2.sepolia.org"],
+      },
+    },
   },
   connectors: [satsConnect()],
 });

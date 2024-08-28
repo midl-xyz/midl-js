@@ -19,33 +19,31 @@ import {createConfig, testnet, mainnet, satsConnect} from '@midl-xyz/midl-js-cor
 
 export const config = createConfig({
     networks: [testnet, mainnet],
-    chain: {
-        chainId: 1,
-        rpcUrls: ['https://mainnet.infura.io/v3/your-infura-key'],
-    },
     connectors: [satsConnect]
 });
 ```
 
 ## Parameters
 
-### networks
+#### networks
 
 - **Type**: [`BitcoinNetwork[]`](/docs/glossary/types#bitcoinnetwork)
 - **Description**: Bitcoin networks to use in the application.
 
-### chain
-
-- **Type**: [`Chain`](/docs/glossary/types#chain)
-- **Description**: The underlaying EVM chain to use in the application.
-
-### connectors
+#### connectors
 
 - **Type**: [`Connector[]`](/docs/glossary/types#connector)
 - **Description**: Connectors to use to connect wallets to the application.
 
-### persist (optional)
+#### chain (optional)
+
+- **Type**: [`Chain`](/docs/glossary/types#chain)
+- **Description**: The underlaying EVM chain to use in the application.
+
+
+#### persist (optional)
 
 - **Type**: `boolean`
 - **Default**: `true`
 - **Description**: Persist the configuration to local storage.
+
