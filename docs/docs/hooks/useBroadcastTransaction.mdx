@@ -1,0 +1,30 @@
+# useBroadcastTransaction
+
+Hook to broadcast a transaction to Bitcoin network.
+
+## Usage
+
+```tsx
+
+import {useBroadcastTransaction} from '@midl-xyz/midl-js-react';
+
+function App () {
+    const {broadcastTransaction, isPending} = useBroadcastTransaction();
+
+    return (
+        <div>
+            <button onClick={() => broadcastTransaction('hex')} disabled={isPending}>
+                Broadcast Transaction
+            </button>
+        </div>
+    );
+}
+
+```
+
+
+## Returns
+
+- **broadcastTransaction**: `(hex: string) => Promise<string>` - Function to broadcast a transaction.
+- **broadcastTransactionAsync**: `(hex: string) => Promise<string>` - Function to broadcast a transaction asynchronously.
+- **isPending**: `boolean` - Boolean to indicate if the transaction is pending.
