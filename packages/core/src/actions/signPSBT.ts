@@ -1,15 +1,19 @@
+import { Psbt } from "bitcoinjs-lib";
+import { broadcastTransaction } from "~/actions/broadcastTransaction";
 import type { Config } from "~/createConfig";
 
 export type SignPSBTParams = {
   psbt: string;
   signInputs: Record<string, number[]>;
+  publish?: boolean;
 };
 
 export type SignPSBTResponse = {
   psbt: string;
+  txId?: string;
 };
 
-export const signPSBT = (
+export const signPSBT = async (
   config: Config,
   params: SignPSBTParams
 ): Promise<SignPSBTResponse> => {
@@ -19,5 +23,20 @@ export const signPSBT = (
     throw new Error("No provider found");
   }
 
-  return currentConnection.signPSBT(params);
+  const signedPSBT = await currentConnection.signPSBT(params);
+
+  if (params.publish) {
+    const psbt = Psbt.fromBase64(signedPSBT.psbt);
+
+    psbt.finalizeAllInputs();
+
+    const txId = await broadcastTransaction(
+      config,
+      psbt.extractTransaction().toHex()
+    );
+
+    return { psbt: psbt.toBase64(), txId };
+  }
+
+  return signedPSBT;
 };

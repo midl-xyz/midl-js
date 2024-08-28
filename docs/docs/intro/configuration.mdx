@@ -19,7 +19,7 @@ import {createConfig, testnet, mainnet, satsConnect} from '@midl-xyz/midl-js-cor
 
 export const config = createConfig({
     networks: [testnet, mainnet],
-    connectors: [satsConnect]
+    connectors: [satsConnect()]
 });
 ```
 

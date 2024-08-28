@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 0.0.4
+
+### Patch Changes
+
+- Add publish param to signPSBT
+
 ## 0.0.3
 
 ### Patch Changes
