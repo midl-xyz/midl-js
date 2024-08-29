@@ -31,7 +31,7 @@ export const getRunes = async (
   }
 
   const url = new URL(
-    `${config.network.runesUrl}/runes/v1/addresses/${address}/balances`
+    `${config.network.runesUrl}/addresses/${address}/balances`
   );
 
   if (limit) {
