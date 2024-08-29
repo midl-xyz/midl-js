@@ -1,0 +1,27 @@
+# useGetRune
+
+Hook to get a rune by its ID.
+
+
+## Usage
+
+```tsx
+import { useGetRune } from '@midl-xyz/midl-js-react';
+
+function App () {
+    const { rune } = useGetRune({
+        runeId: 'runeId',
+    });
+
+    return (
+        <div>
+            {rune?.symbol}: {rune?.balance}
+        </div>
+    );
+}
+```
+
+## Returns
+
+- **rune**: `Rune` - Rune object with its balance.
+

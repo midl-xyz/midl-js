@@ -6,3 +6,6 @@ export * from "./etchRune";
 export * from "./broadcastTransaction";
 export * from "./getRuneUTXO";
 export * from "./edictRune";
+export * from "./getRune";
+export * from "./getRuneBalance";
+export * from "./getRunes";
