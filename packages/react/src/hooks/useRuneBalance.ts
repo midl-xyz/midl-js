@@ -6,15 +6,15 @@ import {
 import { type QueryOptions, useQuery } from "@tanstack/react-query";
 import { useMidlContext } from "~/context";
 
-type UseGetRuneBalanceParams = GetRuneBalanceParams & {
+type UseRuneBalanceParams = GetRuneBalanceParams & {
   query?: QueryOptions<GetRuneBalanceResponse>;
 };
 
-export const useGetRuneBalance = ({
+export const useRuneBalance = ({
   address,
   runeId,
   query: { queryKey, ...query } = {},
-}: UseGetRuneBalanceParams) => {
+}: UseRuneBalanceParams) => {
   const { config } = useMidlContext();
 
   const { data: balance, ...rest } = useQuery<GetRuneBalanceResponse>({

@@ -6,16 +6,16 @@ import {
 import { type QueryOptions, useQuery } from "@tanstack/react-query";
 import { useMidlContext } from "~/context";
 
-type UseGetRunesParams = GetRunesParams & {
+type UseRunesParams = GetRunesParams & {
   query?: QueryOptions<GetRunesResponse>;
 };
 
-export const useGetRunes = ({
+export const useRunes = ({
   address,
   limit,
   offset,
   query: { queryKey, ...query } = {},
-}: UseGetRunesParams) => {
+}: UseRunesParams) => {
   const { config } = useMidlContext();
 
   const { data: runes, ...rest } = useQuery<GetRunesResponse>({
