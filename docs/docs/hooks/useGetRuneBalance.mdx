@@ -1,0 +1,26 @@
+# useGetRuneBalance
+
+Hook to get balance of a rune for a given address.
+
+## Usage
+
+```tsx
+import { useGetRuneBalance } from '@midl-xyz/midl-js-react';
+
+function App () {
+    const { balance } = useGetRuneBalance({
+        address: 'tb1...address',
+        runeId: 'runeId',
+    });
+
+    return (
+        <div>
+            {balance}
+        </div>
+    );
+}
+```
+
+## Returns
+
+- **balance**: `string` - Balance of the rune.

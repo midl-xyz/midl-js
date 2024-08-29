@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 0.0.5
+
+### Patch Changes
+
+- Add runes hooks
+
 ## 0.0.4
 
 ### Patch Changes

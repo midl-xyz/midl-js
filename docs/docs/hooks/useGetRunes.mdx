@@ -1,0 +1,31 @@
+# useGetRunes 
+
+Hook to get balances of runes for a given address.
+
+## Usage
+
+```tsx
+import { useGetRunes } from '@midl-xyz/midl-js-react';
+
+function App () {
+    const { runes } = useGetRunes({
+        address: 'tb1...address',
+    });
+
+    return (
+        <div>
+            {runes?.map(rune => (
+                <div key={rune.symbol}>
+                    {rune.symbol}: {rune.balance}
+                </div>
+            ))}
+        </div>
+    );
+}
+```
+
+## Returns
+
+- **runes**: `Rune[]` - Array of runes with their balances.
+
+
