@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-react
 
+## 0.0.9
+
+### Patch Changes
+
+- a5a065a: Fix hooks export
+
 ## 0.0.8
 
 ### Patch Changes
