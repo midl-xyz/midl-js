@@ -1,5 +1,13 @@
 # @midl-xyz/midl-js-docs
 
+## 0.0.7
+
+### Patch Changes
+
+- Update rune hooks names
+- Updated dependencies
+  - @midl-xyz/midl-js-react@0.0.8
+
 ## 0.0.6
 
 ### Patch Changes
