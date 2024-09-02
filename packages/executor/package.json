@@ -1,0 +1,43 @@
+{
+    "name": "@midl-xyz/executor",
+    "version": "0.0.1",
+    "scripts": {
+        "build": "pkgroll",
+        "dev": "pkgroll --watch",
+        "test": "vitest",
+        "generate": "wagmi generate"
+    },
+    "type": "commonjs",
+    "main": "dist/index.js",
+    "module": "dist/index.mjs",
+    "types": "dist/index.d.cts",
+    "files": [
+        "dist"
+    ],
+    "exports": {
+        "require": {
+            "types": "./dist/index.d.cts",
+            "default": "./dist/index.js"
+        },
+        "import": {
+            "types": "./dist/index.d.mts",
+            "default": "./dist/index.mjs"
+        }
+    },
+    "devDependencies": {
+        "@midl-xyz/midl-js-config": "workspace:^",
+        "@midl-xyz/midl-js-react": "workspace:^",
+        "@wagmi/cli": "^2.1.15",
+        "viem": "^2.18.6",
+        "wagmi": "^2.12.8"
+    },
+    "dependencies": {
+        "@midl-xyz/contracts": "^0.0.2",
+        "@midl-xyz/midl-js-core": "workspace:^"
+    },
+    "peerDependencies": {
+        "@midl-xyz/midl-js-react": "workspace:^",
+        "viem": "^2.18.6",
+        "wagmi": "^2.12.8"
+    }
+}
