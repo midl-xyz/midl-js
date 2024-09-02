@@ -1,5 +1,5 @@
 {
-    "name": "@midl-xyz/executor",
+    "name": "@midl-xyz/midl-js-executor",
     "version": "0.0.1",
     "scripts": {
         "build": "pkgroll",

@@ -7,7 +7,7 @@ import { toHex, pad } from "viem";
 export const useERC20Rune = (runeId: string) => {
   const { rune, ...rest } = useRune({ runeId });
 
-  const [blockHeight, txIndex] = runeId.split(":");
+  const [blockHeight = "0", txIndex = "0"] = runeId.split(":");
 
   const bytes32RuneId = pad(
     toHex((BigInt(blockHeight) << BigInt(32)) | BigInt(txIndex)),
