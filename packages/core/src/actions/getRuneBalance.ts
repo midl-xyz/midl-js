@@ -19,7 +19,7 @@ export const getRuneBalance = async (
   }
 
   const data = await fetch(
-    `${config.network.runesUrl}/runes/v1/etchings/${runeId}/holders/${address}`
+    `${config.network.runesUrl}/etchings/${runeId}/holders/${address}`
   );
 
   const response: GetRuneBalanceResponse = await data.json();

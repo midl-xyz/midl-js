@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 0.0.6
+
+### Patch Changes
+
+- Fix runes http url
+
 ## 0.0.5
 
 ### Patch Changes
