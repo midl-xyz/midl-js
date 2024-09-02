@@ -9,10 +9,16 @@ export const useERC20Rune = (runeId: string) => {
 
   const [blockHeight = "0", txIndex = "0"] = runeId.split(":");
 
-  const bytes32RuneId = pad(
-    toHex((BigInt(blockHeight) << BigInt(32)) | BigInt(txIndex)),
-    { size: 32 }
-  );
+  let bytes32RuneId: `0x${string}` = pad("0x0", { size: 32 });
+
+  try {
+    bytes32RuneId = pad(
+      toHex((BigInt(blockHeight) << BigInt(32)) | BigInt(txIndex)),
+      { size: 32 }
+    );
+  } catch (e) {
+    // do nothing
+  }
 
   const { data: erc20Address, ...erc20rest } = useReadContract({
     abi: executorMidlAbi,
