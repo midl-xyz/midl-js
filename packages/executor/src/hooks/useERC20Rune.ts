@@ -5,9 +5,12 @@ import { executorMidlAbi } from "~/contracts/abi";
 import { toHex, pad } from "viem";
 
 type UseERC20Params = {
-  query?: Omit<UseReadContractParameters["query"], "enabled"> & {
-    enabled?: boolean;
-  };
+  query?: NonNullable<
+    UseReadContractParameters<
+      typeof executorMidlAbi,
+      "btcMidlAddresses"
+    >["query"]
+  >;
 };
 
 export const useERC20Rune = (
