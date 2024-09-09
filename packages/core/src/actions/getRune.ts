@@ -40,7 +40,9 @@ export const getRune = async (config: Config, runeId: string) => {
     throw new Error("No network found");
   }
 
-  const data = await fetch(`${config.network.runesUrl}/etchings/${runeId}`);
+  const data = await fetch(
+    `${config.network.runesUrl}/runes/v1/etchings/${runeId}`
+  );
 
   const response: GetRuneResponse = await data.json();
 
