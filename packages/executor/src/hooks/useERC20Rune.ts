@@ -1,10 +1,19 @@
 import { useRune } from "@midl-xyz/midl-js-react";
-import { useReadContract } from "wagmi";
+import { useReadContract, UseReadContractParameters } from "wagmi";
 import deployment from "@midl-xyz/contracts/deployments/0.0.1/ExecutorMidl.json";
 import { executorMidlAbi } from "~/contracts/abi";
 import { toHex, pad } from "viem";
 
-export const useERC20Rune = (runeId: string) => {
+type UseERC20Params = {
+  query?: Omit<UseReadContractParameters["query"], "enabled"> & {
+    enabled?: boolean;
+  };
+};
+
+export const useERC20Rune = (
+  runeId: string,
+  { query }: UseERC20Params = {}
+) => {
   const { rune, ...rest } = useRune({ runeId });
 
   const [blockHeight = "0", txIndex = "0"] = runeId.split(":");
@@ -27,7 +36,8 @@ export const useERC20Rune = (runeId: string) => {
     address: deployment.address as `0x${string}`,
     args: [bytes32RuneId],
     query: {
-      enabled: !!rune,
+      enabled: query?.enabled ? query.enabled : !!rune,
+      ...query,
     },
   });
 
