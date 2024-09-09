@@ -12,8 +12,9 @@ export const useEtchRune = () => {
         name: "MYAMAZINGRUNE",
         content: "Hello, Midl!",
         amount: 1000,
-        cap: 10000,
+        cap: 1000,
         symbol: "$",
+        premine: 1000,
       });
     },
   });

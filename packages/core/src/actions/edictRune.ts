@@ -118,7 +118,7 @@ export const edictRune = async (
       hash: utxo.txid,
       index: utxo.vout,
       witnessUtxo: {
-        value: utxo.satoshi,
+        value: utxo.satoshis,
         // biome-ignore lint/style/noNonNullAssertion: <explanation>
         script: ordinalsP2TR.output!,
       },

@@ -5,13 +5,13 @@ export type RuneUTXO = {
   address: string;
   txid: string;
   vout: number;
-  satoshi: number;
+  satoshis: number;
   scriptPk: string;
   runes: {
     rune: string;
     runeId: string;
     spacedRune: string;
-    amount: number;
+    amount: string;
     symbol: string;
     divisibility: number;
   }[];
@@ -27,7 +27,7 @@ export const getRuneUTXO = async (
   }
 
   const data = await fetch(
-    `${config.network.runesUrl}/address/${address}/runes/${runeId}/utxo`
+    `${config.network.runesUrl}/utxos/${address}/?runeId=${runeId}`
   );
   const utxos = await data.json();
 

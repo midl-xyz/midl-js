@@ -14,22 +14,22 @@ import { css } from "styled-system/css";
 import { AddressPurpose, broadcastTransaction } from "@midl-xyz/midl-js-core";
 
 export const HomePage = () => {
-  const { mutateAsync } = useConnect({
+  const { connect } = useConnect({
     purposes: [AddressPurpose.Payment, AddressPurpose.Ordinals],
   });
-  const { data: accounts, error } = useAccounts();
-  const { mutateAsync: disconnect } = useDisconnect();
+  const { accounts, error } = useAccounts();
+  const { disconnect } = useDisconnect();
 
   const { config } = useMidlContext();
-  const { mutateAsync: signMessage, data, isPending } = useSignMessage();
+  const { signMessage, data, isPending } = useSignMessage();
 
-  const { mutateAsync: etchRune, data: etchRuneResult } = useEtchRune();
-  const { mutateAsync: edictRune, data: edictRuneResult } = useEdictRune();
+  const { mutate, data: etchRuneResult, error: etchRuneError } = useEtchRune();
+  const { edictRune, data: edictRuneResult } = useEdictRune();
 
-  const { data: utxos } = useUTXOs(accounts?.[0]?.address);
+  const { utxos } = useUTXOs(accounts?.[0]?.address);
 
   const onConnect = (id?: string) => {
-    mutateAsync({ id });
+    connect({ id });
   };
 
   const onDisconnect = () => {
@@ -41,14 +41,14 @@ export const HomePage = () => {
   };
 
   const onEtchRune = () => {
-    etchRune();
+    mutate();
   };
 
   const onBroadcast = () => {
     broadcastTransaction(config, etchRuneResult as unknown as string);
   };
 
-  console.log("edictRuneResult", edictRuneResult);
+  console.log("etchRuneError", etchRuneError);
 
   return (
     <VStack height="100%" alignItems="center" justifyContent="center">
@@ -107,7 +107,7 @@ export const HomePage = () => {
                       runeId: "2873407:1535",
                       receiver:
                         "tb1p22w0r4lwjfw7frr66ghvrqweaznh2sx4cjw20lke0wldjq0up32stlzlp4",
-                      amount: 1,
+                      amount: BigInt(1),
                     })
                   }
                 >

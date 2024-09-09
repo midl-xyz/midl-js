@@ -26,6 +26,7 @@ export type EtchRuneParams = {
   cap: number;
   symbol: string;
   feeRate?: number;
+  premine?: number;
 };
 
 const ETCHING_SCRIPT_VERSION = 192;
@@ -42,6 +43,7 @@ export const etchRune = async (
     cap,
     symbol,
     feeRate: customFeeRate,
+    premine,
   }: EtchRuneParams
 ) => {
   const inscription = new EtchInscription();
@@ -121,12 +123,11 @@ export const etchRune = async (
     new Range(none(), none())
   );
 
-  const premine = none();
   const divisibility = none();
 
   const etching = new Etching(
     divisibility,
-    premine,
+    premine ? some(premine) : none(),
     some(rune),
     none(),
     some(symbol),
