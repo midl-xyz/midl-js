@@ -1,5 +1,13 @@
 # @midl-xyz/midl-js-react
 
+## 0.0.11
+
+### Patch Changes
+
+- feat: update rune utxo
+- Updated dependencies
+  - @midl-xyz/midl-js-core@0.0.7
+
 ## 0.0.10
 
 ### Patch Changes

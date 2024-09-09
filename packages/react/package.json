@@ -1,6 +1,6 @@
 {
     "name": "@midl-xyz/midl-js-react",
-    "version": "0.0.10",
+    "version": "0.0.11",
     "scripts": {
         "build": "pkgroll",
         "dev": "pkgroll --watch",

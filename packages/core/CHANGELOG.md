@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 0.0.7
+
+### Patch Changes
+
+- feat: update rune utxo
+
 ## 0.0.6
 
 ### Patch Changes

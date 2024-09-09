@@ -111,8 +111,6 @@ export const edictRune = async (
     network,
   });
 
-  console.log(ordinalsP2TR.address);
-
   for (const utxo of runeUTXOs) {
     psbt.addInput({
       hash: utxo.txid,
