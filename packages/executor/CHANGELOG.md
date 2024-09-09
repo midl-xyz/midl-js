@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor
 
+## 0.0.3
+
+### Patch Changes
+
+- Add query params
+
 ## 0.0.2
 
 ### Patch Changes
