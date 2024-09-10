@@ -1,5 +1,14 @@
 # @midl-xyz/midl-js-docs
 
+## 0.0.12
+
+### Patch Changes
+
+- fix: rune utxo json structure
+- Updated dependencies
+  - @midl-xyz/midl-js-core@0.0.9
+  - @midl-xyz/midl-js-react@0.0.13
+
 ## 0.0.11
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 0.0.9
+
+### Patch Changes
+
+- fix: rune utxo json structure
+
 ## 0.0.8
 
 ### Patch Changes

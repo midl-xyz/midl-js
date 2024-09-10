@@ -31,5 +31,5 @@ export const getRuneUTXO = async (
   );
   const utxos = await data.json();
 
-  return utxos?.data?.utxo as RuneUTXO[];
+  return utxos as RuneUTXO[];
 };
