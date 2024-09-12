@@ -21,10 +21,15 @@ export const HomePage = () => {
   const { disconnect } = useDisconnect();
 
   const { config } = useMidlContext();
-  const { signMessage, data, isPending } = useSignMessage();
+  const { signMessage, data } = useSignMessage();
 
   const { mutate, data: etchRuneResult, error: etchRuneError } = useEtchRune();
-  const { edictRune, data: edictRuneResult } = useEdictRune();
+  const {
+    edictRune,
+    data: edictRuneResult,
+    isPending,
+    error: edictRuneError,
+  } = useEdictRune();
 
   const { utxos } = useUTXOs(accounts?.[0]?.address);
 
@@ -48,7 +53,8 @@ export const HomePage = () => {
     broadcastTransaction(config, etchRuneResult as unknown as string);
   };
 
-  console.log("etchRuneError", etchRuneError);
+  console.log("edictRuneError", edictRuneError);
+  console.log("edictRuneResult", edictRuneResult);
 
   return (
     <VStack height="100%" alignItems="center" justifyContent="center">
@@ -102,12 +108,22 @@ export const HomePage = () => {
                 <Button onClick={onEtchRune}>Etch Rune</Button>
 
                 <Button
+                  loading={isPending}
                   onClick={() =>
                     edictRune({
-                      runeId: "2873407:1535",
-                      receiver:
-                        "tb1p22w0r4lwjfw7frr66ghvrqweaznh2sx4cjw20lke0wldjq0up32stlzlp4",
-                      amount: BigInt(1),
+                      transfers: [
+                        {
+                          receiver:
+                            "tb1p22w0r4lwjfw7frr66ghvrqweaznh2sx4cjw20lke0wldjq0up32stlzlp4",
+                          amount: 10000,
+                        },
+                        {
+                          runeId: "2873407:1535",
+                          receiver:
+                            "tb1p22w0r4lwjfw7frr66ghvrqweaznh2sx4cjw20lke0wldjq0up32stlzlp4",
+                          amount: BigInt(1),
+                        },
+                      ],
                     })
                   }
                 >
@@ -116,9 +132,7 @@ export const HomePage = () => {
 
                 <Button onClick={onBroadcast}>Broadcast</Button>
 
-                <Button onClick={onSignMessage} loading={isPending}>
-                  Sign message
-                </Button>
+                <Button onClick={onSignMessage}>Sign message</Button>
               </>
             )}
 

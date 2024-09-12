@@ -1,5 +1,14 @@
 # @midl-xyz/midl-js-playground
 
+## 0.1.13
+
+### Patch Changes
+
+- Add transfers to edicts and publish
+- Updated dependencies
+  - @midl-xyz/midl-js-react@0.0.14
+  - @midl-xyz/midl-js-core@0.0.10
+
 ## 0.1.12
 
 ### Patch Changes
