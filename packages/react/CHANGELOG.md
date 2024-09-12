@@ -1,5 +1,13 @@
 # @midl-xyz/midl-js-react
 
+## 0.0.14
+
+### Patch Changes
+
+- Add transfers to edicts and publish
+- Updated dependencies
+  - @midl-xyz/midl-js-core@0.0.10
+
 ## 0.0.13
 
 ### Patch Changes

@@ -1,3 +1,4 @@
+import { initEccLib, networks, payments } from "bitcoinjs-lib";
 import {
   type SignMessageParams,
   SignMessageProtocol,
@@ -12,7 +13,8 @@ import {
   type CreateConnectorConfig,
   createConnector,
 } from "~/connectors/createConnector";
-import { isCorrectAddress } from "~/utils";
+import { AddressPurpose } from "~/constants";
+import { extractXCoordinate, isCorrectAddress } from "~/utils";
 import { getAddressPurpose } from "~/utils/getAddressPurpose";
 
 class UnisatConnector implements Connector {
@@ -39,6 +41,30 @@ class UnisatConnector implements Connector {
         purpose: getAddressPurpose(it, this.config.getState().network),
       };
     });
+
+    const ordinalsAccount = accounts.find(
+      account => account.purpose === AddressPurpose.Ordinals
+    );
+
+    if (!ordinalsAccount) {
+      try {
+        await import("tiny-secp256k1").then(initEccLib);
+
+        const ordinalsAddress = payments.p2tr({
+          internalPubkey: Buffer.from(publicKey, "hex"),
+          network: networks.testnet,
+        });
+
+        accounts.push({
+          // biome-ignore lint/style/noNonNullAssertion: <explanation>
+          address: ordinalsAddress.address!,
+          publicKey: publicKey,
+          purpose: AddressPurpose.Ordinals,
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    }
 
     this.config.setState({
       connection: this.id,

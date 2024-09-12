@@ -6,8 +6,6 @@
 export const extractXCoordinate = (publicKey: string) => {
   const publicKeyBuffer = Buffer.from(publicKey, "hex");
 
-  console.log(publicKeyBuffer.length);
-
   if (publicKeyBuffer.length !== 33 && publicKeyBuffer.length !== 65) {
     throw new Error("Invalid public key length");
   }

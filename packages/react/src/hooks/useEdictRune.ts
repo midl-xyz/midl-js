@@ -1,4 +1,8 @@
-import { edictRune, type EdictRuneParams } from "@midl-xyz/midl-js-core";
+import {
+  edictRune,
+  type EdictRuneResponse,
+  type EdictRuneParams,
+} from "@midl-xyz/midl-js-core";
 import { useMutation, type UseMutationOptions } from "@tanstack/react-query";
 import { useMidlContext } from "~/context";
 
@@ -6,7 +10,7 @@ type EdictRuneVariables = EdictRuneParams;
 
 type EdictRuneError = Error;
 
-type EdictRuneData = string;
+type EdictRuneData = EdictRuneResponse;
 
 type UseEdictRuneParams = {
   mutation?: Omit<

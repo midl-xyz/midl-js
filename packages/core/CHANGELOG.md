@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 0.0.10
+
+### Patch Changes
+
+- Add transfers to edicts and publish
+
 ## 0.0.9
 
 ### Patch Changes
