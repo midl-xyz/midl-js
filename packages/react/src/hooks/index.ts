@@ -10,3 +10,4 @@ export * from "./useRunes";
 export * from "./useSignMessage";
 export * from "./useSignPSBT";
 export * from "./useUTXOs";
+export * from "./useFeeRate";

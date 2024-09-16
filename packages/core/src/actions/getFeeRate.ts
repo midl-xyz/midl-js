@@ -1,6 +1,6 @@
 import type { Config } from "~/createConfig";
 
-type FeeRate = {
+export type GetFeeRateResponse = {
   fastestFee: number;
   halfHourFee: number;
   hourFee: number;
@@ -8,7 +8,9 @@ type FeeRate = {
   minimumFee: number;
 };
 
-export const getFeeRate = async (config: Config): Promise<FeeRate> => {
+export const getFeeRate = async (
+  config: Config
+): Promise<GetFeeRateResponse> => {
   if (!config.network) {
     throw new Error("No network");
   }

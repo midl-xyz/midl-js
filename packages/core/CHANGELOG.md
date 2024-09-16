@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 0.0.11
+
+### Patch Changes
+
+- Add useFeeRate hook
+
 ## 0.0.10
 
 ### Patch Changes

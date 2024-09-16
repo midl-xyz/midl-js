@@ -1,5 +1,13 @@
 # @midl-xyz/midl-js-react
 
+## 0.0.15
+
+### Patch Changes
+
+- Add useFeeRate hook
+- Updated dependencies
+  - @midl-xyz/midl-js-core@0.0.11
+
 ## 0.0.14
 
 ### Patch Changes
