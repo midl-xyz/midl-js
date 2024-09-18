@@ -1,15 +1,12 @@
 import { useRune } from "@midl-xyz/midl-js-react";
-import { useReadContract, UseReadContractParameters } from "wagmi";
-import deployment from "@midl-xyz/contracts/deployments/0.0.1/ExecutorMidl.json";
-import { executorMidlAbi } from "~/contracts/abi";
+import { useReadContract, type UseReadContractParameters } from "wagmi";
+import deployment from "@midl-xyz/contracts/deployments/0.0.1/Executor.json";
+import { executorAbi } from "~/contracts/abi";
 import { toHex, pad } from "viem";
 
 type UseERC20Params = {
   query?: NonNullable<
-    UseReadContractParameters<
-      typeof executorMidlAbi,
-      "btcMidlAddresses"
-    >["query"]
+    UseReadContractParameters<typeof executorAbi, "btcCMidlAddresses">["query"]
   >;
 };
 
@@ -33,8 +30,8 @@ export const useERC20Rune = (
   }
 
   const { data: erc20Address, ...erc20rest } = useReadContract({
-    abi: executorMidlAbi,
-    functionName: "btcMidlAddresses",
+    abi: executorAbi,
+    functionName: "btcCMidlAddresses",
     // TODO: address depends on the network
     address: deployment.address as `0x${string}`,
     args: [bytes32RuneId],
