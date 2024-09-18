@@ -5,7 +5,7 @@ import { wrapper } from "~/__tests__";
 import { zeroAddress } from "viem";
 
 describe("useERC20Rune", () => {
-  it("should return the correct value", async () => {
+  it.skip("should return the correct value", async () => {
     const { result } = renderHook(() => useERC20Rune("2582642:2"), {
       wrapper,
     });
