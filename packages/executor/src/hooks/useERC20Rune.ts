@@ -1,5 +1,5 @@
 import { useRune } from "@midl-xyz/midl-js-react";
-import { useReadContract, UseReadContractParameters } from "wagmi";
+import { useReadContract, type UseReadContractParameters } from "wagmi";
 import deployment from "@midl-xyz/contracts/deployments/0.0.1/ExecutorMidl.json";
 import { executorMidlAbi } from "~/contracts/abi";
 import { toHex, pad } from "viem";
