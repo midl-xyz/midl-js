@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor
 
+## 0.0.10
+
+### Patch Changes
+
+- Change contract, add hooks
+
 ## 0.0.9
 
 ### Patch Changes
