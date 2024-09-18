@@ -1,8 +1,8 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// ExecutorMidl
+// Executor
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-export const executorMidlAbi = [
+export const executorAbi = [
   {
     type: 'constructor',
     inputs: [
@@ -16,12 +16,18 @@ export const executorMidlAbi = [
   },
   { type: 'error', inputs: [], name: 'AlreadyAcknowleged' },
   { type: 'error', inputs: [], name: 'AlreadyCommitted' },
+  { type: 'error', inputs: [], name: 'AlreadyKnown' },
   { type: 'error', inputs: [], name: 'ExceedsMaxAssets' },
   { type: 'error', inputs: [], name: 'FailedTransfer' },
+  { type: 'error', inputs: [], name: 'HasTransaction' },
   { type: 'error', inputs: [], name: 'InvalidAcknowledgement' },
   { type: 'error', inputs: [], name: 'InvalidBlockNumber' },
   { type: 'error', inputs: [], name: 'InvalidInput' },
+  { type: 'error', inputs: [], name: 'InvalidTx' },
+  { type: 'error', inputs: [], name: 'InvalidTxsNumber' },
   { type: 'error', inputs: [], name: 'NoBlock' },
+  { type: 'error', inputs: [], name: 'NotPending' },
+  { type: 'error', inputs: [], name: 'TooEarly' },
   { type: 'error', inputs: [], name: 'UnsupportedAsset' },
   { type: 'error', inputs: [], name: 'WrongAccess' },
   { type: 'error', inputs: [], name: 'WrongLength' },
@@ -68,6 +74,111 @@ export const executorMidlAbi = [
     anonymous: false,
     inputs: [
       {
+        name: 'blockNum',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+      {
+        name: 'lastCommittedBlock',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'CommitedBlocksToBTC',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'blockNum',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+      {
+        name: 'txHash',
+        internalType: 'bytes32',
+        type: 'bytes32',
+        indexed: false,
+      },
+      {
+        name: 'sentTxsBatchHash',
+        internalType: 'bytes32',
+        type: 'bytes32',
+        indexed: false,
+      },
+      {
+        name: 'receiver',
+        internalType: 'bytes32',
+        type: 'bytes32',
+        indexed: false,
+      },
+    ],
+    name: 'CommittedSentTx',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'blockNum',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+      {
+        name: 'txHash',
+        internalType: 'bytes32',
+        type: 'bytes32',
+        indexed: false,
+      },
+      {
+        name: 'sender',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'nonceFrom',
+        internalType: 'uint64',
+        type: 'uint64',
+        indexed: false,
+      },
+      {
+        name: 'receiver',
+        internalType: 'bytes32',
+        type: 'bytes32',
+        indexed: false,
+      },
+      {
+        name: 'btcAmount',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+      {
+        name: 'assets',
+        internalType: 'bytes32[]',
+        type: 'bytes32[]',
+        indexed: false,
+      },
+      {
+        name: 'amounts',
+        internalType: 'uint256[]',
+        type: 'uint256[]',
+        indexed: false,
+      },
+    ],
+    name: 'Completed',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
         name: 'receiver',
         internalType: 'address',
         type: 'address',
@@ -81,6 +192,19 @@ export const executorMidlAbi = [
       },
     ],
     name: 'EmergencyBTCWithdrawal',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'blockNum',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'Finalized',
   },
   {
     type: 'event',
@@ -152,49 +276,6 @@ export const executorMidlAbi = [
     name: 'ResetBlock',
   },
   {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      {
-        name: 'blockNum',
-        internalType: 'uint256',
-        type: 'uint256',
-        indexed: false,
-      },
-      {
-        name: 'from',
-        internalType: 'address',
-        type: 'address',
-        indexed: false,
-      },
-      {
-        name: 'receiver',
-        internalType: 'bytes32',
-        type: 'bytes32',
-        indexed: false,
-      },
-      {
-        name: 'btcAmount',
-        internalType: 'uint256',
-        type: 'uint256',
-        indexed: false,
-      },
-      {
-        name: 'assets',
-        internalType: 'bytes32[]',
-        type: 'bytes32[]',
-        indexed: false,
-      },
-      {
-        name: 'amounts',
-        internalType: 'uint256[]',
-        type: 'uint256[]',
-        indexed: false,
-      },
-    ],
-    name: 'Withdrawal',
-  },
-  {
     type: 'function',
     inputs: [],
     name: 'MAX_ASSETS',
@@ -213,6 +294,7 @@ export const executorMidlAbi = [
     inputs: [
       { name: 'txHash', internalType: 'bytes32', type: 'bytes32' },
       { name: 'from', internalType: 'address', type: 'address' },
+      { name: 'midlTxs', internalType: 'bytes32[]', type: 'bytes32[]' },
       { name: 'btcAmount', internalType: 'uint256', type: 'uint256' },
       { name: 'assets', internalType: 'bytes32[]', type: 'bytes32[]' },
       { name: 'amounts', internalType: 'uint256[]', type: 'uint256[]' },
@@ -226,7 +308,7 @@ export const executorMidlAbi = [
     type: 'function',
     inputs: [
       {
-        name: 'midlAddress',
+        name: 'cMidlAddress',
         internalType: 'contract IERC20Extended',
         type: 'address',
       },
@@ -267,11 +349,43 @@ export const executorMidlAbi = [
   {
     type: 'function',
     inputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
-    name: 'btcMidlAddresses',
+    name: 'btcCMidlAddresses',
     outputs: [
       { name: '', internalType: 'contract IERC20Extended', type: 'address' },
     ],
     stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
+    name: 'btcMidlTxs',
+    outputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
+    name: 'btcTxSentHash',
+    outputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: '', internalType: 'contract IERC20Extended', type: 'address' },
+    ],
+    name: 'cMidlBtcAddresses',
+    outputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'lastCommittedBlock', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'commitBlocksToBTC',
+    outputs: [],
+    stateMutability: 'nonpayable',
   },
   {
     type: 'function',
@@ -285,6 +399,33 @@ export const executorMidlAbi = [
     name: 'commitNewBlock',
     outputs: [],
     stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'txHash', internalType: 'bytes32', type: 'bytes32' },
+      { name: 'btcTxSent', internalType: 'bytes32', type: 'bytes32' },
+    ],
+    name: 'commitSentTx',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'txHash', internalType: 'bytes32', type: 'bytes32' },
+      { name: 'nonceFrom', internalType: 'uint64', type: 'uint64' },
+      { name: 'receiver', internalType: 'bytes32', type: 'bytes32' },
+      {
+        name: 'assets',
+        internalType: 'contract IERC20Extended[]',
+        type: 'address[]',
+      },
+      { name: 'amounts', internalType: 'uint256[]', type: 'uint256[]' },
+    ],
+    name: 'completeTx',
+    outputs: [],
+    stateMutability: 'payable',
   },
   {
     type: 'function',
@@ -302,10 +443,15 @@ export const executorMidlAbi = [
   },
   {
     type: 'function',
-    inputs: [
-      { name: '', internalType: 'contract IERC20Extended', type: 'address' },
-    ],
-    name: 'midlBtcAddresses',
+    inputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    name: 'lastCommittedMidlBlock',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
+    name: 'pendingBTCTxReceiver',
     outputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
     stateMutability: 'view',
   },
@@ -322,7 +468,7 @@ export const executorMidlAbi = [
     type: 'function',
     inputs: [
       {
-        name: 'midlAddress',
+        name: 'cMidlAddress',
         internalType: 'contract IERC20Extended',
         type: 'address',
       },
@@ -348,6 +494,16 @@ export const executorMidlAbi = [
     name: 'resetBlock',
     outputs: [],
     stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: '', internalType: 'uint256', type: 'uint256' },
+      { name: '', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'sentTxsBatches',
+    outputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
+    stateMutability: 'view',
   },
   {
     type: 'function',
@@ -400,20 +556,5 @@ export const executorMidlAbi = [
     name: 'valueQuorumVoted',
     outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
     stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    inputs: [
-      { name: 'receiver', internalType: 'bytes32', type: 'bytes32' },
-      {
-        name: 'assets',
-        internalType: 'contract IERC20Extended[]',
-        type: 'address[]',
-      },
-      { name: 'amounts', internalType: 'uint256[]', type: 'uint256[]' },
-    ],
-    name: 'withdraw',
-    outputs: [],
-    stateMutability: 'payable',
   },
 ] as const
