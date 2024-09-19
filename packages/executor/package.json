@@ -1,6 +1,6 @@
 {
     "name": "@midl-xyz/midl-js-executor",
-    "version": "0.0.10",
+    "version": "0.0.11",
     "scripts": {
         "build": "pkgroll",
         "dev": "pkgroll --watch",
@@ -32,7 +32,7 @@
         "@wagmi/cli": "^2.1.15",
         "@wagmi/connectors": "^5.1.11",
         "react": "^18.3.1",
-        "viem": "^2.18.6",
+        "viem": "npm:@midl-xyz/midl-viem@2.*",
         "wagmi": "^2.12.8"
     },
     "dependencies": {
@@ -41,7 +41,7 @@
     },
     "peerDependencies": {
         "@midl-xyz/midl-js-react": "workspace:^",
-        "viem": "^2.18.6",
+        "viem": "npm:@midl-xyz/midl-viem@2.*",
         "wagmi": "^2.12.8"
     }
 }

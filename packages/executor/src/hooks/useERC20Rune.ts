@@ -34,6 +34,7 @@ export const useERC20Rune = (
     functionName: "btcCMidlAddresses",
     // TODO: address depends on the network
     address: deployment.address as `0x${string}`,
+    contractType: 1,
     args: [bytes32RuneId],
     query: {
       enabled: query?.enabled ? query.enabled : !!rune,

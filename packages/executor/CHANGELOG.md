@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor
 
+## 0.0.11
+
+### Patch Changes
+
+- Change viem version
+
 ## 0.0.10
 
 ### Patch Changes

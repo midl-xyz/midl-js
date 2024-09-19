@@ -13,6 +13,6 @@ describe("useLastBlock", () => {
 
     console.log(result.current.lastBlock);
 
-    expect(result.current.lastBlock).toBeDefined();
+    expect(result.current.lastBlock).toBeGreaterThan(0n);
   });
 });

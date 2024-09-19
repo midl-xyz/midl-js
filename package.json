@@ -17,5 +17,10 @@
     "typescript": "^5.5.3",
     "vite-tsconfig-paths": "^4.3.2",
     "vitest": "^2.0.4"
+  },
+  "pnpm": {
+    "overrides": {
+      "viem": "npm:@midl-xyz/midl-viem@2.21.12"
+    }
   }
 }
