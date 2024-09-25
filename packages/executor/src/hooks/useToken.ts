@@ -1,6 +1,6 @@
 import deployment from "@midl-xyz/contracts/deployments/0.0.1/Executor.json";
 import { useRune } from "@midl-xyz/midl-js-react";
-import { type Address, pad, toHex } from "viem";
+import type { Address } from "viem";
 import { type UseReadContractParameters, useReadContract } from "wagmi";
 import { executorAbi } from "~/contracts/abi";
 import { bytes32toRuneId } from "~/utils";
