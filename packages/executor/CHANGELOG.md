@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor
 
+## 0.0.13
+
+### Patch Changes
+
+- Add bytes32 rune getter
+
 ## 0.0.12
 
 ### Patch Changes
