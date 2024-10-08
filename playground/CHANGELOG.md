@@ -1,5 +1,12 @@
 # @midl-xyz/midl-js-playground
 
+## 0.1.17
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@0.0.16
+
 ## 0.1.16
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor
 
+## 0.0.16
+
+### Patch Changes
+
+- Fix deps
+
 ## 0.0.15
 
 ### Patch Changes
