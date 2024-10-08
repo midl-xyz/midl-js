@@ -1,3 +1,4 @@
+import { AddressPurpose } from "@midl-xyz/midl-js-core";
 import {
   useIsMutating,
   useMutationState,
@@ -41,8 +42,17 @@ export const useAccounts = () => {
     return "disconnected";
   };
 
+  const ordinalsAccount = data?.find(
+    it => it.purpose === AddressPurpose.Ordinals
+  );
+  const paymentAccount = data?.find(
+    it => it.purpose === AddressPurpose.Payment
+  );
+
   return {
     accounts: data,
+    ordinalsAccount,
+    paymentAccount,
     connector: currentConnection,
     isConnecting: isMutating,
     isConnected: mutationState?.status === "success",

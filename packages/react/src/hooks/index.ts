@@ -11,3 +11,4 @@ export * from "./useSignMessage";
 export * from "./useSignPSBT";
 export * from "./useUTXOs";
 export * from "./useFeeRate";
+export * from "./useTransferBTC";
