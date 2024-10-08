@@ -240,8 +240,8 @@ importers:
         specifier: ^18
         version: 18.3.1(react@18.3.1)
       viem:
-        specifier: npm:@midl-xyz/midl-viem@2.21.19
-        version: '@midl-xyz/midl-viem@2.21.19(bufferutil@4.0.8)(typescript@5.5.3)(utf-8-validate@5.0.10)(zod@3.23.8)'
+        specifier: npm:@midl-xyz/midl-viem@2.21.16
+        version: '@midl-xyz/midl-viem@2.21.16(bufferutil@4.0.8)(typescript@5.5.3)(utf-8-validate@5.0.10)(zod@3.23.8)'
     devDependencies:
       '@pandacss/dev':
         specifier: ^0.44.0
@@ -2203,11 +2203,9 @@ packages:
     resolution: {integrity: sha512-LrkzXQ2euNEcayJUhpYfrR3Qb69CBGjO8XH+eml8397i5zPWgwhrauwQpr3M+ueWnPNLC5FBVvJ8CMGVCecFpQ==, tarball: https://npm.pkg.github.com/download/@midl-xyz/midl-viem/2.21.18/7d87d380e67b9a0296d92d916ee5bf6accbc90e2}
     peerDependencies:
       typescript: '>=5.0.4'
-
-  '@midl-xyz/midl-viem@2.21.19':
-    resolution: {integrity: sha512-0bEgHaUkhc5Oqps6IzbvJ8TyTwTcL2XyRF5BsejG1IlQh43dEueA+9sDtYaAvJ5qn/PpW+uOU7sHsqt7Nr7jnA==, tarball: https://npm.pkg.github.com/download/@midl-xyz/midl-viem/2.21.19/155a29d6a010bcf00ded0cf54197c3bd3c02793a}
-    peerDependencies:
-      typescript: '>=5.0.4'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
 
   '@motionone/animation@10.18.0':
     resolution: {integrity: sha512-9z2p5GFGCm0gBsZbi8rVMOAJCtw1WqBTIPw3ozk06gDvZInBPIsQcHgYogEJ4yuHJ+akuW8g1SEIOpTOvYs8hw==}
@@ -12176,26 +12174,10 @@ snapshots:
       '@scure/bip39': 1.4.0
       abitype: 1.0.5(typescript@5.5.3)(zod@3.23.8)
       isows: 1.0.4(ws@8.17.1(bufferutil@4.0.8)(utf-8-validate@5.0.10))
-      typescript: 5.5.3
       webauthn-p256: 0.0.5
       ws: 8.17.1(bufferutil@4.0.8)(utf-8-validate@5.0.10)
-    transitivePeerDependencies:
-      - bufferutil
-      - utf-8-validate
-      - zod
-
-  '@midl-xyz/midl-viem@2.21.19(bufferutil@4.0.8)(typescript@5.5.3)(utf-8-validate@5.0.10)(zod@3.23.8)':
-    dependencies:
-      '@adraffy/ens-normalize': 1.10.0
-      '@noble/curves': 1.4.0
-      '@noble/hashes': 1.4.0
-      '@scure/bip32': 1.4.0
-      '@scure/bip39': 1.4.0
-      abitype: 1.0.5(typescript@5.5.3)(zod@3.23.8)
-      isows: 1.0.4(ws@8.17.1(bufferutil@4.0.8)(utf-8-validate@5.0.10))
+    optionalDependencies:
       typescript: 5.5.3
-      webauthn-p256: 0.0.5
-      ws: 8.17.1(bufferutil@4.0.8)(utf-8-validate@5.0.10)
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
