@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor
 
+## 0.0.18
+
+### Patch Changes
+
+- Change type of transaction
+
 ## 0.0.17
 
 ### Patch Changes

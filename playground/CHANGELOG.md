@@ -1,5 +1,13 @@
 # @midl-xyz/midl-js-playground
 
+## 0.1.19
+
+### Patch Changes
+
+- Change type of transaction
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@0.0.18
+
 ## 0.1.18
 
 ### Patch Changes
