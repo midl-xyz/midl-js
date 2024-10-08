@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor
 
+## 0.0.15
+
+### Patch Changes
+
+- Add address provider for wagmi
+
 ## 0.0.14
 
 ### Patch Changes
