@@ -11,6 +11,9 @@ import {
 import { MidlProvider } from "@midl-xyz/midl-js-react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
+import { type Chain, http } from "viem";
+import { WagmiProvider, createConfig as createWagmiConfig } from "wagmi";
+import { Web3Provider } from "~/global";
 import { HomePage } from "~/pages/HomePage";
 
 const config = createConfig({
@@ -26,7 +29,16 @@ export default function Page() {
   return (
     <MidlProvider config={config}>
       <QueryClientProvider client={queryClient}>
-        <HomePage />
+        <WagmiProvider
+          config={createWagmiConfig({
+            chains: [devnet as Chain],
+            transports: {
+              [devnet.id]: http(devnet.rpcUrls.default.http[0]),
+            },
+          })}
+        >
+          <HomePage />
+        </WagmiProvider>
       </QueryClientProvider>
     </MidlProvider>
   );

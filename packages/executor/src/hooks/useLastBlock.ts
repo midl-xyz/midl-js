@@ -1,4 +1,5 @@
 import deployment from "@midl-xyz/contracts/deployments/0.0.1/Executor.json";
+import { mock } from "@wagmi/connectors";
 import { type UseReadContractParameters, useReadContract } from "wagmi";
 import { executorAbi } from "~/contracts/abi";
 

@@ -1,12 +1,19 @@
 import type { Config } from "@midl-xyz/midl-js-core";
 import { createContext, useContext, useState } from "react";
 
-type MidlContextType = {
+// biome-ignore lint/suspicious/noEmptyInterface: <explanation>
+export interface MidlContextState {}
+
+export interface MidlContextType {
   readonly config: Config;
-};
+  readonly state: MidlContextState;
+  setState: (state: MidlContextState) => void;
+}
 
 export const MidlContext = createContext<MidlContextType>({
   config: {} as Config,
+  state: {},
+  setState: () => {},
 });
 
 export const useMidlContext = () => {
@@ -20,11 +27,14 @@ export const MidlProvider = ({
   config: Config;
   children: React.ReactNode;
 }>) => {
+  const [state, setState] = useState<MidlContextState>({});
+
   return (
     <MidlContext.Provider
       value={{
         config,
-        //   state,
+        state,
+        setState,
       }}
     >
       {children}

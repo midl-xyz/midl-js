@@ -2,6 +2,7 @@
   "name": "@midl-xyz/midl-js-playground",
   "version": "0.1.14",
   "private": true,
+  "type": "module",
   "scripts": {
     "prepare": "panda codegen",
     "dev": "next dev",
@@ -12,12 +13,17 @@
   "dependencies": {
     "@ark-ui/react": "^3.6.2",
     "@midl-xyz/midl-js-core": "workspace:^",
+    "@midl-xyz/midl-js-executor": "workspace:^",
     "@midl-xyz/midl-js-react": "workspace:^",
     "@tanstack/react-query": "*",
+    "bitcoinjs-lib": "^6.1.6",
+    "bitcoinjs-message": "^2.2.0",
+    "ethers": "^6.13.3",
     "jotai": "^2.9.1",
     "next": "14.2.5",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "viem": "npm:@midl-xyz/midl-viem@2.21.19"
   },
   "devDependencies": {
     "@pandacss/dev": "^0.44.0",
