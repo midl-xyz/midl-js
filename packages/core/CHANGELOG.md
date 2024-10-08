@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 0.0.12
+
+### Patch Changes
+
+- Add useTransferBTC, serializeTransaction and nonce manager
+
 ## 0.0.11
 
 ### Patch Changes
