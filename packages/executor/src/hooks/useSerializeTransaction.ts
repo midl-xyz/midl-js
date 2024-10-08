@@ -1,5 +1,5 @@
 import { serializeTransaction } from "viem";
-import type { TransactionSerializableBase } from "viem";
+import type { FeeValuesLegacy, TransactionSerializableBase } from "viem";
 import { useChainId } from "wagmi";
 import { useIncrementNonce } from "~/hooks/useIncrementNonce";
 import { useLastNonce } from "~/hooks/useLastNonce";
@@ -13,7 +13,8 @@ export const useSerializeTransaction = ({
 
   const prepareTx = async ({
     ...tx
-  }: Omit<TransactionSerializableBase, "type">) => {
+  }: Omit<TransactionSerializableBase, "type"> &
+    Pick<FeeValuesLegacy, "gasPrice">) => {
     const serialized = serializeTransaction({
       nonce: lastNonce,
       type: "btc",

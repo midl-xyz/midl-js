@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor
 
+## 0.0.17
+
+### Patch Changes
+
+- Add feeValues to serialize
+
 ## 0.0.16
 
 ### Patch Changes
