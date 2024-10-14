@@ -4,10 +4,15 @@ import { Edict, RuneId, Runestone, none, some } from "runelib";
 import { AddressPurpose } from "sats-connect";
 import { broadcastTransaction } from "~/actions/broadcastTransaction";
 import { getFeeRate } from "~/actions/getFeeRate";
-import { getRuneUTXO } from "~/actions/getRuneUTXO";
+import { getRuneUTXO, type RuneUTXO } from "~/actions/getRuneUTXO";
 import { getUTXOs } from "~/actions/getUTXOs";
 import type { Config } from "~/createConfig";
 import { runeUTXOSelect } from "~/utils";
+
+type TransferOutput = {
+  address: string;
+  value: number;
+};
 
 export type EdictRuneParams = {
   transfers: (
@@ -66,8 +71,8 @@ export const edictRune = async (
   const feeRate = customFeeRate || (await getFeeRate(config)).hourFee;
 
   const utxos = await getUTXOs(config, paymentAccount.address);
-  const runeUTXOs = [];
-  const outputs = [];
+  const runeUTXOs: RuneUTXO[] = [];
+  const outputs: TransferOutput[] = [];
 
   for (const transfer of transfers) {
     if ("runeId" in transfer) {
@@ -81,7 +86,11 @@ export const edictRune = async (
         throw new Error("No ordinals UTXOs");
       }
 
-      runeUTXOs.push(...runeUTXOSelect(utxos, transfer.amount));
+      const selectedUTXOs = runeUTXOSelect(utxos, transfer.amount).filter(
+        utxo => !runeUTXOs.some(runeUTXO => runeUTXO.txid === utxo.txid)
+      );
+
+      runeUTXOs.push(...selectedUTXOs);
     } else {
       outputs.push({
         address: transfer.receiver,
@@ -163,48 +172,31 @@ export const edictRune = async (
     psbt.addOutput(output as Parameters<typeof psbt.addOutput>[0]);
   }
 
-  const transferGroupedByRunes = transfers.reduce(
-    (acc, transfer) => {
-      if ("runeId" in transfer) {
-        if (!acc[transfer.runeId]) {
-          acc[transfer.runeId] = [];
-        }
+  const edicts = transfers
+    .filter(t => "runeId" in t)
+    .map(transfer => {
+      const [blockHeight, txIndex] = transfer.runeId.split(":").map(Number);
 
-        acc[transfer.runeId].push(transfer);
-      }
-
-      return acc;
-    },
-    {} as Record<
-      string,
-      {
-        amount: bigint;
-        receiver: string;
-        runeId: string;
-      }[]
-    >
-  );
-
-  for (const [runeId, runeTransfers] of Object.entries(
-    transferGroupedByRunes
-  )) {
-    const [blockHeight, txIndex] = runeId.split(":").map(Number);
-
-    const edicts = runeTransfers.map(transfer => {
       return new Edict(
         new RuneId(blockHeight, txIndex),
         transfer.amount,
-        transfers.findIndex(t => t === transfer)
+        psbt.txOutputs.findIndex(
+          t => transfer.receiver === t.address && t.value === RUNE_MAGIC_VALUE
+        )
       );
     });
 
-    const mintStone = new Runestone(edicts, none(), none(), some(2));
+  const changeIndex = psbt.txOutputs.findIndex(
+    it =>
+      it.address === ordinalsAccount.address && it.value === RUNE_MAGIC_VALUE
+  );
 
-    psbt.addOutput({
-      script: mintStone.encipher(),
-      value: 0,
-    });
-  }
+  const mintStone = new Runestone(edicts, none(), none(), some(changeIndex));
+
+  psbt.addOutput({
+    script: mintStone.encipher(),
+    value: 0,
+  });
 
   const psbtData = psbt.toBase64();
 

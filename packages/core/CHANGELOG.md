@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 0.0.14
+
+### Patch Changes
+
+- fix: edict multiple runes
+
 ## 0.0.13
 
 ### Patch Changes

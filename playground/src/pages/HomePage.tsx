@@ -177,6 +177,10 @@ export const HomePage = () => {
     console.log(tx2);
   };
 
+  if (edictRuneError) {
+    console.error(edictRuneError);
+  }
+
   return (
     <VStack height="100%" alignItems="center" justifyContent="center">
       <Card.Root width="xl">
@@ -235,16 +239,23 @@ export const HomePage = () => {
                       transfers: [
                         {
                           receiver:
-                            "tb1p22w0r4lwjfw7frr66ghvrqweaznh2sx4cjw20lke0wldjq0up32stlzlp4",
+                            "tb1p0zj8kldnyt75sjpx7vzk2f7lgewnnr7znwez4p5s0mewg5kxefhstevkt0",
                           amount: 10000,
                         },
                         {
                           runeId: "2873407:1535",
                           receiver:
-                            "tb1p22w0r4lwjfw7frr66ghvrqweaznh2sx4cjw20lke0wldjq0up32stlzlp4",
+                            "tb1p0zj8kldnyt75sjpx7vzk2f7lgewnnr7znwez4p5s0mewg5kxefhstevkt0",
+                          amount: BigInt(1),
+                        },
+                        {
+                          runeId: "2900622:601",
+                          receiver:
+                            "tb1p0zj8kldnyt75sjpx7vzk2f7lgewnnr7znwez4p5s0mewg5kxefhstevkt0",
                           amount: BigInt(1),
                         },
                       ],
+                      publish: true,
                     })
                   }
                 >
