@@ -16,6 +16,7 @@ import {
 import { AddressPurpose } from "~/constants";
 import { extractXCoordinate, isCorrectAddress } from "~/utils";
 import { getAddressPurpose } from "~/utils/getAddressPurpose";
+import { makeAddress } from "~/utils/makeAddress";
 
 class UnisatConnector implements Connector {
   public readonly id = "unisat";
@@ -28,7 +29,7 @@ class UnisatConnector implements Connector {
     return this.config.getState().network;
   }
 
-  async connect(_params: ConnectParams): Promise<Account[]> {
+  async connect(params: ConnectParams): Promise<Account[]> {
     if (typeof window.unisat === "undefined") {
       throw new Error("Unisat not found");
     }
@@ -37,32 +38,36 @@ class UnisatConnector implements Connector {
     const accounts = (await window.unisat.requestAccounts()).map(it => {
       return {
         address: it,
-        publicKey: it,
+        publicKey: publicKey,
         purpose: getAddressPurpose(it, this.config.getState().network),
       };
     });
 
-    const ordinalsAccount = accounts.find(
-      account => account.purpose === AddressPurpose.Ordinals
-    );
+    const { purposes } = params;
 
-    if (!ordinalsAccount) {
-      try {
-        await import("tiny-secp256k1").then(initEccLib);
+    if (purposes.length > 0) {
+      const missingPurpose = purposes.find(purpose => {
+        return !accounts.find(account => account.purpose === purpose);
+      });
 
-        const ordinalsAddress = payments.p2tr({
-          internalPubkey: Buffer.from(publicKey, "hex"),
-          network: networks.testnet,
-        });
+      console.log("publicKey", publicKey);
+
+      if (missingPurpose) {
+        const address = await makeAddress(
+          publicKey,
+          missingPurpose,
+          this.config.getState().network
+        );
+
+        if (!address) {
+          throw new Error("Invalid address");
+        }
 
         accounts.push({
-          // biome-ignore lint/style/noNonNullAssertion: <explanation>
-          address: ordinalsAddress.address!,
-          publicKey: publicKey,
-          purpose: AddressPurpose.Ordinals,
+          address,
+          publicKey,
+          purpose: missingPurpose,
         });
-      } catch (e) {
-        console.log(e);
       }
     }
 
@@ -134,17 +139,20 @@ class UnisatConnector implements Connector {
 
     const toSignInputs = Object.keys(signInputs).flatMap(address =>
       signInputs[address].map(index => ({
-        address: address,
-        index: index,
+        address,
+        index,
       }))
     );
 
     const signature = await window.unisat.signPsbt(psbt, {
+      autoFinalized: false,
       toSignInputs,
     });
 
+    const base64Psbt = Buffer.from(signature, "hex").toString("base64");
+
     return {
-      psbt: signature,
+      psbt: base64Psbt,
     };
   }
 }

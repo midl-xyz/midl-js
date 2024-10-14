@@ -1,52 +1,36 @@
-import { HStack, VStack } from "styled-system/jsx";
-import { Button, Card, Text } from "~/shared/ui/components";
-import {
-  useConnect,
-  useAccounts,
-  useDisconnect,
-  useMidlContext,
-  useSignMessage,
-  useUTXOs,
-  useEdictRune,
-  useEtchRune,
-  useTransferBTC,
-} from "@midl-xyz/midl-js-react";
+import { AddressPurpose, broadcastTransaction } from "@midl-xyz/midl-js-core";
 import {
   useEVMAddress,
   useSerializeTransaction,
 } from "@midl-xyz/midl-js-executor";
+import {
+  useAccounts,
+  useConnect,
+  useDisconnect,
+  useEdictRune,
+  useEtchRune,
+  useMidlContext,
+  useSignMessage,
+  useTransferBTC,
+  useUTXOs,
+} from "@midl-xyz/midl-js-react";
 import { css } from "styled-system/css";
-import { AddressPurpose, broadcastTransaction } from "@midl-xyz/midl-js-core";
+import { HStack, VStack } from "styled-system/jsx";
 import {
   encodeFunctionData,
   erc20Abi,
+  hashBitcoinMessage,
   keccak256,
+  parseEther,
   parseTransaction,
   recoverAddress,
-  toHex,
-  signatureToCompactSignature,
-  signatureToHex,
-  compactSignatureToSignature,
   recoverTransactionAddress,
-  recoverPublicKey,
-  serializeSignature,
-  hashBitcoinMessage,
   serializeTransaction,
-  fromRlp,
-  zeroAddress,
+  toHex,
 } from "viem";
-import { Psbt, networks } from "bitcoinjs-lib";
-import { prepareTransactionRequest } from "viem/actions";
-import {
-  usePrepareTransactionRequest,
-  useWalletClient,
-  useConnect as useWagmiConnect,
-  useConfig,
-} from "wagmi";
-import { SigningKey } from "ethers";
-import * as bm from "bitcoinjs-message";
-import { useEffect } from "react";
-import { mock } from "wagmi/connectors";
+// @ts-ignore
+import { useWalletClient } from "wagmi";
+import { Button, Card, Text } from "~/shared/ui/components";
 
 const tokenAddress = "0x3e80F8053eeF548C7062684A68177105e82439AA";
 
@@ -60,29 +44,10 @@ export const HomePage = () => {
   const evmAddress = useEVMAddress();
   const { transferBTCAsync } = useTransferBTC();
   const { data: walletClient } = useWalletClient();
-  const { connect: wagmiConnect, error: wagmiError } = useWagmiConnect();
 
-  console.log("error", wagmiError);
-
-  useEffect(() => {
-    console.log(
-      "rlp",
-      fromRlp(
-        "0x07f8878203090101839896809458d81a529b26a93f0ca25d224403dac44d07f7b780b844095ea7b30000000000000000000000008b0d615d18d50ff2e05953f35ea2951cb4c1b49c0000000000000000000000000000000000000000000000000000000000000001a0e0fb38d9e3d7230cd9ff3981201edff45cbb97a69234d3b467730119710b4c45c0",
-        "hex"
-      )
-    );
-    wagmiConnect({
-      connector: mock({
-        accounts: [evmAddress],
-      }),
-    });
-  }, []);
+  console.log("evmAddress", evmAddress);
 
   console.log("walletClient", walletClient);
-  const wagmiConfi = useConfig();
-
-  console.log("wagmiConfig", wagmiConfi.getClient());
 
   const { config } = useMidlContext();
   const { signMessage, signMessageAsync, data } = useSignMessage();
@@ -131,12 +96,19 @@ export const HomePage = () => {
         },
       ],
       publish: true,
+      feeRate: 1,
     });
+
+    console.log("btcTx", btcTx);
 
     await waitFor(10_000);
 
     const serialized = await serializedTx({
       to: tokenAddress,
+      chainId: 777,
+      type: "btc",
+      gasPrice: parseEther("1", "gwei"),
+      gas: BigInt(100_000),
       btcTxHash: `0x${btcTx.txId}`,
       data: encodeFunctionData({
         abi: erc20Abi,
@@ -145,15 +117,29 @@ export const HomePage = () => {
       }),
     });
 
+    const messageToSign = keccak256(serialized);
+
     const tx = parseTransaction(serialized);
     const data = await signMessageAsync({
-      message: keccak256(serialized),
+      message: messageToSign,
     });
 
     const signatureBuffer = Buffer.from(data.signature, "base64");
-    const recoveryId = BigInt(signatureBuffer[0]) - BigInt(8);
+
+    console.log(data);
+
+    let recoveryId = BigInt(signatureBuffer[0]) - BigInt(8);
+
+    if (recoveryId < BigInt(27)) {
+      recoveryId += BigInt(4);
+    }
+
+    recoveryId = BigInt(27);
+
     const r = signatureBuffer.slice(1, 33);
     const s = signatureBuffer.slice(33, 65);
+
+    console.log("r,s,v", r, s, recoveryId);
 
     const signedTx = serializeTransaction(
       {
@@ -166,17 +152,10 @@ export const HomePage = () => {
       }
     );
 
-    console.log("signedTx", signedTx);
-    console.log("serial ized", {
-      r: toHex(r),
-      s: toHex(s),
-      v: recoveryId,
-    });
-
-    console.log(hashBitcoinMessage(keccak256(serialized)));
+    console.log("hashed", hashBitcoinMessage(messageToSign));
 
     const address = await recoverAddress({
-      hash: hashBitcoinMessage(keccak256(serialized)),
+      hash: hashBitcoinMessage(messageToSign),
       signature: {
         r: toHex(r),
         s: toHex(s),
@@ -190,13 +169,13 @@ export const HomePage = () => {
 
     console.log("recoverTransactionAddress", address, address2);
 
+    console.log("parsed", parseTransaction(signedTx));
+
     const tx2 = await walletClient?.sendRawTransaction({
       serializedTransaction: signedTx,
     });
     console.log(tx2);
   };
-
-  console.log(evmAddress);
 
   return (
     <VStack height="100%" alignItems="center" justifyContent="center">

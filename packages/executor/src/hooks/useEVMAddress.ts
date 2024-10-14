@@ -8,7 +8,7 @@ type UseEVMAddressParams = {
 };
 
 export const useEVMAddress = ({ publicKey }: UseEVMAddressParams = {}) => {
-  const { paymentAccount, ordinalsAccount } = useAccounts();
+  const { ordinalsAccount, paymentAccount } = useAccounts();
 
   try {
     const pk =
@@ -19,11 +19,7 @@ export const useEVMAddress = ({ publicKey }: UseEVMAddressParams = {}) => {
     const uncompressedPublicKeyHex = toHex(
       point.toRawBytes(false) // false means we want the uncompressed public key
     );
-
-    const evmAddress = publicKeyToAddress(
-      publicKey ?? ((`${uncompressedPublicKeyHex}` ?? "") as Address)
-    );
-
+    const evmAddress = publicKeyToAddress(`${uncompressedPublicKeyHex}`);
     return evmAddress;
   } catch (e) {
     return zeroAddress;

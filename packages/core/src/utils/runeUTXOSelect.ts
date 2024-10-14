@@ -5,7 +5,7 @@ export const runeUTXOSelect = (
   amount: bigint
 ): RuneUTXO[] => {
   const selectedUTXOs: RuneUTXO[] = [];
-  let selectedAmount = 0;
+  let selectedAmount = 0n;
 
   for (const utxo of utxos) {
     if (selectedAmount >= amount) {
@@ -13,7 +13,7 @@ export const runeUTXOSelect = (
     }
 
     selectedUTXOs.push(utxo);
-    selectedAmount += utxo.runes[0].amount;
+    selectedAmount += BigInt(utxo.runes[0].amount);
   }
 
   return selectedUTXOs;

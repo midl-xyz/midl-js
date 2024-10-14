@@ -39,15 +39,15 @@ export const useSignMessage = ({ mutation }: UseSignMessageParams = {}) => {
 
         const accounts = await config.currentConnection.getAccounts();
 
-        const paymentAccount = accounts.find(
-          it => it.purpose === AddressPurpose.Payment
+        const ordinalsAccount = accounts.find(
+          it => it.purpose === AddressPurpose.Ordinals
         );
 
-        if (!paymentAccount) {
-          throw new Error("No payment account");
+        if (!ordinalsAccount) {
+          throw new Error("No ordinals account");
         }
 
-        signingAddress = paymentAccount.address;
+        signingAddress = ordinalsAccount.address;
       }
 
       return signMessage(config, {

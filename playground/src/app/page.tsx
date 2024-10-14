@@ -8,6 +8,7 @@ import {
   testnet,
   unisat,
 } from "@midl-xyz/midl-js-core";
+import { WagmiMidlProvider } from "@midl-xyz/midl-js-executor";
 import { MidlProvider } from "@midl-xyz/midl-js-react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
@@ -37,6 +38,7 @@ export default function Page() {
             },
           })}
         >
+          <WagmiMidlProvider/>
           <HomePage />
         </WagmiProvider>
       </QueryClientProvider>
