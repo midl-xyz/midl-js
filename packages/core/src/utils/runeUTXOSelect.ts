@@ -1,3 +1,4 @@
+import { parseUnits } from "viem";
 import type { RuneUTXO } from "~/actions";
 
 export const runeUTXOSelect = (
@@ -12,8 +13,10 @@ export const runeUTXOSelect = (
       break;
     }
 
+    const { amount: runeAmount, divisibility } = utxo.runes[0];
+
     selectedUTXOs.push(utxo);
-    selectedAmount += BigInt(utxo.runes[0].amount);
+    selectedAmount += parseUnits(runeAmount, divisibility);
   }
 
   return selectedUTXOs;

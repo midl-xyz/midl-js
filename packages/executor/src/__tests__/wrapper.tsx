@@ -9,6 +9,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { ReactNode } from "react";
 import { WagmiProvider } from "wagmi";
 import { wagmiConfig } from "~/__tests__/wagmiConfig";
+import { WagmiMidlProvider } from "~/provider";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +24,7 @@ export const wrapper = ({ children }: { children: ReactNode }) => {
     <MidlProvider config={config}>
       <WagmiProvider config={wagmiConfig}>
         <QueryClientProvider client={queryClient}>
+          <WagmiMidlProvider />
           {children}
         </QueryClientProvider>
       </WagmiProvider>

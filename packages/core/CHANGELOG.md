@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 0.0.15
+
+### Patch Changes
+
+- Wait for tx, handle balances
+
 ## 0.0.14
 
 ### Patch Changes

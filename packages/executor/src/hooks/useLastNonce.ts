@@ -10,5 +10,5 @@ export const useLastNonce = () => {
     return data ?? 0;
   }
 
-  return data ?? 0 + state.wallet?.[address]?.nonce ?? 0;
+  return data ?? 0 + (state.wallet?.[address]?.nonce ?? 0);
 };

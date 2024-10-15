@@ -1,5 +1,14 @@
 # @midl-xyz/midl-js-executor
 
+## 0.0.21
+
+### Patch Changes
+
+- Wait for tx, handle balances
+- Updated dependencies
+  - @midl-xyz/midl-js-react@0.0.19
+  - @midl-xyz/midl-js-core@0.0.15
+
 ## 0.0.20
 
 ### Patch Changes

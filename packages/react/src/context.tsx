@@ -23,11 +23,13 @@ export const useMidlContext = () => {
 export const MidlProvider = ({
   config,
   children,
+  initialState,
 }: Readonly<{
   config: Config;
   children: React.ReactNode;
+  initialState?: MidlContextState;
 }>) => {
-  const [state, setState] = useState<MidlContextState>({});
+  const [state, setState] = useState<MidlContextState>(initialState ?? {});
 
   return (
     <MidlContext.Provider

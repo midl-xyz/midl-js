@@ -1,6 +1,6 @@
 {
   "name": "@midl-xyz/midl-js-core",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "scripts": {
     "build": "pkgroll",
     "dev": "pkgroll --watch",
@@ -24,7 +24,8 @@
     }
   },
   "devDependencies": {
-    "@midl-xyz/midl-js-config": "workspace:^"
+    "@midl-xyz/midl-js-config": "workspace:^",
+    "msw": "^2.4.11"
   },
   "dependencies": {
     "@metamask/providers": "^17.1.1",

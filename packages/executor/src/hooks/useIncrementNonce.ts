@@ -10,7 +10,7 @@ export const useIncrementNonce = () => {
       return;
     }
 
-    const nonce = state.wallet[address]?.nonce ?? 0;
+    const nonce = state.wallet?.[address]?.nonce ?? 0;
 
     setState({
       ...state,
@@ -18,7 +18,7 @@ export const useIncrementNonce = () => {
         ...state.wallet,
         [address]: {
           nonce: nonce + 1,
-          transactions: state.wallet[address]?.transactions ?? [],
+          transactions: state.wallet?.[address]?.transactions ?? [],
         },
       },
     });
