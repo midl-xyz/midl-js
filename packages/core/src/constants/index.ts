@@ -1,1 +1,2 @@
-export * from './addressPurpose';
+export * from "./addressPurpose";
+export * from "./addressType";

@@ -20,6 +20,10 @@ export const getAddressPurpose = (
         return AddressPurpose.Ordinals;
       }
 
+      if (address.startsWith("bc1q")) {
+        return AddressPurpose.Payment;
+      }
+
       throw new Error("Unknown address type");
 
     case "testnet":
@@ -31,6 +35,10 @@ export const getAddressPurpose = (
         return AddressPurpose.Ordinals;
       }
 
+      if (address.startsWith("tb1q")) {
+        return AddressPurpose.Payment;
+      }
+
       throw new Error("Unknown address type");
 
     case "regtest":
@@ -40,6 +48,10 @@ export const getAddressPurpose = (
 
       if (address.startsWith("bcrt1p")) {
         return AddressPurpose.Ordinals;
+      }
+
+      if (address.startsWith("bcrt1q")) {
+        return AddressPurpose.Payment;
       }
 
       throw new Error("Unknown address type");

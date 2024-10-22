@@ -1,4 +1,3 @@
-import { initEccLib, networks, payments } from "bitcoinjs-lib";
 import {
   type SignMessageParams,
   SignMessageProtocol,
@@ -13,10 +12,8 @@ import {
   type CreateConnectorConfig,
   createConnector,
 } from "~/connectors/createConnector";
-import { AddressPurpose } from "~/constants";
-import { extractXCoordinate, isCorrectAddress } from "~/utils";
+import { getAddressType, isCorrectAddress } from "~/utils";
 import { getAddressPurpose } from "~/utils/getAddressPurpose";
-import { makeAddress } from "~/utils/makeAddress";
 
 class UnisatConnector implements Connector {
   public readonly id = "unisat";
@@ -29,7 +26,7 @@ class UnisatConnector implements Connector {
     return this.config.getState().network;
   }
 
-  async connect(params: ConnectParams): Promise<Account[]> {
+  async connect(_params: ConnectParams): Promise<Account[]> {
     if (typeof window.unisat === "undefined") {
       throw new Error("Unisat not found");
     }
@@ -40,36 +37,9 @@ class UnisatConnector implements Connector {
         address: it,
         publicKey: publicKey,
         purpose: getAddressPurpose(it, this.config.getState().network),
+        addressType: getAddressType(it),
       };
     });
-
-    const { purposes } = params;
-
-    if (purposes.length > 0) {
-      const missingPurpose = purposes.find(purpose => {
-        return !accounts.find(account => account.purpose === purpose);
-      });
-
-      console.log("publicKey", publicKey);
-
-      if (missingPurpose) {
-        const address = await makeAddress(
-          publicKey,
-          missingPurpose,
-          this.config.getState().network
-        );
-
-        if (!address) {
-          throw new Error("Invalid address");
-        }
-
-        accounts.push({
-          address,
-          publicKey,
-          purpose: missingPurpose,
-        });
-      }
-    }
 
     this.config.setState({
       connection: this.id,
@@ -116,6 +86,9 @@ class UnisatConnector implements Connector {
       case SignMessageProtocol.Ecdsa:
         type = "ecdsa";
         break;
+      case SignMessageProtocol.Bip322:
+        type = "bip322-simple";
+        break;
       default:
         type = "ecdsa";
         break;
@@ -132,6 +105,7 @@ class UnisatConnector implements Connector {
   async signPSBT({
     psbt,
     signInputs,
+    disableTweakSigner,
   }: SignPSBTParams): Promise<SignPSBTResponse> {
     if (typeof window.unisat === "undefined") {
       throw new Error("Unisat not found");
@@ -139,8 +113,9 @@ class UnisatConnector implements Connector {
 
     const toSignInputs = Object.keys(signInputs).flatMap(address =>
       signInputs[address].map(index => ({
-        address,
+        address: address,
         index,
+        disableTweakSigner: disableTweakSigner,
       }))
     );
 

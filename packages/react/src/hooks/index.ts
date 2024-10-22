@@ -12,3 +12,5 @@ export * from "./useSignPSBT";
 export * from "./useUTXOs";
 export * from "./useFeeRate";
 export * from "./useTransferBTC";
+export * from "./useSwitchNetwork";
+export * from "./useWaitForTransaction";

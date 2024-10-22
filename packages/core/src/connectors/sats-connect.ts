@@ -13,7 +13,7 @@ import {
   type CreateConnectorConfig,
   createConnector,
 } from "~/connectors/createConnector";
-import { isCorrectAddress } from "~/utils";
+import { getAddressType, isCorrectAddress } from "~/utils";
 
 class SatsConnectConnector implements Connector {
   public readonly id = "sats-connect";
@@ -35,9 +35,12 @@ class SatsConnectConnector implements Connector {
       throw data.error;
     }
 
-    const accounts = data.result.map(
-      ({ walletType, ...account }) => account
-    ) as Account[];
+    const accounts = data.result.map(({ walletType, ...account }) => {
+      return {
+        ...account,
+        addressType: getAddressType(account.address),
+      };
+    }) as Account[];
 
     this.config.setState({
       connection: this.id,

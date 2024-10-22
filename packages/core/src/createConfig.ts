@@ -1,17 +1,19 @@
-import { createStore, type PrimitiveAtom } from "jotai";
+import { type PrimitiveAtom, createStore } from "jotai";
 import { atomWithReset, atomWithStorage } from "jotai/utils";
 import type { Account, Connector, CreateConnectorFn } from "~/connectors";
 import type { Chain } from "~/types/chain";
 
 export type BitcoinNetwork = {
+  id: string;
   network: "bitcoin" | "testnet" | "regtest";
   rpcUrl: string;
   runesUrl: string;
+  explorerUrl: string;
 };
 
 type ConfigParams = {
   networks: BitcoinNetwork[];
-  chain: Chain;
+  chain?: Chain;
   connectors: CreateConnectorFn[];
   persist?: boolean;
 };
@@ -57,12 +59,14 @@ export const createConfig = (params: ConfigParams): Config => {
       } as ConfigAtom);
 
   const state = configStore.get(configAtom);
-  if (!params.networks.includes(state?.network)) {
-    configStore.set(configAtom, {
-      ...state,
-      network,
-    });
-  }
+
+  const networkToUse =
+    params.networks.find(n => n.id === state?.network.id) || params.networks[0];
+
+  configStore.set(configAtom, {
+    ...state,
+    network: networkToUse,
+  });
 
   const connectors = params.connectors.map(createConnectorFn =>
     createConnectorFn({

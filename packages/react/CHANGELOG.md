@@ -1,5 +1,13 @@
 # @midl-xyz/midl-js-react
 
+## 0.0.20
+
+### Patch Changes
+
+- Support multiple addresses, etch and waitForTx
+- Updated dependencies
+  - @midl-xyz/midl-js-core@0.0.16
+
 ## 0.0.19
 
 ### Patch Changes

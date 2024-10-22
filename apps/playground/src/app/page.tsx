@@ -5,6 +5,7 @@ import {
   devnet,
   mainnet,
   satsConnect,
+  leather,
   testnet,
   unisat,
 } from "@midl-xyz/midl-js-core";
@@ -21,7 +22,7 @@ const config = createConfig({
   chain: devnet,
   networks: [testnet, mainnet],
   persist: true,
-  connectors: [unisat(), satsConnect()],
+  connectors: [leather(), unisat(), satsConnect()],
 });
 
 export default function Page() {
@@ -38,7 +39,7 @@ export default function Page() {
             },
           })}
         >
-          <WagmiMidlProvider/>
+          <WagmiMidlProvider />
           <HomePage />
         </WagmiProvider>
       </QueryClientProvider>

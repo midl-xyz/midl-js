@@ -1,4 +1,8 @@
-import { AddressPurpose, broadcastTransaction } from "@midl-xyz/midl-js-core";
+import {
+  AddressPurpose,
+  broadcastTransaction,
+  SignMessageProtocol,
+} from "@midl-xyz/midl-js-core";
 import {
   useEVMAddress,
   useSerializeTransaction,
@@ -35,14 +39,17 @@ import { Button, Card, Text } from "~/shared/ui/components";
 const tokenAddress = "0x3e80F8053eeF548C7062684A68177105e82439AA";
 
 export const HomePage = () => {
-  const { connect } = useConnect({
+  const { connect, error: connectError } = useConnect({
     purposes: [AddressPurpose.Payment, AddressPurpose.Ordinals],
   });
 
-  const { accounts, error } = useAccounts();
+  console.log("connectError", connectError);
+
+  const { accounts, error, ordinalsAccount, paymentAccount } = useAccounts();
   const { disconnect } = useDisconnect();
   const evmAddress = useEVMAddress();
   const { transferBTCAsync } = useTransferBTC();
+  const { edictRuneAsync } = useEdictRune();
   const { data: walletClient } = useWalletClient();
 
   console.log("evmAddress", evmAddress);
@@ -71,7 +78,8 @@ export const HomePage = () => {
   };
 
   const onSignMessage = () => {
-    signMessage({ message: "Hello, Midl!" });
+    const message = keccak256("0xdeadbeef");
+    signMessage({ message, protocol: SignMessageProtocol.Bip322 });
   };
 
   const onEtchRune = () => {
@@ -88,15 +96,20 @@ export const HomePage = () => {
     new Promise(resolve => setTimeout(resolve, ms));
 
   const prepareEVMTransaction = async () => {
-    const btcTx = await transferBTCAsync({
+    const btcTx = await edictRuneAsync({
+      signer: ordinalsAccount?.address,
       transfers: [
         {
           receiver: "tb1qsjcsryftgwyh3e0z0mvc6vdjx9pl8cx8dxrdxm",
           amount: 30_000,
         },
+        {
+          receiver: "tb1qsjcsryftgwyh3e0z0mvc6vdjx9pl8cx8dxrdxm",
+          amount: 1,
+          runeId: "2873407:1535",
+        },
       ],
       publish: true,
-      feeRate: 1,
     });
 
     console.log("btcTx", btcTx);
@@ -122,6 +135,8 @@ export const HomePage = () => {
     const tx = parseTransaction(serialized);
     const data = await signMessageAsync({
       message: messageToSign,
+      protocol: SignMessageProtocol.Ecdsa,
+      address: ordinalsAccount?.address,
     });
 
     const signatureBuffer = Buffer.from(data.signature, "base64");
@@ -153,21 +168,6 @@ export const HomePage = () => {
     );
 
     console.log("hashed", hashBitcoinMessage(messageToSign));
-
-    const address = await recoverAddress({
-      hash: hashBitcoinMessage(messageToSign),
-      signature: {
-        r: toHex(r),
-        s: toHex(s),
-        v: recoveryId,
-      },
-    });
-
-    const address2 = await recoverTransactionAddress({
-      serializedTransaction: signedTx,
-    });
-
-    console.log("recoverTransactionAddress", address, address2);
 
     console.log("parsed", parseTransaction(signedTx));
 
