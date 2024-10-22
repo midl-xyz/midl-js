@@ -1,19 +1,20 @@
 import type { SignMessageParams, SignMessageResponse } from "~/actions";
 import type { SignPSBTParams, SignPSBTResponse } from "~/actions/signPSBT";
-import type { AddressPurpose } from "~/constants";
+import type { AddressPurpose, AddressType } from "~/constants";
 import type { BitcoinNetwork, ConfigAtom } from "~/createConfig";
 
 export type Account = {
   readonly address: string;
   readonly publicKey: string;
   readonly purpose: AddressPurpose;
-  readonly addressType?: string;
+  readonly addressType: AddressType;
 };
 
 export enum ConnectorType {
   Snap = "snap",
   Unisat = "unisat",
   SatsConnect = "satsConnect",
+  Leather = "leather",
 }
 
 export type ConnectParams = {

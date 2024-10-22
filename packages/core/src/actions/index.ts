@@ -10,3 +10,5 @@ export * from "./getRune";
 export * from "./getRuneBalance";
 export * from "./getRunes";
 export * from "./transferBTC";
+export * from "./switchNetwork";
+export * from "./waitForTransaction";

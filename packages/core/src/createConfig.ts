@@ -1,9 +1,10 @@
-import { createStore, type PrimitiveAtom } from "jotai";
+import { type PrimitiveAtom, createStore } from "jotai";
 import { atomWithReset, atomWithStorage } from "jotai/utils";
 import type { Account, Connector, CreateConnectorFn } from "~/connectors";
 import type { Chain } from "~/types/chain";
 
 export type BitcoinNetwork = {
+  id: string;
   network: "bitcoin" | "testnet" | "regtest";
   rpcUrl: string;
   runesUrl: string;
@@ -11,7 +12,7 @@ export type BitcoinNetwork = {
 
 type ConfigParams = {
   networks: BitcoinNetwork[];
-  chain: Chain;
+  chain?: Chain;
   connectors: CreateConnectorFn[];
   persist?: boolean;
 };
@@ -57,7 +58,8 @@ export const createConfig = (params: ConfigParams): Config => {
       } as ConfigAtom);
 
   const state = configStore.get(configAtom);
-  if (!params.networks.includes(state?.network)) {
+
+  if (!params.networks.find(n => n.network === state?.network.network)) {
     configStore.set(configAtom, {
       ...state,
       network,

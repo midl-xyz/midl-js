@@ -1,10 +1,11 @@
 import { Psbt, initEccLib, networks, payments } from "bitcoinjs-lib";
 import coinSelect from "bitcoinselect";
-import { AddressPurpose } from "sats-connect";
 import { broadcastTransaction } from "~/actions/broadcastTransaction";
 import { getFeeRate } from "~/actions/getFeeRate";
 import { getUTXOs } from "~/actions/getUTXOs";
+import { AddressType } from "~/constants";
 import type { Config } from "~/createConfig";
+import { extractXCoordinate } from "~/utils";
 
 export type TransferBTCParams = {
   transfers: {
@@ -13,6 +14,7 @@ export type TransferBTCParams = {
   }[];
   feeRate?: number;
   publish?: boolean;
+  from?: string;
 };
 
 export type TransferBTCResponse = {
@@ -22,7 +24,7 @@ export type TransferBTCResponse = {
 
 export const transferBTC = async (
   config: Config,
-  { transfers, feeRate: customFeeRate, publish }: TransferBTCParams
+  { transfers, feeRate: customFeeRate, publish, from }: TransferBTCParams
 ): Promise<TransferBTCResponse> => {
   if (!config.currentConnection) {
     throw new Error("No connection");
@@ -34,18 +36,19 @@ export const transferBTC = async (
 
   await import("tiny-secp256k1").then(initEccLib);
 
-  const paymentAccount = config
-    .getState()
-    .accounts?.find(account => account.purpose === AddressPurpose.Payment);
+  const { accounts } = config.getState();
 
-  if (!paymentAccount) {
-    throw new Error("No payment account");
+  const account = from
+    ? accounts?.find(account => account.address === from)
+    : accounts?.[0];
+
+  if (!account) {
+    throw new Error("No account found");
   }
 
   const network = networks[config.network.network];
   const feeRate = customFeeRate || (await getFeeRate(config)).hourFee;
-
-  const utxos = await getUTXOs(config, paymentAccount.address);
+  const utxos = await getUTXOs(config, account.address);
   const outputs = [];
 
   for (const transfer of transfers) {
@@ -63,28 +66,77 @@ export const transferBTC = async (
 
   const psbt = new Psbt({ network });
 
-  const { redeem } = payments.p2sh({
-    redeem: payments.p2wpkh({
-      pubkey: Buffer.from(paymentAccount.publicKey, "hex"),
-    }),
-  });
+  switch (account.addressType) {
+    case AddressType.P2SH: {
+      const { redeem } = payments.p2sh({
+        redeem: payments.p2wpkh({
+          pubkey: Buffer.from(account.publicKey, "hex"),
+        }),
+      });
 
-  for (const input of selectedUTXOs.inputs) {
-    const hex = await fetch(
-      `${config.network.rpcUrl}/tx/${input.txid}/hex`
-    ).then(response => response.text());
+      for (const input of selectedUTXOs.inputs) {
+        const hex = await fetch(
+          `${config.network.rpcUrl}/tx/${input.txid}/hex`
+        ).then(response => response.text());
 
-    psbt.addInput({
-      hash: input.txid as string,
-      index: input.vout,
-      nonWitnessUtxo: Buffer.from(hex, "hex"),
-      redeemScript: redeem?.output,
-    });
+        psbt.addInput({
+          hash: input.txid as string,
+          index: input.vout,
+          nonWitnessUtxo: Buffer.from(hex, "hex"),
+          redeemScript: redeem?.output,
+        });
+      }
+
+      break;
+    }
+
+    case AddressType.P2WPKH: {
+      const p2wpkh = payments.p2wpkh({
+        pubkey: Buffer.from(account.publicKey, "hex"),
+        network,
+      });
+
+      for (const input of selectedUTXOs.inputs) {
+        psbt.addInput({
+          hash: input.txid as string,
+          index: input.vout,
+          witnessUtxo: {
+            // biome-ignore lint/style/noNonNullAssertion: we know it's there
+            script: p2wpkh.output!,
+            value: input.value,
+          },
+        });
+      }
+
+      break;
+    }
+
+    case AddressType.P2TR: {
+      const xOnly = Buffer.from(extractXCoordinate(account.publicKey), "hex");
+
+      const p2tr = payments.p2tr({
+        internalPubkey: xOnly,
+        network,
+      });
+
+      for (const input of selectedUTXOs.inputs) {
+        psbt.addInput({
+          hash: input.txid as string,
+          index: input.vout,
+          witnessUtxo: {
+            value: input.value,
+            // biome-ignore lint/style/noNonNullAssertion: <explanation>
+            script: p2tr!.output!,
+          },
+          tapInternalKey: xOnly,
+        });
+      }
+    }
   }
 
   for (const output of selectedUTXOs.outputs) {
     if (!output.address) {
-      output.address = paymentAccount.address;
+      output.address = account.address;
     }
 
     psbt.addOutput(output as Parameters<typeof psbt.addOutput>[0]);
@@ -95,9 +147,7 @@ export const transferBTC = async (
   const data = await config.currentConnection.signPSBT({
     psbt: psbtData,
     signInputs: {
-      [paymentAccount.address]: selectedUTXOs.inputs.map(
-        (_input, index) => index
-      ),
+      [account.address]: selectedUTXOs.inputs.map((_input, index) => index),
     },
   });
 

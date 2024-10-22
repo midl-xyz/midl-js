@@ -6,6 +6,7 @@ export type SignPSBTParams = {
   psbt: string;
   signInputs: Record<string, number[]>;
   publish?: boolean;
+  disableTweakSigner?: boolean;
 };
 
 export type SignPSBTResponse = {

@@ -24,6 +24,8 @@
     }
   },
   "devDependencies": {
+    "@leather.io/models": "^0.18.2",
+    "@leather.io/rpc": "2.1.12",
     "@midl-xyz/midl-js-config": "workspace:^",
     "msw": "^2.4.11"
   },

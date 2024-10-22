@@ -4,10 +4,11 @@ import { Edict, RuneId, Runestone, none, some } from "runelib";
 import { AddressPurpose } from "sats-connect";
 import { broadcastTransaction } from "~/actions/broadcastTransaction";
 import { getFeeRate } from "~/actions/getFeeRate";
-import { getRuneUTXO, type RuneUTXO } from "~/actions/getRuneUTXO";
+import { type RuneUTXO, getRuneUTXO } from "~/actions/getRuneUTXO";
 import { getUTXOs } from "~/actions/getUTXOs";
+import { AddressType } from "~/constants";
 import type { Config } from "~/createConfig";
-import { runeUTXOSelect } from "~/utils";
+import { extractXCoordinate, runeUTXOSelect } from "~/utils";
 
 type TransferOutput = {
   address: string;
@@ -15,6 +16,7 @@ type TransferOutput = {
 };
 
 export type EdictRuneParams = {
+  from?: string;
   transfers: (
     | {
         runeId: string;
@@ -39,7 +41,7 @@ const RUNE_MAGIC_VALUE = 546;
 
 export const edictRune = async (
   config: Config,
-  { transfers, feeRate: customFeeRate, publish }: EdictRuneParams
+  { transfers, feeRate: customFeeRate, publish, from }: EdictRuneParams
 ): Promise<EdictRuneResponse> => {
   if (!config.currentConnection) {
     throw new Error("No connection");
@@ -51,26 +53,28 @@ export const edictRune = async (
 
   await import("tiny-secp256k1").then(initEccLib);
 
-  const ordinalsAccount = config
-    .getState()
-    .accounts?.find(account => account.purpose === AddressPurpose.Ordinals);
+  const { accounts } = config.getState();
 
-  const paymentAccount = config
-    .getState()
-    .accounts?.find(account => account.purpose === AddressPurpose.Payment);
+  const ordinalsAccount = accounts?.find(
+    account => account.purpose === AddressPurpose.Ordinals
+  );
 
   if (!ordinalsAccount) {
     throw new Error("No ordinals account");
   }
 
-  if (!paymentAccount) {
-    throw new Error("No payment account");
+  const account = from
+    ? accounts?.find(account => account.address === from)
+    : accounts?.[0];
+
+  if (!account) {
+    throw new Error("No transfer account");
   }
 
   const network = networks[config.network.network];
   const feeRate = customFeeRate || (await getFeeRate(config)).hourFee;
 
-  const utxos = await getUTXOs(config, paymentAccount.address);
+  const utxos = await getUTXOs(config, account.address);
   const runeUTXOs: RuneUTXO[] = [];
   const outputs: TransferOutput[] = [];
 
@@ -127,27 +131,57 @@ export const edictRune = async (
 
   const psbt = new Psbt({ network });
 
-  const { redeem } = payments.p2sh({
-    redeem: payments.p2wpkh({
-      pubkey: Buffer.from(paymentAccount.publicKey, "hex"),
-    }),
-  });
+  switch (account.addressType) {
+    case AddressType.P2SH: {
+      const { redeem } = payments.p2sh({
+        redeem: payments.p2wpkh({
+          pubkey: Buffer.from(account.publicKey, "hex"),
+        }),
+      });
 
-  for (const input of selectedUTXOs.inputs) {
-    const hex = await fetch(
-      `${config.network.rpcUrl}/tx/${input.txid}/hex`
-    ).then(response => response.text());
+      for (const input of selectedUTXOs.inputs) {
+        const hex = await fetch(
+          `${config.network.rpcUrl}/tx/${input.txid}/hex`
+        ).then(response => response.text());
 
-    psbt.addInput({
-      hash: input.txid as string,
-      index: input.vout,
-      nonWitnessUtxo: Buffer.from(hex, "hex"),
-      redeemScript: redeem?.output,
-    });
+        psbt.addInput({
+          hash: input.txid as string,
+          index: input.vout,
+          nonWitnessUtxo: Buffer.from(hex, "hex"),
+          redeemScript: redeem?.output,
+        });
+      }
+
+      break;
+    }
+
+    case AddressType.P2TR: {
+      const xOnly = Buffer.from(extractXCoordinate(account.publicKey), "hex");
+
+      const p2tr = payments.p2tr({
+        internalPubkey: xOnly,
+        network,
+      });
+
+      for (const input of selectedUTXOs.inputs) {
+        psbt.addInput({
+          hash: input.txid as string,
+          index: input.vout,
+          witnessUtxo: {
+            value: input.value,
+            // biome-ignore lint/style/noNonNullAssertion: <explanation>
+            script: p2tr!.output!,
+          },
+          tapInternalKey: xOnly,
+        });
+      }
+    }
   }
 
+  const xOnly = extractXCoordinate(ordinalsAccount.publicKey);
+
   const ordinalsP2TR = payments.p2tr({
-    internalPubkey: Buffer.from(ordinalsAccount.publicKey, "hex"),
+    internalPubkey: Buffer.from(xOnly, "hex"),
     network,
   });
 
@@ -160,13 +194,13 @@ export const edictRune = async (
         // biome-ignore lint/style/noNonNullAssertion: <explanation>
         script: ordinalsP2TR.output!,
       },
-      tapInternalKey: Buffer.from(ordinalsAccount.publicKey, "hex"),
+      tapInternalKey: Buffer.from(xOnly, "hex"),
     });
   }
 
   for (const output of selectedUTXOs.outputs) {
     if (!output.address) {
-      output.address = paymentAccount.address;
+      output.address = account.address;
     }
 
     psbt.addOutput(output as Parameters<typeof psbt.addOutput>[0]);
@@ -200,17 +234,25 @@ export const edictRune = async (
 
   const psbtData = psbt.toBase64();
 
+  const signInputs = {} as Record<string, number[]>;
+
+  if (account.address !== ordinalsAccount.address) {
+    signInputs[account.address] = selectedUTXOs.inputs.map(
+      (_input, index) => index
+    );
+    signInputs[ordinalsAccount.address] = runeUTXOs.map(
+      // biome-ignore lint/style/noNonNullAssertion: <explanation>
+      (_input, index) => (selectedUTXOs.inputs!.length ?? 0) + index
+    );
+  } else {
+    signInputs[account.address] = [...selectedUTXOs.inputs, ...runeUTXOs].map(
+      (_input, index) => index
+    );
+  }
+
   const data = await config.currentConnection.signPSBT({
     psbt: psbtData,
-    signInputs: {
-      [paymentAccount.address]: selectedUTXOs.inputs.map(
-        (_input, index) => index
-      ),
-      [ordinalsAccount.address]: runeUTXOs.map(
-        // biome-ignore lint/style/noNonNullAssertion: <explanation>
-        (_input, index) => (selectedUTXOs.inputs!.length ?? 0) + index
-      ),
-    },
+    signInputs,
   });
 
   const signedPSBT = Psbt.fromBase64(data.psbt);

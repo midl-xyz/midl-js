@@ -7,7 +7,7 @@ export const waitForTransaction = (
   confirmations = 1,
   {
     maxAttempts = 1000,
-    intervalMs = 1000,
+    intervalMs = 30_000,
   }: { maxAttempts?: number; intervalMs?: number } = {}
 ) => {
   const check = async () => {
@@ -25,11 +25,16 @@ export const waitForTransaction = (
         );
 
         const data = await response.json();
-        const currentBlockHeight = await getBlockHeight(config);
-        const currentConfirmations = currentBlockHeight - data.block_height;
 
-        if (data.confirmed && currentConfirmations >= confirmations) {
-          confirmed = currentConfirmations;
+        if (data.confirmed) {
+          const currentBlockHeight = await getBlockHeight(config);
+          const currentConfirmations =
+            currentBlockHeight - data.block_height + 1;
+
+          if (currentConfirmations >= confirmations) {
+            confirmed = currentConfirmations;
+            break;
+          }
         }
       } catch (error) {
         console.error(error);
