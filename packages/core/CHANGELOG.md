@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 0.0.16
+
+### Patch Changes
+
+- Support multiple addresses, etch and waitForTx
+
 ## 0.0.15
 
 ### Patch Changes
