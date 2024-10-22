@@ -1,6 +1,14 @@
 "use client";
 
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import {
   Form,
   FormControl,
@@ -15,15 +23,17 @@ import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMaskito } from "@maskito/react";
-import { waitForTransaction } from "@midl-xyz/midl-js-core";
 import {
   useAccounts,
   useBroadcastTransaction,
   useEtchRune,
   useMidlContext,
   useRunes,
+  useWaitForTransaction,
 } from "@midl-xyz/midl-js-react";
 import { useMutation } from "@tanstack/react-query";
+import { Loader2Icon } from "lucide-react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { formatUnits } from "viem";
 import * as z from "zod";
@@ -111,18 +121,30 @@ export const RuneForm = () => {
     },
   });
 
-  const { broadcastTransactionAsync } = useBroadcastTransaction();
-  const { ordinalsAccount } = useAccounts();
+  const {
+    broadcastTransactionAsync: broadcastFunding,
+    isPending: isFundingPending,
+  } = useBroadcastTransaction();
+  const {
+    broadcastTransactionAsync: broadcastEtching,
+    isPending: isEtchingPending,
+  } = useBroadcastTransaction();
+  const {
+    broadcastTransactionAsync: broadcastReveal,
+    isPending: isRevealPending,
+  } = useBroadcastTransaction();
 
-  // biome-ignore lint/style/noNonNullAssertion: There is always an account
-  const { runes } = useRunes({ address: ordinalsAccount?.address! });
-  console.log(runes);
+  const {
+    waitForTransactionAsync: waitForTransaction,
+    variables: waitForTransactionVariables,
+  } = useWaitForTransaction();
 
-  const waitFor = async (ms: number) => {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  };
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const { mutate: sendTransactions } = useMutation({
+    onSuccess: () => {
+      setIsDialogOpen(false);
+    },
     mutationFn: async (
       data:
         | {
@@ -136,38 +158,77 @@ export const RuneForm = () => {
         throw new Error("Missing transaction data");
       }
 
-      console.log("Broadcasting transactions...");
+      setIsDialogOpen(true);
 
-      const fundingTxId = await broadcastTransactionAsync({
+      const fundingTxId = await broadcastFunding({
         tx: data.fundingTx,
       });
 
-      console.log("Waiting for funding transaction confirmation...");
+      await waitForTransaction({ txId: fundingTxId });
 
-      // await waitForTransaction(config, fundingTxId, 1);
-
-      console.log("Funding transaction confirmed");
-
-      const etchingTxId = await broadcastTransactionAsync({
+      const etchingTxId = await broadcastEtching({
         tx: data.etchingTx,
       });
 
-      console.log("Waiting for etching transaction confirmation...");
+      await waitForTransaction({
+        txId: etchingTxId,
+        confirmations: 5,
+      });
 
-      // await waitForTransaction(config, etchingTxId, 1);
-      console.log("Etching transaction confirmed");
+      const revealTxId = await broadcastReveal({ tx: data.revealTx });
 
-      const revealTxId = await broadcastTransactionAsync({ tx: data.revealTx });
-
-      console.log("Waiting for reveal transaction confirmation...");
-      // await waitForTransaction(config, revealTxId, 1);
-
-      console.log("Reveal transaction confirmed");
+      await waitForTransaction({
+        txId: revealTxId,
+      });
     },
   });
 
   return (
     <div>
+      <Dialog open={isDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Confirming transactions</DialogTitle>
+            <DialogDescription>
+              <div className="mt-4 flex flex-col space-y-2">
+                <Alert variant="default">
+                  <AlertTitle>Warning</AlertTitle>
+                  <AlertDescription>
+                    Don't close the window until the transactions are confirmed
+                  </AlertDescription>
+                </Alert>
+
+                <div className="flex flex-col items-center justify-center p-8 space-y-4">
+                  {isFundingPending && (
+                    <p>Funding transaction is being confirmed</p>
+                  )}
+                  {isEtchingPending && (
+                    <p>Commit transaction is being confirmed</p>
+                  )}
+                  {isRevealPending && (
+                    <p>Reveal transaction is being confirmed</p>
+                  )}
+
+                  <p className="flex flex-col items-center space-y-2">
+                    <Loader2Icon className="h-8 w-8 animate-spin" />
+                    Waiting for{" "}
+                    {waitForTransactionVariables?.confirmations ?? 1}{" "}
+                    confirmation(s)
+                  </p>
+
+                  <a
+                    href={`${config.network?.explorerUrl}/tx/${waitForTransactionVariables?.txId}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    View transaction
+                  </a>
+                </div>
+              </div>
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField

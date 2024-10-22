@@ -8,6 +8,7 @@ export type BitcoinNetwork = {
   network: "bitcoin" | "testnet" | "regtest";
   rpcUrl: string;
   runesUrl: string;
+  explorerUrl: string;
 };
 
 type ConfigParams = {
@@ -59,12 +60,13 @@ export const createConfig = (params: ConfigParams): Config => {
 
   const state = configStore.get(configAtom);
 
-  if (!params.networks.find(n => n.network === state?.network.network)) {
-    configStore.set(configAtom, {
-      ...state,
-      network,
-    });
-  }
+  const networkToUse =
+    params.networks.find(n => n.id === state?.network.id) || params.networks[0];
+
+  configStore.set(configAtom, {
+    ...state,
+    network: networkToUse,
+  });
 
   const connectors = params.connectors.map(createConnectorFn =>
     createConnectorFn({

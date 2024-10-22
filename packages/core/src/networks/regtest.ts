@@ -5,4 +5,5 @@ export const regtest: BitcoinNetwork = {
   network: "regtest",
   rpcUrl: "http://localhost:18443",
   runesUrl: "",
+  explorerUrl: "",
 };

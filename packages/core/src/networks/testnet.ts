@@ -5,4 +5,5 @@ export const testnet: BitcoinNetwork = {
   network: "testnet",
   rpcUrl: "https://mempool.space/testnet/api",
   runesUrl: "https://idxv3.midl.xyz",
+  explorerUrl: "https://mempool.space/testnet",
 };
