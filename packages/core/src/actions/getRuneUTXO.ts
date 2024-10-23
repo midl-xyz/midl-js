@@ -1,35 +1,35 @@
 import type { Config } from "~/createConfig";
+import ky from "ky";
 
 export type RuneUTXO = {
-  height: number;
-  address: string;
-  txid: string;
-  vout: number;
-  satoshis: number;
-  scriptPk: string;
-  runes: {
-    rune: string;
-    runeId: string;
-    spacedRune: string;
-    amount: string;
-    symbol: string;
-    divisibility: number;
-  }[];
+	height: number;
+	address: string;
+	txid: string;
+	vout: number;
+	satoshis: number;
+	scriptPk: string;
+	runes: {
+		rune: string;
+		runeId: string;
+		spacedRune: string;
+		amount: string;
+		symbol: string;
+		divisibility: number;
+	}[];
 };
 
 export const getRuneUTXO = async (
-  config: Config,
-  address: string,
-  runeId: string
+	config: Config,
+	address: string,
+	runeId: string,
 ) => {
-  if (!config.network) {
-    throw new Error("No network");
-  }
+	if (!config.network) {
+		throw new Error("No network");
+	}
 
-  const data = await fetch(
-    `${config.network.runesUrl}/utxos/${address}/?runeId=${runeId}`
-  );
-  const utxos = await data.json();
-
-  return utxos as RuneUTXO[];
+	return ky<RuneUTXO[]>(`${config.network.runesUrl}/utxos/${address}/`, {
+		searchParams: {
+			runeId,
+		},
+	}).json();
 };

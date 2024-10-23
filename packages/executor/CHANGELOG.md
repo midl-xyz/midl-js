@@ -1,5 +1,14 @@
 # @midl-xyz/midl-js-executor
 
+## 0.0.23
+
+### Patch Changes
+
+- use ky, update etching
+- Updated dependencies
+  - @midl-xyz/midl-js-react@0.0.21
+  - @midl-xyz/midl-js-core@0.0.17
+
 ## 0.0.22
 
 ### Patch Changes

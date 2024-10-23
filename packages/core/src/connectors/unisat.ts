@@ -1,139 +1,139 @@
 import {
-  type SignMessageParams,
-  SignMessageProtocol,
-  type SignMessageResponse,
+	type SignMessageParams,
+	SignMessageProtocol,
+	type SignMessageResponse,
 } from "~/actions";
 import type { SignPSBTParams, SignPSBTResponse } from "~/actions/signPSBT";
 import {
-  type Account,
-  type ConnectParams,
-  type Connector,
-  ConnectorType,
-  type CreateConnectorConfig,
-  createConnector,
+	type Account,
+	type ConnectParams,
+	type Connector,
+	ConnectorType,
+	type CreateConnectorConfig,
+	createConnector,
 } from "~/connectors/createConnector";
 import { getAddressType, isCorrectAddress } from "~/utils";
 import { getAddressPurpose } from "~/utils/getAddressPurpose";
 
 class UnisatConnector implements Connector {
-  public readonly id = "unisat";
-  public readonly name = "Unisat";
-  public readonly type = ConnectorType.Unisat;
+	public readonly id = "unisat";
+	public readonly name = "Unisat";
+	public readonly type = ConnectorType.Unisat;
 
-  constructor(private config: CreateConnectorConfig) {}
+	constructor(private config: CreateConnectorConfig) {}
 
-  async getNetwork() {
-    return this.config.getState().network;
-  }
+	async getNetwork() {
+		return this.config.getState().network;
+	}
 
-  async connect(_params: ConnectParams): Promise<Account[]> {
-    if (typeof window.unisat === "undefined") {
-      throw new Error("Unisat not found");
-    }
+	async connect(_params: ConnectParams): Promise<Account[]> {
+		if (typeof window.unisat === "undefined") {
+			throw new Error("Unisat not found");
+		}
 
-    const publicKey = await window.unisat.getPublicKey();
-    const accounts = (await window.unisat.requestAccounts()).map(it => {
-      return {
-        address: it,
-        publicKey: publicKey,
-        purpose: getAddressPurpose(it, this.config.getState().network),
-        addressType: getAddressType(it),
-      };
-    });
+		const publicKey = await window.unisat.getPublicKey();
+		const accounts = (await window.unisat.requestAccounts()).map((it) => {
+			return {
+				address: it,
+				publicKey: publicKey,
+				purpose: getAddressPurpose(it, this.config.getState().network),
+				addressType: getAddressType(it),
+			};
+		});
 
-    this.config.setState({
-      connection: this.id,
-      publicKey: publicKey,
-      accounts,
-    });
+		this.config.setState({
+			connection: this.id,
+			publicKey: publicKey,
+			accounts,
+		});
 
-    return accounts;
-  }
+		return accounts;
+	}
 
-  async disconnect() {
-    this.config.setState({
-      connection: undefined,
-      publicKey: undefined,
-    });
-  }
+	async disconnect() {
+		this.config.setState({
+			connection: undefined,
+			publicKey: undefined,
+		});
+	}
 
-  async getAccounts() {
-    if (!this.config.getState().connection) {
-      throw new Error("Not connected");
-    }
+	async getAccounts() {
+		if (!this.config.getState().connection) {
+			throw new Error("Not connected");
+		}
 
-    if (!this.config.getState().accounts) {
-      throw new Error("No accounts");
-    }
+		if (!this.config.getState().accounts) {
+			throw new Error("No accounts");
+		}
 
-    for (const account of this.config.getState().accounts as Account[]) {
-      if (!isCorrectAddress(account.address, this.config.getState().network)) {
-        throw new Error("Invalid address network");
-      }
-    }
+		for (const account of this.config.getState().accounts as Account[]) {
+			if (!isCorrectAddress(account.address, this.config.getState().network)) {
+				throw new Error("Invalid address network");
+			}
+		}
 
-    return this.config.getState().accounts as Account[];
-  }
+		return this.config.getState().accounts as Account[];
+	}
 
-  async signMessage(params: SignMessageParams): Promise<SignMessageResponse> {
-    if (typeof window.unisat === "undefined") {
-      throw new Error("Unisat not found");
-    }
+	async signMessage(params: SignMessageParams): Promise<SignMessageResponse> {
+		if (typeof window.unisat === "undefined") {
+			throw new Error("Unisat not found");
+		}
 
-    let type: "ecdsa" | "bip322-simple" = "ecdsa";
+		let type: "ecdsa" | "bip322-simple" = "ecdsa";
 
-    switch (params.protocol) {
-      case SignMessageProtocol.Ecdsa:
-        type = "ecdsa";
-        break;
-      case SignMessageProtocol.Bip322:
-        type = "bip322-simple";
-        break;
-      default:
-        type = "ecdsa";
-        break;
-    }
+		switch (params.protocol) {
+			case SignMessageProtocol.Ecdsa:
+				type = "ecdsa";
+				break;
+			case SignMessageProtocol.Bip322:
+				type = "bip322-simple";
+				break;
+			default:
+				type = "ecdsa";
+				break;
+		}
 
-    const signature = await window.unisat.signMessage(params.message, type);
+		const signature = await window.unisat.signMessage(params.message, type);
 
-    return {
-      signature,
-      address: params.address,
-    };
-  }
+		return {
+			signature,
+			address: params.address,
+		};
+	}
 
-  async signPSBT({
-    psbt,
-    signInputs,
-    disableTweakSigner,
-  }: SignPSBTParams): Promise<SignPSBTResponse> {
-    if (typeof window.unisat === "undefined") {
-      throw new Error("Unisat not found");
-    }
+	async signPSBT({
+		psbt,
+		signInputs,
+		disableTweakSigner,
+	}: SignPSBTParams): Promise<SignPSBTResponse> {
+		if (typeof window.unisat === "undefined") {
+			throw new Error("Unisat not found");
+		}
 
-    const toSignInputs = Object.keys(signInputs).flatMap(address =>
-      signInputs[address].map(index => ({
-        address: address,
-        index,
-        disableTweakSigner: disableTweakSigner,
-      }))
-    );
+		const toSignInputs = Object.keys(signInputs).flatMap((address) =>
+			signInputs[address].map((index) => ({
+				address,
+				index,
+				disableTweakSigner: disableTweakSigner,
+			})),
+		);
 
-    const signature = await window.unisat.signPsbt(psbt, {
-      autoFinalized: false,
-      toSignInputs,
-    });
+		const signature = await window.unisat.signPsbt(psbt, {
+			autoFinalized: false,
+			toSignInputs,
+		});
 
-    const base64Psbt = Buffer.from(signature, "hex").toString("base64");
+		const base64Psbt = Buffer.from(signature, "hex").toString("base64");
 
-    return {
-      psbt: base64Psbt,
-    };
-  }
+		return {
+			psbt: base64Psbt,
+		};
+	}
 }
 
 export const unisat = () => {
-  return createConnector(config => {
-    return new UnisatConnector(config);
-  });
+	return createConnector((config) => {
+		return new UnisatConnector(config);
+	});
 };

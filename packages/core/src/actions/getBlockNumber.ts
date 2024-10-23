@@ -1,12 +1,14 @@
 import type { Config } from "~/createConfig";
+import ky from "ky";
 
 export const getBlockNumber = async (config: Config) => {
-  if (!config.network) {
-    throw new Error("No network");
-  }
+	if (!config.network) {
+		throw new Error("No network");
+	}
 
-  const response = await fetch(`${config.network.rpcUrl}/blocks/tip/height`);
-  const data = await response.text();
+	const height = await ky<string>(
+		`${config.network.rpcUrl}/blocks/tip/height`,
+	).text();
 
-  return Number.parseInt(data, 10);
+	return Number.parseInt(height, 10);
 };

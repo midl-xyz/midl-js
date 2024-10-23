@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 0.0.17
+
+### Patch Changes
+
+- use ky, update etching
+
 ## 0.0.16
 
 ### Patch Changes

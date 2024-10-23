@@ -3,26 +3,27 @@ import { type QueryOptions, useQuery } from "@tanstack/react-query";
 import { useMidlContext } from "~/context";
 
 type UseRuneParams = {
-  runeId: string;
-  query?: Omit<QueryOptions<GetRuneResponse>, "queryFn">;
+	runeId: string;
+	query?: Omit<QueryOptions<GetRuneResponse>, "queryFn">;
 };
 
 export const useRune = ({
-  runeId,
-  query: { queryKey, ...query } = {},
+	runeId,
+	query: { queryKey, ...query } = {},
 }: UseRuneParams) => {
-  const { config } = useMidlContext();
+	const { config } = useMidlContext();
 
-  const { data, ...rest } = useQuery<GetRuneResponse>({
-    queryKey: ["rune", runeId, ...(queryKey ?? [])],
-    queryFn: () => {
-      return getRune(config, runeId);
-    },
-    ...query,
-  });
+	const { data, ...rest } = useQuery<GetRuneResponse>({
+		queryKey: ["rune", runeId, ...(queryKey ?? [])],
+		queryFn: () => {
+			return getRune(config, runeId);
+		},
+		retry: false,
+		...query,
+	});
 
-  return {
-    rune: data,
-    ...rest,
-  };
+	return {
+		rune: data,
+		...rest,
+	};
 };

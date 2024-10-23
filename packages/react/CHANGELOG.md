@@ -1,5 +1,13 @@
 # @midl-xyz/midl-js-react
 
+## 0.0.21
+
+### Patch Changes
+
+- use ky, update etching
+- Updated dependencies
+  - @midl-xyz/midl-js-core@0.0.17
+
 ## 0.0.20
 
 ### Patch Changes

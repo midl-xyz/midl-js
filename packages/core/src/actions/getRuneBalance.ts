@@ -1,28 +1,25 @@
 import type { Config } from "~/createConfig";
+import ky from "ky";
 
 export type GetRuneBalanceParams = {
-  address: string;
-  runeId: string;
+	address: string;
+	runeId: string;
 };
 
 export type GetRuneBalanceResponse = {
-  address?: string;
-  balance: string;
+	address?: string;
+	balance: string;
 };
 
 export const getRuneBalance = async (
-  config: Config,
-  { address, runeId }: GetRuneBalanceParams
+	config: Config,
+	{ address, runeId }: GetRuneBalanceParams,
 ) => {
-  if (!config.network) {
-    throw new Error("No network found");
-  }
+	if (!config.network) {
+		throw new Error("No network found");
+	}
 
-  const data = await fetch(
-    `${config.network.runesUrl}/runes/v1/etchings/${runeId}/holders/${address}`
-  );
-
-  const response: GetRuneBalanceResponse = await data.json();
-
-  return response;
+	return ky<GetRuneBalanceResponse>(
+		`${config.network.runesUrl}/runes/v1/etchings/${runeId}/holders/${address}`,
+	).json();
 };

@@ -24,8 +24,6 @@ describe("core | actions | getUTXOs", () => {
     bitcoin.networks.testnet
   );
 
-  console.log(k.publicKey.toString("hex"));
-
   const keyPair = ECPair.makeRandom();
 
   const { address } = bitcoin.payments.p2pkh({

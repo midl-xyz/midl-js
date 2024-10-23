@@ -28,18 +28,19 @@ import {
   useBroadcastTransaction,
   useEtchRune,
   useMidlContext,
+  useRune,
   useRunes,
   useWaitForTransaction,
 } from "@midl-xyz/midl-js-react";
 import { useMutation } from "@tanstack/react-query";
 import { Loader2Icon } from "lucide-react";
-import { useState } from "react";
+import { use, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { formatUnits } from "viem";
 import * as z from "zod";
 
 const formSchema = z.object({
-  name: z.string().min(14),
+  name: z.string().min(4),
   symbol: z.string().max(1),
   divisibility: z.number().or(z.string()).pipe(z.coerce.number().max(38)),
   premine: z.number().or(z.string()).pipe(z.coerce.number()),
@@ -72,7 +73,11 @@ export const RuneForm = () => {
     "divisibility",
   ]);
 
-  const { etchRune, data } = useEtchRune({
+  const { rune, isFetching, error } = useRune({ runeId: name });
+
+  console.log("runeError", error);
+
+  const { etchRune } = useEtchRune({
     mutation: {
       onSuccess: data => {
         sendTransactions(data);
@@ -95,7 +100,32 @@ export const RuneForm = () => {
     },
   });
 
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
+  const waitFor = (condition: () => boolean) => {
+    return new Promise<void>(resolve => {
+      const interval = setInterval(() => {
+        if (condition()) {
+          clearInterval(interval);
+          resolve();
+        }
+      }, 100);
+    });
+  };
+
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    await waitFor(() => {
+      return !isFetching;
+    });
+
+    if (rune) {
+      toast({
+        title: "Error",
+        description: "Rune already exists",
+        color: "error",
+      });
+
+      return;
+    }
+
     etchRune({
       name: data.name,
       symbol: data.symbol,
@@ -120,6 +150,8 @@ export const RuneForm = () => {
       ],
     },
   });
+
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   const {
     broadcastTransactionAsync: broadcastFunding,
@@ -238,15 +270,64 @@ export const RuneForm = () => {
               <FormItem>
                 <FormLabel>Name</FormLabel>
                 <FormControl>
-                  <Input
-                    {...field}
-                    onChange={undefined}
-                    onInput={field.onChange}
-                    ref={node => {
-                      ref(node);
-                      runeNameRef(node);
-                    }}
-                  />
+                  <div className="relative">
+                    <Input
+                      {...field}
+                      className="pr-10"
+                      onChange={undefined}
+                      onInput={field.onChange}
+                      ref={node => {
+                        inputRef.current = node;
+                        ref(node);
+                        runeNameRef(node);
+                      }}
+                    />
+                    <Button
+                      type="button"
+                      aria-label="Add bullet"
+                      onClick={e => {
+                        const inputElement = inputRef.current;
+
+                        if (!inputElement) {
+                          return;
+                        }
+
+                        let { selectionStart, selectionEnd } = inputElement;
+
+                        if (document.activeElement !== inputElement) {
+                          selectionStart = inputElement.value.length;
+                          selectionEnd = inputElement.value.length;
+
+                          inputElement.focus();
+                        }
+
+                        inputElement.setSelectionRange(
+                          selectionStart,
+                          selectionEnd,
+                          "forward"
+                        );
+
+                        inputElement.setRangeText("•");
+
+                        inputElement.setSelectionRange(
+                          (selectionStart ?? 0) + 1,
+                          (selectionEnd ?? 0) + 1,
+                          "forward"
+                        );
+
+                        const event = new Event("input", {
+                          bubbles: true,
+                          cancelable: true,
+                        });
+
+                        inputElement.dispatchEvent(event);
+                      }}
+                      size="icon"
+                      className="absolute w-7 h-7 transform  -translate-y-1/2 top-1/2 right-1"
+                    >
+                      •
+                    </Button>
+                  </div>
                 </FormControl>
                 <FormDescription>Enter the name of the rune</FormDescription>
                 {form.formState.errors.name && (

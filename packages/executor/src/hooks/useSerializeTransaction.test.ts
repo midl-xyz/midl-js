@@ -48,9 +48,7 @@ describe("executor | hooks | useSerializeTransaction", () => {
       chainId: 1,
     });
 
-    console.log(tx2);
 
-    console.log(parseTransaction(tx2));
     expect(parseTransaction(tx2).nonce).toBe(1);
   });
 });

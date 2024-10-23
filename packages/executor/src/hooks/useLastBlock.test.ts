@@ -11,8 +11,6 @@ describe("useLastBlock", () => {
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
-    console.log(result.current.lastBlock);
-
     expect(result.current.lastBlock).toBeGreaterThan(0n);
   });
 });
