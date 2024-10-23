@@ -1,4 +1,4 @@
-import { getBlockHeight } from "~/actions/getBlockHeight";
+import { getBlockNumber } from "~/actions/getBlockNumber";
 import type { Config } from "~/createConfig";
 
 export const waitForTransaction = (
@@ -27,7 +27,7 @@ export const waitForTransaction = (
         const data = await response.json();
 
         if (data.confirmed) {
-          const currentBlockHeight = await getBlockHeight(config);
+          const currentBlockHeight = await getBlockNumber(config);
           const currentConfirmations =
             currentBlockHeight - data.block_height + 1;
 

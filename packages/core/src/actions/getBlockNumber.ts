@@ -1,6 +1,6 @@
 import type { Config } from "~/createConfig";
 
-export const getBlockHeight = async (config: Config) => {
+export const getBlockNumber = async (config: Config) => {
   if (!config.network) {
     throw new Error("No network");
   }

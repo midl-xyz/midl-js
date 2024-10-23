@@ -26,20 +26,21 @@
     "devDependencies": {
         "@metamask/providers": "^17.1.1",
         "@midl-xyz/midl-js-config": "workspace:^",
-        "@types/react": "^18",
+        "@tanstack/react-query": "*",
+        "@types/react": "^18.3.11",
         "bitcoinjs-lib": "^6.1.6",
         "bitcoinjs-message": "^2.2.0",
         "react": "^18.3.1",
-        "react-dom": "^18.3.1",
-        "@tanstack/react-query": "*"
+        "react-dom": "^18.3.1"
     },
     "dependencies": {
         "@midl-xyz/midl-js-core": "workspace:^",
         "jotai": "^2.9.1"
     },
     "peerDependencies": {
+        "@tanstack/react-query": "*",
+        "@types/react": "^18.3.11",
         "react": "^18.3.1",
-        "react-dom": "^18.3.1",
-        "@tanstack/react-query": "*"
+        "react-dom": "^18.3.1"
     }
 }

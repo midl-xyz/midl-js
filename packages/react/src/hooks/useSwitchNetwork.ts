@@ -1,20 +1,40 @@
-import { useMutation } from "@tanstack/react-query";
-import { useMidlContext } from "~/context";
 import { type BitcoinNetwork, switchNetwork } from "@midl-xyz/midl-js-core";
+import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
+import { useMidlContext } from "~/context";
 
-export const useSwitchNetwork = () => {
+type SwitchNetworkError = undefined;
+type SwitchNetworkData = undefined;
+type SwitchNetworkVariables = BitcoinNetwork;
+
+type UseSwitchNetworkParams = {
+  mutation?: Omit<
+    UseMutationOptions<
+      SwitchNetworkData,
+      SwitchNetworkError,
+      SwitchNetworkVariables
+    >,
+    "mutationFn"
+  >;
+};
+
+export const useSwitchNetwork = ({ mutation }: UseSwitchNetworkParams = {}) => {
   const { config } = useMidlContext();
 
-  const mutation = useMutation<void, void, BitcoinNetwork>({
+  const { mutate, mutateAsync, ...rest } = useMutation<
+    SwitchNetworkData,
+    SwitchNetworkError,
+    SwitchNetworkVariables
+  >({
     mutationFn: async network => {
       switchNetwork(config, network);
     },
+    ...mutation,
   });
 
   return {
-    switchNetwork: mutation.mutate,
-    switchNetworkAsync: mutation.mutateAsync,
+    switchNetwork: mutate,
+    switchNetworkAsync: mutateAsync,
     networks: config.networks,
-    ...mutation,
+    ...rest,
   };
 };
