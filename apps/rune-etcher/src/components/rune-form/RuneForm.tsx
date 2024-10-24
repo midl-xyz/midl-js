@@ -24,29 +24,35 @@ import { useToast } from "@/hooks/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMaskito } from "@maskito/react";
 import {
-  useAccounts,
   useBroadcastTransaction,
   useEtchRune,
   useMidlContext,
   useRune,
-  useRunes,
   useWaitForTransaction,
 } from "@midl-xyz/midl-js-react";
 import { useMutation } from "@tanstack/react-query";
 import { Loader2Icon } from "lucide-react";
-import { use, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { formatUnits } from "viem";
 import * as z from "zod";
 
 const formSchema = z.object({
   name: z.string().min(4),
-  symbol: z.string().max(1),
+  symbol: z
+    .string()
+    .optional()
+    .refine(
+      data => Array.from(new Intl.Segmenter().segment(data ?? "")).length === 1,
+      "Symbol must be a single character"
+    ),
   divisibility: z.number().or(z.string()).pipe(z.coerce.number().max(38)),
   premine: z.number().or(z.string()).pipe(z.coerce.number()),
   mintable: z.boolean(),
   heightStart: z.number().or(z.string()).pipe(z.coerce.number()).optional(),
   heightEnd: z.number().or(z.string()).pipe(z.coerce.number()).optional(),
+  offsetStart: z.number().or(z.string()).pipe(z.coerce.number()).optional(),
+  offsetEnd: z.number().or(z.string()).pipe(z.coerce.number()).optional(),
   amount: z.number().or(z.string()).pipe(z.coerce.number()).optional(),
   cap: z.number().or(z.string()).pipe(z.coerce.number()).optional(),
 });
@@ -55,10 +61,10 @@ export const RuneForm = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "RUNE•NAME",
-      symbol: "$",
-      divisibility: 10,
-      premine: 1000000000,
+      name: "RUNE•TO•THE•MOON",
+      symbol: "🚀",
+      divisibility: 0,
+      premine: 1000000000000,
       mintable: false,
     },
   });
@@ -460,6 +466,38 @@ export const RuneForm = () => {
                     </FormControl>
                     <FormDescription>
                       Enter the height end of the rune
+                    </FormDescription>
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="offsetStart"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Offset Start</FormLabel>
+                    <FormControl>
+                      <Input {...field} type="number" />
+                    </FormControl>
+                    <FormDescription>
+                      Enter the offset start of the rune
+                    </FormDescription>
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="offsetEnd"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Offset End</FormLabel>
+                    <FormControl>
+                      <Input {...field} type="number" />
+                    </FormControl>
+                    <FormDescription>
+                      Enter the offset end of the rune
                     </FormDescription>
                   </FormItem>
                 )}

@@ -134,6 +134,7 @@ export const etchRune = async (
 	}
 
 	if (content) {
+		// TODO: Support other content types
 		inscription.setContent("text/plain", Buffer.from(content, "utf-8"));
 	}
 
