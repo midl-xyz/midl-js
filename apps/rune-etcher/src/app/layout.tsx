@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import { ThemeProvider } from "@/components/theme-provider/ThemeProvider";
-import { Web3Provider } from "@/components/web3-provider/Web3Provider";
 import { Header } from "@/components/header/Header";
+import { ThemeProvider } from "@/components/theme-provider/ThemeProvider";
 import { Toaster } from "@/components/ui/toaster";
+import { Web3Provider } from "@/components/web3-provider/Web3Provider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -33,17 +33,9 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} dark:bg-neutral-900 bg-zinc-50`}
       >
         <Web3Provider>
-          <ThemeProvider
-            defaultTheme="light"
-            attribute="class"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <Header />
-
-            {children}
-            <Toaster />
-          </ThemeProvider>
+          <Header />
+          {children}
+          <Toaster />
         </Web3Provider>
       </body>
     </html>

@@ -1,6 +1,6 @@
 {
   "name": "@midl-xyz/midl-js-core",
-  "version": "0.0.18",
+  "version": "0.0.19",
   "scripts": {
     "build": "pkgroll",
     "dev": "pkgroll --watch",

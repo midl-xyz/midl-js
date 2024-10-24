@@ -11,5 +11,5 @@ export const formatRuneName = (name: string) => {
 		throw new Error("Rune name can only contain A-Z and •");
 	}
 
-	return runeName.replace(/•/g, ".");
+	return runeName;
 };
