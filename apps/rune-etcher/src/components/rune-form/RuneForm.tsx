@@ -79,9 +79,7 @@ export const RuneForm = () => {
     "divisibility",
   ]);
 
-  const { rune, isFetching, error } = useRune({ runeId: name });
-
-  console.log("runeError", error);
+  const { rune, isFetching } = useRune({ runeId: name });
 
   const { etchRune } = useEtchRune({
     mutation: {
@@ -159,18 +157,12 @@ export const RuneForm = () => {
 
   const inputRef = useRef<HTMLInputElement | null>(null);
 
-  const {
-    broadcastTransactionAsync: broadcastFunding,
-    isPending: isFundingPending,
-  } = useBroadcastTransaction();
-  const {
-    broadcastTransactionAsync: broadcastEtching,
-    isPending: isEtchingPending,
-  } = useBroadcastTransaction();
-  const {
-    broadcastTransactionAsync: broadcastReveal,
-    isPending: isRevealPending,
-  } = useBroadcastTransaction();
+  const { broadcastTransactionAsync: broadcastFunding } =
+    useBroadcastTransaction();
+  const { broadcastTransactionAsync: broadcastEtching } =
+    useBroadcastTransaction();
+  const { broadcastTransactionAsync: broadcastReveal } =
+    useBroadcastTransaction();
 
   const {
     waitForTransactionAsync: waitForTransaction,
@@ -210,7 +202,7 @@ export const RuneForm = () => {
 
       await waitForTransaction({
         txId: etchingTxId,
-        confirmations: 5,
+        confirmations: config.network?.network === "bitcoin" ? 5 : 1,
       });
 
       const revealTxId = await broadcastReveal({ tx: data.revealTx });
@@ -237,16 +229,6 @@ export const RuneForm = () => {
                 </Alert>
 
                 <div className="flex flex-col items-center justify-center p-8 space-y-4">
-                  {isFundingPending && (
-                    <p>Funding transaction is being confirmed</p>
-                  )}
-                  {isEtchingPending && (
-                    <p>Commit transaction is being confirmed</p>
-                  )}
-                  {isRevealPending && (
-                    <p>Reveal transaction is being confirmed</p>
-                  )}
-
                   <p className="flex flex-col items-center space-y-2">
                     <Loader2Icon className="h-8 w-8 animate-spin" />
                     Waiting for{" "}
