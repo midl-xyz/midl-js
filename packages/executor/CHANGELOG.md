@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor
 
+## 0.0.26
+
+### Patch Changes
+
+- fix: get erc20 rune
+
 ## 0.0.25
 
 ### Patch Changes
