@@ -10,13 +10,6 @@ overrides:
 importers:
 
   .:
-    dependencies:
-      '@midl-xyz/midl-js-core':
-        specifier: ^0.0.15
-        version: 0.0.15(@types/react@18.3.11)(bufferutil@4.0.8)(react@18.3.1)(typescript@5.6.3)(utf-8-validate@6.0.4)(webextension-polyfill@0.12.0)
-      '@midl-xyz/midl-js-react':
-        specifier: ^0.0.19
-        version: 0.0.19(@tanstack/react-query@5.59.9(react@18.3.1))(@types/react@18.3.11)(bufferutil@4.0.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.6.3)(utf-8-validate@6.0.4)(webextension-polyfill@0.12.0)
     devDependencies:
       '@biomejs/biome':
         specifier: 1.8.3
@@ -2311,25 +2304,21 @@ packages:
   '@midl-xyz/contracts@0.0.2':
     resolution: {integrity: sha512-YHH51kyZyTE10QexzIOkT6ZQ6wGFoZX26D9nwGlspqAeV3p7HhycsD0KSKkBgm4hyYsd7FkPgNv5q+qIOSdsvQ==, tarball: https://npm.pkg.github.com/download/@midl-xyz/contracts/0.0.2/02a09bea3ab252d4b7bb5a1872a557cd33a13cca}
 
-  '@midl-xyz/midl-js-core@0.0.15':
-    resolution: {integrity: sha512-AXqn258tVVHSlCY4a23rvzy0juYS5fjYYq2F2s9AdMpwVG0DKQvo0cUr+t7++m8ENrJUxyMwwVMfPRQQTFxGnQ==, tarball: https://npm.pkg.github.com/download/@midl-xyz/midl-js-core/0.0.15/f0a718a91eb16f9b8c9d1bcd4f00024472b8fdec}
-
-  '@midl-xyz/midl-js-react@0.0.19':
-    resolution: {integrity: sha512-lvMmoqOF0o4ESvhOMz/tTm7dc7t++MK/YYTzWDofiGqNq4Me1XFcPSenwbR2Efxwy6FP520iwH4CtRMMcDD5Ig==, tarball: https://npm.pkg.github.com/download/@midl-xyz/midl-js-react/0.0.19/8e27a51625ada953246da9cda75d0af4a3ba8db3}
-    peerDependencies:
-      '@tanstack/react-query': '*'
-      react: ^18.3.1
-      react-dom: ^18.3.1
-
   '@midl-xyz/midl-viem@2.21.21':
     resolution: {integrity: sha512-i1og9fxlk3I5WJTkPKHBy0ZIqIvjX8i4eRv7BHrEw/iE4rJAlGXNWidNDCgaYkn0BEh7fBijQV04gcYLZgImKg==, tarball: https://npm.pkg.github.com/download/@midl-xyz/midl-viem/2.21.21/3f17e12200b5e67dd6a800cefb95be155c713d9f}
     peerDependencies:
       typescript: '>=5.0.4'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
 
   '@midl-xyz/midl-viem@2.21.22':
     resolution: {integrity: sha512-7GD4OuEiXwjvmWHXd8wOBKXh0ZK79ZP0uJGzFb3v8bnSU27wjKV2OCgw5Kcj2ZiUsp7nC+hZHekzKm139XzHYA==, tarball: https://npm.pkg.github.com/download/@midl-xyz/midl-viem/2.21.22/0b3cc0a45a95db1eacabbf12abe097eec15903c3}
     peerDependencies:
       typescript: '>=5.0.4'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
 
   '@motionone/animation@10.18.0':
     resolution: {integrity: sha512-9z2p5GFGCm0gBsZbi8rVMOAJCtw1WqBTIPw3ozk06gDvZInBPIsQcHgYogEJ4yuHJ+akuW8g1SEIOpTOvYs8hw==}
@@ -13056,47 +13045,6 @@ snapshots:
 
   '@midl-xyz/contracts@0.0.2': {}
 
-  '@midl-xyz/midl-js-core@0.0.15(@types/react@18.3.11)(bufferutil@4.0.8)(react@18.3.1)(typescript@5.6.3)(utf-8-validate@6.0.4)(webextension-polyfill@0.12.0)':
-    dependencies:
-      '@metamask/providers': 17.2.1(webextension-polyfill@0.12.0)
-      '@noble/secp256k1': 2.1.0
-      bitcoinjs-lib: 6.1.6
-      bitcoinselect: 1.0.0
-      coinselect: 3.1.13
-      ecpair: 2.1.0
-      jotai: 2.9.1(@types/react@18.3.11)(react@18.3.1)
-      runelib: 1.0.7
-      sats-connect: 2.8.3(typescript@5.6.3)
-      tiny-secp256k1: 2.2.3
-      viem: '@midl-xyz/midl-viem@2.21.21(bufferutil@4.0.8)(typescript@5.6.3)(utf-8-validate@6.0.4)'
-    transitivePeerDependencies:
-      - '@types/react'
-      - bufferutil
-      - debug
-      - react
-      - supports-color
-      - typescript
-      - utf-8-validate
-      - webextension-polyfill
-      - zod
-
-  '@midl-xyz/midl-js-react@0.0.19(@tanstack/react-query@5.59.9(react@18.3.1))(@types/react@18.3.11)(bufferutil@4.0.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.6.3)(utf-8-validate@6.0.4)(webextension-polyfill@0.12.0)':
-    dependencies:
-      '@midl-xyz/midl-js-core': 0.0.15(@types/react@18.3.11)(bufferutil@4.0.8)(react@18.3.1)(typescript@5.6.3)(utf-8-validate@6.0.4)(webextension-polyfill@0.12.0)
-      '@tanstack/react-query': 5.59.9(react@18.3.1)
-      jotai: 2.9.1(@types/react@18.3.11)(react@18.3.1)
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-    transitivePeerDependencies:
-      - '@types/react'
-      - bufferutil
-      - debug
-      - supports-color
-      - typescript
-      - utf-8-validate
-      - webextension-polyfill
-      - zod
-
   '@midl-xyz/midl-viem@2.21.21(bufferutil@4.0.8)(typescript@5.6.3)(utf-8-validate@5.0.10)(zod@3.23.8)':
     dependencies:
       '@adraffy/ens-normalize': 1.10.0
@@ -13106,26 +13054,10 @@ snapshots:
       '@scure/bip39': 1.4.0
       abitype: 1.0.5(typescript@5.6.3)(zod@3.23.8)
       isows: 1.0.4(ws@8.17.1(bufferutil@4.0.8)(utf-8-validate@5.0.10))
-      typescript: 5.6.3
       webauthn-p256: 0.0.5
       ws: 8.17.1(bufferutil@4.0.8)(utf-8-validate@5.0.10)
-    transitivePeerDependencies:
-      - bufferutil
-      - utf-8-validate
-      - zod
-
-  '@midl-xyz/midl-viem@2.21.21(bufferutil@4.0.8)(typescript@5.6.3)(utf-8-validate@6.0.4)':
-    dependencies:
-      '@adraffy/ens-normalize': 1.10.0
-      '@noble/curves': 1.4.0
-      '@noble/hashes': 1.4.0
-      '@scure/bip32': 1.4.0
-      '@scure/bip39': 1.4.0
-      abitype: 1.0.5(typescript@5.6.3)(zod@3.23.8)
-      isows: 1.0.4(ws@8.17.1(bufferutil@4.0.8)(utf-8-validate@6.0.4))
+    optionalDependencies:
       typescript: 5.6.3
-      webauthn-p256: 0.0.5
-      ws: 8.17.1(bufferutil@4.0.8)(utf-8-validate@6.0.4)
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -13140,9 +13072,10 @@ snapshots:
       '@scure/bip39': 1.4.0
       abitype: 1.0.5(typescript@5.6.3)(zod@3.23.8)
       isows: 1.0.4(ws@8.17.1(bufferutil@4.0.8)(utf-8-validate@6.0.4))
-      typescript: 5.6.3
       webauthn-p256: 0.0.5
       ws: 8.17.1(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+    optionalDependencies:
+      typescript: 5.6.3
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -13157,9 +13090,10 @@ snapshots:
       '@scure/bip39': 1.4.0
       abitype: 1.0.5(typescript@5.6.3)(zod@3.23.8)
       isows: 1.0.4(ws@8.17.1(bufferutil@4.0.8)(utf-8-validate@5.0.10))
-      typescript: 5.6.3
       webauthn-p256: 0.0.5
       ws: 8.17.1(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+    optionalDependencies:
+      typescript: 5.6.3
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
