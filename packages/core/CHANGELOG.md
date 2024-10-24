@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 0.0.18
+
+### Patch Changes
+
+- fix: spacers rune name
+
 ## 0.0.17
 
 ### Patch Changes

@@ -8,6 +8,7 @@ import {
 	Rune,
 	Runestone,
 	Terms,
+	getSpacersVal,
 	none,
 	some,
 } from "runelib";
@@ -175,7 +176,7 @@ export const etchRune = async (
 		divisibility ? some(divisibility) : none(),
 		premine ? some(premine) : none(),
 		some(rune),
-		none(),
+		some(getSpacersVal(name)),
 		symbol ? some(symbol) : none(),
 		amount && cap
 			? some(

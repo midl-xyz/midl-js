@@ -22,9 +22,5 @@
     "overrides": {
       "viem": "npm:@midl-xyz/midl-viem@2.21.21"
     }
-  },
-  "dependencies": {
-    "@midl-xyz/midl-js-core": "^0.0.15",
-    "@midl-xyz/midl-js-react": "^0.0.19"
   }
 }
