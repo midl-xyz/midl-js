@@ -1,5 +1,15 @@
 # @midl-xyz/midl-js-playground
 
+## 0.1.28
+
+### Patch Changes
+
+- chore(core): refactor psbt inputs
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@0.0.27
+  - @midl-xyz/midl-js-core@0.0.20
+  - @midl-xyz/midl-js-react@0.0.24
+
 ## 0.1.27
 
 ### Patch Changes

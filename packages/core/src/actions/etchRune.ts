@@ -15,10 +15,9 @@ import {
 import { getFeeRate } from "~/actions/getFeeRate";
 import { getUTXOs } from "~/actions/getUTXOs";
 import { signPSBT } from "~/actions/signPSBT";
-import { AddressPurpose, AddressType } from "~/constants";
+import { AddressPurpose } from "~/constants";
 import type { Config } from "~/createConfig";
-import { extractXCoordinate, formatRuneName } from "~/utils";
-import ky from "ky";
+import { extractXCoordinate, formatRuneName, makePSBTInputs } from "~/utils";
 
 export type EtchRuneParams = {
 	from?: string;
@@ -221,73 +220,13 @@ export const etchRune = async (
 		throw new Error("No funding inputs or outputs");
 	}
 
-	switch (account.addressType) {
-		case AddressType.P2SH: {
-			const { redeem } = payments.p2sh({
-				redeem: payments.p2wpkh({
-					pubkey: Buffer.from(account.publicKey, "hex"),
-				}),
-			});
+	const inputs = await makePSBTInputs(
+		config,
+		account,
+		selectedFundingUTXOs.inputs,
+	);
 
-			for (const input of selectedFundingUTXOs.inputs) {
-				const hex = await ky(`${config.network.rpcUrl}/tx/${input.txid}/hex`, {
-					retry: { limit: 5 },
-				}).text();
-
-				psbtFunding.addInput({
-					hash: input.txid as string,
-					index: input.vout,
-					nonWitnessUtxo: Buffer.from(hex, "hex"),
-					redeemScript: redeem?.output,
-				});
-			}
-
-			break;
-		}
-
-		case AddressType.P2TR: {
-			const xOnly = Buffer.from(extractXCoordinate(account.publicKey), "hex");
-
-			const p2tr = payments.p2tr({
-				internalPubkey: xOnly,
-				network,
-			});
-
-			for (const input of selectedFundingUTXOs.inputs) {
-				psbtFunding.addInput({
-					hash: input.txid as string,
-					index: input.vout,
-					witnessUtxo: {
-						value: input.value,
-						// biome-ignore lint/style/noNonNullAssertion: <explanation>
-						script: p2tr!.output!,
-					},
-					tapInternalKey: xOnly,
-				});
-			}
-
-			break;
-		}
-
-		case AddressType.P2WPKH: {
-			const p2wpkh = payments.p2wpkh({
-				pubkey: Buffer.from(account.publicKey, "hex"),
-				network,
-			});
-
-			for (const input of selectedFundingUTXOs.inputs) {
-				psbtFunding.addInput({
-					hash: input.txid as string,
-					index: input.vout,
-					witnessUtxo: {
-						// biome-ignore lint/style/noNonNullAssertion: <explanation>
-						script: p2wpkh.output!,
-						value: input.value,
-					},
-				});
-			}
-		}
-	}
+	psbtFunding.addInputs(inputs);
 
 	for (const output of selectedFundingUTXOs.outputs) {
 		if (!output.address) {

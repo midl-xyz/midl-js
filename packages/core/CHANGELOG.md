@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 0.0.20
+
+### Patch Changes
+
+- chore(core): refactor psbt inputs
+
 ## 0.0.19
 
 ### Patch Changes

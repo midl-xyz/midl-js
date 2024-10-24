@@ -1,12 +1,10 @@
-import { Psbt, initEccLib, networks, payments } from "bitcoinjs-lib";
+import { Psbt, initEccLib, networks } from "bitcoinjs-lib";
 import coinSelect from "bitcoinselect";
 import { broadcastTransaction } from "~/actions/broadcastTransaction";
 import { getFeeRate } from "~/actions/getFeeRate";
 import { getUTXOs } from "~/actions/getUTXOs";
-import { AddressType } from "~/constants";
 import type { Config } from "~/createConfig";
-import { extractXCoordinate } from "~/utils";
-import ky from "ky";
+import { makePSBTInputs } from "~/utils";
 
 export type TransferBTCParams = {
 	transfers: {
@@ -67,75 +65,8 @@ export const transferBTC = async (
 
 	const psbt = new Psbt({ network });
 
-	switch (account.addressType) {
-		case AddressType.P2SH: {
-			const { redeem } = payments.p2sh({
-				redeem: payments.p2wpkh({
-					pubkey: Buffer.from(account.publicKey, "hex"),
-				}),
-			});
-
-			for (const input of selectedUTXOs.inputs) {
-				const hex = await ky(`${config.network.rpcUrl}/tx/${input.txid}/hex`, {
-					retry: {
-						limit: 5,
-					},
-				}).text();
-
-				psbt.addInput({
-					hash: input.txid as string,
-					index: input.vout,
-					nonWitnessUtxo: Buffer.from(hex, "hex"),
-					redeemScript: redeem?.output,
-				});
-			}
-
-			break;
-		}
-
-		case AddressType.P2WPKH: {
-			const p2wpkh = payments.p2wpkh({
-				pubkey: Buffer.from(account.publicKey, "hex"),
-				network,
-			});
-
-			for (const input of selectedUTXOs.inputs) {
-				psbt.addInput({
-					hash: input.txid as string,
-					index: input.vout,
-					witnessUtxo: {
-						// biome-ignore lint/style/noNonNullAssertion: we know it's there
-						script: p2wpkh.output!,
-						value: input.value,
-					},
-				});
-			}
-
-			break;
-		}
-
-		case AddressType.P2TR: {
-			const xOnly = Buffer.from(extractXCoordinate(account.publicKey), "hex");
-
-			const p2tr = payments.p2tr({
-				internalPubkey: xOnly,
-				network,
-			});
-
-			for (const input of selectedUTXOs.inputs) {
-				psbt.addInput({
-					hash: input.txid as string,
-					index: input.vout,
-					witnessUtxo: {
-						value: input.value,
-						// biome-ignore lint/style/noNonNullAssertion: <explanation>
-						script: p2tr!.output!,
-					},
-					tapInternalKey: xOnly,
-				});
-			}
-		}
-	}
+	const inputs = await makePSBTInputs(config, account, selectedUTXOs.inputs);
+	psbt.addInputs(inputs);
 
 	for (const output of selectedUTXOs.outputs) {
 		if (!output.address) {
