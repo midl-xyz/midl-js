@@ -1,6 +1,6 @@
 {
     "name": "@midl-xyz/midl-js-executor",
-    "version": "0.0.27",
+    "version": "0.0.28",
     "scripts": {
         "build": "pkgroll",
         "dev": "pkgroll --watch",
@@ -37,8 +37,7 @@
     },
     "dependencies": {
         "@midl-xyz/contracts": "^0.0.2",
-        "@midl-xyz/midl-js-core": "workspace:^",
-        "@noble/secp256k1": "^2.1.0"
+        "@midl-xyz/midl-js-core": "workspace:^"
     },
     "peerDependencies": {
         "@midl-xyz/midl-js-react": "workspace:^",

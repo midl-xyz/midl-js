@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 0.0.21
+
+### Patch Changes
+
+- fix: evm address extraction
+
 ## 0.0.20
 
 ### Patch Changes

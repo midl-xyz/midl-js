@@ -55,6 +55,7 @@ const formSchema = z.object({
   offsetEnd: z.number().or(z.string()).pipe(z.coerce.number()).optional(),
   amount: z.number().or(z.string()).pipe(z.coerce.number()).optional(),
   cap: z.number().or(z.string()).pipe(z.coerce.number()).optional(),
+  logo: z.instanceof(File).optional(),
 });
 
 export const RuneForm = () => {
@@ -135,6 +136,13 @@ export const RuneForm = () => {
       symbol: data.symbol,
       premine,
       divisibility,
+      heightStart: data.heightStart,
+      heightEnd: data.heightEnd,
+      offsetStart: data.offsetStart,
+      offsetEnd: data.offsetEnd,
+      amount: data.amount,
+      cap: data.cap,
+      content: "",
     });
   };
 
@@ -174,6 +182,11 @@ export const RuneForm = () => {
   const { mutate: sendTransactions } = useMutation({
     onSuccess: () => {
       setIsDialogOpen(false);
+      toast({
+        title: "Success",
+        description: "Rune etched successfully",
+        color: "success",
+      });
     },
     mutationFn: async (
       data:
@@ -321,6 +334,25 @@ export const RuneForm = () => {
                 {form.formState.errors.name && (
                   <FormMessage>
                     {form.formState.errors.name.message}
+                  </FormMessage>
+                )}
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="logo"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Logo (optional)</FormLabel>
+                <FormControl>
+                  <Input {...field} type="file" />
+                </FormControl>
+                <FormDescription>Upload a logo for the rune</FormDescription>
+                {form.formState.errors.logo && (
+                  <FormMessage>
+                    {form.formState.errors.logo.message}
                   </FormMessage>
                 )}
               </FormItem>

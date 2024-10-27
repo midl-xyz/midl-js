@@ -1,7 +1,7 @@
 import { useAccounts } from "@midl-xyz/midl-js-react";
-import { type Address, publicKeyToAddress } from "viem/accounts";
-import { ProjectivePoint } from "@noble/secp256k1";
-import { toHex, zeroAddress } from "viem";
+import { zeroAddress } from "viem";
+import type { Address } from "viem/accounts";
+import { getEVMAddress } from "~/utils/getEVMAddress";
 
 type UseEVMAddressParams = {
   publicKey?: Address;
@@ -14,13 +14,11 @@ export const useEVMAddress = ({ publicKey }: UseEVMAddressParams = {}) => {
     const pk =
       publicKey ?? paymentAccount?.publicKey ?? ordinalsAccount?.publicKey;
 
-    const point = ProjectivePoint.fromHex(pk as `0x${string}`); // `0x${string}` is a type assertion
+    if (!pk) {
+      return zeroAddress;
+    }
 
-    const uncompressedPublicKeyHex = toHex(
-      point.toRawBytes(false) // false means we want the uncompressed public key
-    );
-    const evmAddress = publicKeyToAddress(`${uncompressedPublicKeyHex}`);
-    return evmAddress;
+    return getEVMAddress(`0x${pk}`);
   } catch (e) {
     return zeroAddress;
   }
