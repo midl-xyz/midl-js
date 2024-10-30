@@ -1,7 +1,7 @@
 import type { Config } from "~/createConfig";
 import ky from "ky";
 
-type UTXO = {
+export type UTXO = {
 	readonly txid: string;
 	readonly vout: number;
 	readonly value: number;

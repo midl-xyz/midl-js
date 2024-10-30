@@ -27,12 +27,13 @@
     "@leather.io/models": "^0.18.2",
     "@leather.io/rpc": "2.1.12",
     "@midl-xyz/midl-js-config": "workspace:^",
-    "msw": "^2.4.11"
+    "msw": "^2.5.2"
   },
   "dependencies": {
     "@metamask/providers": "^17.1.1",
     "@noble/secp256k1": "^2.1.0",
-    "bitcoinjs-lib": "^6.1.6",
+    "bip32": "5.0.0-rc.0",
+    "bitcoinjs-lib": "7.0.0-rc.0",
     "bitcoinselect": "^1.0.0",
     "coinselect": "^3.1.13",
     "ecpair": "^2.1.0",

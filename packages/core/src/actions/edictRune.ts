@@ -11,7 +11,7 @@ import { extractXCoordinate, makePSBTInputs, runeUTXOSelect } from "~/utils";
 
 type TransferOutput = {
 	address: string;
-	value: number;
+	value: bigint;
 };
 
 export type EdictRuneParams = {
@@ -24,7 +24,7 @@ export type EdictRuneParams = {
 		  }
 		| {
 				receiver: string;
-				amount: number;
+				amount: bigint;
 		  }
 	)[];
 	feeRate?: number;
@@ -36,7 +36,7 @@ export type EdictRuneResponse = {
 	txId?: string;
 };
 
-const RUNE_MAGIC_VALUE = 546;
+const RUNE_MAGIC_VALUE = 546n;
 
 export const edictRune = async (
 	config: Config,
@@ -133,9 +133,10 @@ export const edictRune = async (
 	const psbt = new Psbt({ network });
 
 	const inputs = await makePSBTInputs(config, account, selectedUTXOs.inputs);
+
 	psbt.addInputs(inputs);
 
-	const xOnly = extractXCoordinate(ordinalsAccount.publicKey);
+	const xOnly = extractXCoordinate(account.publicKey);
 
 	const ordinalsP2TR = payments.p2tr({
 		internalPubkey: Buffer.from(xOnly, "hex"),
@@ -187,11 +188,10 @@ export const edictRune = async (
 
 	psbt.addOutput({
 		script: mintStone.encipher(),
-		value: 0,
+		value: 0n,
 	});
 
 	const psbtData = psbt.toBase64();
-
 	const signInputs = {} as Record<string, number[]>;
 
 	if (account.address !== ordinalsAccount.address) {
