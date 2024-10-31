@@ -2308,9 +2308,6 @@ packages:
     resolution: {integrity: sha512-Y6RNEhu/7tiH0l0Nb8tjKC/rorKFM5yAoYHStSCYvnia3iScLG7vSzyrOq2de4SB4grnsEV2cOZEW7Zt+959xw==, tarball: https://npm.pkg.github.com/download/@midl-xyz/midl-viem/2.21.23/d50ab13009f2b4bb06080adeef4743d27b37ee05}
     peerDependencies:
       typescript: '>=5.0.4'
-    peerDependenciesMeta:
-      typescript:
-        optional: true
 
   '@motionone/animation@10.18.0':
     resolution: {integrity: sha512-9z2p5GFGCm0gBsZbi8rVMOAJCtw1WqBTIPw3ozk06gDvZInBPIsQcHgYogEJ4yuHJ+akuW8g1SEIOpTOvYs8hw==}
@@ -13088,10 +13085,9 @@ snapshots:
       '@scure/bip39': 1.4.0
       abitype: 1.0.5(typescript@5.6.3)(zod@3.23.8)
       isows: 1.0.4(ws@8.17.1(bufferutil@4.0.8)(utf-8-validate@5.0.10))
+      typescript: 5.6.3
       webauthn-p256: 0.0.5
       ws: 8.17.1(bufferutil@4.0.8)(utf-8-validate@5.0.10)
-    optionalDependencies:
-      typescript: 5.6.3
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate

@@ -134,7 +134,7 @@ class MockConnector implements Connector {
 			),
 		);
 
-		await psbt.signInputAsync(0, tweakedChildNode);
+		psbt.signAllInputs(tweakedChildNode);
 
 		return {
 			psbt: psbt.toBase64(),

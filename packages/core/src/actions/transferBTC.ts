@@ -73,7 +73,10 @@ export const transferBTC = async (
 			output.address = account.address;
 		}
 
-		psbt.addOutput(output as Parameters<typeof psbt.addOutput>[0]);
+		psbt.addOutput({
+			...output,
+			value: output.value ? BigInt(output.value) : 0n,
+		} as Parameters<typeof psbt.addOutput>[0]);
 	}
 
 	const psbtData = psbt.toBase64();

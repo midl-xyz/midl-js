@@ -11,7 +11,7 @@ import { extractXCoordinate, makePSBTInputs, runeUTXOSelect } from "~/utils";
 
 type TransferOutput = {
 	address: string;
-	value: bigint;
+	value: number;
 };
 
 export type EdictRuneParams = {
@@ -24,7 +24,7 @@ export type EdictRuneParams = {
 		  }
 		| {
 				receiver: string;
-				amount: bigint;
+				amount: number;
 		  }
 	)[];
 	feeRate?: number;
@@ -36,7 +36,7 @@ export type EdictRuneResponse = {
 	txId?: string;
 };
 
-const RUNE_MAGIC_VALUE = 546n;
+const RUNE_MAGIC_VALUE = 546;
 
 export const edictRune = async (
 	config: Config,
@@ -148,7 +148,7 @@ export const edictRune = async (
 			hash: utxo.txid,
 			index: utxo.vout,
 			witnessUtxo: {
-				value: utxo.satoshis,
+				value: BigInt(utxo.satoshis),
 				// biome-ignore lint/style/noNonNullAssertion: <explanation>
 				script: ordinalsP2TR.output!,
 			},
@@ -161,7 +161,10 @@ export const edictRune = async (
 			output.address = account.address;
 		}
 
-		psbt.addOutput(output as Parameters<typeof psbt.addOutput>[0]);
+		psbt.addOutput({
+			...output,
+			value: output.value ? BigInt(output.value) : 0n,
+		} as Parameters<typeof psbt.addOutput>[0]);
 	}
 
 	const edicts = transfers
@@ -174,17 +177,23 @@ export const edictRune = async (
 				transfer.amount,
 				psbt.txOutputs.findIndex(
 					(t) =>
-						transfer.receiver === t.address && t.value === RUNE_MAGIC_VALUE,
+						transfer.receiver === t.address &&
+						t.value === BigInt(RUNE_MAGIC_VALUE),
 				),
 			);
 		});
 
 	const changeIndex = psbt.txOutputs.findIndex(
 		(it) =>
-			it.address === ordinalsAccount.address && it.value === RUNE_MAGIC_VALUE,
+			it.address === ordinalsAccount.address &&
+			it.value === BigInt(RUNE_MAGIC_VALUE),
 	);
 
 	const mintStone = new Runestone(edicts, none(), none(), some(changeIndex));
+
+	if (mintStone.edicts.length > 1) {
+		throw new Error("Only one edict per transaction is allowed");
+	}
 
 	psbt.addOutput({
 		script: mintStone.encipher(),

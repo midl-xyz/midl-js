@@ -30,21 +30,22 @@ describe("core | actions | edictRune", () => {
 		await config.connectors[0].connect({ purposes: [AddressPurpose.Ordinals] });
 	});
 
-	it("should create correct psbt", async () => {
-		const test = await edictRune(config, {
-			transfers: [
-				{
-					runeId: "1:1",
-					amount: 100n,
-					receiver: makeRandomAddress(bitcoin.networks.regtest),
-				},
-			],
-		});
-
-		const psbt = Psbt.fromBase64(test.psbt);
-
-		expect(psbt.txOutputs[0].script.toString("hex")).toBe(
-			"76a914d2b6b6c5d3f7f9e2b6e1c7f2",
-		);
+	it("should throw if more than 1 edict", async () => {
+		expect(() =>
+			edictRune(config, {
+				transfers: [
+					{
+						runeId: "1:1",
+						amount: 100n,
+						receiver: makeRandomAddress(bitcoin.networks.regtest),
+					},
+					{
+						runeId: "2:1",
+						amount: 100n,
+						receiver: makeRandomAddress(bitcoin.networks.regtest),
+					},
+				],
+			}),
+		).rejects.toThrowError("Only one edict per transaction is allowed");
 	});
 });
