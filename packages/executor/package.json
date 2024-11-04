@@ -28,6 +28,7 @@
         "@midl-xyz/midl-js-config": "workspace:^",
         "@midl-xyz/midl-js-react": "workspace:^",
         "@tanstack/react-query": "^5.59.9",
+        "@types/node": "^22.8.7",
         "@types/react": "^18",
         "@wagmi/cli": "^2.1.15",
         "@wagmi/connectors": "^5.1.11",
