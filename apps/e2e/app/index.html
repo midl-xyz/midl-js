@@ -1,10 +1,13 @@
 <!doctype html>
 <html lang="en">
   <head>
-     <script type="module">
+    <script type="module">
       import { Buffer } from "buffer";
       window.Buffer = Buffer;
-    </script>   
+      BigInt.prototype.toJSON = function () {
+        return this.toString();
+      };
+    </script>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />

@@ -6,11 +6,12 @@ import {
 } from "@midl-xyz/midl-js-executor";
 import { useBroadcastTransaction, useEdictRune } from "@midl-xyz/midl-js-react";
 import { useState } from "react";
-import { encodeFunctionData, erc20Abi, parseUnits, toHex } from "viem";
+import { encodeFunctionData, erc20Abi, parseUnits } from "viem";
 import { useChainId, useTransactionCount, useWalletClient } from "wagmi";
 import { uniswapV2Router02Abi } from "../config/abi";
 import { multisigAddress, uniswapRouterAddress } from "../config/addresses";
 import { runeId } from "../config/rune";
+import { useLogData } from "../hooks/useLogData";
 
 export const AddLiquidity = () => {
 	const { erc20Address, rune } = useERC20Rune(runeId);
@@ -27,6 +28,7 @@ export const AddLiquidity = () => {
 	const chainId = useChainId();
 	const { data: walletClient } = useWalletClient();
 	const { broadcastTransactionAsync } = useBroadcastTransaction();
+	const { log, logData } = useLogData();
 
 	const bitcoinAmount = 0.0001;
 	const runeAmount = 50_000n;
@@ -48,51 +50,55 @@ export const AddLiquidity = () => {
 			publish: false,
 		});
 
-		const approveTx = await signTransactionAsync({
-			tx: {
-				to: erc20Address,
-				data: encodeFunctionData({
-					abi: erc20Abi,
-					functionName: "approve",
-					args: [uniswapRouterAddress, runeAmount],
-				}),
-				btcTxHash: `0x${btcTx.tx.id}`,
-				publicKey: p2tr as `0x${string}`,
-				gas: 50_000n,
-				gasPrice: 1000n,
-				chainId,
-				nonce: nonce,
-			},
-		});
+		const approveTx = await signTransactionAsync(
+			logData({
+				tx: {
+					to: erc20Address,
+					data: encodeFunctionData({
+						abi: erc20Abi,
+						functionName: "approve",
+						args: [uniswapRouterAddress, runeAmount],
+					}),
+					btcTxHash: `0x${btcTx.tx.id}`,
+					publicKey: p2tr as `0x${string}`,
+					gas: 50_000n,
+					gasPrice: 1000n,
+					chainId,
+					nonce: nonce,
+				},
+			}),
+		);
 
-		const addLiquidityTx = await signTransactionAsync({
-			tx: {
-				to: uniswapRouterAddress,
-				data: encodeFunctionData({
-					abi: uniswapV2Router02Abi,
-					functionName: "addLiquidityETH",
-					args: [
-						erc20Address as `0x${string}`,
-						runeAmount,
-						0n,
-						0n,
-						evmAddress,
-						BigInt(
-							Number.parseInt(
-								((new Date().getTime() + 1000 * 60 * 15) / 1000).toString(),
+		const addLiquidityTx = await signTransactionAsync(
+			logData({
+				tx: {
+					to: uniswapRouterAddress,
+					data: encodeFunctionData({
+						abi: uniswapV2Router02Abi,
+						functionName: "addLiquidityETH",
+						args: [
+							erc20Address as `0x${string}`,
+							runeAmount,
+							0n,
+							0n,
+							evmAddress,
+							BigInt(
+								Number.parseInt(
+									((new Date().getTime() + 1000 * 60 * 15) / 1000).toString(),
+								),
 							),
-						),
-					],
-				}),
-				btcTxHash: `0x${btcTx.tx.id}`,
-				publicKey: p2tr as `0x${string}`,
-				chainId,
-				gas: 2_500_000n,
-				gasPrice: 1000n,
-				nonce: nonce + 1,
-				value: parseUnits(bitcoinAmount.toString(), 18),
-			},
-		});
+						],
+					}),
+					btcTxHash: `0x${btcTx.tx.id}`,
+					publicKey: p2tr as `0x${string}`,
+					chainId,
+					gas: 2_500_000n,
+					gasPrice: 1000n,
+					nonce: nonce + 1,
+					value: parseUnits(bitcoinAmount.toString(), 18),
+				},
+			}),
+		);
 
 		const txIdApprove = await walletClient?.sendRawTransaction({
 			serializedTransaction: approveTx,
@@ -128,6 +134,12 @@ export const AddLiquidity = () => {
 					</p>
 				</>
 			)}
+
+			<pre>
+				{log.map((l, i) => (
+					<div key={i.toString()}>{l}</div>
+				))}
+			</pre>
 		</div>
 	);
 };
