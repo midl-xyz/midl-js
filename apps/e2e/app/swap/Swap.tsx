@@ -13,12 +13,12 @@ import { type Address, encodeFunctionData, parseUnits } from "viem";
 import { useChainId, useTransactionCount, useWalletClient } from "wagmi";
 import { uniswapV2Router02Abi } from "../config/abi";
 import { multisigAddress, uniswapRouterAddress } from "../config/addresses";
+import { runeId } from "../config/rune";
 
 const WETH = "0x76818770D192A506F90e79D5cB844E708be0D7A0";
 
 export const Swap = () => {
-	// biome-ignore lint/style/noNonNullAssertion: RUNE_ID is set in the environment
-	const { erc20Address, rune } = useERC20Rune(import.meta.env.VITE_RUNE_ID!);
+	const { erc20Address } = useERC20Rune(runeId);
 	const { signTransactionAsync } = useSignTransaction();
 	const { transferBTCAsync } = useTransferBTC();
 	const [data, setData] = useState<{

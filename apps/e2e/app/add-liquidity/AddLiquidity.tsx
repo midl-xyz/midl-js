@@ -10,10 +10,10 @@ import { encodeFunctionData, erc20Abi, parseUnits, toHex } from "viem";
 import { useChainId, useTransactionCount, useWalletClient } from "wagmi";
 import { uniswapV2Router02Abi } from "../config/abi";
 import { multisigAddress, uniswapRouterAddress } from "../config/addresses";
+import { runeId } from "../config/rune";
 
 export const AddLiquidity = () => {
-	// biome-ignore lint/style/noNonNullAssertion: RUNE_ID is set in the environment
-	const { erc20Address, rune } = useERC20Rune(import.meta.env.VITE_RUNE_ID!);
+	const { erc20Address, rune } = useERC20Rune(runeId);
 	const { signTransactionAsync } = useSignTransaction();
 	const { edictRuneAsync } = useEdictRune();
 	const [data, setData] = useState<{
