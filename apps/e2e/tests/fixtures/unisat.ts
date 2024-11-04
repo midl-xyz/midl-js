@@ -17,6 +17,7 @@ const unlockWallet = async ({
 }) => {
 	if (await isWalletLocked({ page })) {
 		if (!skipNavigation) {
+			await page.waitForLoadState("networkidle");
 			await page.goto(
 				"chrome-extension://boecohhhjhnaabnbbeddfaoiomabiehj/index.html#/account/unlock",
 				{ waitUntil: "networkidle" },
@@ -32,6 +33,8 @@ export const configureWallet = async ({ page, extensionId }: CommonArgs) => {
 	if (!process.env.MNEMONIC) {
 		throw new Error("No mnemonic provided");
 	}
+
+	await page.waitForLoadState("networkidle");
 
 	await page.goto(
 		`chrome-extension://${extensionId}/index.html#/account/create-password`,

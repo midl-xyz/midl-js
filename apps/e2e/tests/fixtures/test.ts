@@ -1,3 +1,5 @@
+/* eslint-disable no-empty-pattern */
+/* eslint-disable react-hooks/rules-of-hooks */
 import { test as base, chromium, type BrowserContext } from "@playwright/test";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -24,14 +26,6 @@ export const test = base.extend<{
 		await context.close();
 	},
 	extensionId: async ({ context }, use) => {
-		/*
-    // for manifest v2:
-    let [background] = context.backgroundPages()
-    if (!background)
-      background = await context.waitForEvent('backgroundpage')
-    */
-
-		// for manifest v3:
 		let [background] = context.serviceWorkers();
 		if (!background) background = await context.waitForEvent("serviceworker");
 
