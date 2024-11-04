@@ -14,6 +14,7 @@ import { useChainId, useTransactionCount, useWalletClient } from "wagmi";
 import { uniswapV2Router02Abi } from "../config/abi";
 import { multisigAddress, uniswapRouterAddress } from "../config/addresses";
 import { runeId } from "../config/rune";
+import { useLogData } from "../hooks/useLogData";
 
 const WETH = "0x76818770D192A506F90e79D5cB844E708be0D7A0";
 
@@ -31,6 +32,7 @@ export const Swap = () => {
 	const chainId = useChainId();
 	const { data: walletClient } = useWalletClient();
 	const { broadcastTransactionAsync } = useBroadcastTransaction();
+	const { log, logData } = useLogData();
 
 	const bitcoinAmount = 0.000001;
 
@@ -45,33 +47,35 @@ export const Swap = () => {
 			publish: false,
 		});
 
-		const swapTx = await signTransactionAsync({
-			tx: {
-				to: uniswapRouterAddress,
-				data: encodeFunctionData({
-					abi: uniswapV2Router02Abi,
-					functionName: "swapExactETHForTokens",
-					args: [
-						0n,
-						[WETH, erc20Address as Address],
-						evmAddress,
+		const swapTx = await signTransactionAsync(
+			logData({
+				tx: {
+					to: uniswapRouterAddress,
+					data: encodeFunctionData({
+						abi: uniswapV2Router02Abi,
+						functionName: "swapExactETHForTokens",
+						args: [
+							0n,
+							[WETH, erc20Address as Address],
+							evmAddress,
 
-						BigInt(
-							Number.parseInt(
-								((new Date().getTime() + 1000 * 60 * 15) / 1000).toString(),
+							BigInt(
+								Number.parseInt(
+									((new Date().getTime() + 1000 * 60 * 15) / 1000).toString(),
+								),
 							),
-						),
-					],
-				}),
-				btcTxHash: `0x${btcTx.tx.id}`,
-				publicKey: p2tr as `0x${string}`,
-				chainId,
-				gas: 500_000n,
-				gasPrice: 1000n,
-				nonce: nonce,
-				value: parseUnits(bitcoinAmount.toString(), 18),
-			},
-		});
+						],
+					}),
+					btcTxHash: `0x${btcTx.tx.id}`,
+					publicKey: p2tr as `0x${string}`,
+					chainId,
+					gas: 500_000n,
+					gasPrice: 1000n,
+					nonce: nonce,
+					value: parseUnits(bitcoinAmount.toString(), 18),
+				},
+			}),
+		);
 
 		const txId = await walletClient?.sendRawTransaction({
 			serializedTransaction: swapTx,
@@ -99,6 +103,12 @@ export const Swap = () => {
 					<p data-testid="swap-tx-id">{data.txId}</p>
 				</div>
 			)}
+
+			<pre>
+				{log.map((e, i) => (
+					<pre key={i.toString()}>{e}</pre>
+				))}
+			</pre>
 		</div>
 	);
 };
