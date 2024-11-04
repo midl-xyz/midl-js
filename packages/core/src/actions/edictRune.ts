@@ -33,7 +33,10 @@ export type EdictRuneParams = {
 
 export type EdictRuneResponse = {
 	psbt: string;
-	txId?: string;
+	tx: {
+		id: string;
+		hex: string;
+	};
 };
 
 const RUNE_MAGIC_VALUE = 546;
@@ -235,9 +238,20 @@ export const edictRune = async (
 
 		return {
 			psbt: psbtBase64,
-			txId,
+			tx: {
+				id: txId,
+				hex,
+			},
 		};
 	}
 
-	return { psbt: psbtBase64 };
+	const tx = signedPSBT.extractTransaction();
+
+	return {
+		psbt: psbtBase64,
+		tx: {
+			id: tx.getId(),
+			hex: tx.toHex(),
+		},
+	};
 };

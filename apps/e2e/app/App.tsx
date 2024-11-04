@@ -7,6 +7,7 @@ import type { Chain } from "wagmi/chains";
 import { Connect } from "./connect/Connect";
 import { EdictRune } from "./edict/EdictRune";
 import midlConfig from "./midl.config";
+import { AddLiquidity } from "./add-liquidity/AddLiquidity";
 
 export default function App() {
 	const queryClient = new QueryClient();
@@ -25,6 +26,7 @@ export default function App() {
 					<WagmiMidlProvider />
 					<Connect />
 					<EdictRune />
+					<AddLiquidity />
 				</WagmiProvider>
 			</QueryClientProvider>
 		</MidlProvider>

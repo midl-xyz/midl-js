@@ -5,3 +5,5 @@ export * from "./useLastBlock";
 export * from "./useLastNonce";
 export * from "./useSerializeTransaction";
 export * from "./useToken";
+export * from "./useSignTransaction";
+export * from "./useP2TRPublicKey";

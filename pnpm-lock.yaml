@@ -404,7 +404,7 @@ importers:
         specifier: workspace:^
         version: link:../react
       '@tanstack/react-query':
-        specifier: '*'
+        specifier: ^5.59.9
         version: 5.59.9(react@18.3.1)
       '@types/react':
         specifier: ^18
@@ -415,6 +415,9 @@ importers:
       '@wagmi/connectors':
         specifier: ^5.1.11
         version: 5.1.15(@midl-xyz/midl-viem@2.21.23(bufferutil@4.0.8)(typescript@5.6.3)(utf-8-validate@5.0.10)(zod@3.23.8))(@types/react@18.3.11)(@wagmi/core@2.13.8(@midl-xyz/midl-viem@2.21.23(bufferutil@4.0.8)(typescript@5.6.3)(utf-8-validate@5.0.10)(zod@3.23.8))(@tanstack/query-core@5.59.9)(@types/react@18.3.11)(immer@10.1.1)(react@18.3.1)(typescript@5.6.3))(bufferutil@4.0.8)(react-dom@18.3.1(react@18.3.1))(react-native@0.75.4(@babel/core@7.25.8)(@babel/preset-env@7.25.8(@babel/core@7.25.8))(@types/react@18.3.11)(bufferutil@4.0.8)(react@18.3.1)(typescript@5.6.3)(utf-8-validate@5.0.10))(react@18.3.1)(rollup@4.24.0)(typescript@5.6.3)(utf-8-validate@5.0.10)(zod@3.23.8)
+      bitcoinjs-lib:
+        specifier: 7.0.0-rc.0
+        version: 7.0.0-rc.0(typescript@5.6.3)
       react:
         specifier: ^18.3.1
         version: 18.3.1

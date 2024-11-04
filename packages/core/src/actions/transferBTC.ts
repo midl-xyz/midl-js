@@ -18,7 +18,10 @@ export type TransferBTCParams = {
 
 export type TransferBTCResponse = {
 	psbt: string;
-	txId?: string;
+	tx: {
+		id: string;
+		hex: string;
+	};
 };
 
 export const transferBTC = async (
@@ -101,9 +104,17 @@ export const transferBTC = async (
 
 		return {
 			psbt: psbtBase64,
-			txId,
+			tx: { id: txId, hex },
 		};
 	}
 
-	return { psbt: psbtBase64 };
+	const tx = signedPSBT.extractTransaction();
+
+	return {
+		psbt: psbtBase64,
+		tx: {
+			id: tx.getId(),
+			hex: tx.toHex(),
+		},
+	};
 };
