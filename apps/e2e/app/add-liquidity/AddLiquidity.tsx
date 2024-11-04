@@ -36,7 +36,7 @@ export const AddLiquidity = () => {
 			transfers: [
 				{
 					receiver: multisigAddress,
-					amount: 300_000 + Number(bitcoinAmount),
+					amount: 300_000 + Number(parseUnits(bitcoinAmount.toString(), 8)),
 				},
 				{
 					receiver: multisigAddress,

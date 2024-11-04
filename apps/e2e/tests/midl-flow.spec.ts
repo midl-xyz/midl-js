@@ -101,11 +101,11 @@ test.describe("Add Liquidity Flow", () => {
 
 		await acceptSign({ page, context, extensionId });
 
-		await page.waitForTimeout(500);
+		await page.waitForTimeout(2000);
 
 		await acceptSign({ page, context, extensionId });
 
-		await page.waitForTimeout(500);
+		await page.waitForTimeout(2000);
 
 		await acceptSign({ page, context, extensionId });
 
@@ -158,7 +158,7 @@ test.describe("Add Liquidity Flow", () => {
 
 		await acceptSign({ page, context, extensionId });
 
-		await page.waitForTimeout(500);
+		await page.waitForTimeout(2000);
 
 		await acceptSign({ page, context, extensionId });
 

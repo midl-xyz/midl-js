@@ -123,32 +123,42 @@ export const acceptSign = async ({
 	context,
 	extensionId,
 }: Pick<TestArgs, "context" | "page" | "extensionId">) => {
-	const page = await new Promise<Page>((resolve) => {
-		const onNewPage = async (page: Page) => {
-			if (page.url().includes(extensionId)) {
-				await page.waitForTimeout(500);
-				await page.bringToFront();
-				await unlockWallet({ page, skipNavigation: true });
+	let page = context
+		.pages()
+		.find((page) =>
+			page
+				.url()
+				.includes(`chrome-extension://${extensionId}/notification.html`),
+		);
 
-				await page
-					.getByText("Sign", {
-						exact: true,
-					})
-					.last()
-					.click();
+	if (!page) {
+		page = await new Promise<Page>((resolve) => {
+			const onNewPage = async (page: Page) => {
+				if (page.url().includes(extensionId)) {
+					resolve(page);
+				}
 
-				resolve(page);
-			}
+				context.off("page", onNewPage);
+			};
 
-			context.off("page", onNewPage);
-		};
-
-		context.on("page", onNewPage);
-	});
+			context.on("page", onNewPage);
+		});
+	}
 
 	if (!page) {
 		throw new Error("No notification page found");
 	}
+
+	await page.waitForTimeout(500);
+	await page.bringToFront();
+	await unlockWallet({ page, skipNavigation: true });
+
+	await page
+		.getByText("Sign", {
+			exact: true,
+		})
+		.last()
+		.click();
 };
 
 export const closeAutoOpenedExtensionTab = async ({
