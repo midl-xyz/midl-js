@@ -31,8 +31,14 @@ class UnisatConnector implements Connector {
 			throw new Error("Unisat not found");
 		}
 
+		const requestedAccounts = await window.unisat.requestAccounts();
 		const publicKey = await window.unisat.getPublicKey();
-		const accounts = (await window.unisat.requestAccounts()).map((it) => {
+
+		if (!publicKey) {
+			throw new Error("Public key not found");
+		}
+
+		const accounts = requestedAccounts.map((it) => {
 			return {
 				address: it,
 				publicKey: publicKey,
