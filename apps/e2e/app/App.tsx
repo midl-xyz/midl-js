@@ -8,6 +8,7 @@ import { Connect } from "./connect/Connect";
 import { EdictRune } from "./edict/EdictRune";
 import midlConfig from "./midl.config";
 import { AddLiquidity } from "./add-liquidity/AddLiquidity";
+import { Swap } from "./swap/Swap";
 
 export default function App() {
 	const queryClient = new QueryClient();
@@ -27,6 +28,7 @@ export default function App() {
 					<Connect />
 					<EdictRune />
 					<AddLiquidity />
+					<Swap />
 				</WagmiProvider>
 			</QueryClientProvider>
 		</MidlProvider>
