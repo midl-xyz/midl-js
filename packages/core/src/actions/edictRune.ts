@@ -33,7 +33,10 @@ export type EdictRuneParams = {
 
 export type EdictRuneResponse = {
 	psbt: string;
-	txId?: string;
+	tx: {
+		id: string;
+		hex: string;
+	};
 };
 
 const RUNE_MAGIC_VALUE = 546;
@@ -133,9 +136,10 @@ export const edictRune = async (
 	const psbt = new Psbt({ network });
 
 	const inputs = await makePSBTInputs(config, account, selectedUTXOs.inputs);
+
 	psbt.addInputs(inputs);
 
-	const xOnly = extractXCoordinate(ordinalsAccount.publicKey);
+	const xOnly = extractXCoordinate(account.publicKey);
 
 	const ordinalsP2TR = payments.p2tr({
 		internalPubkey: Buffer.from(xOnly, "hex"),
@@ -147,7 +151,7 @@ export const edictRune = async (
 			hash: utxo.txid,
 			index: utxo.vout,
 			witnessUtxo: {
-				value: utxo.satoshis,
+				value: BigInt(utxo.satoshis),
 				// biome-ignore lint/style/noNonNullAssertion: <explanation>
 				script: ordinalsP2TR.output!,
 			},
@@ -160,7 +164,10 @@ export const edictRune = async (
 			output.address = account.address;
 		}
 
-		psbt.addOutput(output as Parameters<typeof psbt.addOutput>[0]);
+		psbt.addOutput({
+			...output,
+			value: output.value ? BigInt(output.value) : 0n,
+		} as Parameters<typeof psbt.addOutput>[0]);
 	}
 
 	const edicts = transfers
@@ -173,25 +180,30 @@ export const edictRune = async (
 				transfer.amount,
 				psbt.txOutputs.findIndex(
 					(t) =>
-						transfer.receiver === t.address && t.value === RUNE_MAGIC_VALUE,
+						transfer.receiver === t.address &&
+						t.value === BigInt(RUNE_MAGIC_VALUE),
 				),
 			);
 		});
 
 	const changeIndex = psbt.txOutputs.findIndex(
 		(it) =>
-			it.address === ordinalsAccount.address && it.value === RUNE_MAGIC_VALUE,
+			it.address === ordinalsAccount.address &&
+			it.value === BigInt(RUNE_MAGIC_VALUE),
 	);
 
 	const mintStone = new Runestone(edicts, none(), none(), some(changeIndex));
 
+	if (mintStone.edicts.length > 1) {
+		throw new Error("Only one edict per transaction is allowed");
+	}
+
 	psbt.addOutput({
 		script: mintStone.encipher(),
-		value: 0,
+		value: 0n,
 	});
 
 	const psbtData = psbt.toBase64();
-
 	const signInputs = {} as Record<string, number[]>;
 
 	if (account.address !== ordinalsAccount.address) {
@@ -226,9 +238,20 @@ export const edictRune = async (
 
 		return {
 			psbt: psbtBase64,
-			txId,
+			tx: {
+				id: txId,
+				hex,
+			},
 		};
 	}
 
-	return { psbt: psbtBase64 };
+	const tx = signedPSBT.extractTransaction();
+
+	return {
+		psbt: psbtBase64,
+		tx: {
+			id: tx.getId(),
+			hex: tx.toHex(),
+		},
+	};
 };

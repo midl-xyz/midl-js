@@ -233,9 +233,10 @@ export const etchRune = async (
 			output.address = account.address;
 		}
 
-		psbtFunding.addOutput(
-			output as Parameters<typeof psbtFunding.addOutput>[0],
-		);
+		psbtFunding.addOutput({
+			...output,
+			value: output.value ? BigInt(output.value) : 0n,
+		} as Parameters<typeof psbt.addOutput>[0]);
 	}
 
 	const psbtFundingData = psbtFunding.toBase64();
@@ -285,7 +286,7 @@ export const etchRune = async (
 		hash: fundingTx.getId() as string,
 		index: 0,
 		witnessUtxo: {
-			value: RUNE_MAGIC_VALUE + feeRate * ETCHING_TX_SIZE,
+			value: BigInt(RUNE_MAGIC_VALUE + feeRate * ETCHING_TX_SIZE),
 			// biome-ignore lint/style/noNonNullAssertion: <explanation>
 			script: scriptP2TR.output!,
 		},
@@ -302,7 +303,7 @@ export const etchRune = async (
 	psbt.addOutput({
 		// biome-ignore lint/style/noNonNullAssertion: <explanation>
 		address: scriptP2TR.address!,
-		value: RUNE_MAGIC_VALUE,
+		value: BigInt(RUNE_MAGIC_VALUE),
 	});
 
 	const psbtData = psbt.toBase64();
@@ -325,7 +326,7 @@ export const etchRune = async (
 		hash: fundingTx.getId() as string,
 		index: 1,
 		witnessUtxo: {
-			value: RUNE_MAGIC_VALUE + feeRate * ETCHING_TX_SIZE,
+			value: BigInt(RUNE_MAGIC_VALUE + feeRate * ETCHING_TX_SIZE),
 			// biome-ignore lint/style/noNonNullAssertion: <explanation>
 			script: scriptP2TR.output!,
 		},
@@ -341,12 +342,12 @@ export const etchRune = async (
 
 	revealPsbt.addOutput({
 		script: stone.encipher(),
-		value: 0,
+		value: 0n,
 	});
 
 	revealPsbt.addOutput({
 		address: receiver ?? ordinalsAccount.address,
-		value: RUNE_MAGIC_VALUE,
+		value: BigInt(RUNE_MAGIC_VALUE),
 	});
 
 	const revealPsbtData = revealPsbt.toBase64();

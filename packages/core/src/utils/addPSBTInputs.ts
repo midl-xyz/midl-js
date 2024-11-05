@@ -68,7 +68,7 @@ export const makePSBTInputs = async (
 					witnessUtxo: {
 						// biome-ignore lint/style/noNonNullAssertion: Output is defined
 						script: p2tr.output!,
-						value: utxo.value,
+						value: BigInt(utxo.value),
 					},
 					tapInternalKey: xOnly,
 				});
@@ -90,7 +90,7 @@ export const makePSBTInputs = async (
 					witnessUtxo: {
 						// biome-ignore lint/style/noNonNullAssertion: Output is defined
 						script: p2wpkh.output!,
-						value: utxo.value,
+						value: BigInt(utxo.value),
 					},
 				});
 			}
