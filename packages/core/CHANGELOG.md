@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 0.0.22
+
+### Patch Changes
+
+- Finalizing libraries
+
 ## 0.0.21
 
 ### Patch Changes
