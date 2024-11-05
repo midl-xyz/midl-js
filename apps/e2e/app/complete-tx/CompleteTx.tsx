@@ -11,10 +11,10 @@ import {
 import { useState } from "react";
 import { encodeFunctionData } from "viem";
 import { useChainId, useTransactionCount, useWalletClient } from "wagmi";
-import { multisigAddress, uniswapRouterAddress } from "../config/addresses";
+import { executorAbi } from "../config/abi";
+import { executorAddress, multisigAddress } from "../config/addresses";
 import { runeId } from "../config/rune";
 import { useLogData } from "../hooks/useLogData";
-import { executorAbi } from "../config/abi";
 
 export const CompleteTx = () => {
 	const { erc20Address } = useERC20Rune(runeId);
@@ -46,7 +46,7 @@ export const CompleteTx = () => {
 		const swapTx = await signTransactionAsync(
 			logData({
 				tx: {
-					to: uniswapRouterAddress,
+					to: executorAddress,
 					data: encodeFunctionData({
 						abi: executorAbi,
 						functionName: "completeTx",
