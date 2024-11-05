@@ -52,7 +52,7 @@ export const CompleteTx = () => {
 						functionName: "completeTx",
 						args: [
 							`0x${btcTx.tx.id}`,
-							BigInt(0),
+							0n,
 							p2tr as `0x${string}`,
 							[erc20Address as `0x${string}`],
 							[0n],
@@ -64,6 +64,7 @@ export const CompleteTx = () => {
 					gas: 500_000n,
 					gasPrice: 1000n,
 					nonce: nonce,
+					value: 0n,
 				},
 			}),
 		);
