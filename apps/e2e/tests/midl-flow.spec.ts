@@ -178,4 +178,52 @@ test.describe("Add Liquidity Flow", () => {
 
 		expect(confirmations).toBeGreaterThan(0);
 	});
+
+	test("complete tx", async ({ page, extensionId, context }) => {
+		await page.goto("http://localhost:5173", {
+			waitUntil: "networkidle",
+		});
+
+		const isConnected = await page.getByTestId("address").isVisible();
+
+		if (!isConnected) {
+			await page.getByTestId("connect").click();
+
+			await connectWallet({ page, context, extensionId });
+		}
+
+		await page
+			.getByTestId("address")
+			.waitFor({ state: "visible", timeout: 1_000 });
+
+		await page.getByTestId("complete-tx").click();
+
+		await acceptSign({ page, context, extensionId });
+
+		await page.waitForTimeout(2000);
+
+		await acceptSign({ page, context, extensionId });
+
+		await page.waitForTimeout(500);
+
+		const btcTx = await page
+			.getByTestId("complete-tx-btc-tx")
+			.first()
+			.textContent();
+		const txId = await page
+			.getByTestId("complete-tx-tx-id")
+			.first()
+			.textContent();
+
+		console.log(`BTC tx: ${btcTx}`);
+		console.log(`Complete tx: ${txId}`);
+
+		console.log(
+			`waiting for transaction: ${midlConfig.network?.explorerUrl}/tx/${btcTx}`,
+		);
+
+		const confirmations = await waitForTransaction(midlConfig, btcTx as string);
+
+		expect(confirmations).toBeGreaterThan(0);
+	});
 });

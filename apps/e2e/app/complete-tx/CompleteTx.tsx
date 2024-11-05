@@ -9,16 +9,14 @@ import {
 	useTransferBTC,
 } from "@midl-xyz/midl-js-react";
 import { useState } from "react";
-import { type Address, encodeFunctionData, parseUnits } from "viem";
+import { encodeFunctionData } from "viem";
 import { useChainId, useTransactionCount, useWalletClient } from "wagmi";
-import { uniswapV2Router02Abi } from "../config/abi";
 import { multisigAddress, uniswapRouterAddress } from "../config/addresses";
 import { runeId } from "../config/rune";
 import { useLogData } from "../hooks/useLogData";
+import { executorAbi } from "../config/abi";
 
-const WETH = "0x76818770D192A506F90e79D5cB844E708be0D7A0";
-
-export const Swap = () => {
+export const CompleteTx = () => {
 	const { erc20Address } = useERC20Rune(runeId);
 	const { signTransactionAsync } = useSignTransaction();
 	const { transferBTCAsync } = useTransferBTC();
@@ -34,14 +32,12 @@ export const Swap = () => {
 	const { broadcastTransactionAsync } = useBroadcastTransaction();
 	const { log, logData } = useLogData();
 
-	const bitcoinAmount = 0.000001;
-
 	const onClick = async () => {
 		const btcTx = await transferBTCAsync({
 			transfers: [
 				{
 					receiver: multisigAddress,
-					amount: 500_000 + Number(parseUnits(bitcoinAmount.toString(), 8)),
+					amount: 500_000,
 				},
 			],
 			publish: false,
@@ -52,18 +48,14 @@ export const Swap = () => {
 				tx: {
 					to: uniswapRouterAddress,
 					data: encodeFunctionData({
-						abi: uniswapV2Router02Abi,
-						functionName: "swapExactETHForTokens",
+						abi: executorAbi,
+						functionName: "completeTx",
 						args: [
-							0n,
-							[WETH, erc20Address as Address],
-							evmAddress,
-
-							BigInt(
-								Number.parseInt(
-									((new Date().getTime() + 1000 * 60 * 15) / 1000).toString(),
-								),
-							),
+							`0x${btcTx.tx.id}`,
+							BigInt(0),
+							p2tr as `0x${string}`,
+							[erc20Address as `0x${string}`],
+							[0n],
 						],
 					}),
 					btcTxHash: `0x${btcTx.tx.id}`,
@@ -72,7 +64,6 @@ export const Swap = () => {
 					gas: 500_000n,
 					gasPrice: 1000n,
 					nonce: nonce,
-					value: parseUnits(bitcoinAmount.toString(), 18),
 				},
 			}),
 		);
@@ -97,14 +88,14 @@ export const Swap = () => {
 
 	return (
 		<div>
-			<button type="button" data-testid="swap" onClick={onClick}>
-				Swap
+			<button type="button" data-testid="complete-tx" onClick={onClick}>
+				Complete Tx
 			</button>
 
 			{data && (
 				<div>
-					<p data-testid="swap-btc-tx">{data.btcTx}</p>
-					<p data-testid="swap-tx-id">{data.txId}</p>
+					<p data-testid="complete-tx-btc-tx">{data.btcTx}</p>
+					<p data-testid="complete-tx-tx-id">{data.txId}</p>
 				</div>
 			)}
 
