@@ -1,143 +1,96 @@
 import type { Page } from "@playwright/test";
-import type { TestArgs } from "~/fixtures/test";
+import type { Wallet } from "~/fixtures/wallet";
 
-type CommonArgs = Pick<TestArgs, "page" | "extensionId">;
+export const unisat: Wallet = {
+	async isWalletLocked({ page }) {
+		return page.getByText("Unlock", { exact: true }).isVisible();
+	},
+	async unlockWallet({ page, skipNavigation }) {
+		if (await unisat.isWalletLocked({ page })) {
+			if (!skipNavigation) {
+				await page.waitForLoadState("networkidle");
+				await page.goto(
+					"chrome-extension://boecohhhjhnaabnbbeddfaoiomabiehj/index.html#/account/unlock",
+					{ waitUntil: "networkidle" },
+				);
+			}
 
-const isWalletLocked = async ({ page }: Pick<CommonArgs, "page">) => {
-	const isLocked = await page.getByText("Unlock", { exact: true }).isVisible();
+			await page.locator('input[type="password"]').first().fill("password");
+			await page.getByText("Unlock").click();
+		}
+	},
+	async configureWallet({ page, extensionId }) {
+		if (!process.env.MNEMONIC) {
+			throw new Error("No mnemonic provided");
+		}
 
-	return isLocked;
-};
+		await page.waitForLoadState("networkidle");
 
-const unlockWallet = async ({
-	page,
-	skipNavigation,
-}: Pick<CommonArgs, "page"> & {
-	skipNavigation?: boolean;
-}) => {
-	if (await isWalletLocked({ page })) {
-		if (!skipNavigation) {
-			await page.waitForLoadState("networkidle");
-			await page.goto(
-				"chrome-extension://boecohhhjhnaabnbbeddfaoiomabiehj/index.html#/account/unlock",
-				{ waitUntil: "networkidle" },
-			);
+		await page.goto(
+			`chrome-extension://${extensionId}/index.html#/account/create-password`,
+		);
+
+		await page.waitForTimeout(500);
+
+		const isVisible = await page.getByLabel("loading").isVisible();
+
+		if (isVisible) {
+			await page.reload({ waitUntil: "networkidle" });
+		}
+
+		if (await unisat.isWalletLocked({ page })) {
+			await unisat.unlockWallet({ page });
+			await page.waitForTimeout(500);
+
+			return;
 		}
 
 		await page.locator('input[type="password"]').first().fill("password");
-		await page.getByText("Unlock").click();
-	}
-};
+		await page.locator('input[type="password"]').last().fill("password");
+		await page.getByText("Continue").click();
+		await page.getByText("XVerse Wallet").click();
+		const mnemonic = process.env.MNEMONIC.split(" ");
 
-export const configureWallet = async ({ page, extensionId }: CommonArgs) => {
-	if (!process.env.MNEMONIC) {
-		throw new Error("No mnemonic provided");
-	}
+		const inputs = await page.locator('input[type="password"]').all();
 
-	await page.waitForLoadState("networkidle");
+		for (let i = 0; i < mnemonic.length; i++) {
+			await inputs[i].fill(mnemonic[i]);
+		}
 
-	await page.goto(
-		`chrome-extension://${extensionId}/index.html#/account/create-password`,
-	);
-
-	await page.waitForTimeout(500);
-
-	const isVisible = await page.getByLabel("loading").isVisible();
-
-	if (isVisible) {
-		await page.reload({ waitUntil: "networkidle" });
-	}
-
-	if (await isWalletLocked({ page })) {
-		await unlockWallet({ page });
 		await page.waitForTimeout(500);
 
-		return;
-	}
+		await page.getByText("Continue").click();
 
-	await page.locator('input[type="password"]').first().fill("password");
-	await page.locator('input[type="password"]').last().fill("password");
-	await page.getByText("Continue").click();
-	await page.getByText("XVerse Wallet").click();
-	const mnemonic = process.env.MNEMONIC.split(" ");
+		await page.getByText("Taproot").click();
 
-	const inputs = await page.locator('input[type="password"]').all();
+		await page.waitForTimeout(500);
 
-	for (let i = 0; i < mnemonic.length; i++) {
-		await inputs[i].fill(mnemonic[i]);
-	}
+		await page.getByText("Continue").click();
 
-	await page.waitForTimeout(500);
+		await page.waitForTimeout(5001);
 
-	await page.getByText("Continue").click();
+		await page.locator('input[type="checkbox"]').first().check();
+		await page.locator('input[type="checkbox"]').last().check();
 
-	await page.getByText("Taproot").click();
+		await page.getByText("OK").click();
+	},
 
-	await page.waitForTimeout(500);
+	async changeNetwork({ page, extensionId }, networkName) {
+		await page.goto(`chrome-extension://${extensionId}/index.html#/settings`, {
+			waitUntil: "networkidle",
+		});
 
-	await page.getByText("Continue").click();
+		await page.getByText("Network").click();
 
-	await page.waitForTimeout(5001);
-
-	await page.locator('input[type="checkbox"]').first().check();
-	await page.locator('input[type="checkbox"]').last().check();
-
-	await page.getByText("OK").click();
-};
-
-export const changeNetwork = async (
-	{ page, extensionId }: CommonArgs,
-	networkName: string,
-) => {
-	await page.goto(`chrome-extension://${extensionId}/index.html#/settings`, {
-		waitUntil: "networkidle",
-	});
-
-	await page.getByText("Network").click();
-
-	await page.getByText(networkName).last().click();
-};
-
-export const connectWallet = async ({
-	context,
-	extensionId,
-}: Pick<TestArgs, "context" | "page" | "extensionId">) => {
-	const page = await new Promise<Page>((resolve) => {
-		const onNewPage = async (page: Page) => {
-			if (page.url().includes(extensionId)) {
-				await page.waitForTimeout(500);
-				await page.bringToFront();
-				await unlockWallet({ page, skipNavigation: true });
-				resolve(page);
-			}
-
-			context.off("page", onNewPage);
-		};
-
-		context.on("page", onNewPage);
-	});
-
-	if (!page) {
-		throw new Error("No notification page found");
-	}
-};
-
-export const acceptSign = async ({
-	context,
-	extensionId,
-}: Pick<TestArgs, "context" | "page" | "extensionId">) => {
-	let page = context
-		.pages()
-		.find((page) =>
-			page
-				.url()
-				.includes(`chrome-extension://${extensionId}/notification.html`),
-		);
-
-	if (!page) {
-		page = await new Promise<Page>((resolve) => {
+		await page.getByText(networkName).last().click();
+	},
+	async connectWallet({ context, extensionId }) {
+		const page = await new Promise<Page>((resolve) => {
 			const onNewPage = async (page: Page) => {
 				if (page.url().includes(extensionId)) {
+					await page.waitForTimeout(500);
+					await page.bringToFront();
+					await unisat.unlockWallet({ page, skipNavigation: true });
 					resolve(page);
 				}
 
@@ -146,37 +99,47 @@ export const acceptSign = async ({
 
 			context.on("page", onNewPage);
 		});
-	}
 
-	if (!page) {
-		throw new Error("No notification page found");
-	}
+		if (!page) {
+			throw new Error("No notification page found");
+		}
+	},
+	async acceptSign({ context, extensionId }) {
+		let page = context
+			.pages()
+			.find((page) =>
+				page
+					.url()
+					.includes(`chrome-extension://${extensionId}/notification.html`),
+			);
 
-	await page.waitForTimeout(500);
-	await page.bringToFront();
-	await unlockWallet({ page, skipNavigation: true });
+		if (!page) {
+			page = await new Promise<Page>((resolve) => {
+				const onNewPage = async (page: Page) => {
+					if (page.url().includes(extensionId)) {
+						resolve(page);
+					}
 
-	await page
-		.getByText("Sign", {
-			exact: true,
-		})
-		.last()
-		.click();
-};
+					context.off("page", onNewPage);
+				};
 
-export const closeAutoOpenedExtensionTab = async ({
-	context,
-	extensionId,
-}: Pick<TestArgs, "context" | "extensionId">) => {
-	return new Promise<void>((resolve) => {
-		const onNewPage = async (page: Page) => {
-			if (page.url().includes(extensionId)) {
-				await page.close();
-				context.off("page", onNewPage);
-				resolve();
-			}
-		};
+				context.on("page", onNewPage);
+			});
+		}
 
-		context.on("page", onNewPage);
-	});
+		if (!page) {
+			throw new Error("No notification page found");
+		}
+
+		await page.waitForTimeout(500);
+		await page.bringToFront();
+		await unisat.unlockWallet({ page, skipNavigation: true });
+
+		await page
+			.getByText("Sign", {
+				exact: true,
+			})
+			.last()
+			.click();
+	},
 };
