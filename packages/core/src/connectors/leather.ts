@@ -13,6 +13,7 @@ import {
 	type CreateConnectorConfig,
 	createConnector,
 } from "~/connectors/createConnector";
+import { AddressType } from "~/constants";
 import { getAddressType, isCorrectAddress } from "~/utils";
 import { getAddressPurpose } from "~/utils/getAddressPurpose";
 
@@ -38,6 +39,8 @@ class LeatherConnector implements Connector {
 			throw new Error("Invalid response");
 		}
 
+		const { purposes } = params;
+
 		const accounts = response.result.addresses
 			.filter((it) => it.symbol === "BTC")
 			.map((it) => {
@@ -50,9 +53,8 @@ class LeatherConnector implements Connector {
 					),
 					addressType: getAddressType(it.address),
 				};
-			});
-
-		const { purposes } = params;
+			})
+			.filter((it) => purposes.includes(it.purpose));
 
 		if (purposes.length > 0) {
 			const missingPurpose = purposes.find((purpose) => {
@@ -116,7 +118,8 @@ class LeatherConnector implements Connector {
 		const response = await window.LeatherProvider.request("signMessage", {
 			message: params.message,
 			network: this.getNetworkName(),
-			paymentType: "p2tr",
+			paymentType:
+				getAddressType(params.address) === AddressType.P2TR ? "p2tr" : "p2wpkh",
 		});
 
 		if (!("result" in response)) {

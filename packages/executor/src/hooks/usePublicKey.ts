@@ -2,15 +2,12 @@ import { extractXCoordinate } from "@midl-xyz/midl-js-core";
 import { useAccounts, useMidlContext } from "@midl-xyz/midl-js-react";
 import { networks, payments } from "bitcoinjs-lib";
 import { toHex } from "viem";
-import type { Address } from "viem/accounts";
 
-type UseP2TRPublicKeyParams = {
+type usePublicKey = {
 	publicKey?: `0x${string}`;
 };
 
-export const useP2TRPublicKey = ({
-	publicKey,
-}: UseP2TRPublicKeyParams = {}) => {
+export const usePublicKey = ({ publicKey }: usePublicKey = {}) => {
 	const { ordinalsAccount } = useAccounts();
 	const { config } = useMidlContext();
 

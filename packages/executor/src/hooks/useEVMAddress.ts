@@ -1,7 +1,7 @@
 import { useAccounts, useMidlContext } from "@midl-xyz/midl-js-react";
 import { zeroAddress } from "viem";
 import type { Address } from "viem/accounts";
-import { useP2TRPublicKey } from "~/hooks/useP2TRPublicKey";
+import { usePublicKey } from "~/hooks/usePublicKey";
 import { getEVMAddress } from "~/utils/getEVMAddress";
 
 type UseEVMAddressParams = {
@@ -9,10 +9,13 @@ type UseEVMAddressParams = {
 };
 
 export const useEVMAddress = ({ publicKey }: UseEVMAddressParams = {}) => {
-	const { ordinalsAccount } = useAccounts();
+	const { ordinalsAccount, paymentAccount } = useAccounts();
 	const { config } = useMidlContext();
-	const pk = useP2TRPublicKey({
-		publicKey: publicKey ?? (ordinalsAccount?.publicKey as `0x${string}`),
+	const pk = usePublicKey({
+		publicKey:
+			publicKey ??
+			(paymentAccount?.publicKey as `0x${string}`) ??
+			(ordinalsAccount?.publicKey as `0x${string}`),
 	});
 
 	try {
