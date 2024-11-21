@@ -18,6 +18,14 @@ type SignTransactionResult = `0x${string}`;
 type SignTransactionError = Error;
 
 type UseSignTransactionParams = {
+	/**
+	 * The address of the account to sign the transaction with.
+	 */
+	signer?: string;
+	/**
+	 * The protocol to use for signing the message.
+	 */
+	protocol?: SignMessageProtocol;
 	mutation: Omit<
 		UseMutationOptions<
 			SignTransactionResult,
@@ -29,12 +37,21 @@ type UseSignTransactionParams = {
 };
 
 export const useSignTransaction = (
-	{ mutation }: UseSignTransactionParams = {
+	{
+		mutation,
+		signer,
+		protocol = SignMessageProtocol.Bip322,
+	}: UseSignTransactionParams = {
 		mutation: {},
 	},
 ) => {
+	// TODO: Add support for other protocols
+	if (protocol !== SignMessageProtocol.Bip322) {
+		throw new Error("Only BIP322 protocol is supported");
+	}
+
 	const { signMessageAsync } = useSignMessage();
-	const { ordinalsAccount } = useAccounts();
+	const { paymentAccount, ordinalsAccount, accounts } = useAccounts();
 	const serializeTransaction = useSerializeTransaction({
 		shouldIncrementNonce: false,
 	});
@@ -47,15 +64,34 @@ export const useSignTransaction = (
 		mutationFn: async ({ tx }) => {
 			const serialized = await serializeTransaction(tx);
 
+			const account =
+				accounts?.find((it) => it.address === signer) ??
+				paymentAccount ??
+				ordinalsAccount;
+
+			if (!account) {
+				throw new Error("No account found");
+			}
+
 			const data = await signMessageAsync({
 				message: keccak256(serialized),
-				address: ordinalsAccount?.address,
-				protocol: SignMessageProtocol.Bip322,
+				address: account?.address,
+				protocol,
 			});
 
 			const signatureBuffer = Buffer.from(data.signature, "base64").slice(2);
 
-			const recoveryId = 27n;
+			let recoveryId = 27n;
+
+			if (account.address === paymentAccount?.address) {
+				const firstByte = Uint8Array.prototype.slice.call(
+					Buffer.from(account.publicKey, "hex"),
+					0,
+					1,
+				);
+
+				recoveryId = BigInt(firstByte[0]) + 27n;
+			}
 
 			const r = Uint8Array.prototype.slice.call(signatureBuffer, 0, 32);
 			const s = Uint8Array.prototype.slice.call(signatureBuffer, 32, 64);

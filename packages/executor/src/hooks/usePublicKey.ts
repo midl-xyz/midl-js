@@ -8,14 +8,19 @@ type usePublicKey = {
 };
 
 export const usePublicKey = ({ publicKey }: usePublicKey = {}) => {
-	const { ordinalsAccount } = useAccounts();
+	const { ordinalsAccount, paymentAccount } = useAccounts();
 	const { config } = useMidlContext();
 
 	try {
-		const pk = publicKey ?? ordinalsAccount?.publicKey;
+		const pk =
+			publicKey ?? paymentAccount?.publicKey ?? ordinalsAccount?.publicKey;
 
 		if (!pk || !config.network) {
 			return null;
+		}
+
+		if (paymentAccount) {
+			return toHex(Buffer.from(extractXCoordinate(pk), "hex"));
 		}
 
 		const p2tr = payments.p2tr({
