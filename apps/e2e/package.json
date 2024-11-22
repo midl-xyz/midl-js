@@ -41,7 +41,7 @@
     "buffer": "^6.0.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "viem": "npm:@midl-xyz/midl-viem@2.21.26",
+    "viem": "npm:@midl-xyz/midl-viem@2.21.29",
     "wagmi": "^2.*"
   }
 }

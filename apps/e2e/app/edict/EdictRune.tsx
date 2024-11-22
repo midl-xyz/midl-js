@@ -6,7 +6,7 @@ import { runeId } from "../config/rune";
 export const EdictRune = () => {
 	const { edictRune, data, error } = useEdictRune();
 	const { data: feeRate } = useFeeRate();
-	const { erc20Address, rune } = useERC20Rune(runeId);
+	const { erc20Address, rune, erc20State } = useERC20Rune(runeId);
 
 	const onClick = () => {
 		edictRune({
@@ -26,12 +26,14 @@ export const EdictRune = () => {
 		});
 	};
 
+	console.log(erc20State.error);
+
 	return (
 		<div>
 			<button onClick={onClick} type="button" data-testid="edict">
 				Edict Rune
 			</button>
-			<p data-testid="edict-address">{erc20Address}</p>
+			<p data-testid="edict-address">{erc20Address ?? "no address"}</p>
 			<p data-testid="edict-rune-id">{rune?.id}</p>
 			<p data-testid="edict-tx-id">{data?.tx.id}</p>
 			<p data-testid="edict-psbt">{data?.psbt}</p>
