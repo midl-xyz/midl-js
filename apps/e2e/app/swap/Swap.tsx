@@ -44,7 +44,7 @@ export const Swap = () => {
 					amount: 500_000 + Number(parseUnits(bitcoinAmount.toString(), 8)),
 				},
 			],
-			publish: false,
+			publish: true,
 		});
 
 		const swapTx = await signTransactionAsync(
