@@ -4,7 +4,7 @@ import { useAccounts, useConnect } from "@midl-xyz/midl-js-react";
 
 export const Connect = () => {
 	const { connect, connectors } = useConnect({
-		purposes: [AddressPurpose.Payment, AddressPurpose.Ordinals],
+		purposes: [AddressPurpose.Ordinals],
 	});
 
 	const { paymentAccount, ordinalsAccount } = useAccounts();

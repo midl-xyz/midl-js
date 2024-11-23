@@ -1,53 +1,53 @@
 {
-    "name": "@midl-xyz/midl-js-executor",
-    "version": "0.0.29",
-    "scripts": {
-        "build": "pkgroll",
-        "dev": "pkgroll --watch",
-        "test": "vitest",
-        "generate": "wagmi generate"
+  "name": "@midl-xyz/midl-js-executor",
+  "version": "0.0.29",
+  "scripts": {
+    "build": "pkgroll",
+    "dev": "pkgroll --watch",
+    "test": "vitest",
+    "generate": "wagmi generate"
+  },
+  "type": "commonjs",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.cts",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    "require": {
+      "types": "./dist/index.d.cts",
+      "default": "./dist/index.js"
     },
-    "type": "commonjs",
-    "main": "dist/index.js",
-    "module": "dist/index.mjs",
-    "types": "dist/index.d.cts",
-    "files": [
-        "dist"
-    ],
-    "exports": {
-        "require": {
-            "types": "./dist/index.d.cts",
-            "default": "./dist/index.js"
-        },
-        "import": {
-            "types": "./dist/index.d.mts",
-            "default": "./dist/index.mjs"
-        }
-    },
-    "devDependencies": {
-        "@midl-xyz/midl-js-config": "workspace:^",
-        "@midl-xyz/midl-js-react": "workspace:^",
-        "@tanstack/react-query": "^5.59.9",
-        "@types/node": "^22.8.7",
-        "@types/react": "^18",
-        "@wagmi/cli": "^2.1.15",
-        "@wagmi/connectors": "^5.1.11",
-        "bitcoinjs-lib": "7.0.0-rc.0",
-        "react": "^18.3.1",
-        "viem": "npm:@midl-xyz/midl-viem@2.21.29",
-        "wagmi": "^2.*"
-    },
-    "dependencies": {
-        "@midl-xyz/contracts": "^0.0.2",
-        "@midl-xyz/midl-js-core": "workspace:^"
-    },
-    "peerDependencies": {
-        "@midl-xyz/midl-js-react": "workspace:^",
-        "@tanstack/react-query": "^5.59.9",
-        "bitcoinjs-lib": "7.0.0-rc.0",
-        "react": "^18.*",
-        "@types/react": "^18",
-        "viem": "npm:@midl-xyz/midl-viem@2.*",
-        "wagmi": "^2.*"
+    "import": {
+      "types": "./dist/index.d.mts",
+      "default": "./dist/index.mjs"
     }
+  },
+  "devDependencies": {
+    "@midl-xyz/midl-js-config": "workspace:^",
+    "@midl-xyz/midl-js-react": "workspace:^",
+    "@tanstack/react-query": "^5.59.9",
+    "@types/node": "^22.8.7",
+    "@types/react": "^18",
+    "@wagmi/cli": "^2.1.15",
+    "@wagmi/connectors": "^5.1.11",
+    "bitcoinjs-lib": "7.0.0-rc.0",
+    "react": "^18.3.1",
+    "viem": "npm:@midl-xyz/midl-viem@2.21.31",
+    "wagmi": "^2.*"
+  },
+  "dependencies": {
+    "@midl-xyz/contracts": "^0.0.2",
+    "@midl-xyz/midl-js-core": "workspace:^"
+  },
+  "peerDependencies": {
+    "@midl-xyz/midl-js-react": "workspace:^",
+    "@tanstack/react-query": "^5.59.9",
+    "bitcoinjs-lib": "7.0.0-rc.0",
+    "react": "^18.*",
+    "@types/react": "^18",
+    "viem": "npm:@midl-xyz/midl-viem@2.*",
+    "wagmi": "^2.*"
+  }
 }

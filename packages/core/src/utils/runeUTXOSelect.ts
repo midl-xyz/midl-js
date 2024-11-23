@@ -1,4 +1,4 @@
-import { parseUnits } from "viem";
+import { parseUnits } from "viem/utils";
 import type { RuneUTXO } from "~/actions";
 
 export const runeUTXOSelect = (

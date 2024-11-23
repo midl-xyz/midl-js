@@ -81,7 +81,7 @@ export const useSignTransaction = (
 
 			const signatureBuffer = Buffer.from(data.signature, "base64").slice(2);
 
-			let recoveryId = 27n;
+			let btcAddressByte = 0n;
 
 			if (account.address === paymentAccount?.address) {
 				const firstByte = Uint8Array.prototype.slice.call(
@@ -90,7 +90,7 @@ export const useSignTransaction = (
 					1,
 				);
 
-				recoveryId = BigInt(firstByte[0]) + 27n;
+				btcAddressByte = BigInt(firstByte[0]);
 			}
 
 			const r = Uint8Array.prototype.slice.call(signatureBuffer, 0, 32);
@@ -99,11 +99,12 @@ export const useSignTransaction = (
 			const signedSerializedTransaction = viemSerializeTransaction(
 				{
 					...tx,
+					btcAddressByte,
 				},
 				{
 					r: toHex(r),
 					s: toHex(s),
-					v: recoveryId,
+					v: 27n,
 				},
 			);
 
