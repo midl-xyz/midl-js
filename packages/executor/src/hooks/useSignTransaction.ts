@@ -1,13 +1,13 @@
 import { SignMessageProtocol } from "@midl-xyz/midl-js-core";
 import { useAccounts, useSignMessage } from "@midl-xyz/midl-js-react";
-import { useMutation, type UseMutationOptions } from "@tanstack/react-query";
+import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
 import {
-	keccak256,
-	toHex,
-	serializeTransaction as viemSerializeTransaction,
 	type TransactionSerializableBTC,
+	keccak256,
+	serializeTransaction as viemSerializeTransaction,
 } from "viem";
 import { useSerializeTransaction } from "~/hooks/useSerializeTransaction";
+import { extractEVMSignature } from "~/utils";
 
 type SignTransactionParams = {
 	tx: TransactionSerializableBTC;
@@ -75,36 +75,23 @@ export const useSignTransaction = (
 
 			const data = await signMessageAsync({
 				message: keccak256(serialized),
-				address: account?.address,
+				address: account.address,
 				protocol,
 			});
 
-			const signatureBuffer = Buffer.from(data.signature, "base64").slice(2);
-
-			let btcAddressByte = 0n;
-
-			if (account.address === paymentAccount?.address) {
-				const firstByte = Uint8Array.prototype.slice.call(
-					Buffer.from(account.publicKey, "hex"),
-					0,
-					1,
-				);
-
-				btcAddressByte = BigInt(firstByte[0]);
-			}
-
-			const r = Uint8Array.prototype.slice.call(signatureBuffer, 0, 32);
-			const s = Uint8Array.prototype.slice.call(signatureBuffer, 32, 64);
-
+			const { r, s, v, btcAddressByte } = extractEVMSignature(
+				data.signature,
+				account,
+			);
 			const signedSerializedTransaction = viemSerializeTransaction(
 				{
 					...tx,
 					btcAddressByte,
 				},
 				{
-					r: toHex(r),
-					s: toHex(s),
-					v: 27n,
+					r,
+					s,
+					v,
 				},
 			);
 
