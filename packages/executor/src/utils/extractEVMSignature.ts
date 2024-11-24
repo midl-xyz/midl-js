@@ -24,6 +24,9 @@ export const extractEVMSignature = (signature: string, signer: Account) => {
 
 	switch (addressType) {
 		case AddressType.P2WPKH: {
+			// TODO: fix this signature extraction
+			// p2wpkh signature structure:
+			// [0x02 or 0x03, WITNESS_DATA_LENGTH_BYTE, …WITNESS_DATA, 0x21, …PUBLIC_KEY_33_BYTE]
 			const pkFirstByte = Uint8Array.prototype.slice.call(
 				Buffer.from(signer.publicKey, "hex"),
 				0,
