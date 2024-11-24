@@ -495,12 +495,6 @@ export const executorAbi = [
 				indexed: false,
 			},
 			{
-				name: "nonceFrom",
-				internalType: "uint64",
-				type: "uint64",
-				indexed: false,
-			},
-			{
 				name: "receiver",
 				internalType: "bytes32",
 				type: "bytes32",
@@ -767,7 +761,6 @@ export const executorAbi = [
 		type: "function",
 		inputs: [
 			{ name: "txHash", internalType: "bytes32", type: "bytes32" },
-			{ name: "nonceFrom", internalType: "uint64", type: "uint64" },
 			{ name: "receiver", internalType: "bytes32", type: "bytes32" },
 			{
 				name: "assets",

@@ -52,7 +52,6 @@ export const CompleteTx = () => {
 						functionName: "completeTx",
 						args: [
 							`0x${btcTx.tx.id}`,
-							0n,
 							publicKey as `0x${string}`,
 							[erc20Address as `0x${string}`],
 							[0n],
