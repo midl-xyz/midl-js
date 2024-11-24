@@ -1,6 +1,6 @@
 {
   "name": "@midl-xyz/rune-etcher",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.59.20",
     "@hookform/resolvers": "^3.9.0",
     "@maskito/kit": "^3.1.1",
     "@maskito/react": "^3.1.1",
@@ -22,18 +23,17 @@
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-switch": "^1.1.1",
     "@radix-ui/react-toast": "^1.2.2",
-    "@tanstack/react-query": "*",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "lucide-react": "^0.453.0",
-    "next": "14.2.15",
+    "next": "15.0.3",
     "next-themes": "^0.3.0",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.53.1",
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7",
-    "viem": "npm:@midl-xyz/midl-viem@2.21.23",
+    "viem": "npm:@midl-xyz/midl-viem@2.21.31",
     "zod": "^3.23.8"
   },
   "devDependencies": {

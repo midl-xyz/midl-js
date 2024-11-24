@@ -1,13 +1,11 @@
-import type { Chain } from "~/types/chain";
-
-export const devnet: Chain = {
+export const midlTestnet3 = {
 	id: 0x309,
 	rpcUrls: {
 		default: {
 			http: ["http://54.75.35.100:8545"],
 		},
 	},
-	name: "midl",
+	name: "midl-regtest",
 	nativeCurrency: {
 		name: "MIDL",
 		symbol: "MIDL",

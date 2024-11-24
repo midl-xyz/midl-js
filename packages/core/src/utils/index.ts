@@ -3,4 +3,4 @@ export * from "./formatRuneName";
 export * from "./isCorrectAddress";
 export * from "./runeUTXOSelect";
 export * from "./getAddressType";
-export * from "./addPSBTInputs";
+export * from "./makePSBTInputs";

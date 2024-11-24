@@ -2,7 +2,13 @@
 
 # Define URL and destination directory
 URL="https://github.com/unisat-wallet/extension/releases/download/v1.5.1/unisat-chrome-mv3-v1.5.1-release.zip"
-DEST_DIR="./extensions/unisat"
+SCRIPT_DIR=$(dirname "$0")
+DEST_DIR="$SCRIPT_DIR/../extensions/unisat"
+
+if [ -d "$DEST_DIR" ]; then
+    echo "Directory $DEST_DIR already exists. Skipping download and extraction."
+    exit 0
+fi
 
 # Create the destination directory if it doesn't exist
 mkdir -p "$DEST_DIR"

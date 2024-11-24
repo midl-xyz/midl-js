@@ -1,14 +1,8 @@
 import { expect, test } from "~/fixtures/test";
-import {
-	acceptSign,
-	changeNetwork,
-	closeAutoOpenedExtensionTab,
-	configureWallet,
-	connectWallet,
-} from "~/fixtures/unisat";
 import midlConfig from "../app/midl.config";
 import { waitForTransaction } from "@midl-xyz/midl-js-core";
 import { zeroAddress } from "viem";
+import { closeAutoOpenedExtensionTab, getWallet } from "~/fixtures/wallet";
 
 midlConfig.setState({ network: midlConfig.networks[0] });
 
@@ -16,11 +10,12 @@ test.describe("Add Liquidity Flow", () => {
 	test.describe.configure({ mode: "serial" });
 
 	let runeAddress: string | null;
+	const wallet = getWallet();
 
 	test.beforeAll(async ({ page, extensionId, context }) => {
 		await closeAutoOpenedExtensionTab({ context, extensionId });
-		await configureWallet({ page, extensionId });
-		await changeNetwork({ page, extensionId }, "Bitcoin Testnet4");
+		await wallet.configureWallet({ page, extensionId });
+		await wallet.changeNetwork({ page, extensionId }, "Bitcoin Testnet4");
 	});
 
 	test.beforeEach(async ({ context, extensionId }) => {
@@ -90,7 +85,7 @@ test.describe("Add Liquidity Flow", () => {
 		if (!isConnected) {
 			await page.getByTestId("connect").click();
 
-			await connectWallet({ page, context, extensionId });
+			await wallet.connectWallet({ context, extensionId });
 		}
 
 		await page
@@ -99,15 +94,15 @@ test.describe("Add Liquidity Flow", () => {
 
 		await page.getByTestId("add-liquidity").click();
 
-		await acceptSign({ page, context, extensionId });
+		await wallet.acceptSign({ context, extensionId });
 
 		await page.waitForTimeout(2000);
 
-		await acceptSign({ page, context, extensionId });
+		await wallet.acceptSign({ context, extensionId });
 
 		await page.waitForTimeout(2000);
 
-		await acceptSign({ page, context, extensionId });
+		await wallet.acceptSign({ context, extensionId });
 
 		await page.waitForTimeout(500);
 
@@ -147,7 +142,7 @@ test.describe("Add Liquidity Flow", () => {
 		if (!isConnected) {
 			await page.getByTestId("connect").click();
 
-			await connectWallet({ page, context, extensionId });
+			await wallet.connectWallet({ context, extensionId });
 		}
 
 		await page
@@ -156,11 +151,11 @@ test.describe("Add Liquidity Flow", () => {
 
 		await page.getByTestId("swap").click();
 
-		await acceptSign({ page, context, extensionId });
+		await wallet.acceptSign({ context, extensionId });
 
 		await page.waitForTimeout(2000);
 
-		await acceptSign({ page, context, extensionId });
+		await wallet.acceptSign({ context, extensionId });
 
 		await page.waitForTimeout(500);
 
@@ -189,7 +184,7 @@ test.describe("Add Liquidity Flow", () => {
 		if (!isConnected) {
 			await page.getByTestId("connect").click();
 
-			await connectWallet({ page, context, extensionId });
+			await wallet.connectWallet({ context, extensionId });
 		}
 
 		await page
@@ -198,11 +193,11 @@ test.describe("Add Liquidity Flow", () => {
 
 		await page.getByTestId("complete-tx").click();
 
-		await acceptSign({ page, context, extensionId });
+		await wallet.acceptSign({ context, extensionId });
 
 		await page.waitForTimeout(2000);
 
-		await acceptSign({ page, context, extensionId });
+		await wallet.acceptSign({ context, extensionId });
 
 		await page.waitForTimeout(500);
 

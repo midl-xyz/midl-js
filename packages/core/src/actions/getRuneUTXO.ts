@@ -27,7 +27,7 @@ export const getRuneUTXO = async (
 		throw new Error("No network");
 	}
 
-	return ky<RuneUTXO[]>(`${config.network.runesUrl}/utxos/${address}/`, {
+	return ky<RuneUTXO[]>(`${config.network.runesUTXOUrl}/utxos/${address}/`, {
 		searchParams: {
 			runeId,
 		},

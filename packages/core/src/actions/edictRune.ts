@@ -139,7 +139,7 @@ export const edictRune = async (
 
 	psbt.addInputs(inputs);
 
-	const xOnly = extractXCoordinate(account.publicKey);
+	const xOnly = extractXCoordinate(ordinalsAccount.publicKey);
 
 	const ordinalsP2TR = payments.p2tr({
 		internalPubkey: Buffer.from(xOnly, "hex"),

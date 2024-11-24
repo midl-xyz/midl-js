@@ -1,7 +1,7 @@
 import {
 	useERC20Rune,
 	useEVMAddress,
-	useP2TRPublicKey,
+	usePublicKey,
 	useSignTransaction,
 } from "@midl-xyz/midl-js-executor";
 import { useBroadcastTransaction, useEdictRune } from "@midl-xyz/midl-js-react";
@@ -23,7 +23,7 @@ export const AddLiquidity = () => {
 		addLiquidityTx: string;
 	} | null>(null);
 	const evmAddress = useEVMAddress();
-	const p2tr = useP2TRPublicKey();
+	const publicKey = usePublicKey();
 	const { data: nonce = 0 } = useTransactionCount({ address: evmAddress });
 	const chainId = useChainId();
 	const { data: walletClient } = useWalletClient();
@@ -60,7 +60,7 @@ export const AddLiquidity = () => {
 						args: [uniswapRouterAddress, runeAmount],
 					}),
 					btcTxHash: `0x${btcTx.tx.id}`,
-					publicKey: p2tr as `0x${string}`,
+					publicKey: publicKey as `0x${string}`,
 					gas: 50_000n,
 					gasPrice: 1000n,
 					chainId,
@@ -90,7 +90,7 @@ export const AddLiquidity = () => {
 						],
 					}),
 					btcTxHash: `0x${btcTx.tx.id}`,
-					publicKey: p2tr as `0x${string}`,
+					publicKey: publicKey as `0x${string}`,
 					chainId,
 					gas: 2_500_000n,
 					gasPrice: 1000n,

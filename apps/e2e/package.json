@@ -1,6 +1,6 @@
 {
   "name": "e2e",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
   "main": "index.js",
   "type": "module",
@@ -8,7 +8,7 @@
     "dev": "vite ./app",
     "build": "vite build ./app",
     "preview": "vite preview ./app",
-    "postinstall": "./scripts/unisat.sh",
+    "postinstall": "./scripts/prepare.sh",
     "test": "playwright test"
   },
   "keywords": [],
@@ -37,11 +37,11 @@
     "@midl-xyz/midl-js-executor": "workspace:^",
     "@midl-xyz/midl-js-react": "workspace:^",
     "@tanstack/react-query": "*",
+    "@wagmi/connectors": "^5.1.11",
     "buffer": "^6.0.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "@wagmi/connectors": "^5.1.11",
-    "viem": "npm:@midl-xyz/midl-viem@2.21.23",
+    "viem": "npm:@midl-xyz/midl-viem@2.21.31",
     "wagmi": "^2.*"
   }
 }

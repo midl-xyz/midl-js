@@ -6,7 +6,9 @@ import { fileURLToPath } from "node:url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const persistDir = path.join(__dirname, "../../extensions/unisat-data");
+const extension = process.env.EXTENSION || "leather";
+
+const persistDir = path.join(__dirname, `../../extensions/${extension}-data`);
 
 export const test = base.extend<{
 	context: BrowserContext;
@@ -14,7 +16,10 @@ export const test = base.extend<{
 }>({
 	// biome-ignore lint/correctness/noEmptyPattern: Playwright requires an empty object here
 	context: async ({}, use) => {
-		const pathToExtension = path.join(__dirname, "../../extensions/unisat");
+		const pathToExtension = path.join(
+			__dirname,
+			`../../extensions/${extension}`,
+		);
 		const context = await chromium.launchPersistentContext(persistDir, {
 			headless: false,
 			args: [
