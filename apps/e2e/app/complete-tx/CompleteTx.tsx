@@ -40,7 +40,7 @@ export const CompleteTx = () => {
 					amount: 500_000,
 				},
 			],
-			publish: true,
+			publish: false,
 		});
 
 		const swapTx = await signTransactionAsync(
