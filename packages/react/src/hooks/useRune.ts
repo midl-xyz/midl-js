@@ -2,7 +2,12 @@ import { type GetRuneResponse, getRune } from "@midl-xyz/midl-js-core";
 import { type UseQueryOptions, useQuery } from "@tanstack/react-query";
 import { useMidlContext } from "~/context";
 
-type QueryOptions = Omit<UseQueryOptions<GetRuneResponse>, "queryFn">;
+type QueryOptions = Omit<
+	UseQueryOptions<GetRuneResponse>,
+	"queryFn" | "queryKey"
+> & {
+	queryKey?: ReadonlyArray<unknown>;
+};
 
 type UseRuneParams = {
 	runeId: string;

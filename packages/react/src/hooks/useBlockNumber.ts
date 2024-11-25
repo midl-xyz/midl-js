@@ -2,7 +2,9 @@ import { useMidlContext } from "~/context";
 import { getBlockNumber } from "@midl-xyz/midl-js-core";
 import { useQuery, type UseQueryOptions } from "@tanstack/react-query";
 
-type QueryOptions = Omit<UseQueryOptions<number>, "queryFn">;
+type QueryOptions = Omit<UseQueryOptions<number>, "queryFn" | "queryKey"> & {
+	queryKey?: ReadonlyArray<unknown>;
+};
 
 type UseBlockNumberParams = {
 	/**

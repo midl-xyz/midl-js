@@ -6,7 +6,12 @@ import {
 import { type UseQueryOptions, useQuery } from "@tanstack/react-query";
 import { useMidlContext } from "~/context";
 
-type QueryOptions = Omit<UseQueryOptions<GetRuneBalanceResponse>, "queryFn">;
+type QueryOptions = Omit<
+	UseQueryOptions<GetRuneBalanceResponse>,
+	"queryFn" | "queryKey"
+> & {
+	queryKey?: ReadonlyArray<unknown>;
+};
 
 type UseRuneBalanceParams = GetRuneBalanceParams & {
 	query?: QueryOptions;

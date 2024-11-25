@@ -2,7 +2,12 @@ import { getFeeRate, type GetFeeRateResponse } from "@midl-xyz/midl-js-core";
 import { useQuery, type UseQueryOptions } from "@tanstack/react-query";
 import { useMidlContext } from "~/context";
 
-type QueryOptions = Omit<UseQueryOptions<GetFeeRateResponse>, "queryFn">;
+type QueryOptions = Omit<
+	UseQueryOptions<GetFeeRateResponse>,
+	"queryFn" | "queryKey"
+> & {
+	queryKey?: ReadonlyArray<unknown>;
+};
 
 type UseFeeRateParams = {
 	query?: QueryOptions;
