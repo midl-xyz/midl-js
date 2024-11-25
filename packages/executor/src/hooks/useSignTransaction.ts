@@ -1,4 +1,4 @@
-import { SignMessageProtocol } from "@midl-xyz/midl-js-core";
+import { SignMessageProtocol, AddressType, getAddressType } from "@midl-xyz/midl-js-core";
 import { useAccounts, useSignMessage } from "@midl-xyz/midl-js-react";
 import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
 import {
@@ -62,7 +62,6 @@ export const useSignTransaction = (
 		SignTransactionParams
 	>({
 		mutationFn: async ({ tx }) => {
-			const serialized = await serializeTransaction(tx);
 
 			const account =
 				accounts?.find((it) => it.address === signer) ??
@@ -72,6 +71,16 @@ export const useSignTransaction = (
 			if (!account) {
 				throw new Error("No account found");
 			}
+
+			if (getAddressType(account.address) == AddressType.P2WPKH) {
+				const btcAddressByte = Uint8Array.prototype.slice.call(
+					Buffer.from(account.publicKey, "hex"),
+					0,
+					1,
+				);
+				tx.btcAddressByte = BigInt(btcAddressByte[0])
+			}
+			const serialized = await serializeTransaction(tx);
 
 			const data = await signMessageAsync({
 				message: keccak256(serialized),

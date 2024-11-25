@@ -15,6 +15,8 @@ export const extractEVMSignature = (signature: string, signer: Account) => {
 	const addressType = getAddressType(signer.address);
 	const signatureBuffer = Buffer.from(signature, "base64");
 
+	const secp256k1N  = BigInt("0xfffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141")
+	const secp256k1halfN = secp256k1N / 2n
 	let btcAddressByte = 0n;
 
 	let r: Uint8Array | null = null;
@@ -33,17 +35,24 @@ export const extractEVMSignature = (signature: string, signer: Account) => {
 				1,
 			);
 
-			if (signatureBuffer.length !== 65) {
-				throw new Error(`Invalid signature length: ${signatureBuffer.length}`);
+			const rBytes = signatureBuffer.slice(6, 6 + signatureBuffer[5]);
+			const startS = 6 + signatureBuffer[5]
+			const sBytes = signatureBuffer.slice(startS + 2, startS + 2 + signatureBuffer[startS + 1])
+
+			const rBig = BigInt('0x' + rBytes.toString('hex'))
+			let sBig = BigInt('0x' + sBytes.toString('hex'))
+			if (sBig > secp256k1halfN) {
+				sBig = secp256k1N - sBig
+				recoveryId = 28n;
+			} else {
+				recoveryId = 27n
 			}
-
-			r = Uint8Array.prototype.slice.call(signatureBuffer, 1, 33);
-			s = Uint8Array.prototype.slice.call(signatureBuffer, 33, 65);
-			recoveryId = BigInt(
-				Uint8Array.prototype.slice.call(signatureBuffer, 0, 1)[0],
-			);
-
 			btcAddressByte = BigInt(pkFirstByte[0]);
+
+			r = new Uint8Array(32)
+			s = new Uint8Array(32)
+			r.set(Buffer.from(rBig.toString(16), 'hex'), 32 - Buffer.from(rBig.toString(16), 'hex').length)
+			s.set(Buffer.from(sBig.toString(16), 'hex'), 32 - Buffer.from(sBig.toString(16), 'hex').length)
 
 			break;
 		}
