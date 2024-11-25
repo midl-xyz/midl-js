@@ -1,5 +1,17 @@
 # @midl-xyz/midl-js-react
 
+## 0.0.29
+
+### Patch Changes
+
+- fix: queryKey
+
+## 0.0.29-0.0
+
+### Patch Changes
+
+- fix: queryKey
+
 ## 0.0.28
 
 ### Patch Changes

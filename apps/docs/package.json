@@ -1,6 +1,6 @@
 {
   "name": "@midl-xyz/midl-js-docs",
-  "version": "0.0.27",
+  "version": "0.0.28",
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",
