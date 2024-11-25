@@ -1,18 +1,22 @@
 import { getFeeRate, type GetFeeRateResponse } from "@midl-xyz/midl-js-core";
-import { type QueryOptions, useQuery } from "@tanstack/react-query";
+import { useQuery, type UseQueryOptions } from "@tanstack/react-query";
 import { useMidlContext } from "~/context";
 
+type QueryOptions = Omit<UseQueryOptions<GetFeeRateResponse>, "queryFn">;
+
 type UseFeeRateParams = {
-  query?: QueryOptions<GetFeeRateResponse>;
+	query?: QueryOptions;
 };
 
-export const useFeeRate = ({ query }: UseFeeRateParams = {}) => {
-  const { config } = useMidlContext();
-  return useQuery({
-    queryKey: ["feeRate"],
-    queryFn: async () => {
-      return getFeeRate(config);
-    },
-    ...query,
-  });
+export const useFeeRate = ({
+	query: { queryKey, ...query } = {} as QueryOptions,
+}: UseFeeRateParams = {}) => {
+	const { config } = useMidlContext();
+	return useQuery({
+		queryKey: ["feeRate", ...(queryKey ?? [])],
+		queryFn: async () => {
+			return getFeeRate(config);
+		},
+		...query,
+	});
 };

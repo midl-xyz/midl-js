@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 0.0.24
+
+### Patch Changes
+
+- chore: throw error on output edict
+
 ## 0.0.23
 
 ### Patch Changes

@@ -6,6 +6,8 @@ on:
       - main
       - ci/*
 
+  workflow_dispatch:
+
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
