@@ -174,15 +174,20 @@ export const edictRune = async (
 		.filter((t) => "runeId" in t)
 		.map((transfer) => {
 			const [blockHeight, txIndex] = transfer.runeId.split(":").map(Number);
+			const outputIndex = psbt.txOutputs.findIndex(
+				(t) =>
+					transfer.receiver === t.address &&
+					t.value === BigInt(RUNE_MAGIC_VALUE),
+			);
+
+			if (outputIndex === -1) {
+				throw new Error(`No output for ${transfer.receiver}`);
+			}
 
 			return new Edict(
 				new RuneId(blockHeight, txIndex),
 				transfer.amount,
-				psbt.txOutputs.findIndex(
-					(t) =>
-						transfer.receiver === t.address &&
-						t.value === BigInt(RUNE_MAGIC_VALUE),
-				),
+				outputIndex,
 			);
 		});
 

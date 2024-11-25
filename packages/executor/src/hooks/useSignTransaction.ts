@@ -1,4 +1,4 @@
-import { SignMessageProtocol, AddressType, getAddressType } from "@midl-xyz/midl-js-core";
+import { SignMessageProtocol } from "@midl-xyz/midl-js-core";
 import { useAccounts, useSignMessage } from "@midl-xyz/midl-js-react";
 import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
 import {
@@ -7,7 +7,7 @@ import {
 	serializeTransaction as viemSerializeTransaction,
 } from "viem";
 import { useSerializeTransaction } from "~/hooks/useSerializeTransaction";
-import { extractEVMSignature } from "~/utils";
+import { extractEVMSignature, getBTCAddressByte } from "~/utils";
 
 type SignTransactionParams = {
 	tx: TransactionSerializableBTC;
@@ -62,7 +62,6 @@ export const useSignTransaction = (
 		SignTransactionParams
 	>({
 		mutationFn: async ({ tx }) => {
-
 			const account =
 				accounts?.find((it) => it.address === signer) ??
 				paymentAccount ??
@@ -72,14 +71,10 @@ export const useSignTransaction = (
 				throw new Error("No account found");
 			}
 
-			if (getAddressType(account.address) == AddressType.P2WPKH) {
-				const btcAddressByte = Uint8Array.prototype.slice.call(
-					Buffer.from(account.publicKey, "hex"),
-					0,
-					1,
-				);
-				tx.btcAddressByte = BigInt(btcAddressByte[0])
-			}
+			const btcAddressByte = getBTCAddressByte(account);
+
+			tx.btcAddressByte = btcAddressByte;
+
 			const serialized = await serializeTransaction(tx);
 
 			const data = await signMessageAsync({
@@ -88,14 +83,10 @@ export const useSignTransaction = (
 				protocol,
 			});
 
-			const { r, s, v, btcAddressByte } = extractEVMSignature(
-				data.signature,
-				account,
-			);
+			const { r, s, v } = extractEVMSignature(data.signature, account);
 			const signedSerializedTransaction = viemSerializeTransaction(
 				{
 					...tx,
-					btcAddressByte,
 				},
 				{
 					r,
