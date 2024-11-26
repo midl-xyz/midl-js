@@ -1,4 +1,4 @@
-export const regtest = {
+export const midlRegtest = {
 	id: 0x309,
 	rpcUrls: {
 		default: {

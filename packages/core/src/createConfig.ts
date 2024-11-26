@@ -1,5 +1,5 @@
-import { type PrimitiveAtom, createStore } from "jotai";
-import { atomWithReset, atomWithStorage } from "jotai/utils";
+import { createJSONStorage, persist } from "zustand/middleware";
+import { createStore, type StoreApi } from "zustand/vanilla";
 import type { Account, Connector, CreateConnectorFn } from "~/connectors";
 import type { Chain } from "~/types/chain";
 
@@ -25,16 +25,15 @@ export type Config = {
 	readonly connectors: Connector[];
 	readonly network: BitcoinNetwork | undefined;
 	readonly currentConnection?: Connector;
-	setState(state: Partial<ConfigAtom>): void;
-	getState(): ConfigAtom;
-	subscribe(callback: (newState: ConfigAtom | undefined) => void): () => void;
+	setState(state: Partial<ConfigState>): void;
+	getState(): ConfigState;
+	subscribe(callback: (newState: ConfigState | undefined) => void): () => void;
 	_internal: {
-		configAtom: PrimitiveAtom<ConfigAtom>;
-		configStore: typeof configStore;
+		configStore: StoreApi<ConfigState>;
 	};
 };
 
-export type ConfigAtom = {
+export type ConfigState = {
 	readonly network: BitcoinNetwork;
 	readonly publicKey?: string;
 	readonly connection?: string;
@@ -46,26 +45,29 @@ const configStore = createStore();
 export const createConfig = (params: ConfigParams): Config => {
 	const [network] = params.networks;
 
-	const configAtom = params.persist
-		? atomWithStorage<ConfigAtom>(
-				"midl-js",
-				{
-					network,
-				} as ConfigAtom,
-				undefined,
-				{ getOnInit: true },
+	const configStore = params.persist
+		? createStore<ConfigState>()(
+				persist(
+					(set, get) => ({
+						network,
+					}),
+					{
+						name: "midl-js",
+						storage: createJSONStorage(() => localStorage),
+					},
+				),
 			)
-		: atomWithReset<ConfigAtom>({
+		: createStore<ConfigState>()(() => ({
 				network,
-			} as ConfigAtom);
+			}));
 
-	const state = configStore.get(configAtom);
+	const state = configStore.getState();
 
 	const networkToUse =
 		params.networks.find((n) => n.id === state?.network.id) ||
 		params.networks[0];
 
-	configStore.set(configAtom, {
+	configStore.setState({
 		...state,
 		network: networkToUse,
 	});
@@ -73,13 +75,8 @@ export const createConfig = (params: ConfigParams): Config => {
 	const connectors = params.connectors.map((createConnectorFn) =>
 		createConnectorFn({
 			network,
-			setState: (state: Partial<ConfigAtom>) => {
-				configStore.set(configAtom, {
-					...(configStore.get(configAtom) || ({} as ConfigAtom)),
-					...state,
-				});
-			},
-			getState: () => configStore.get(configAtom) as ConfigAtom,
+			setState: configStore.setState,
+			getState: configStore.getState,
 		}),
 	);
 
@@ -87,25 +84,18 @@ export const createConfig = (params: ConfigParams): Config => {
 		networks: params.networks,
 		chain: params.chain,
 		get network() {
-			return configStore.get(configAtom)?.network;
+			return configStore.getState().network;
 		},
-		setState: (state: ConfigAtom) => {
-			configStore.set(configAtom, state);
-		},
+		setState: configStore.setState,
 		connectors,
-		subscribe: (callback: (newState: ConfigAtom | undefined) => void) => {
-			return configStore.sub(configAtom, () => {
-				callback(configStore.get(configAtom));
-			});
-		},
-		getState: () => configStore.get(configAtom),
+		subscribe: configStore.subscribe,
+		getState: configStore.getState,
 		get currentConnection() {
 			return this.connectors.find(
-				(connector) => connector.id === configStore.get(configAtom)?.connection,
+				(connector) => connector.id === configStore.getState().connection,
 			);
 		},
 		_internal: {
-			configAtom,
 			configStore,
 		},
 	};
