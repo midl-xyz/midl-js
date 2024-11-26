@@ -10,4 +10,5 @@ export default createConfig({
 	chain: devnet,
 	networks: [regtest],
 	connectors: [leather(), unisat()],
+	persist: true,
 });
