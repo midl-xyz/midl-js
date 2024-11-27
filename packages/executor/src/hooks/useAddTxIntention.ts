@@ -1,43 +1,36 @@
-import { useMidlContext } from "@midl-xyz/midl-js-react";
-import { useMutation } from "@tanstack/react-query";
-import type { TransactionSerializableBTC } from "viem";
-import { useStore } from "zustand";
+import { useMidlContext, useStore } from "@midl-xyz/midl-js-react";
+import type { TransactionIntention } from "~/types/intention";
 
-type UseAddTxIntentionVariables = {
-	// TODO: figure out if type is correct enough
-	tx: Omit<TransactionSerializableBTC, "chainId">;
+type AddTxIntentionVariables = TransactionIntention & {
 	reset?: boolean;
 };
 
 export const useAddTxIntention = () => {
 	const { store } = useMidlContext();
-	const { intentions = [] } = useStore(store);
+	const { intentions = [] } = useStore();
 
-	const { mutate, mutateAsync, ...rest } = useMutation<
-		Omit<TransactionSerializableBTC, "chainId">[],
-		Error,
-		UseAddTxIntentionVariables
-	>({
-		onSuccess: (data) => {
-			store.setState((state) => ({
-				...state,
-				intentions: data,
-			}));
-		},
-		mutationFn: async ({ tx, reset = false }) => {
-			const { intentions = [] } = store.getState();
-			if (intentions?.length === 10) {
-				throw new Error("Maximum number of intentions reached");
-			}
+	const addTxIntention = ({ reset, ...intention }: AddTxIntentionVariables) => {
+		const { intentions = [] } = store.getState();
+		if (intentions?.length === 10) {
+			throw new Error("Maximum number of intentions reached");
+		}
 
-			return reset ? [tx] : [...intentions, tx];
-		},
-	});
+		if (
+			intentions.some((it) => it.hasRunesDeposit) &&
+			intention.hasRunesDeposit
+		) {
+			throw new Error(
+				"Transferring more than one runes deposit is not allowed",
+			);
+		}
+
+		store.setState({
+			intentions: reset ? [intention] : [...intentions, intention],
+		});
+	};
 
 	return {
-		addTxIntention: mutate,
-		addTxIntentionAsync: mutateAsync,
+		addTxIntention,
 		txIntentions: intentions,
-		...rest,
 	};
 };

@@ -13,69 +13,77 @@ describe("useAddTxIntention", () => {
 		const { addTxIntention } = result.current;
 
 		addTxIntention({
-			tx: {
+			evmTransaction: {
 				to: zeroAddress,
 				value: 1n,
+				chainId: 1,
 			},
 		});
 
-		await waitFor(() => expect(result.current.isSuccess).toBe(true));
+		await waitFor(() => expect(result.current.txIntentions.length).toBe(1));
 
 		expect(result.current.txIntentions?.[0]).toEqual({
-			to: zeroAddress,
-			value: 1n,
+			evmTransaction: {
+				to: zeroAddress,
+				value: 1n,
+				chainId: 1,
+			},
 		});
 	});
 
 	it("should add intentions to the existing ones", async () => {
-		const { result } = renderHook(() => useAddTxIntention(), {
+		const { result, rerender } = renderHook(() => useAddTxIntention(), {
 			wrapper,
 		});
 
-		const { addTxIntentionAsync, addTxIntention } = result.current;
+		const { addTxIntention } = result.current;
 
-		await addTxIntentionAsync({
-			tx: {
+		addTxIntention({
+			evmTransaction: {
 				to: zeroAddress,
 				value: 1n,
+				chainId: 1,
 			},
 		});
 
-		await addTxIntentionAsync({
-			tx: {
+		addTxIntention({
+			evmTransaction: {
 				to: zeroAddress,
-				value: 2n,
+				value: 1n,
+				chainId: 1,
 			},
 		});
 
-		await waitFor(() => expect(result.current.isSuccess).toBe(true));
+		rerender();
 
 		expect(result.current.txIntentions?.length).toBe(2);
 	});
 
 	it("should reset previous intentions", async () => {
-		const { result } = renderHook(() => useAddTxIntention(), {
+		const { result, rerender } = renderHook(() => useAddTxIntention(), {
 			wrapper,
 		});
 
-		const { addTxIntentionAsync } = result.current;
+		const { addTxIntention } = result.current;
 
-		await addTxIntentionAsync({
-			tx: {
+		addTxIntention({
+			evmTransaction: {
 				to: zeroAddress,
 				value: 1n,
+				chainId: 1,
 			},
 		});
 
-		await addTxIntentionAsync({
-			tx: {
+		addTxIntention({
+			evmTransaction: {
 				to: zeroAddress,
 				value: 1n,
+				chainId: 1,
 			},
 			reset: true,
 		});
 
-		await waitFor(() => expect(result.current.isSuccess).toBe(true));
+		rerender();
 
 		expect(result.current.txIntentions?.length).toBe(1);
 	});
@@ -85,28 +93,26 @@ describe("useAddTxIntention", () => {
 			wrapper,
 		});
 
-		const { addTxIntentionAsync } = result.current;
+		const { addTxIntention } = result.current;
 
 		for (let i = 0; i < 10; i++) {
-			await addTxIntentionAsync({
-				tx: {
+			addTxIntention({
+				evmTransaction: {
 					to: zeroAddress,
 					value: 1n,
+					chainId: 1,
 				},
 			});
 		}
 
-		rerender();
-
-		expect(result.current.error).toBeNull();
-
-		expect(
-			addTxIntentionAsync({
-				tx: {
+		expect(() =>
+			addTxIntention({
+				evmTransaction: {
 					to: zeroAddress,
 					value: 1n,
+					chainId: 1,
 				},
 			}),
-		).rejects.toThrow("Maximum number of intentions reached");
+		).toThrow("Maximum number of intentions reached");
 	});
 });

@@ -1,10 +1,8 @@
-import { useMidlContext } from "@midl-xyz/midl-js-react";
+import { useStore } from "@midl-xyz/midl-js-react";
 import { useAccount, useTransactionCount } from "wagmi";
-import { useStore } from "zustand";
 
 export const useLastNonce = () => {
-	const { store } = useMidlContext();
-	const { wallet } = useStore(store);
+	const { wallet } = useStore();
 	const { address } = useAccount();
 	const { data } = useTransactionCount({ address });
 

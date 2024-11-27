@@ -1,6 +1,6 @@
-import { useMidlContext } from "~/context";
 import { getBlockNumber } from "@midl-xyz/midl-js-core";
-import { useQuery, type UseQueryOptions } from "@tanstack/react-query";
+import { type UseQueryOptions, useQuery } from "@tanstack/react-query";
+import { useConfig } from "~/hooks/useConfig";
 
 type QueryOptions = Omit<UseQueryOptions<number>, "queryFn" | "queryKey"> & {
 	queryKey?: ReadonlyArray<unknown>;
@@ -25,7 +25,7 @@ export const useBlockNumber = ({
 	pollingInterval = 30_000,
 	query: { queryKey, ...query } = {} as QueryOptions,
 }: UseBlockNumberParams = {}) => {
-	const { config } = useMidlContext();
+	const config = useConfig();
 
 	const { data, ...rest } = useQuery<number>({
 		queryKey: ["blockNumber", ...(queryKey ?? [])],

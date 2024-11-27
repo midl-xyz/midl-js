@@ -1,7 +1,6 @@
 import { createJSONStorage, persist } from "zustand/middleware";
 import { createStore, type StoreApi } from "zustand/vanilla";
 import type { Account, Connector, CreateConnectorFn } from "~/connectors";
-import type { Chain } from "~/types/chain";
 
 export type BitcoinNetwork = {
 	id: string;
@@ -14,14 +13,12 @@ export type BitcoinNetwork = {
 
 type ConfigParams = {
 	networks: BitcoinNetwork[];
-	chain?: Chain;
 	connectors: CreateConnectorFn[];
 	persist?: boolean;
 };
 
 export type Config = {
 	readonly networks: BitcoinNetwork[];
-	readonly chain?: Chain;
 	readonly connectors: Connector[];
 	readonly network: BitcoinNetwork | undefined;
 	readonly currentConnection?: Connector;
@@ -82,7 +79,6 @@ export const createConfig = (params: ConfigParams): Config => {
 
 	return {
 		networks: params.networks,
-		chain: params.chain,
 		get network() {
 			return configStore.getState().network;
 		},

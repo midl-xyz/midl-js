@@ -1,5 +1,5 @@
 import "@midl-xyz/midl-js-react";
-import type { TransactionSerializableBTC } from "viem";
+import type { TransactionIntention } from "~/types/intention";
 
 declare module "@midl-xyz/midl-js-react" {
 	type State = {
@@ -10,7 +10,7 @@ declare module "@midl-xyz/midl-js-react" {
 			};
 		};
 
-		readonly intentions?: Array<Omit<TransactionSerializableBTC, "chainId">>;
+		readonly intentions?: TransactionIntention[];
 	};
 
 	export interface MidlContextState extends State {}

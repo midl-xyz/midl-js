@@ -1,6 +1,10 @@
 import { AddressPurpose } from "@midl-xyz/midl-js-core";
 import { usePublicKey } from "@midl-xyz/midl-js-executor";
-import { useAccounts, useConnect } from "@midl-xyz/midl-js-react";
+import {
+	useAccounts,
+	useConnect,
+	useDisconnect,
+} from "@midl-xyz/midl-js-react";
 import { useState } from "react";
 
 export const Connect = () => {
@@ -11,6 +15,8 @@ export const Connect = () => {
 	const { connect, connectors } = useConnect({
 		purposes,
 	});
+
+	const { disconnect } = useDisconnect();
 
 	const { paymentAccount, ordinalsAccount } = useAccounts();
 	const publicKey = usePublicKey();
@@ -50,6 +56,16 @@ export const Connect = () => {
 					Address: {paymentAccount?.address ?? ordinalsAccount?.address}
 				</p>
 			)}
+
+			<button
+				type="button"
+				data-testid="disconnect"
+				onClick={() => {
+					disconnect();
+				}}
+			>
+				Disconnect
+			</button>
 		</>
 	);
 };

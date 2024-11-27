@@ -27,24 +27,28 @@ describe("executor | hooks | useSerializeTransaction", () => {
 
 	// TODO: finish test for incrementing nonce
 	it.skip("should serialize a transaction with nonce increment", async () => {
-		const { result } = renderHook(
+		const { result, rerender } = renderHook(
 			() => {
 				return useSerializeTransaction({ shouldIncrementNonce: true });
 			},
 			{ wrapper },
 		);
 
-		const tx = await result.current?.({
+		await result.current?.({
 			to: "0x3e80F8053eeF548C7062684A68177105e82439AA",
 			value: 1n,
 			btcTxHash: "0x123",
+			publicKey: "0x123",
 			chainId: 1,
 		});
+
+		rerender();
 
 		const tx2 = await result.current?.({
 			to: "0x3e80F8053eeF548C7062684A68177105e82439AA",
 			value: 1n,
 			btcTxHash: "0x123",
+			publicKey: "0x123",
 			chainId: 1,
 		});
 

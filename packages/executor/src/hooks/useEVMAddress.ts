@@ -1,4 +1,4 @@
-import { useAccounts, useMidlContext } from "@midl-xyz/midl-js-react";
+import { useAccounts, useConfig } from "@midl-xyz/midl-js-react";
 import { zeroAddress } from "viem";
 import type { Address } from "viem/accounts";
 import { usePublicKey } from "~/hooks/usePublicKey";
@@ -10,7 +10,7 @@ type UseEVMAddressParams = {
 
 export const useEVMAddress = ({ publicKey }: UseEVMAddressParams = {}) => {
 	const { ordinalsAccount, paymentAccount } = useAccounts();
-	const { config } = useMidlContext();
+	const config = useConfig();
 	const pk = usePublicKey({
 		publicKey:
 			publicKey ??

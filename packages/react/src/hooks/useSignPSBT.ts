@@ -1,10 +1,10 @@
 import {
-  signPSBT,
-  type SignPSBTParams,
-  type SignPSBTResponse,
+	type SignPSBTParams,
+	type SignPSBTResponse,
+	signPSBT,
 } from "@midl-xyz/midl-js-core";
-import { useMutation, type UseMutationOptions } from "@tanstack/react-query";
-import { useMidlContext } from "~/context";
+import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
+import { useConfig } from "~/hooks/useConfig";
 
 type SignPSBTVariables = SignPSBTParams;
 
@@ -13,29 +13,29 @@ type SignPSBTError = Error;
 type SignPSBTData = SignPSBTResponse;
 
 type UseSignPSBTParams = {
-  mutation?: Omit<
-    UseMutationOptions<SignPSBTData, SignPSBTError, SignPSBTVariables>,
-    "mutationFn"
-  >;
+	mutation?: Omit<
+		UseMutationOptions<SignPSBTData, SignPSBTError, SignPSBTVariables>,
+		"mutationFn"
+	>;
 };
 
 export const useSignPSBT = ({ mutation }: UseSignPSBTParams = {}) => {
-  const { config } = useMidlContext();
+	const config = useConfig();
 
-  const { mutate, mutateAsync, ...rest } = useMutation<
-    SignPSBTData,
-    SignPSBTError,
-    SignPSBTVariables
-  >({
-    mutationFn: async params => {
-      return signPSBT(config, params);
-    },
-    ...mutation,
-  });
+	const { mutate, mutateAsync, ...rest } = useMutation<
+		SignPSBTData,
+		SignPSBTError,
+		SignPSBTVariables
+	>({
+		mutationFn: async (params) => {
+			return signPSBT(config, params);
+		},
+		...mutation,
+	});
 
-  return {
-    signPSBT: mutate,
-    signPSBTAsync: mutateAsync,
-    ...rest,
-  };
+	return {
+		signPSBT: mutate,
+		signPSBTAsync: mutateAsync,
+		...rest,
+	};
 };

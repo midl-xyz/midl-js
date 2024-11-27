@@ -8,14 +8,6 @@ describe("core | createConfig", () => {
 	it("should create a config", () => {
 		const config = createConfig({
 			networks: [regtest],
-			chain: {
-				id: 1,
-				rpcUrls: {
-					default: {
-						http: ["http://localhost:8545"],
-					},
-				},
-			},
 			connectors: [],
 		});
 
@@ -31,14 +23,6 @@ describe("core | createConfig", () => {
 
 		const config = createConfig({
 			networks: [regtest, mockNetwork],
-			chain: {
-				id: 1,
-				rpcUrls: {
-					default: {
-						http: ["http://localhost:8545"],
-					},
-				},
-			},
 			connectors: [],
 		});
 
@@ -56,14 +40,6 @@ describe("core | createConfig", () => {
 
 		const config = createConfig({
 			networks: [regtest, mockNetwork],
-			chain: {
-				id: 1,
-				rpcUrls: {
-					default: {
-						http: ["http://localhost:8545"],
-					},
-				},
-			},
 			connectors: [],
 		});
 
@@ -84,14 +60,6 @@ describe("core | createConfig", () => {
 
 		const config = createConfig({
 			networks: [regtest],
-			chain: {
-				id: 1,
-				rpcUrls: {
-					default: {
-						http: ["http://localhost:8545"],
-					},
-				},
-			},
 			connectors: [],
 			persist: true,
 		});
