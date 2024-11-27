@@ -1,6 +1,6 @@
 {
   "name": "@midl-xyz/rune-etcher",
-  "version": "0.1.9",
+  "version": "0.1.11",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -33,7 +33,7 @@
     "react-hook-form": "^7.53.1",
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7",
-    "viem": "npm:@midl-xyz/midl-viem@2.21.31",
+    "viem": "npm:@midl-xyz/midl-viem@2.21.33",
     "zod": "^3.23.8"
   },
   "devDependencies": {

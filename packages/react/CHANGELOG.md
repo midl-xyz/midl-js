@@ -1,5 +1,25 @@
 # @midl-xyz/midl-js-react
 
+## 0.0.30
+
+### Patch Changes
+
+- f6dcbc1: Add tx intentions
+- Updated dependencies [f6dcbc1]
+  - @midl-xyz/midl-js-core@0.0.25
+
+## 0.0.29
+
+### Patch Changes
+
+- fix: queryKey
+
+## 0.0.29-0.0
+
+### Patch Changes
+
+- fix: queryKey
+
 ## 0.0.28
 
 ### Patch Changes

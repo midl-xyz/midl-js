@@ -1,66 +1,66 @@
 import {
-  type SignMessageParams,
-  SignMessageProtocol,
-  type SignMessageResponse,
-  signMessage,
+	type SignMessageParams,
+	SignMessageProtocol,
+	type SignMessageResponse,
+	signMessage,
 } from "@midl-xyz/midl-js-core";
 import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
-import { useMidlContext } from "~/context";
 import { useAccounts } from "~/hooks/useAccounts";
+import { useConfig } from "~/hooks/useConfig";
 
 type SignMessageVariables = Omit<SignMessageParams, "address"> & {
-  address?: string;
+	address?: string;
 };
 type SignMessageError = Error;
 type SignMessageData = SignMessageResponse;
 
 type UseSignMessageParams = {
-  mutation?: Omit<
-    UseMutationOptions<SignMessageData, SignMessageError, SignMessageVariables>,
-    "mutationFn"
-  >;
+	mutation?: Omit<
+		UseMutationOptions<SignMessageData, SignMessageError, SignMessageVariables>,
+		"mutationFn"
+	>;
 };
 
 export const useSignMessage = ({ mutation }: UseSignMessageParams = {}) => {
-  const { config } = useMidlContext();
-  const { paymentAccount } = useAccounts();
+	const config = useConfig();
+	const { paymentAccount } = useAccounts();
 
-  const { mutate, mutateAsync, ...rest } = useMutation<
-    SignMessageData,
-    SignMessageError,
-    SignMessageVariables
-  >({
-    mutationFn: async ({
-      message,
-      address,
-      protocol = SignMessageProtocol.Ecdsa,
-    }) => {
-      let signingAddress = address;
+	const { mutate, mutateAsync, ...rest } = useMutation<
+		SignMessageData,
+		SignMessageError,
+		SignMessageVariables
+	>({
+		mutationFn: async ({
+			message,
+			address,
+			protocol = SignMessageProtocol.Ecdsa,
+		}) => {
+			let signingAddress = address;
 
-      if (!signingAddress) {
-        if (!config.currentConnection) {
-          throw new Error("No connection");
-        }
+			if (!signingAddress) {
+				if (!config.currentConnection) {
+					throw new Error("No connection");
+				}
 
-        if (!paymentAccount) {
-          throw new Error("No payment account");
-        }
+				if (!paymentAccount) {
+					throw new Error("No payment account");
+				}
 
-        signingAddress = paymentAccount.address;
-      }
+				signingAddress = paymentAccount.address;
+			}
 
-      return signMessage(config, {
-        message,
-        address: signingAddress as string,
-        protocol,
-      });
-    },
-    ...mutation,
-  });
+			return signMessage(config, {
+				message,
+				address: signingAddress as string,
+				protocol,
+			});
+		},
+		...mutation,
+	});
 
-  return {
-    signMessage: mutate,
-    signMessageAsync: mutateAsync,
-    ...rest,
-  };
+	return {
+		signMessage: mutate,
+		signMessageAsync: mutateAsync,
+		...rest,
+	};
 };

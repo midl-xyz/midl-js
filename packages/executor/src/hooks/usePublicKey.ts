@@ -1,5 +1,5 @@
 import { extractXCoordinate } from "@midl-xyz/midl-js-core";
-import { useAccounts, useMidlContext } from "@midl-xyz/midl-js-react";
+import { useAccounts, useConfig } from "@midl-xyz/midl-js-react";
 import { networks, payments } from "bitcoinjs-lib";
 import { toHex } from "viem";
 
@@ -9,7 +9,7 @@ type usePublicKey = {
 
 export const usePublicKey = ({ publicKey }: usePublicKey = {}) => {
 	const { ordinalsAccount, paymentAccount } = useAccounts();
-	const { config } = useMidlContext();
+	const config = useConfig();
 
 	try {
 		const pk =

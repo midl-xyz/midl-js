@@ -1,13 +1,7 @@
-import {
-	createConfig,
-	devnet,
-	regtest,
-	leather,
-	unisat,
-} from "@midl-xyz/midl-js-core";
+import { createConfig, leather, regtest, unisat } from "@midl-xyz/midl-js-core";
 
 export default createConfig({
-	chain: devnet,
 	networks: [regtest],
 	connectors: [leather(), unisat()],
+	persist: true,
 });

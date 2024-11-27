@@ -1,5 +1,4 @@
-import { devnet } from "@midl-xyz/midl-js-core";
-import { WagmiMidlProvider } from "@midl-xyz/midl-js-executor";
+import { midlRegtest, WagmiMidlProvider } from "@midl-xyz/midl-js-executor";
 import { MidlProvider } from "@midl-xyz/midl-js-react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { http, WagmiProvider, createConfig as createWagmiConfig } from "wagmi";
@@ -19,9 +18,9 @@ export default function App() {
 			<QueryClientProvider client={queryClient}>
 				<WagmiProvider
 					config={createWagmiConfig({
-						chains: [devnet as Chain],
+						chains: [midlRegtest as Chain],
 						transports: {
-							[devnet.id]: http(devnet.rpcUrls.default.http[0]),
+							[midlRegtest.id]: http(midlRegtest.rpcUrls.default.http[0]),
 						},
 					})}
 				>

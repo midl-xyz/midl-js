@@ -1,8 +1,13 @@
 import { type GetRuneResponse, getRune } from "@midl-xyz/midl-js-core";
 import { type UseQueryOptions, useQuery } from "@tanstack/react-query";
-import { useMidlContext } from "~/context";
+import { useConfig } from "~/hooks/useConfig";
 
-type QueryOptions = Omit<UseQueryOptions<GetRuneResponse>, "queryFn">;
+type QueryOptions = Omit<
+	UseQueryOptions<GetRuneResponse>,
+	"queryFn" | "queryKey"
+> & {
+	queryKey?: ReadonlyArray<unknown>;
+};
 
 type UseRuneParams = {
 	runeId: string;
@@ -13,7 +18,7 @@ export const useRune = ({
 	runeId,
 	query: { queryKey, ...query } = {} as QueryOptions,
 }: UseRuneParams) => {
-	const { config } = useMidlContext();
+	const config = useConfig();
 
 	const { data, ...rest } = useQuery<GetRuneResponse>({
 		queryKey: ["rune", runeId, ...(queryKey ?? [])],

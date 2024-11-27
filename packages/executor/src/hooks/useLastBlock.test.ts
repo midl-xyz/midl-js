@@ -4,13 +4,13 @@ import { wrapper } from "~/__tests__";
 import { useLastBlock } from "~/hooks/useLastBlock";
 
 describe("useLastBlock", () => {
-  it.skip("should return the correct value", async () => {
-    const { result } = renderHook(() => useLastBlock(), {
-      wrapper,
-    });
+	it("should return the correct value", async () => {
+		const { result } = renderHook(() => useLastBlock(), {
+			wrapper,
+		});
 
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+		await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
-    expect(result.current.lastBlock).toBeGreaterThan(0n);
-  });
+		expect(result.current.lastBlock).toBeGreaterThan(0n);
+	});
 });

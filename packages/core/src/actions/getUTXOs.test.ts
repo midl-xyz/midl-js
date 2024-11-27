@@ -1,3 +1,6 @@
+import * as bitcoin from "bitcoinjs-lib";
+import ECPairFactory from "ecpair";
+import * as ecc from "tiny-secp256k1";
 import {
 	afterEach,
 	assert,
@@ -5,16 +8,12 @@ import {
 	describe,
 	expect,
 	it,
-	type Mock,
 	vi,
+	type Mock,
 } from "vitest";
+import { getUTXOs } from "~/actions/getUTXOs";
 import { createConfig } from "~/createConfig";
 import { regtest } from "~/networks";
-import * as bitcoin from "bitcoinjs-lib";
-import ECPairFactory from "ecpair";
-import * as ecc from "tiny-secp256k1";
-import { getUTXOs } from "~/actions/getUTXOs";
-import { devnet } from "~/chains";
 
 const ECPair = ECPairFactory(ecc);
 
@@ -45,7 +44,6 @@ describe("core | actions | getUTXOs", () => {
 	it.skip("should get UTXOs", async () => {
 		const config = createConfig({
 			networks: [regtest],
-			chain: devnet,
 			connectors: [],
 		});
 

@@ -1,45 +1,50 @@
 import type { Config } from "@midl-xyz/midl-js-core";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useMemo } from "react";
+
+import { type StoreApi, createStore } from "zustand/vanilla";
 
 // biome-ignore lint/suspicious/noEmptyInterface: <explanation>
 export interface MidlContextState {}
 
 export interface MidlContextType {
-  readonly config: Config;
-  readonly state: MidlContextState;
-  setState: (state: MidlContextState) => void;
+	readonly config: Config;
+	readonly store: StoreApi<MidlContextState>;
 }
 
 export const MidlContext = createContext<MidlContextType>({
-  config: {} as Config,
-  state: {},
-  setState: () => {},
+	config: {} as Config,
+	store: {} as StoreApi<MidlContextState>,
 });
 
 export const useMidlContext = () => {
-  return useContext(MidlContext);
+	return useContext(MidlContext);
 };
 
 export const MidlProvider = ({
-  config,
-  children,
-  initialState,
+	config,
+	children,
+	initialState,
 }: Readonly<{
-  config: Config;
-  children: React.ReactNode;
-  initialState?: MidlContextState;
+	config: Config;
+	children: React.ReactNode;
+	initialState?: MidlContextState;
 }>) => {
-  const [state, setState] = useState<MidlContextState>(initialState ?? {});
+	const store = useMemo(
+		() =>
+			createStore<MidlContextState>()(() => ({
+				...initialState,
+			})),
+		[initialState],
+	);
 
-  return (
-    <MidlContext.Provider
-      value={{
-        config,
-        state,
-        setState,
-      }}
-    >
-      {children}
-    </MidlContext.Provider>
-  );
+	return (
+		<MidlContext.Provider
+			value={{
+				config,
+				store,
+			}}
+		>
+			{children}
+		</MidlContext.Provider>
+	);
 };
