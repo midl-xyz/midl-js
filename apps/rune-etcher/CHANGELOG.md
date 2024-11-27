@@ -1,5 +1,14 @@
 # rune-etcher
 
+## 0.1.11
+
+### Patch Changes
+
+- f6dcbc1: Add tx intentions
+- Updated dependencies [f6dcbc1]
+  - @midl-xyz/midl-js-react@0.0.30
+  - @midl-xyz/midl-js-core@0.0.25
+
 ## 0.1.10
 
 ### Patch Changes
