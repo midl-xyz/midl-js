@@ -3,8 +3,9 @@
     "version": "0.0.2",
     "private": true,
     "type": "commonjs",
+    "main": "dist/index.js",
     "bin": {
-        "midl-js-bundler": "dist/cli.js"
+        "midl-js-bundler": "bin/index.js"
     },
     "files": [
         "dist"
