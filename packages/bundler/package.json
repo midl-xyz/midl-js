@@ -2,7 +2,7 @@
     "name": "@midl-xyz/midl-js-bundler",
     "version": "0.0.2",
     "private": true,
-    "type": "commonjs",
+    "type": "module",
     "main": "dist/index.js",
     "bin": {
         "midl-js-bundler": "bin/index.js"
@@ -20,6 +20,7 @@
     },
     "dependencies": {
         "esbuild": "^0.24.0",
-        "glob": "^11.0.0"
+        "fast-glob": "^3.3.2",
+        "tsc-alias": "^1.8.10"
     }
 }
