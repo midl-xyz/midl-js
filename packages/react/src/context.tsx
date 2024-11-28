@@ -1,5 +1,7 @@
+"use client";
+
 import type { Config } from "@midl-xyz/midl-js-core";
-import { createContext, useContext, useEffect, useMemo } from "react";
+import { createContext, useContext, useMemo } from "react";
 
 import { type StoreApi, createStore } from "zustand/vanilla";
 

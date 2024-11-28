@@ -1,30 +1,21 @@
 {
     "name": "@midl-xyz/midl-js-react",
-    "version": "0.0.30",
+    "version": "0.0.31",
     "scripts": {
-        "build": "pkgroll",
+        "build": "midl-js-bundler",
         "dev": "pkgroll --watch",
         "test": "vitest"
     },
-    "type": "commonjs",
+    "type": "module",
     "main": "dist/index.js",
-    "module": "dist/index.mjs",
-    "types": "dist/index.d.cts",
+    "module": "dist/index.js",
+    "types": "dist/index.d.ts",
     "files": [
         "dist"
     ],
-    "exports": {
-        "require": {
-            "types": "./dist/index.d.cts",
-            "default": "./dist/index.js"
-        },
-        "import": {
-            "types": "./dist/index.d.mts",
-            "default": "./dist/index.mjs"
-        }
-    },
     "devDependencies": {
         "@metamask/providers": "^17.1.1",
+        "@midl-xyz/midl-js-bundler": "workspace:^",
         "@midl-xyz/midl-js-config": "workspace:^",
         "@tanstack/react-query": "*",
         "@types/react": "^18.3.11",

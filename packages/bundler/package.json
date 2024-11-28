@@ -1,0 +1,26 @@
+{
+    "name": "@midl-xyz/midl-js-bundler",
+    "version": "0.0.2",
+    "private": true,
+    "type": "module",
+    "main": "dist/index.js",
+    "bin": {
+        "midl-js-bundler": "bin/index.js"
+    },
+    "files": [
+        "dist"
+    ],
+    "scripts": {
+        "build": "pkgroll",
+        "dev": "pkgroll --watch",
+        "test": "vitest"
+    },
+    "devDependencies": {
+        "@midl-xyz/midl-js-config": "workspace:^"
+    },
+    "dependencies": {
+        "esbuild": "^0.24.0",
+        "fast-glob": "^3.3.2",
+        "tsc-alias": "^1.8.10"
+    }
+}

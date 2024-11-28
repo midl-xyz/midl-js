@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-react
 
+## 0.0.31
+
+### Patch Changes
+
+- feat: update package bundler
+
 ## 0.0.30
 
 ### Patch Changes

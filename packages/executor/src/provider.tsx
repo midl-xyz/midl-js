@@ -1,3 +1,5 @@
+"use client";
+
 import { mock } from "wagmi/connectors";
 import { useEffect } from "react";
 import { useConnect, useSwitchChain } from "wagmi";
