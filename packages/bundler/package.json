@@ -1,0 +1,24 @@
+{
+    "name": "@midl-xyz/midl-js-bundler",
+    "version": "0.0.1",
+    "private": true,
+    "type": "commonjs",
+    "bin": {
+        "midl-js-bundler": "dist/cli.js"
+    },
+    "files": [
+        "dist"
+    ],
+    "scripts": {
+        "build": "pkgroll",
+        "dev": "pkgroll --watch",
+        "test": "vitest"
+    },
+    "devDependencies": {
+        "@midl-xyz/midl-js-config": "workspace:^"
+    },
+    "dependencies": {
+        "esbuild": "^0.24.0",
+        "glob": "^11.0.0"
+    }
+}

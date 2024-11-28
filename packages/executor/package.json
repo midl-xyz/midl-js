@@ -2,29 +2,20 @@
   "name": "@midl-xyz/midl-js-executor",
   "version": "0.0.33",
   "scripts": {
-    "build": "pkgroll",
+    "build": "midl-js-bundler",
     "dev": "pkgroll --watch",
     "test": "vitest",
     "generate": "wagmi generate"
   },
-  "type": "commonjs",
+  "type": "module",
   "main": "dist/index.js",
-  "module": "dist/index.mjs",
-  "types": "dist/index.d.cts",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
-  "exports": {
-    "require": {
-      "types": "./dist/index.d.cts",
-      "default": "./dist/index.js"
-    },
-    "import": {
-      "types": "./dist/index.d.mts",
-      "default": "./dist/index.mjs"
-    }
-  },
   "devDependencies": {
+    "@midl-xyz/midl-js-bundler": "workspace:^",
     "@midl-xyz/midl-js-config": "workspace:^",
     "@midl-xyz/midl-js-react": "workspace:^",
     "@tanstack/react-query": "^5.59.9",
