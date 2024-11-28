@@ -2,6 +2,7 @@ import type { EdictRuneParams } from "@midl-xyz/midl-js-core";
 import { useEdictRune, useMidlContext } from "@midl-xyz/midl-js-react";
 import { useMutation } from "@tanstack/react-query";
 import type { Client, StateOverride } from "viem";
+import { estimateGasMulti } from "viem/actions";
 import { useClient } from "wagmi";
 import { useStore } from "zustand";
 import { multisigAddress } from "~/config";
@@ -39,22 +40,25 @@ export const useFinalizeTxIntentions = ({
 				throw new Error("No intentions set");
 			}
 
-			const [totalCost, gasLimits] = await calculateTransactionsCost(
+			const gasLimits = await estimateGasMulti(publicClient as Client, {
+				transactions: intentions.map((it) => it.evmTransaction),
+				stateOverride,
+			});
+
+			intentions.forEach((it, i) => {
+				it.evmTransaction.gas = gasLimits[i];
+			});
+
+			const totalCost = await calculateTransactionsCost(
 				intentions.map((it) => it.evmTransaction),
 				config,
-				publicClient as Client,
 				{
 					hasDeposit: intentions.some((it) => it.hasDeposit),
 					hasWithdraw: intentions.some((it) => it.hasWithdraw),
 					hasRunesDeposit: intentions.some((it) => it.hasRunesDeposit),
 					hasRunesWithdraw: intentions.some((it) => it.hasRunesWithdraw),
-					stateOverride,
 				},
 			);
-
-			intentions.forEach((it, i) => {
-				it.evmTransaction.gas = gasLimits[i];
-			});
 
 			const transfers: EdictRuneParams["transfers"] = [
 				{

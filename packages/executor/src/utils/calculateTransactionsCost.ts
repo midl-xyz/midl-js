@@ -1,9 +1,9 @@
 import { type Config, getFeeRate } from "@midl-xyz/midl-js-core";
 import {
 	type Client,
-	parseUnits,
 	type StateOverride,
 	type TransactionSerializableBTC,
+	parseUnits,
 } from "viem";
 import { estimateGasMulti } from "viem/actions";
 
@@ -25,33 +25,25 @@ const RUNES_WITHDRAW_SIZE = 401n;
 export const calculateTransactionsCost = async (
 	transactions: TransactionSerializableBTC[],
 	config: Config,
-	evmClient: Client,
 	{
 		feeRateMultiplier = 2,
 		hasRunesDeposit,
 		hasDeposit,
 		hasWithdraw,
 		hasRunesWithdraw,
-		stateOverride,
 	}: {
 		feeRateMultiplier?: number;
 		hasRunesDeposit?: boolean;
 		hasDeposit?: boolean;
 		hasWithdraw?: boolean;
 		hasRunesWithdraw?: boolean;
-		stateOverride?: StateOverride;
 	},
 ) => {
 	// TODO: get gas price from the network
 	const gasPrice = parseUnits("10", 3);
 	const feeRate = await getFeeRate(config);
 
-	const gasLimits = await estimateGasMulti(evmClient, {
-		transactions,
-		stateOverride,
-	});
-
-	const totalGas = gasLimits.reduce((acc, it) => acc + it, 0n);
+	const totalGas = transactions.reduce((acc, it) => acc + (it.gas ?? 0n), 0n);
 
 	const btcWithdrawSize = hasWithdraw
 		? hasRunesWithdraw
@@ -64,10 +56,9 @@ export const calculateTransactionsCost = async (
 			: DEPOSIT_SIZE
 		: 0n;
 
-	return [
+	return (
 		((gasPrice * totalGas) / ONE_SATOSHI) *
-			BigInt(feeRate.halfHourFee * feeRateMultiplier) *
-			(MIDL_SCRIPT_SIZE + btcDepositSize + btcWithdrawSize),
-		gasLimits,
-	] as const;
+		BigInt(feeRate.halfHourFee * feeRateMultiplier) *
+		(MIDL_SCRIPT_SIZE + btcDepositSize + btcWithdrawSize)
+	);
 };
