@@ -46,12 +46,12 @@ export const calculateTransactionsCost = async (
 	const gasPrice = parseUnits("10", 3);
 	const feeRate = await getFeeRate(config);
 
-	const gasPrices = await estimateGasMulti(evmClient, {
+	const gasLimits = await estimateGasMulti(evmClient, {
 		transactions,
 		stateOverride,
 	});
 
-	const totalGas = gasPrices.reduce((acc, gasPrice) => acc + gasPrice, 0n);
+	const totalGas = gasLimits.reduce((acc, it) => acc + it, 0n);
 
 	const btcWithdrawSize = hasWithdraw
 		? hasRunesWithdraw
@@ -64,9 +64,10 @@ export const calculateTransactionsCost = async (
 			: DEPOSIT_SIZE
 		: 0n;
 
-	return (
+	return [
 		((gasPrice * totalGas) / ONE_SATOSHI) *
-		BigInt(feeRate.halfHourFee * feeRateMultiplier) *
-		(MIDL_SCRIPT_SIZE + btcDepositSize + btcWithdrawSize)
-	);
+			BigInt(feeRate.halfHourFee * feeRateMultiplier) *
+			(MIDL_SCRIPT_SIZE + btcDepositSize + btcWithdrawSize),
+		gasLimits,
+	] as const;
 };

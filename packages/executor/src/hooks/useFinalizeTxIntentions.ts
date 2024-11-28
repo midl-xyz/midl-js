@@ -39,7 +39,7 @@ export const useFinalizeTxIntentions = ({
 				throw new Error("No intentions set");
 			}
 
-			const totalCost = await calculateTransactionsCost(
+			const [totalCost, gasLimits] = await calculateTransactionsCost(
 				intentions.map((it) => it.evmTransaction),
 				config,
 				publicClient as Client,
@@ -51,6 +51,10 @@ export const useFinalizeTxIntentions = ({
 					stateOverride,
 				},
 			);
+
+			intentions.forEach((it, i) => {
+				it.evmTransaction.gas = gasLimits[i];
+			});
 
 			const transfers: EdictRuneParams["transfers"] = [
 				{
