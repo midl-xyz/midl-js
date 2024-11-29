@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-bundler
 
+## 0.0.4
+
+### Patch Changes
+
+- fix: network detection
+
 ## 0.0.3
 
 ### Patch Changes

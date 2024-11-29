@@ -1,6 +1,6 @@
 {
   "name": "@midl-xyz/midl-js-executor",
-  "version": "0.0.36",
+  "version": "0.0.37",
   "scripts": {
     "build": "midl-js-bundler",
     "dev": "pkgroll --watch",

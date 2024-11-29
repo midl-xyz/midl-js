@@ -7,16 +7,16 @@ import {
 import { midlRegtest, midlTestnet3, midlTestnet4 } from "~/config/chains";
 
 export const getEVMFromBitcoinNetwork = (network: BitcoinNetwork) => {
-	switch (network) {
-		case regtest: {
+	switch (network.id) {
+		case regtest.id: {
 			return midlRegtest;
 		}
 
-		case testnet4: {
+		case testnet4.id: {
 			return midlTestnet4;
 		}
 
-		case testnet: {
+		case testnet.id: {
 			return midlTestnet3;
 		}
 

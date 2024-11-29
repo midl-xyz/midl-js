@@ -1,6 +1,6 @@
 {
     "name": "@midl-xyz/midl-js-bundler",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "private": true,
     "type": "module",
     "main": "dist/index.js",

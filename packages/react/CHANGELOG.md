@@ -1,5 +1,13 @@
 # @midl-xyz/midl-js-react
 
+## 0.0.33
+
+### Patch Changes
+
+- fix: network detection
+- Updated dependencies
+  - @midl-xyz/midl-js-core@0.0.27
+
 ## 0.0.32
 
 ### Patch Changes

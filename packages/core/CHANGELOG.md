@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 0.0.27
+
+### Patch Changes
+
+- fix: network detection
+
 ## 0.0.26
 
 ### Patch Changes

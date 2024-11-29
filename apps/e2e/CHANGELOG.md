@@ -1,5 +1,15 @@
 # e2e
 
+## 1.0.9
+
+### Patch Changes
+
+- fix: network detection
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@0.0.37
+  - @midl-xyz/midl-js-react@0.0.33
+  - @midl-xyz/midl-js-core@0.0.27
+
 ## 1.0.8
 
 ### Patch Changes
