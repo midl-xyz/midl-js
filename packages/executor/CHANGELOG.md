@@ -1,5 +1,14 @@
 # @midl-xyz/midl-js-executor
 
+## 0.0.36
+
+### Patch Changes
+
+- feat: enable multiple edicts
+- Updated dependencies
+  - @midl-xyz/midl-js-core@0.0.26
+  - @midl-xyz/midl-js-react@0.0.32
+
 ## 0.0.35
 
 ### Patch Changes

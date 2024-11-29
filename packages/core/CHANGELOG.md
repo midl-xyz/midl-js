@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 0.0.26
+
+### Patch Changes
+
+- feat: enable multiple edicts
+
 ## 0.0.25
 
 ### Patch Changes
