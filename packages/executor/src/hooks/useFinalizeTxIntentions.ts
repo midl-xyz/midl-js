@@ -100,15 +100,15 @@ export const useFinalizeTxIntentions = ({
 					.values(),
 			);
 
-			if (runes.length > 1) {
-				throw new Error("Transferring more than one rune is not yet supported");
+			if (runes.length > 2) {
+				throw new Error("Transferring more than two runes is not allowed");
 			}
 
-			if (runes[0]) {
+			for (const rune of runes) {
 				transfers.push({
 					receiver: multisigAddress[config.network.id],
-					amount: runes[0].value,
-					runeId: runes[0].id,
+					amount: rune.value,
+					runeId: rune.id,
 				});
 			}
 
@@ -126,16 +126,18 @@ export const useFinalizeTxIntentions = ({
 		mutateAsync: signIntentionAsync,
 		...restSignIntention
 	} = useMutation({
-		mutationFn: async (intention: TransactionIntention) => {
-			if (!data) {
-				throw new Error("Finalize BTC transaction first");
-			}
-
+		mutationFn: async ({
+			intention,
+			txId,
+		}: {
+			intention: TransactionIntention;
+			txId: string;
+		}) => {
 			const signed = await signTransactionAsync({
 				tx: {
 					...intention.evmTransaction,
 					nonce: nonce + intentions.indexOf(intention),
-					btcTxHash: `0x${data.tx.id}`,
+					btcTxHash: `0x${txId}`,
 				},
 			});
 

@@ -28,7 +28,7 @@ await esbuild
 		sourcemap: true,
 		loader: { ".ts": "ts", ".js": "js" },
 		target: "esnext",
-		minify: true,
+		minify: false,
 		tsconfig: tsConfigPath,
 	})
 	.catch(() => process.exit(1));
