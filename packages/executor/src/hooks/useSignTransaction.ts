@@ -88,14 +88,13 @@ export const useSignTransaction = (
 				protocol,
 			});
 
-			const { r, s, v, btcAddressByte } = extractEVMSignature(
+			const { r, s, v } = extractEVMSignature(
 				data.signature,
 				account,
 			);
 			const signedSerializedTransaction = viemSerializeTransaction(
 				{
 					...tx,
-					btcAddressByte,
 				},
 				{
 					r,
