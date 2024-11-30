@@ -4,6 +4,8 @@
   "compilerOptions": {
     "baseUrl": ".",
     "moduleResolution": "Bundler",
+    "declaration": true,
+    "declarationDir": "./dist",
     "jsx": "react-jsx",
     "paths": {
       "~/*": ["./src/*"]

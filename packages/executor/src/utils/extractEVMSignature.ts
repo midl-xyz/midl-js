@@ -15,8 +15,10 @@ export const extractEVMSignature = (signature: string, signer: Account) => {
 	const addressType = getAddressType(signer.address);
 	const signatureBuffer = Buffer.from(signature, "base64");
 
-	const secp256k1N  = BigInt("0xfffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141")
-	const secp256k1halfN = secp256k1N / 2n
+	const secp256k1N = BigInt(
+		"0xfffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141",
+	);
+	const secp256k1halfN = secp256k1N / 2n;
 
 	let r: Uint8Array | null = null;
 	let s: Uint8Array | null = null;
@@ -25,22 +27,38 @@ export const extractEVMSignature = (signature: string, signer: Account) => {
 
 	switch (addressType) {
 		case AddressType.P2WPKH: {
+			// TODO: fix this signature extraction
+			// p2wpkh signature structure:
+			// [0x02 or 0x03, WITNESS_DATA_LENGTH_BYTE, …WITNESS_DATA, 0x21, …PUBLIC_KEY_33_BYTE]
+
 			const rBytes = signatureBuffer.slice(6, 6 + signatureBuffer[5]);
-			const startS = 6 + signatureBuffer[5]	
-			const sBytes = signatureBuffer.slice(startS + 2, startS + 2 + signatureBuffer[startS + 1])
-			const rBig = BigInt('0x' + rBytes.toString('hex'))
-			let sBig = BigInt('0x' + sBytes.toString('hex'))
+			const startS = 6 + signatureBuffer[5];
+			const sBytes = signatureBuffer.slice(
+				startS + 2,
+				startS + 2 + signatureBuffer[startS + 1],
+			);
+
+			const rBig = BigInt(toHex(rBytes));
+			let sBig = BigInt(toHex(sBytes));
+
 			if (sBig > secp256k1halfN) {
-				sBig = secp256k1N - sBig
+				sBig = secp256k1N - sBig;
 				recoveryId = 28n;
 			} else {
-				recoveryId = 27n
+				recoveryId = 27n;
 			}
 
-			r = new Uint8Array(32)
-			s = new Uint8Array(32)
-			r.set(Buffer.from(rBig.toString(16).padStart(2, '0'), 'hex'), 32 - Buffer.from(rBig.toString(16).padStart(2, '0'), 'hex').length)
-			s.set(Buffer.from(sBig.toString(16).padStart(2, '0'), 'hex'), 32 - Buffer.from(sBig.toString(16).padStart(2, '0'), 'hex').length)
+			r = new Uint8Array(32);
+			s = new Uint8Array(32);
+			r.set(
+				Buffer.from(rBig.toString(16).padStart(2, '0'), "hex"),
+				32 - Buffer.from(rBig.toString(16).padStart(2, '0'), "hex").length,
+			);
+			s.set(
+				Buffer.from(sBig.toString(16).padStart(2, '0'), "hex"),
+				32 - Buffer.from(sBig.toString(16).padStart(2, '0'), "hex").length,
+			);
+
 			break;
 		}
 

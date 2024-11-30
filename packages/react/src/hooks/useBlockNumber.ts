@@ -1,17 +1,21 @@
-import { useMidlContext } from "~/context";
 import { getBlockNumber } from "@midl-xyz/midl-js-core";
-import { type QueryOptions, useQuery } from "@tanstack/react-query";
+import { type UseQueryOptions, useQuery } from "@tanstack/react-query";
+import { useConfig } from "~/hooks/useConfig";
+
+type QueryOptions = Omit<UseQueryOptions<number>, "queryFn" | "queryKey"> & {
+	queryKey?: ReadonlyArray<unknown>;
+};
 
 type UseBlockNumberParams = {
-    /**
-     * If true, the block number will be polled at the specified interval.
-     */
+	/**
+	 * If true, the block number will be polled at the specified interval.
+	 */
 	watch?: boolean;
-    /**
-     * The interval in milliseconds at which to poll the block number.
-     */
+	/**
+	 * The interval in milliseconds at which to poll the block number.
+	 */
 	pollingInterval?: number;
-    query?: Omit<QueryOptions<number>, 'queryFn'>
+	query?: QueryOptions;
 };
 
 // TODO: Add websocket support
@@ -19,17 +23,17 @@ type UseBlockNumberParams = {
 export const useBlockNumber = ({
 	watch,
 	pollingInterval = 30_000,
-    query = {},
+	query: { queryKey, ...query } = {} as QueryOptions,
 }: UseBlockNumberParams = {}) => {
-	const { config } = useMidlContext();
+	const config = useConfig();
 
-	const { data, ...rest } = useQuery({
-		queryKey: ["blockNumber"],
+	const { data, ...rest } = useQuery<number>({
+		queryKey: ["blockNumber", ...(queryKey ?? [])],
 		queryFn: () => {
 			return getBlockNumber(config);
 		},
-        refetchInterval: watch ? pollingInterval : false,
-        ...query,
+		refetchInterval: watch ? pollingInterval : false,
+		...query,
 	});
 
 	return {

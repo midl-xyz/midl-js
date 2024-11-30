@@ -1,4 +1,6 @@
-export const midlTestnet3 = {
+import type { Chain } from "~/config/chains/chain";
+
+export const midlTestnet3: Chain = {
 	id: 0x309,
 	rpcUrls: {
 		default: {

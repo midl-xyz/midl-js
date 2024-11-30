@@ -1,32 +1,39 @@
 import {
-  getRuneBalance,
-  type GetRuneBalanceParams,
-  type GetRuneBalanceResponse,
+	type GetRuneBalanceParams,
+	type GetRuneBalanceResponse,
+	getRuneBalance,
 } from "@midl-xyz/midl-js-core";
-import { type QueryOptions, useQuery } from "@tanstack/react-query";
-import { useMidlContext } from "~/context";
+import { type UseQueryOptions, useQuery } from "@tanstack/react-query";
+import { useConfig } from "~/hooks/useConfig";
+
+type QueryOptions = Omit<
+	UseQueryOptions<GetRuneBalanceResponse>,
+	"queryFn" | "queryKey"
+> & {
+	queryKey?: ReadonlyArray<unknown>;
+};
 
 type UseRuneBalanceParams = GetRuneBalanceParams & {
-  query?: QueryOptions<GetRuneBalanceResponse>;
+	query?: QueryOptions;
 };
 
 export const useRuneBalance = ({
-  address,
-  runeId,
-  query: { queryKey, ...query } = {},
+	address,
+	runeId,
+	query: { queryKey, ...query } = {} as QueryOptions,
 }: UseRuneBalanceParams) => {
-  const { config } = useMidlContext();
+	const config = useConfig();
 
-  const { data: balance, ...rest } = useQuery<GetRuneBalanceResponse>({
-    queryKey: ["runeBalance", address, runeId, ...(queryKey ?? [])],
-    queryFn: () => {
-      return getRuneBalance(config, { address, runeId });
-    },
-    ...query,
-  });
+	const { data: balance, ...rest } = useQuery<GetRuneBalanceResponse>({
+		queryKey: ["runeBalance", address, runeId, ...(queryKey ?? [])],
+		queryFn: () => {
+			return getRuneBalance(config, { address, runeId });
+		},
+		...query,
+	});
 
-  return {
-    balance,
-    ...rest,
-  };
+	return {
+		balance,
+		...rest,
+	};
 };

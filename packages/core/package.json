@@ -1,6 +1,6 @@
 {
   "name": "@midl-xyz/midl-js-core",
-  "version": "0.0.23",
+  "version": "0.0.25",
   "scripts": {
     "build": "pkgroll",
     "dev": "pkgroll --watch",
@@ -38,11 +38,11 @@
     "bitcoinselect": "^1.0.0",
     "coinselect": "^3.1.13",
     "ecpair": "^2.1.0",
-    "jotai": "2.9.1",
     "ky": "^1.7.2",
     "runelib": "^1.0.7",
     "sats-connect": "^2.6.0",
     "tiny-secp256k1": "^2.2.3",
-    "viem": "^2.18.6"
+    "viem": "^2.18.6",
+    "zustand": "^5.0.1"
   }
 }

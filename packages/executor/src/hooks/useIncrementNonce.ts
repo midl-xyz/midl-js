@@ -2,25 +2,26 @@ import { useMidlContext } from "@midl-xyz/midl-js-react";
 import { useAccount } from "wagmi";
 
 export const useIncrementNonce = () => {
-  const { state, setState } = useMidlContext();
-  const { address } = useAccount();
+	const { store } = useMidlContext();
+	const { address } = useAccount();
 
-  return () => {
-    if (!address) {
-      return;
-    }
+	return () => {
+		if (!address) {
+			return;
+		}
 
-    const nonce = state.wallet?.[address]?.nonce ?? 0;
+		const { wallet } = store.getState();
 
-    setState({
-      ...state,
-      wallet: {
-        ...state.wallet,
-        [address]: {
-          nonce: nonce + 1,
-          transactions: state.wallet?.[address]?.transactions ?? [],
-        },
-      },
-    });
-  };
+		const nonce = wallet?.[address]?.nonce ?? 0;
+
+		store.setState({
+			wallet: {
+				...wallet,
+				[address]: {
+					nonce: nonce + 1,
+					transactions: wallet?.[address]?.transactions ?? [],
+				},
+			},
+		});
+	};
 };

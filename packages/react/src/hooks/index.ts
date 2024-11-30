@@ -15,3 +15,5 @@ export * from "./useTransferBTC";
 export * from "./useSwitchNetwork";
 export * from "./useWaitForTransaction";
 export * from "./useBlockNumber";
+export * from "./useConfig";
+export * from "./useStore";

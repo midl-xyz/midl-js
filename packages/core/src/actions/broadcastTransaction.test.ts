@@ -1,14 +1,13 @@
 import {
+	type Mock,
 	afterEach,
 	beforeEach,
 	describe,
 	expect,
 	it,
-	type Mock,
 	vi,
 } from "vitest";
 import { broadcastTransaction } from "~/actions/broadcastTransaction";
-import { devnet } from "~/chains";
 import { satsConnect } from "~/connectors";
 import { createConfig } from "~/createConfig";
 import { regtest } from "~/networks";
@@ -26,7 +25,6 @@ describe("core | actions | broadcastTransaction", () => {
 	it.skip("should broadcast a transaction", async () => {
 		const config = createConfig({
 			networks: [regtest],
-			chain: devnet,
 			connectors: [satsConnect()],
 		});
 

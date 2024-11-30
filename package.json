@@ -20,7 +20,7 @@
   },
   "pnpm": {
     "overrides": {
-      "viem": "npm:@midl-xyz/midl-viem@2.21.32"
+      "viem": "npm:@midl-xyz/midl-viem@2.21.33"
     }
   }
 }

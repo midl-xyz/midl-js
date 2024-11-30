@@ -1,5 +1,51 @@
 # @midl-xyz/midl-js-executor
 
+## 0.0.35
+
+### Patch Changes
+
+- fix: typings
+
+## 0.0.34
+
+### Patch Changes
+
+- feat: update package bundler
+- Updated dependencies
+  - @midl-xyz/midl-js-react@0.0.31
+
+## 0.0.33
+
+### Patch Changes
+
+- f6dcbc1: Add tx intentions
+- Updated dependencies [f6dcbc1]
+  - @midl-xyz/midl-js-react@0.0.30
+  - @midl-xyz/midl-js-core@0.0.25
+
+## 0.0.32
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-react@0.0.29
+
+## 0.0.32-0.0
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-react@0.0.29-0.0
+
+## 0.0.31
+
+### Patch Changes
+
+- chore: throw error on output edict
+- Updated dependencies
+  - @midl-xyz/midl-js-react@0.0.28
+  - @midl-xyz/midl-js-core@0.0.24
+
 ## 0.0.30
 
 ### Patch Changes

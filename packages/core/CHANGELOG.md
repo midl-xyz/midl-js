@@ -1,5 +1,17 @@
 # @midl-xyz/midl-js-core
 
+## 0.0.25
+
+### Patch Changes
+
+- f6dcbc1: Add tx intentions
+
+## 0.0.24
+
+### Patch Changes
+
+- chore: throw error on output edict
+
 ## 0.0.23
 
 ### Patch Changes
