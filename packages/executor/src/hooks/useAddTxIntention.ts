@@ -31,7 +31,8 @@ export const useAddTxIntention = () => {
 			);
 		}
 
-		intention.evmTransaction.chainId = chainId;
+		intention.evmTransaction.chainId =
+			intention.evmTransaction.chainId ?? chainId;
 
 		store.setState({
 			intentions: reset
