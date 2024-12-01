@@ -19,6 +19,33 @@ type UseTransferBTCParams = {
 	>;
 };
 
+/**
+ * Custom hook to transfer Bitcoin (BTC).
+ *
+ * This hook provides functions to initiate a BTC transfer and handle its asynchronous operation.
+ *
+ * @example
+ * ```typescript
+ * const { transferBTC, transferBTCAsync } = useTransferBTC();
+ * 
+ * // To transfer BTC
+ * transferBTC({  --parameters--  });
+ * 
+ * // To transfer BTC asynchronously
+ * await transferBTCAsync({ --parameters-- });
+ * ```
+ *
+ * @param {UseTransferBTCParams} [params] - Configuration options for the mutation.
+ *
+ * @returns
+ * - `transferBTC`: `(variables: TransferBTCVariables) => void` – Function to initiate a BTC transfer.
+ * - `transferBTCAsync`: `(variables: TransferBTCVariables) => Promise<TransferBTCData>` – Function to asynchronously transfer BTC.
+ * - `isLoading`: `boolean` – Indicates if the mutation is currently loading.
+ * - `error`: `Error | null` – Contains error information if the mutation failed.
+ * - `data`: `TransferBTCData | undefined` – The response data from the BTC transfer.
+ */
+
+
 export const useTransferBTC = ({ mutation }: UseTransferBTCParams = {}) => {
 	const config = useConfig();
 

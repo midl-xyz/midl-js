@@ -1,0 +1,28 @@
+# useSignPSBT
+
+Custom hook to sign a PSBT (Partially Signed Bitcoin Transaction).
+
+This hook provides functions to sign a PSBT using the connected wallet.
+
+## Example
+
+```typescript
+const { signPSBT, signPSBTAsync } = useSignPSBT();
+
+// To sign a PSBT
+signPSBT({ --parameters-- });
+
+// To sign a PSBT asynchronously
+await signPSBTAsync({ --parameters-- });
+```
+
+## Parameters
+
+**params**: `UseSignPSBTParams` – Configuration options for the mutation.
+
+## Returns
+- `signPSBT`: `(variables: SignPSBTVariables) => void` – Function to initiate PSBT signing.
+- `signPSBTAsync`: `(variables: SignPSBTVariables) => Promise<SignPSBTData>` – Function to asynchronously sign PSBT.
+- `isLoading`: `boolean` – Indicates if the mutation is currently loading.
+- `error`: `Error | null` – Contains error information if the mutation failed.
+- `data`: `SignPSBTData | undefined` – The response data from the PSBT signing.

@@ -1,0 +1,27 @@
+# useAccounts
+
+
+Custom hook to manage user accounts.
+
+This hook fetches and provides access to the user's accounts, including ordinals and payment accounts.
+
+
+
+## Example
+
+
+```typescript
+const { accounts, ordinalsAccount, paymentAccount, status } = useAccounts();
+```
+
+## Returns
+
+- **accounts**: `Array<Account> | null` – The list of user accounts.
+- **ordinalsAccount**: `Account | undefined` – The ordinals account.
+- **paymentAccount**: `Account | undefined` – The payment account.
+- **connector**: `Connector | undefined` – The current connection.
+- **isConnecting**: `boolean` – Indicates if a connection is in progress.
+- **isConnected**: `boolean` – Indicates if the connection has been established.
+- **status**: `string` – The current connection status.
+- **network**: `Network | undefined` – The connected network.
+- **...rest**: `any` – Additional query state provided by `useQuery`.
