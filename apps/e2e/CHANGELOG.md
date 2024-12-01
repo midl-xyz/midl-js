@@ -1,5 +1,15 @@
 # e2e
 
+## 1.0.10
+
+### Patch Changes
+
+- 72b6eaa: feat: update builder
+- Updated dependencies [72b6eaa]
+  - @midl-xyz/midl-js-executor@0.0.38
+  - @midl-xyz/midl-js-react@0.0.34
+  - @midl-xyz/midl-js-core@0.0.28
+
 ## 1.0.9
 
 ### Patch Changes

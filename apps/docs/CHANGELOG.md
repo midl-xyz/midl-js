@@ -1,5 +1,14 @@
 # @midl-xyz/midl-js-docs
 
+## 0.0.33
+
+### Patch Changes
+
+- 72b6eaa: feat: update builder
+- Updated dependencies [72b6eaa]
+  - @midl-xyz/midl-js-react@0.0.34
+  - @midl-xyz/midl-js-core@0.0.28
+
 ## 0.0.32
 
 ### Patch Changes

@@ -1,9 +1,10 @@
 {
   "name": "@midl-xyz/midl-js-executor",
-  "version": "0.0.37",
+  "version": "0.0.38",
   "scripts": {
-    "build": "midl-js-bundler",
-    "dev": "pkgroll --watch",
+    "build": "pnpm run clean && tsc --project tsconfig.build.json && tsc-alias -p tsconfig.build.json",
+    "dev": "concurrently \"tsc --watch --preserveWatchOutput --project tsconfig.build.json\" \"tsc-alias -w -p tsconfig.build.json\"",
+    "clean": "rm -rf dist",
     "test": "vitest",
     "generate": "wagmi generate"
   },
@@ -15,7 +16,6 @@
     "dist"
   ],
   "devDependencies": {
-    "@midl-xyz/midl-js-bundler": "workspace:^",
     "@midl-xyz/midl-js-config": "workspace:^",
     "@midl-xyz/midl-js-react": "workspace:^",
     "@tanstack/react-query": "^5.59.9",

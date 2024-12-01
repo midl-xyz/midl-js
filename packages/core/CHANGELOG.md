@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 0.0.28
+
+### Patch Changes
+
+- 72b6eaa: feat: update builder
+
 ## 0.0.27
 
 ### Patch Changes
