@@ -1,12 +1,13 @@
 import type { EdictRuneParams } from "@midl-xyz/midl-js-core";
 import { useEdictRune, useMidlContext } from "@midl-xyz/midl-js-react";
 import { useMutation } from "@tanstack/react-query";
-import type { Client, StateOverride } from "viem";
+import { type Client, type StateOverride, parseUnits } from "viem";
 import { estimateGasMulti } from "viem/actions";
 import { useClient } from "wagmi";
 import { useStore } from "zustand";
 import { multisigAddress } from "~/config";
 import { useLastNonce } from "~/hooks/useLastNonce";
+import { usePublicKey } from "~/hooks/usePublicKey";
 import { useSignTransaction } from "~/hooks/useSignTransaction";
 import type { TransactionIntention } from "~/types/intention";
 import { calculateTransactionsCost } from "~/utils";
@@ -25,6 +26,7 @@ export const useFinalizeTxIntentions = ({
 	const { intentions = [] } = useStore(store);
 	const { edictRuneAsync } = useEdictRune();
 	const { signTransactionAsync } = useSignTransaction();
+	const publicKey = usePublicKey();
 	const publicClient = useClient();
 	const nonce = useLastNonce();
 
@@ -60,10 +62,14 @@ export const useFinalizeTxIntentions = ({
 				},
 			);
 
+			const btcTransfer = intentions.reduce((acc, it) => {
+				return acc + (it.evmTransaction.value ?? 0n);
+			}, 0n);
+
 			const transfers: EdictRuneParams["transfers"] = [
 				{
 					receiver: multisigAddress[config.network.id],
-					amount: Number(totalCost),
+					amount: Number(totalCost + btcTransfer),
 				},
 			];
 
@@ -133,12 +139,22 @@ export const useFinalizeTxIntentions = ({
 			intention: TransactionIntention;
 			txId: string;
 		}) => {
-			const signed = await signTransactionAsync({
-				tx: {
+			if (!publicKey) {
+				throw new Error("No public key set");
+			}
+
+			for (const intention of intentions) {
+				intention.evmTransaction = {
 					...intention.evmTransaction,
 					nonce: nonce + intentions.indexOf(intention),
+					gasPrice: parseUnits("1", 3),
+					publicKey,
 					btcTxHash: `0x${txId}`,
-				},
+				};
+			}
+
+			const signed = await signTransactionAsync({
+				tx: intention.evmTransaction,
 			});
 
 			store.setState({
