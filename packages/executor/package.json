@@ -1,9 +1,10 @@
 {
   "name": "@midl-xyz/midl-js-executor",
-  "version": "0.0.35",
+  "version": "0.0.39",
   "scripts": {
-    "build": "midl-js-bundler",
-    "dev": "pkgroll --watch",
+    "build": "pnpm run clean && tsc --project tsconfig.build.json && tsc-alias -p tsconfig.build.json",
+    "dev": "concurrently \"tsc --watch --preserveWatchOutput --project tsconfig.build.json\" \"tsc-alias -w -p tsconfig.build.json\"",
+    "clean": "rm -rf dist",
     "test": "vitest",
     "generate": "wagmi generate"
   },
@@ -12,10 +13,10 @@
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "./src/types/**/*.d.ts"
   ],
   "devDependencies": {
-    "@midl-xyz/midl-js-bundler": "workspace:^",
     "@midl-xyz/midl-js-config": "workspace:^",
     "@midl-xyz/midl-js-react": "workspace:^",
     "@tanstack/react-query": "^5.59.9",
@@ -25,7 +26,7 @@
     "@wagmi/connectors": "^5.1.11",
     "bitcoinjs-lib": "7.0.0-rc.0",
     "react": "^18.3.1",
-    "viem": "npm:@midl-xyz/midl-viem@2.21.33",
+    "viem": "npm:@midl-xyz/midl-viem@2.21.35",
     "wagmi": "^2.*"
   },
   "dependencies": {

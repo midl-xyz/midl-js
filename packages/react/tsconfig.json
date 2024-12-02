@@ -1,11 +1,9 @@
 {
   "extends": "@midl-xyz/midl-js-config/tsconfig.base.json",
-  "include": ["./src/**/*.ts", "src/context.tsx", "src/**/*.tsx"],
+  "include": ["./src/**/*.ts", "src/**/*.tsx"],
   "compilerOptions": {
     "baseUrl": ".",
     "moduleResolution": "Bundler",
-    "declaration": true,
-    "declarationDir": "./dist",
     "jsx": "react-jsx",
     "paths": {
       "~/*": ["./src/*"]

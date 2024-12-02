@@ -1,5 +1,40 @@
 # rune-etcher
 
+## 0.1.16
+
+### Patch Changes
+
+- feat: finalize transactions
+- Updated dependencies
+  - @midl-xyz/midl-js-react@0.0.35
+  - @midl-xyz/midl-js-core@0.0.29
+
+## 0.1.15
+
+### Patch Changes
+
+- 72b6eaa: feat: update builder
+- Updated dependencies [72b6eaa]
+  - @midl-xyz/midl-js-react@0.0.34
+  - @midl-xyz/midl-js-core@0.0.28
+
+## 0.1.14
+
+### Patch Changes
+
+- fix: network detection
+- Updated dependencies
+  - @midl-xyz/midl-js-react@0.0.33
+  - @midl-xyz/midl-js-core@0.0.27
+
+## 0.1.13
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-core@0.0.26
+  - @midl-xyz/midl-js-react@0.0.32
+
 ## 0.1.12
 
 ### Patch Changes

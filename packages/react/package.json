@@ -1,9 +1,10 @@
 {
     "name": "@midl-xyz/midl-js-react",
-    "version": "0.0.31",
+    "version": "0.0.35",
     "scripts": {
-        "build": "midl-js-bundler",
-        "dev": "pkgroll --watch",
+        "build": "pnpm run clean && tsc --project tsconfig.build.json && tsc-alias -p tsconfig.build.json",
+        "dev": "concurrently \"tsc --watch --preserveWatchOutput --project tsconfig.build.json\" \"tsc-alias -w -p tsconfig.build.json\"",
+        "clean": "rm -rf dist",
         "test": "vitest"
     },
     "type": "module",
@@ -15,7 +16,6 @@
     ],
     "devDependencies": {
         "@metamask/providers": "^17.1.1",
-        "@midl-xyz/midl-js-bundler": "workspace:^",
         "@midl-xyz/midl-js-config": "workspace:^",
         "@tanstack/react-query": "*",
         "@types/react": "^18.3.11",

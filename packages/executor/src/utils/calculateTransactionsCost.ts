@@ -1,11 +1,5 @@
 import { type Config, getFeeRate } from "@midl-xyz/midl-js-core";
-import {
-	type Client,
-	type StateOverride,
-	type TransactionSerializableBTC,
-	parseUnits,
-} from "viem";
-import { estimateGasMulti } from "viem/actions";
+import { type TransactionSerializableBTC, parseUnits } from "viem";
 
 const ONE_SATOSHI = parseUnits("10", 10);
 const MIDL_SCRIPT_SIZE = 204n;
@@ -56,9 +50,14 @@ export const calculateTransactionsCost = async (
 			: DEPOSIT_SIZE
 		: 0n;
 
-	return (
+	const fees =
 		((gasPrice * totalGas) / ONE_SATOSHI) *
 		BigInt(feeRate.halfHourFee * feeRateMultiplier) *
-		(MIDL_SCRIPT_SIZE + btcDepositSize + btcWithdrawSize)
-	);
+		(MIDL_SCRIPT_SIZE + btcDepositSize + btcWithdrawSize);
+
+	if (fees <= 0n) {
+		return 1n;
+	}
+
+	return fees;
 };
