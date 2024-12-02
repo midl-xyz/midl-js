@@ -1,5 +1,15 @@
 # e2e
 
+## 1.0.11
+
+### Patch Changes
+
+- feat: finalize transactions
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@0.0.39
+  - @midl-xyz/midl-js-react@0.0.35
+  - @midl-xyz/midl-js-core@0.0.29
+
 ## 1.0.10
 
 ### Patch Changes

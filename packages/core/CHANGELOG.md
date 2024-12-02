@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 0.0.29
+
+### Patch Changes
+
+- feat: finalize transactions
+
 ## 0.0.28
 
 ### Patch Changes

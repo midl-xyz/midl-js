@@ -1,5 +1,13 @@
 # @midl-xyz/midl-js-react
 
+## 0.0.35
+
+### Patch Changes
+
+- feat: finalize transactions
+- Updated dependencies
+  - @midl-xyz/midl-js-core@0.0.29
+
 ## 0.0.34
 
 ### Patch Changes

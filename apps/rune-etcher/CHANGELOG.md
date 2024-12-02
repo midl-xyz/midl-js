@@ -1,5 +1,14 @@
 # rune-etcher
 
+## 0.1.16
+
+### Patch Changes
+
+- feat: finalize transactions
+- Updated dependencies
+  - @midl-xyz/midl-js-react@0.0.35
+  - @midl-xyz/midl-js-core@0.0.29
+
 ## 0.1.15
 
 ### Patch Changes
