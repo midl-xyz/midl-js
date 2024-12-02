@@ -21,6 +21,31 @@ type UseSignMessageParams = {
 	>;
 };
 
+/**
+ * Custom hook to sign a message.
+ *
+ * This hook provides functions to sign a message using the connected payment account or a specified address.
+ *
+ * @example
+ * ```typescript
+ * const { signMessage, signMessageAsync } = useSignMessage();
+ * 
+ * // To sign a message
+ * signMessage({ message: 'Hello, World!' });
+ * 
+ * // To sign a message asynchronously
+ * await signMessageAsync({ message: 'Hello, World!' });
+ * ```
+ *
+ * @param {UseSignMessageParams} [params] - Configuration options for the mutation.
+ *
+ * @returns
+ * - `signMessage`: `(variables: SignMessageVariables) => void` – Function to initiate message signing.
+ * - `signMessageAsync`: `(variables: SignMessageVariables) => Promise<SignMessageData>` – Function to asynchronously sign the message.
+ * - `isLoading`: `boolean` – Indicates if the mutation is currently loading.
+ * - `error`: `Error | null` – Contains error information if the mutation failed.
+ * - `data`: `SignMessageData | undefined` – The response data from the message signing.
+ */
 export const useSignMessage = ({ mutation }: UseSignMessageParams = {}) => {
 	const config = useConfig();
 	const { paymentAccount } = useAccounts();

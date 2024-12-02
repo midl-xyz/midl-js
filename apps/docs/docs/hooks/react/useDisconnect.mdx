@@ -1,0 +1,25 @@
+# useDisconnect
+
+Hook to disconnect from a wallet.
+
+## Example
+```typescript
+const { disconnect, disconnectAsync } = useDisconnect();
+
+// To disconnect
+disconnect();
+
+// To disconnect asynchronously
+await disconnectAsync();
+```
+
+## Parameters
+
+**params**: `UseDisconnectParams` – Configuration options for the mutation.
+
+## Returns
+
+- **disconnect**: `() => void` – Function to initiate disconnection.
+- **disconnectAsync**: `() => Promise<void>` – Function to asynchronously disconnect.
+- **isLoading**: `boolean` – Indicates if the mutation is currently loading.
+- **error**: `Error | null` – Contains error information if the mutation failed.

@@ -12,13 +12,20 @@ type UseEVMAddressParams = {
 };
 
 /**
- * Hook to get the EVM address from the public key
+ * Custom hook to retrieve the EVM address corresponding to a given public key.
  *
- * If the public key is not provided, it will try to get it from the payment account or the ordinals account
- * If the public key is not found, it will return the zero address
+ * This hook converts a Bitcoin public key to its corresponding Ethereum Virtual Machine (EVM) address.
+ * If no public key is provided, it uses the connected payment or ordinals account's public key.
  *
- * @param publicKey The public key to get the EVM address from
- * @returns The EVM address
+ * @example
+ * ```typescript
+ * const evmAddress = useEVMAddress({ publicKey: '0xabc123...' });
+ * ```
+ *
+ * @param {UseEVMAddressParams} [params] - Parameters for retrieving the EVM address.
+ * @param {Address} [params.publicKey] - The public key to convert to an EVM address.
+ *
+ * @returns {Address} – The corresponding EVM address, or the zero address if unavailable.
  */
 export const useEVMAddress = ({ publicKey }: UseEVMAddressParams = {}) => {
 	const { ordinalsAccount, paymentAccount } = useAccounts();

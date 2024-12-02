@@ -17,6 +17,24 @@ type UseRunesParams = GetRunesParams & {
 	query?: QueryOptions;
 };
 
+/**
+ * Custom hook to retrieve a list of Runes for a given address with pagination.
+ *
+ * This hook fetches Runes associated with the provided `address`, supporting pagination through `limit` and `offset`.
+ *
+ * @example
+ * ```typescript
+ * const { runes, isLoading } = useRunes({ address: 'address-123', limit: 10, offset: 0 });
+ * ```
+ *
+ * @param {UseRunesParams} params - Parameters for fetching the Runes.
+ *
+ * @returns
+ * - `runes`: `Array<Rune> | undefined` – The list of fetched Runes.
+ * - `isLoading`: `boolean` – Indicates if the query is currently loading.
+ * - `error`: `Error | null` – Contains error information if the query failed.
+ * - `isFetching`: `boolean` – Indicates if the query is in the background fetching state.
+ */
 export const useRunes = ({
 	address,
 	limit,

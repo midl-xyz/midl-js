@@ -8,6 +8,27 @@ type UseLastBlockParams = {
   >;
 };
 
+/**
+ * Custom hook to retrieve the last block number from the Executor contract.
+ *
+ * This hook calls the `lastBlockNum` function of the Executor smart contract to obtain the most recent block number.
+ *
+ * @example
+ * ```typescript
+ * const { lastBlock, isLoading } = useLastBlock();
+ * 
+ * if (lastBlock) {
+ *   console.log(`Last block number: ${lastBlock}`);
+ * }
+ * ```
+ *
+ * @param {UseLastBlockParams} [params] - Optional parameters for the contract call.
+ * @param {boolean} [params.query.enabled] - Whether the query is enabled.
+ *
+ * @returns
+ * - **lastBlock**: `number | undefined` – The last block number retrieved from the contract.
+ * - Other properties from `useReadContract` such as `isLoading`, `error`, etc.
+ */
 export const useLastBlock = ({ query }: UseLastBlockParams = {}) => {
   const { data: lastBlock, ...rest } = useReadContract({
     abi: executorAbi,

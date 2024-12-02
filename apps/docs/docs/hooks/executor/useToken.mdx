@@ -1,0 +1,29 @@
+# useToken
+
+Custom hook to retrieve and convert the Rune ID associated with a specific EVM address.
+
+This hook fetches the bytes32 representation of a Rune ID for a given EVM address,
+converts it to a standard Rune ID, and retrieves the corresponding Rune data.
+
+## Example
+
+```typescript
+const { rune, isLoading } = useToken('0xabc123...');
+
+if (rune) {
+  console.log(`Rune Name: ${rune.name}`);
+}
+```
+
+## Parameters
+
+- **address**: `Address` – The EVM address for which to retrieve the Rune.
+- **options**: `UseERC20Params` – Optional parameters for the contract call.
+- **options.query.enabled**: `boolean` – Whether the query is enabled.
+
+## Returns
+
+- **state**: `UseRuneReturn` – The state returned by the `useRune` hook.
+- **bytes32State**: `UseReadContractReturn` – The state returned by the `useReadContract` hook for Rune ID.
+- **bytes32RuneId**: `string | undefined` – The bytes32 representation of the Rune ID.
+- **rune**: `Rune | undefined` – The corresponding Rune data.

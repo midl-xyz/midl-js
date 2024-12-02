@@ -1,0 +1,18 @@
+# useEVMChain
+
+Custom hook to retrieve the EVM chain associated with the current Bitcoin network.
+
+This hook maps the current Bitcoin network to its corresponding Ethereum Virtual Machine (EVM) chain configuration.
+
+## Example
+
+```typescript
+const evmChain = useEVMChain();
+if (evmChain) {
+	console.log(`EVM Chain Name: ${evmChain.name}`);
+}
+```
+
+## Returns
+
+- **evmChain**: `EVMChain | null` – The EVM chain configuration if available, otherwise `null`.

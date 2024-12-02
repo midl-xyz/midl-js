@@ -17,6 +17,24 @@ type UseRuneBalanceParams = GetRuneBalanceParams & {
 	query?: QueryOptions;
 };
 
+/**
+ * Custom hook to retrieve the balance of a specific Rune for a given address.
+ *
+ * This hook fetches the Rune balance associated with the provided `address` and `runeId`.
+ *
+ * @example
+ * ```typescript
+ * const { balance, isLoading } = useRuneBalance({ address: 'address-123', runeId: 'rune-123' });
+ * ```
+ *
+ * @param {UseRuneBalanceParams} params - Parameters for fetching the Rune balance.
+ *
+ * @returns
+ * - **balance**: `RuneBalance | undefined` – The balance of the specified Rune.
+ * - **isLoading**: `boolean` – Indicates if the query is currently loading.
+ * - **error**: `Error | null` – Contains error information if the query failed.
+ * - **isFetching**: `boolean` – Indicates if the query is in the background fetching state.
+ */
 export const useRuneBalance = ({
 	address,
 	runeId,

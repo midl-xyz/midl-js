@@ -23,6 +23,28 @@ type UseWaitForTransactionParams = {
 	>;
 };
 
+/**
+ * Custom hook to wait for a transaction to be confirmed.
+ *
+ * This hook provides functions to wait for a specified number of confirmations for a given transaction ID.
+ *
+ * @example
+ * ```typescript
+ * const { waitForTransaction, isLoading } = useWaitForTransaction();
+ * 
+ * // To wait for a transaction to confirm
+ * waitForTransaction({ txId: 'tx-123', confirmations: 3 });
+ * ```
+ *
+ * @param {UseWaitForTransactionParams} [params] - Configuration options for the mutation.
+ *
+ * @returns
+ * - `waitForTransaction`: `(variables: WaitForTransactionVariables) => void` – Function to initiate waiting for a transaction confirmation.
+ * - `waitForTransactionAsync`: `(variables: WaitForTransactionVariables) => Promise<number>` – Function to asynchronously wait for a transaction confirmation.
+ * - `isLoading`: `boolean` – Indicates if the mutation is currently loading.
+ * - `error`: `Error | null` – Contains error information if the mutation failed.
+ * - `data`: `number | undefined` – The number of confirmations once the transaction is confirmed.
+ */
 export const useWaitForTransaction = ({
 	mutation,
 }: UseWaitForTransactionParams = {}) => {
