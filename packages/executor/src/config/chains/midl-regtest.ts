@@ -4,7 +4,7 @@ export const midlRegtest: Chain = {
 	id: 0x309,
 	rpcUrls: {
 		default: {
-			http: ["http://54.75.35.100:8545"],
+			http: ["https://evm-rpc.regtest.midl.xyz"],
 		},
 	},
 	name: "midl-regtest",

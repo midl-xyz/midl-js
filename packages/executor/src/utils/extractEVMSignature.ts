@@ -51,12 +51,12 @@ export const extractEVMSignature = (signature: string, signer: Account) => {
 			r = new Uint8Array(32);
 			s = new Uint8Array(32);
 			r.set(
-				Buffer.from(rBig.toString(16), "hex"),
-				32 - Buffer.from(rBig.toString(16), "hex").length,
+				Buffer.from(rBig.toString(16).padStart(2, '0'), "hex"),
+				32 - Buffer.from(rBig.toString(16).padStart(2, '0'), "hex").length,
 			);
 			s.set(
-				Buffer.from(sBig.toString(16), "hex"),
-				32 - Buffer.from(sBig.toString(16), "hex").length,
+				Buffer.from(sBig.toString(16).padStart(2, '0'), "hex"),
+				32 - Buffer.from(sBig.toString(16).padStart(2, '0'), "hex").length,
 			);
 
 			break;
@@ -72,7 +72,6 @@ export const extractEVMSignature = (signature: string, signer: Account) => {
 			r = Uint8Array.prototype.slice.call(signatureWithoutFirstByte, 0, 32);
 
 			s = Uint8Array.prototype.slice.call(signatureWithoutFirstByte, 32, 64);
-
 			recoveryId = 27n;
 			break;
 		}

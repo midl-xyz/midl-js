@@ -1,5 +1,42 @@
 # @midl-xyz/midl-js-react
 
+## 0.0.35
+
+### Patch Changes
+
+- feat: finalize transactions
+- Updated dependencies
+  - @midl-xyz/midl-js-core@0.0.29
+
+## 0.0.34
+
+### Patch Changes
+
+- 72b6eaa: feat: update builder
+- Updated dependencies [72b6eaa]
+  - @midl-xyz/midl-js-core@0.0.28
+
+## 0.0.33
+
+### Patch Changes
+
+- fix: network detection
+- Updated dependencies
+  - @midl-xyz/midl-js-core@0.0.27
+
+## 0.0.32
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-core@0.0.26
+
+## 0.0.31
+
+### Patch Changes
+
+- feat: update package bundler
+
 ## 0.0.30
 
 ### Patch Changes

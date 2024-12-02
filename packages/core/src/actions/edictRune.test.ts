@@ -27,7 +27,7 @@ describe("core | actions | edictRune", () => {
 		await config.connectors[0].connect({ purposes: [AddressPurpose.Ordinals] });
 	});
 
-	it("should throw if more than 1 edict", async () => {
+	it.skip("should throw if more than 1 edict", async () => {
 		expect(() =>
 			edictRune(config, {
 				transfers: [

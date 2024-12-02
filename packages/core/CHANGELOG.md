@@ -1,5 +1,29 @@
 # @midl-xyz/midl-js-core
 
+## 0.0.29
+
+### Patch Changes
+
+- feat: finalize transactions
+
+## 0.0.28
+
+### Patch Changes
+
+- 72b6eaa: feat: update builder
+
+## 0.0.27
+
+### Patch Changes
+
+- fix: network detection
+
+## 0.0.26
+
+### Patch Changes
+
+- feat: enable multiple edicts
+
 ## 0.0.25
 
 ### Patch Changes

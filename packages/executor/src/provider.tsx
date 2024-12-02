@@ -1,7 +1,10 @@
+"use client";
+
 import { mock } from "wagmi/connectors";
 import { useEffect } from "react";
 import { useConnect, useSwitchChain } from "wagmi";
 import { useEVMAddress, useEVMChain } from "~/hooks";
+import { zeroAddress } from "viem";
 
 export const WagmiMidlProvider = () => {
 	const evmAddress = useEVMAddress();
@@ -10,6 +13,10 @@ export const WagmiMidlProvider = () => {
 	const { connect } = useConnect();
 
 	useEffect(() => {
+		if (!evmAddress || evmAddress === zeroAddress) {
+			return;
+		}
+
 		connect({ connector: mock({ accounts: [evmAddress] }) });
 
 		if (chain) {

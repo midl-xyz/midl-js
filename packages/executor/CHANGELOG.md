@@ -1,5 +1,55 @@
 # @midl-xyz/midl-js-executor
 
+## 0.0.39
+
+### Patch Changes
+
+- feat: finalize transactions
+- Updated dependencies
+  - @midl-xyz/midl-js-react@0.0.35
+  - @midl-xyz/midl-js-core@0.0.29
+
+## 0.0.38
+
+### Patch Changes
+
+- 72b6eaa: feat: update builder
+- Updated dependencies [72b6eaa]
+  - @midl-xyz/midl-js-react@0.0.34
+  - @midl-xyz/midl-js-core@0.0.28
+
+## 0.0.37
+
+### Patch Changes
+
+- fix: network detection
+- Updated dependencies
+  - @midl-xyz/midl-js-react@0.0.33
+  - @midl-xyz/midl-js-core@0.0.27
+
+## 0.0.36
+
+### Patch Changes
+
+- feat: enable multiple edicts
+- Updated dependencies
+  - @midl-xyz/midl-js-core@0.0.26
+  - @midl-xyz/midl-js-react@0.0.32
+
+## 0.0.35
+
+### Patch Changes
+
+- fix: typings
+
+## 0.0.34
+
+### Patch Changes
+
+- feat: update package bundler
+- Updated dependencies
+  - @midl-xyz/midl-js-react@0.0.31
+
 ## 0.0.33
 
 ### Patch Changes

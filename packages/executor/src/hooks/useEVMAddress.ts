@@ -5,6 +5,9 @@ import { usePublicKey } from "~/hooks/usePublicKey";
 import { getEVMAddress } from "~/utils/getEVMAddress";
 
 type UseEVMAddressParams = {
+	/**
+	 * The public key to get the EVM address from
+	 */
 	publicKey?: Address;
 };
 

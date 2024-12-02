@@ -1,7 +1,17 @@
 import { useMidlContext, useStore } from "@midl-xyz/midl-js-react";
+import type { TransactionSerializableBTC } from "viem";
+import { useChainId } from "wagmi";
+import { useEVMAddress } from "~/hooks/useEVMAddress";
 import type { TransactionIntention } from "~/types/intention";
 
-type AddTxIntentionVariables = TransactionIntention & {
+type AddTxIntentionVariables = Omit<TransactionIntention, "evmTransaction"> & {
+	evmTransaction: Omit<TransactionIntention["evmTransaction"], "chainId"> & {
+		chainId?: TransactionSerializableBTC["chainId"];
+	};
+} & {
+	/**
+	 * If true, the array of intentions will be cleared before adding the new one
+	 */
 	reset?: boolean;
 };
 
@@ -31,6 +41,8 @@ type AddTxIntentionVariables = TransactionIntention & {
 export const useAddTxIntention = () => {
 	const { store } = useMidlContext();
 	const { intentions = [] } = useStore();
+	const chainId = useChainId();
+	const evmAddress = useEVMAddress();
 
 	const addTxIntention = ({ reset, ...intention }: AddTxIntentionVariables) => {
 		const { intentions = [] } = store.getState();
@@ -39,16 +51,23 @@ export const useAddTxIntention = () => {
 		}
 
 		if (
-			intentions.some((it) => it.hasRunesDeposit) &&
+			intentions.filter((it) => it.hasRunesDeposit).length >= 2 &&
 			intention.hasRunesDeposit
 		) {
 			throw new Error(
-				"Transferring more than one runes deposit is not allowed",
+				"Transferring more than 2 rune deposits at once is not allowed",
 			);
 		}
 
+		intention.evmTransaction.chainId =
+			intention.evmTransaction.chainId ?? chainId;
+
+		intention.evmTransaction.from = intention.evmTransaction.from ?? evmAddress;
+
 		store.setState({
-			intentions: reset ? [intention] : [...intentions, intention],
+			intentions: reset
+				? [intention as TransactionIntention]
+				: [...intentions, intention as TransactionIntention],
 		});
 	};
 
