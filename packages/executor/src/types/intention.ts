@@ -1,10 +1,12 @@
-import type { TransactionSerializableBTC } from "viem";
+import type { Address, TransactionSerializableBTC } from "viem";
 
 export type TransactionIntention = {
 	/**
 	 * EVM transaction to execute
 	 */
-	evmTransaction: TransactionSerializableBTC;
+	evmTransaction: TransactionSerializableBTC & {
+		from?: Address;
+	};
 
 	/**
 	 * EVM transaction to execute

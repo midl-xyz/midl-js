@@ -1,9 +1,12 @@
-import type { EdictRuneParams } from "@midl-xyz/midl-js-core";
+import type {
+	EdictRuneParams,
+	EdictRuneResponse,
+} from "@midl-xyz/midl-js-core";
 import { useEdictRune, useMidlContext } from "@midl-xyz/midl-js-react";
 import { useMutation } from "@tanstack/react-query";
 import { type Client, type StateOverride, parseUnits } from "viem";
 import { estimateGasMulti } from "viem/actions";
-import { useClient } from "wagmi";
+import { useConnectorClient } from "wagmi";
 import { useStore } from "zustand";
 import { multisigAddress } from "~/config";
 import { useLastNonce } from "~/hooks/useLastNonce";
@@ -19,19 +22,21 @@ type UseFinalizeTxIntentionsParams = {
 	stateOverride?: StateOverride;
 };
 
-export const useFinalizeTxIntentions = ({
-	stateOverride,
-}: UseFinalizeTxIntentionsParams) => {
+export const useFinalizeTxIntentions = () => {
 	const { store, config } = useMidlContext();
 	const { intentions = [] } = useStore(store);
 	const { edictRuneAsync } = useEdictRune();
 	const { signTransactionAsync } = useSignTransaction();
 	const publicKey = usePublicKey();
-	const publicClient = useClient();
+	const { data: publicClient } = useConnectorClient();
 	const nonce = useLastNonce();
 
-	const { mutate, mutateAsync, data, ...rest } = useMutation({
-		mutationFn: async () => {
+	const { mutate, mutateAsync, data, ...rest } = useMutation<
+		EdictRuneResponse,
+		Error,
+		UseFinalizeTxIntentionsParams
+	>({
+		mutationFn: async ({ stateOverride } = {}) => {
 			if (!config.network) {
 				throw new Error("No network set");
 			}
@@ -66,10 +71,13 @@ export const useFinalizeTxIntentions = ({
 				return acc + (it.evmTransaction.value ?? 0n);
 			}, 0n);
 
+			const amountToSend = Number(totalCost + btcTransfer);
+
 			const transfers: EdictRuneParams["transfers"] = [
 				{
 					receiver: multisigAddress[config.network.id],
-					amount: Number(totalCost + btcTransfer),
+					// TODO: Avoid dust
+					amount: amountToSend > 546 ? amountToSend : 546,
 				},
 			];
 

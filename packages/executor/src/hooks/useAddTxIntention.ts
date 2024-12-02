@@ -1,6 +1,7 @@
 import { useMidlContext, useStore } from "@midl-xyz/midl-js-react";
 import type { TransactionSerializableBTC } from "viem";
 import { useChainId } from "wagmi";
+import { useEVMAddress } from "~/hooks/useEVMAddress";
 import type { TransactionIntention } from "~/types/intention";
 
 type AddTxIntentionVariables = Omit<TransactionIntention, "evmTransaction"> & {
@@ -8,13 +9,21 @@ type AddTxIntentionVariables = Omit<TransactionIntention, "evmTransaction"> & {
 		chainId?: TransactionSerializableBTC["chainId"];
 	};
 } & {
+	/**
+	 * If true, the array of intentions will be cleared before adding the new one
+	 */
 	reset?: boolean;
 };
 
+/**
+ * Hook to add a transaction intention to the store
+ * Used to store the intentions before finalizing them
+ */
 export const useAddTxIntention = () => {
 	const { store } = useMidlContext();
 	const { intentions = [] } = useStore();
 	const chainId = useChainId();
+	const evmAddress = useEVMAddress();
 
 	const addTxIntention = ({ reset, ...intention }: AddTxIntentionVariables) => {
 		const { intentions = [] } = store.getState();
@@ -33,6 +42,8 @@ export const useAddTxIntention = () => {
 
 		intention.evmTransaction.chainId =
 			intention.evmTransaction.chainId ?? chainId;
+
+		intention.evmTransaction.from = intention.evmTransaction.from ?? evmAddress;
 
 		store.setState({
 			intentions: reset

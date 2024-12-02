@@ -13,7 +13,8 @@
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "./src/types/**/*.d.ts"
   ],
   "devDependencies": {
     "@midl-xyz/midl-js-config": "workspace:^",
@@ -25,7 +26,7 @@
     "@wagmi/connectors": "^5.1.11",
     "bitcoinjs-lib": "7.0.0-rc.0",
     "react": "^18.3.1",
-    "viem": "npm:@midl-xyz/midl-viem@2.21.33",
+    "viem": "npm:@midl-xyz/midl-viem@2.21.35",
     "wagmi": "^2.*"
   },
   "dependencies": {
