@@ -13,13 +13,24 @@ export type UTXO = {
 	};
 };
 
+const RUNE_MAGIC_VALUE = 546;
+
 export const getUTXOs = async (
 	config: Config,
 	address: string,
+	includeRunes = false,
 ): Promise<UTXO[]> => {
 	if (!config.network) {
 		throw new Error("No network");
 	}
 
-	return ky<UTXO[]>(`${config.network.rpcUrl}/address/${address}/utxo`).json();
+	const utxos = await ky<UTXO[]>(
+		`${config.network.rpcUrl}/address/${address}/utxo`,
+	).json();
+
+	if (!includeRunes) {
+		return utxos.filter((utxo) => utxo.value !== RUNE_MAGIC_VALUE);
+	}
+
+	return utxos;
 };

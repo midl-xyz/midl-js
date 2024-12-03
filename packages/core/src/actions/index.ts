@@ -1,6 +1,7 @@
 export * from "./broadcastTransaction";
 export * from "./edictRune";
 export * from "./etchRune";
+export * from "./getBalance";
 export * from "./getBlockNumber";
 export * from "./getFeeRate";
 export * from "./getRune";

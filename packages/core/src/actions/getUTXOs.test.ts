@@ -18,11 +18,6 @@ import { regtest } from "~/networks";
 const ECPair = ECPairFactory(ecc);
 
 describe("core | actions | getUTXOs", () => {
-	const k = ECPair.fromWIF(
-		"cTLkbV5v1iyM3WqknFHHmhBk6PTbpe778zWC12PEaEJzjbmW8onN",
-		bitcoin.networks.testnet,
-	);
-
 	const keyPair = ECPair.makeRandom();
 
 	const { address } = bitcoin.payments.p2pkh({

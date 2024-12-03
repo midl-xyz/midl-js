@@ -1,12 +1,12 @@
+import { createConfig, regtest, satsConnect, testnet } from "@midl-xyz/midl-js-core";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { ReactNode } from "react";
-import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { MidlProvider } from "../context";
-import { createConfig, satsConnect, testnet } from "@midl-xyz/midl-js-core";
 
 const queryClient = new QueryClient();
 
 const config = createConfig({
-	networks: [testnet],
+	networks: [regtest],
 	connectors: [satsConnect()],
 });
 

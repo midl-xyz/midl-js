@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 0.0.32
+
+### Patch Changes
+
+- 8de8144: feat: add getBalance
+
 ## 0.0.31
 
 ### Patch Changes
