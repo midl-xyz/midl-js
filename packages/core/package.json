@@ -1,28 +1,19 @@
 {
   "name": "@midl-xyz/midl-js-core",
-  "version": "0.0.29",
+  "version": "0.0.30",
   "scripts": {
-    "build": "pkgroll",
-    "dev": "pkgroll --watch",
+    "build": "pnpm run clean && tsc --project tsconfig.build.json && tsc-alias -p tsconfig.build.json",
+    "dev": "concurrently \"tsc --watch --preserveWatchOutput --project tsconfig.build.json\" \"tsc-alias -w -p tsconfig.build.json\"",
+    "clean": "rm -rf dist",
     "test": "vitest"
   },
-  "type": "commonjs",
+  "type": "module",
   "main": "dist/index.js",
-  "module": "dist/index.mjs",
-  "types": "dist/index.d.cts",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
-  "exports": {
-    "require": {
-      "types": "./dist/index.d.cts",
-      "default": "./dist/index.js"
-    },
-    "import": {
-      "types": "./dist/index.d.mts",
-      "default": "./dist/index.mjs"
-    }
-  },
   "devDependencies": {
     "@leather.io/models": "^0.18.2",
     "@leather.io/rpc": "2.1.12",
