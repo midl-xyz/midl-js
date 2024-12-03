@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 0.0.31
+
+### Patch Changes
+
+- fix: dont export mock connector
+
 ## 0.0.30
 
 ### Patch Changes

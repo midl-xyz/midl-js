@@ -4,7 +4,7 @@ import { keyPair } from "~/__tests__/keyPair";
 import { makeRandomAddress } from "~/__tests__/makeRandomAddress";
 import { mockServer } from "~/__tests__/mockServer";
 import { edictRune } from "~/actions/edictRune";
-import { mock } from "~/connectors";
+import { mock } from "~/connectors/mock";
 import { AddressPurpose } from "~/constants";
 import { type Config, createConfig } from "~/createConfig";
 import { regtest } from "~/networks";

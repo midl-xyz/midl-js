@@ -1,8 +1,6 @@
 export * from "./createConnector";
-
 export * from "./discoverSnapsProvider";
-export * from "./snap";
-export * from "./sats-connect";
-export * from "./unisat";
 export * from "./leather";
-export * from "./mock";
+export * from "./sats-connect";
+export * from "./snap";
+export * from "./unisat";
