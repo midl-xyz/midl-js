@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-react
 
+## 0.0.39
+
+### Patch Changes
+
+- fix: include useBalance
+
 ## 0.0.38
 
 ### Patch Changes
