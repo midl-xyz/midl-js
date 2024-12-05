@@ -3,8 +3,11 @@ import { useAccounts, useConfig } from "@midl-xyz/midl-js-react";
 import { networks, payments } from "bitcoinjs-lib";
 import { toHex } from "viem";
 
-type usePublicKey = {
-	publicKey?: `0x${string}`;
+type UsePublicKeyParams = {
+	/**
+	 * The public key to convert to an EVM address.
+	 */
+	publicKey?: string;
 };
 
 /**
@@ -17,13 +20,8 @@ type usePublicKey = {
  * ```typescript
  * const publicKeyHex = usePublicKey({ publicKey: '0xabc123...' });
  * ```
- *
- * @param {usePublicKey} [params] - Parameters for extracting the public key.
- * @param {Address} [params.publicKey] - The public key to convert to an EVM address.
- *
- * @returns {string | null} – The hexadecimal representation of the public key, or `null` if unavailable or conversion fails.
  */
-export const usePublicKey = ({ publicKey }: usePublicKey = {}) => {
+export const usePublicKey = ({ publicKey }: UsePublicKeyParams = {}) => {
 	const { ordinalsAccount, paymentAccount } = useAccounts();
 	const config = useConfig();
 
@@ -46,6 +44,7 @@ export const usePublicKey = ({ publicKey }: usePublicKey = {}) => {
 		// biome-ignore lint/style/noNonNullAssertion: Output is guaranteed to be defined
 		return toHex(p2tr.output!.slice(2));
 	} catch (e) {
+		console.error(e);
 		return null;
 	}
 };

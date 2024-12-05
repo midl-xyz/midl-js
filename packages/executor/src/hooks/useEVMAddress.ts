@@ -1,6 +1,5 @@
 import { useAccounts, useConfig } from "@midl-xyz/midl-js-react";
 import { zeroAddress } from "viem";
-import type { Address } from "viem/accounts";
 import { usePublicKey } from "~/hooks/usePublicKey";
 import { getEVMAddress } from "~/utils/getEVMAddress";
 
@@ -8,7 +7,7 @@ type UseEVMAddressParams = {
 	/**
 	 * The public key to get the EVM address from
 	 */
-	publicKey?: Address;
+	publicKey?: string;
 };
 
 /**
@@ -21,20 +20,11 @@ type UseEVMAddressParams = {
  * ```typescript
  * const evmAddress = useEVMAddress({ publicKey: '0xabc123...' });
  * ```
- *
- * @param {UseEVMAddressParams} [params] - Parameters for retrieving the EVM address.
- * @param {Address} [params.publicKey] - The public key to convert to an EVM address.
- *
- * @returns {Address} – The corresponding EVM address, or the zero address if unavailable.
  */
 export const useEVMAddress = ({ publicKey }: UseEVMAddressParams = {}) => {
-	const { ordinalsAccount, paymentAccount } = useAccounts();
 	const config = useConfig();
 	const pk = usePublicKey({
-		publicKey:
-			publicKey ??
-			(paymentAccount?.publicKey as `0x${string}`) ??
-			(ordinalsAccount?.publicKey as `0x${string}`),
+		publicKey,
 	});
 
 	try {
