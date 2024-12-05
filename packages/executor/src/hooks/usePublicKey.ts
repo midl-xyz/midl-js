@@ -1,7 +1,8 @@
 import { extractXCoordinate } from "@midl-xyz/midl-js-core";
 import { useAccounts, useConfig } from "@midl-xyz/midl-js-react";
-import { networks, payments } from "bitcoinjs-lib";
+import { initEccLib, networks, payments } from "bitcoinjs-lib";
 import { toHex } from "viem";
+import * as ecc from "@bitcoinerlab/secp256k1";
 
 type UsePublicKeyParams = {
 	/**
@@ -36,6 +37,8 @@ export const usePublicKey = ({ publicKey }: UsePublicKeyParams = {}) => {
 		if (paymentAccount) {
 			return toHex(Buffer.from(extractXCoordinate(pk), "hex"));
 		}
+
+		initEccLib(ecc);
 
 		const p2tr = payments.p2tr({
 			internalPubkey: Buffer.from(extractXCoordinate(pk), "hex"),
