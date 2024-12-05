@@ -1,5 +1,12 @@
 # @midl-xyz/midl-js-executor
 
+## 0.0.44
+
+### Patch Changes
+
+- c1b00a8: fix: types for calc tx cost
+- feat: add mutiation param finalize tx
+
 ## 0.0.43
 
 ### Patch Changes

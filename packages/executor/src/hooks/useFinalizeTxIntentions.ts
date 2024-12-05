@@ -3,23 +3,31 @@ import type {
 	EdictRuneResponse,
 } from "@midl-xyz/midl-js-core";
 import { useEdictRune, useMidlContext } from "@midl-xyz/midl-js-react";
-import { useMutation } from "@tanstack/react-query";
+import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
 import { type Client, type StateOverride, parseUnits } from "viem";
 import { estimateGasMulti } from "viem/actions";
-import { useConnectorClient } from "wagmi";
+import { useWalletClient } from "wagmi";
 import { useStore } from "zustand";
 import { multisigAddress } from "~/config";
+import { useEVMAddress } from "~/hooks/useEVMAddress";
 import { useLastNonce } from "~/hooks/useLastNonce";
 import { usePublicKey } from "~/hooks/usePublicKey";
 import { useSignTransaction } from "~/hooks/useSignTransaction";
 import type { TransactionIntention } from "~/types/intention";
 import { calculateTransactionsCost } from "~/utils";
 
-type UseFinalizeTxIntentionsParams = {
+type FinalizeMutationVariables = {
 	/**
 	 * State override to estimate the cost of the transaction
 	 */
 	stateOverride?: StateOverride;
+};
+
+type UseFinalizeTxIntentionsParams = {
+	mutation?: Omit<
+		UseMutationOptions<EdictRuneResponse, Error, FinalizeMutationVariables>,
+		"mutationFn"
+	>;
 };
 
 /**
@@ -53,20 +61,21 @@ type UseFinalizeTxIntentionsParams = {
  * - Other mutation states from `useMutation`.
  */
 export const useFinalizeTxIntentions = ({
-	stateOverride,
-}: UseFinalizeTxIntentionsParams) => {
+	mutation,
+}: UseFinalizeTxIntentionsParams = {}) => {
 	const { store, config } = useMidlContext();
 	const { intentions = [] } = useStore(store);
 	const { edictRuneAsync } = useEdictRune();
 	const { signTransactionAsync } = useSignTransaction();
 	const publicKey = usePublicKey();
-	const { data: publicClient } = useConnectorClient();
+	const { data: publicClient } = useWalletClient();
 	const nonce = useLastNonce();
+	const evmAddress = useEVMAddress();
 
 	const { mutate, mutateAsync, data, ...rest } = useMutation<
 		EdictRuneResponse,
 		Error,
-		UseFinalizeTxIntentionsParams
+		FinalizeMutationVariables
 	>({
 		mutationFn: async ({ stateOverride } = {}) => {
 			if (!config.network) {
@@ -82,6 +91,7 @@ export const useFinalizeTxIntentions = ({
 			const gasLimits = await estimateGasMulti(publicClient as Client, {
 				transactions: intentions.map((it) => it.evmTransaction),
 				stateOverride,
+				account: evmAddress,
 			});
 
 			intentions.forEach((it, i) => {
@@ -165,6 +175,7 @@ export const useFinalizeTxIntentions = ({
 
 			return data;
 		},
+		...mutation,
 	});
 
 	const {
