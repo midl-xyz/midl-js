@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor
 
+## 0.0.45
+
+### Patch Changes
+
+- fix: pk extraction
+
 ## 0.0.44
 
 ### Patch Changes
