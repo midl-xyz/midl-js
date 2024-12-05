@@ -17,7 +17,7 @@ const RUNES_WITHDRAW_SIZE = 401n;
  * @returns Cost of transactions in satoshis
  */
 export const calculateTransactionsCost = async (
-	transactions: TransactionSerializableBTC[],
+	transactions: Pick<TransactionSerializableBTC, 'gas'>[],
 	config: Config,
 	{
 		feeRateMultiplier = 2,
