@@ -51,6 +51,7 @@ type UseFinalizeTxIntentionsParams = {
  * @returns
  * - **finalizeBTCTransaction**: `() => void` – Function to initiate finalizing BTC transactions.
  * - **finalizeBTCTransactionAsync**: `() => Promise<EdictRuneResponse>` – Function to asynchronously finalize BTC transactions.
+ * - **btcTransaction**: `EdictRuneResponse` – The finalized BTC transaction.
  * - **signIntention**: `(intention: TransactionIntention) => void` – Function to sign a specific transaction intention.
  * - **signIntentionAsync**: `(intention: TransactionIntention) => Promise<SignTransactionResult>` – Function to asynchronously sign an intention.
  * - **intentions**: `TransactionIntention[]` – The current list of transaction intentions.
@@ -235,6 +236,7 @@ export const useFinalizeTxIntentions = ({
 		signIntentionAsync,
 		intentions,
 		signIntentionState: restSignIntention,
+		btcTransaction: data,
 		...rest,
 	};
 };

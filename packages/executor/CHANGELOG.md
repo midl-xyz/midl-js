@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor
 
+## 0.0.48
+
+### Patch Changes
+
+- feat: expose btc transaction data
+
 ## 0.0.47
 
 ### Patch Changes
