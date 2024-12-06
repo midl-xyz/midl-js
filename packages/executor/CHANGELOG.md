@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor
 
+## 0.0.47
+
+### Patch Changes
+
+- feat: allow intention without evm tx
+
 ## 0.0.46
 
 ### Patch Changes

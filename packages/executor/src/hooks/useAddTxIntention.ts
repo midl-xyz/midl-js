@@ -5,7 +5,7 @@ import { useEVMAddress } from "~/hooks/useEVMAddress";
 import type { TransactionIntention } from "~/types/intention";
 
 type AddTxIntentionVariables = Omit<TransactionIntention, "evmTransaction"> & {
-	evmTransaction: Omit<TransactionIntention["evmTransaction"], "chainId"> & {
+	evmTransaction?: Omit<TransactionIntention["evmTransaction"], "chainId"> & {
 		chainId?: TransactionSerializableBTC["chainId"];
 	};
 } & {
@@ -59,10 +59,13 @@ export const useAddTxIntention = () => {
 			);
 		}
 
-		intention.evmTransaction.chainId =
-			intention.evmTransaction.chainId ?? chainId;
+		if (intention.evmTransaction) {
+			intention.evmTransaction.chainId =
+				intention.evmTransaction.chainId ?? chainId;
 
-		intention.evmTransaction.from = intention.evmTransaction.from ?? evmAddress;
+			intention.evmTransaction.from =
+				intention.evmTransaction.from ?? evmAddress;
+		}
 
 		store.setState({
 			intentions: reset

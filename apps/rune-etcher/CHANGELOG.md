@@ -1,5 +1,11 @@
 # rune-etcher
 
+## 0.1.21
+
+### Patch Changes
+
+- feat: allow intention without evm tx
+
 ## 0.1.20
 
 ### Patch Changes

@@ -1,5 +1,13 @@
 # e2e
 
+## 1.0.19
+
+### Patch Changes
+
+- feat: allow intention without evm tx
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@0.0.47
+
 ## 1.0.18
 
 ### Patch Changes

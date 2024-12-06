@@ -1,11 +1,14 @@
 "use client";
 
-import { mock } from "wagmi/connectors";
 import { useEffect } from "react";
-import { useConnect, useSwitchChain } from "wagmi";
-import { useEVMAddress, useEVMChain } from "~/hooks";
 import { zeroAddress } from "viem";
+import { useConnect, useSwitchChain } from "wagmi";
+import { mock } from "wagmi/connectors";
+import { useEVMAddress, useEVMChain } from "~/hooks";
 
+/**
+ * Provider to automatically connect to the EVM chain with the EVM address for the current BTC wallet.
+ */
 export const WagmiMidlProvider = () => {
 	const evmAddress = useEVMAddress();
 	const chain = useEVMChain();
@@ -17,7 +20,12 @@ export const WagmiMidlProvider = () => {
 			return;
 		}
 
-		connect({ connector: mock({ accounts: [evmAddress] }) });
+		connect({
+			connector: mock({
+				accounts: [evmAddress],
+				features: { defaultConnected: true },
+			}),
+		});
 
 		if (chain) {
 			switchChain({ chainId: chain.id });

@@ -1,6 +1,6 @@
 {
   "name": "@midl-xyz/midl-js-executor",
-  "version": "0.0.46",
+  "version": "0.0.47",
   "scripts": {
     "build": "pnpm run clean && tsc --project tsconfig.build.json && tsc-alias -p tsconfig.build.json",
     "dev": "concurrently \"tsc --watch --preserveWatchOutput --project tsconfig.build.json\" \"tsc-alias -w -p tsconfig.build.json\"",
@@ -26,7 +26,7 @@
     "@wagmi/connectors": "^5.1.11",
     "bitcoinjs-lib": "7.0.0-rc.0",
     "react": "^18.3.1",
-    "viem": "npm:@midl-xyz/midl-viem@2.21.35",
+    "viem": "npm:@midl-xyz/midl-viem@2.21.36",
     "wagmi": "^2.*"
   },
   "dependencies": {

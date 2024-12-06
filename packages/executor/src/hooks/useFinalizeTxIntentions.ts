@@ -48,9 +48,6 @@ type UseFinalizeTxIntentionsParams = {
  * signIntention(transactionIntention);
  * ```
  *
- * @param {UseFinalizeTxIntentionsParams} params - Configuration options for finalizing transactions.
- * @param {StateOverride} [params.stateOverride] - State override to estimate the cost of the transaction.
- *
  * @returns
  * - **finalizeBTCTransaction**: `() => void` – Function to initiate finalizing BTC transactions.
  * - **finalizeBTCTransactionAsync**: `() => Promise<EdictRuneResponse>` – Function to asynchronously finalize BTC transactions.
@@ -89,7 +86,7 @@ export const useFinalizeTxIntentions = ({
 			}
 
 			const gasLimits = await estimateGasMulti(publicClient as Client, {
-				transactions: intentions.map((it) => it.evmTransaction),
+				transactions: intentions.map((it) => it.evmTransaction).filter(Boolean),
 				stateOverride,
 				account: evmAddress,
 			});
@@ -99,7 +96,7 @@ export const useFinalizeTxIntentions = ({
 			});
 
 			const totalCost = await calculateTransactionsCost(
-				intentions.map((it) => it.evmTransaction),
+				intentions.map((it) => it.evmTransaction).filter(Boolean),
 				config,
 				{
 					hasDeposit: intentions.some((it) => it.hasDeposit),
@@ -194,15 +191,21 @@ export const useFinalizeTxIntentions = ({
 				throw new Error("No public key set");
 			}
 
-			for (const intention of intentions) {
-				intention.evmTransaction = {
-					...intention.evmTransaction,
-					nonce: nonce + intentions.indexOf(intention),
-					gasPrice: parseUnits("1", 3),
-					publicKey,
-					btcTxHash: `0x${txId}`,
-				};
+			if (!intention.evmTransaction) {
+				throw new Error("No EVM transaction set");
 			}
+
+			intention.evmTransaction = {
+				...intention.evmTransaction,
+				nonce:
+					nonce +
+					intentions
+						.filter((it) => Boolean(it.evmTransaction))
+						.findIndex((it) => it === intention),
+				gasPrice: parseUnits("1", 3),
+				publicKey,
+				btcTxHash: `0x${txId}`,
+			};
 
 			const signed = await signTransactionAsync({
 				tx: intention.evmTransaction,
