@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 0.0.33
+
+### Patch Changes
+
+- feat: update tx costs
+
 ## 0.0.32
 
 ### Patch Changes

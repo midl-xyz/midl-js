@@ -2,11 +2,11 @@ import { type Config, getFeeRate } from "@midl-xyz/midl-js-core";
 import { type TransactionSerializableBTC, parseUnits } from "viem";
 
 const ONE_SATOSHI = parseUnits("10", 10);
-const MIDL_SCRIPT_SIZE = 204n;
-const RUNES_DEPOSIT_SIZE = 451n;
+const MIDL_SCRIPT_SIZE = 205n;
+const RUNES_DEPOSIT_SIZE = 452n;
 const DEPOSIT_SIZE = 189n;
 const WITHDRAW_SIZE = 164n;
-const RUNES_WITHDRAW_SIZE = 401n;
+const RUNES_WITHDRAW_SIZE = 402n;
 
 /**
  * Calculate the cost of transactions batch
@@ -20,12 +20,14 @@ export const calculateTransactionsCost = async (
 	transactions: Pick<TransactionSerializableBTC, "gas">[],
 	config: Config,
 	{
+		gasPrice = parseUnits("10", 3),
 		feeRateMultiplier = 2,
 		hasRunesDeposit,
 		hasDeposit,
 		hasWithdraw,
 		hasRunesWithdraw,
 	}: {
+		gasPrice?: bigint;
 		feeRateMultiplier?: number;
 		hasRunesDeposit?: boolean;
 		hasDeposit?: boolean;
@@ -33,10 +35,7 @@ export const calculateTransactionsCost = async (
 		hasRunesWithdraw?: boolean;
 	},
 ) => {
-	// TODO: get gas price from the network
-	const gasPrice = parseUnits("10", 3);
 	const feeRate = await getFeeRate(config);
-
 	const totalGas = transactions.reduce((acc, it) => acc + (it.gas ?? 0n), 0n);
 
 	const btcWithdrawSize =

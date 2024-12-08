@@ -4,3 +4,4 @@ export * from "./isCorrectAddress";
 export * from "./runeUTXOSelect";
 export * from "./getAddressType";
 export * from "./makePSBTInputs";
+export * from "./ensureMoreThanDust";

@@ -1,12 +1,13 @@
-import type {
-	EdictRuneParams,
-	EdictRuneResponse,
+import {
+	type EdictRuneParams,
+	type EdictRuneResponse,
+	ensureMoreThanDust,
 } from "@midl-xyz/midl-js-core";
 import { useEdictRune, useMidlContext } from "@midl-xyz/midl-js-react";
 import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
-import { type Client, type StateOverride, parseUnits } from "viem";
+import type { Client, StateOverride } from "viem";
 import { estimateGasMulti } from "viem/actions";
-import { useWalletClient } from "wagmi";
+import { useGasPrice, useWalletClient } from "wagmi";
 import { useStore } from "zustand";
 import { multisigAddress } from "~/config";
 import { useEVMAddress } from "~/hooks/useEVMAddress";
@@ -69,6 +70,7 @@ export const useFinalizeTxIntentions = ({
 	const { data: publicClient } = useWalletClient();
 	const nonce = useLastNonce();
 	const evmAddress = useEVMAddress();
+	const { data: gasPrice } = useGasPrice();
 
 	const { mutate, mutateAsync, data, ...rest } = useMutation<
 		EdictRuneResponse,
@@ -100,6 +102,7 @@ export const useFinalizeTxIntentions = ({
 				intentions.map((it) => it.evmTransaction).filter(Boolean),
 				config,
 				{
+					gasPrice,
 					hasDeposit: intentions.some((it) => it.hasDeposit),
 					hasWithdraw: intentions.some((it) => it.hasWithdraw),
 					hasRunesDeposit: intentions.some((it) => it.hasRunesDeposit),
@@ -111,13 +114,10 @@ export const useFinalizeTxIntentions = ({
 				return acc + (it.evmTransaction.value ?? 0n);
 			}, 0n);
 
-			const amountToSend = Number(totalCost + btcTransfer);
-
 			const transfers: EdictRuneParams["transfers"] = [
 				{
 					receiver: multisigAddress[config.network.id],
-					// TODO: Avoid dust
-					amount: amountToSend > 546 ? amountToSend : 546,
+					amount: ensureMoreThanDust(Number(totalCost + btcTransfer)),
 				},
 			];
 
@@ -203,7 +203,7 @@ export const useFinalizeTxIntentions = ({
 					intentions
 						.filter((it) => Boolean(it.evmTransaction))
 						.findIndex((it) => it === intention),
-				gasPrice: parseUnits("1", 3),
+				gasPrice,
 				publicKey,
 				btcTxHash: `0x${txId}`,
 			};

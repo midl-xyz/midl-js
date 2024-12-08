@@ -1,6 +1,4 @@
 import { describe, expect, it } from "vitest";
-import { createConfig } from "wagmi";
-import { wagmiConfig } from "~/__tests__";
 import { midlConfig } from "~/__tests__/midlConfig";
 import { calculateTransactionsCost } from "~/utils/calculateTransactionsCost";
 
@@ -8,13 +6,13 @@ describe("calculateTransactionCost", () => {
 	it("deposit", async () => {
 		expect(
 			await calculateTransactionsCost([], midlConfig, { hasDeposit: true }),
-		).toBe(786n);
+		).toBe(788n);
 	});
 
 	it("withdraw", async () => {
 		expect(
 			await calculateTransactionsCost([], midlConfig, { hasWithdraw: true }),
-		).toBe(736n);
+		).toBe(738n);
 	});
 
 	it("runes deposit", async () => {
@@ -22,7 +20,7 @@ describe("calculateTransactionCost", () => {
 			await calculateTransactionsCost([], midlConfig, {
 				hasRunesDeposit: true,
 			}),
-		).toBe(1310n);
+		).toBe(1314n);
 	});
 
 	it("runes withdraw", async () => {
@@ -30,6 +28,10 @@ describe("calculateTransactionCost", () => {
 			await calculateTransactionsCost([], midlConfig, {
 				hasRunesWithdraw: true,
 			}),
-		).toBe(1210n);
+		).toBe(1214n);
+	});
+
+	it("no deposit or withdraw", async () => {
+		expect(await calculateTransactionsCost([], midlConfig, {})).toBe(410n);
 	});
 });
