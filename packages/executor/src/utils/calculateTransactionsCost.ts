@@ -17,7 +17,7 @@ const RUNES_WITHDRAW_SIZE = 401n;
  * @returns Cost of transactions in satoshis
  */
 export const calculateTransactionsCost = async (
-	transactions: Pick<TransactionSerializableBTC, 'gas'>[],
+	transactions: Pick<TransactionSerializableBTC, "gas">[],
 	config: Config,
 	{
 		feeRateMultiplier = 2,
@@ -39,16 +39,18 @@ export const calculateTransactionsCost = async (
 
 	const totalGas = transactions.reduce((acc, it) => acc + (it.gas ?? 0n), 0n);
 
-	const btcWithdrawSize = hasWithdraw
-		? hasRunesWithdraw
-			? RUNES_WITHDRAW_SIZE
-			: WITHDRAW_SIZE
-		: 0n;
-	const btcDepositSize = hasDeposit
-		? hasRunesDeposit
-			? RUNES_DEPOSIT_SIZE
-			: DEPOSIT_SIZE
-		: 0n;
+	const btcWithdrawSize =
+		hasWithdraw || hasRunesWithdraw
+			? hasRunesWithdraw
+				? RUNES_WITHDRAW_SIZE
+				: WITHDRAW_SIZE
+			: 0n;
+	const btcDepositSize =
+		hasDeposit || hasRunesDeposit
+			? hasRunesDeposit
+				? RUNES_DEPOSIT_SIZE
+				: DEPOSIT_SIZE
+			: 0n;
 
 	const fees =
 		((gasPrice * totalGas) / ONE_SATOSHI) *

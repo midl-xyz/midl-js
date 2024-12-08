@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor
 
+## 0.0.49
+
+### Patch Changes
+
+- fix: tx cost calc
+
 ## 0.0.48
 
 ### Patch Changes
