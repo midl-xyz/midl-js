@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor
 
+## 0.0.61
+
+### Patch Changes
+
+- fix: assets withdrawal
+
 ## 0.0.60
 
 ### Patch Changes

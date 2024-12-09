@@ -242,7 +242,7 @@ export const useFinalizeTxIntentions = ({
 								`0x${btcTx.tx.id}`,
 								publicKey as `0x${string}`,
 								assetsToWithdraw ?? [],
-								[0n],
+								new Array(assetsToWithdraw?.length ?? 0).fill(0n),
 							],
 						}),
 						chainId,
