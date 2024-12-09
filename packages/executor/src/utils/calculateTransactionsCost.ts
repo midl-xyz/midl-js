@@ -1,12 +1,12 @@
 import { type Config, getFeeRate } from "@midl-xyz/midl-js-core";
 import { type TransactionSerializableBTC, parseUnits } from "viem";
 
-const ONE_SATOSHI = parseUnits("10", 10);
-const MIDL_SCRIPT_SIZE = 206n;
-const RUNES_DEPOSIT_SIZE = 453n;
-const DEPOSIT_SIZE = 190n;
-const WITHDRAW_SIZE = 165n;
-const RUNES_WITHDRAW_SIZE = 403n;
+export const ONE_SATOSHI = parseUnits("10", 10);
+export const MIDL_SCRIPT_SIZE = 206n;
+export const RUNES_DEPOSIT_SIZE = 453n;
+export const DEPOSIT_SIZE = 190n;
+export const WITHDRAW_SIZE = 165n;
+export const RUNES_WITHDRAW_SIZE = 403n;
 
 /**
  * Calculate the cost of transactions batch

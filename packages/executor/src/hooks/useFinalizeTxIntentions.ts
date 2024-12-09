@@ -15,7 +15,7 @@ import { useLastNonce } from "~/hooks/useLastNonce";
 import { usePublicKey } from "~/hooks/usePublicKey";
 import { useSignTransaction } from "~/hooks/useSignTransaction";
 import type { TransactionIntention } from "~/types/intention";
-import { calculateTransactionsCost } from "~/utils";
+import { calculateTransactionsCost, ONE_SATOSHI } from "~/utils";
 
 type FinalizeMutationVariables = {
 	/**
@@ -110,14 +110,17 @@ export const useFinalizeTxIntentions = ({
 				},
 			);
 
-			const btcTransfer = intentions.reduce((acc, it) => {
-				return acc + (it.evmTransaction.value ?? 0n);
-			}, 0n);
+			const btcTransfer =
+				intentions.reduce((acc, it) => {
+					return acc + (it.evmTransaction.value ?? 0n);
+				}, 0n) / ONE_SATOSHI;
 
 			const transfers: EdictRuneParams["transfers"] = [
 				{
 					receiver: multisigAddress[config.network.id],
-					amount: ensureMoreThanDust(Number(totalCost + btcTransfer)),
+					amount: ensureMoreThanDust(
+						Math.ceil(Number(totalCost + btcTransfer)),
+					),
 				},
 			];
 
