@@ -1,7 +1,7 @@
 import { type Config, getFeeRate } from "@midl-xyz/midl-js-core";
 import { type TransactionSerializableBTC, parseUnits } from "viem";
 
-export const ONE_SATOSHI = parseUnits("10", 10);
+export const ONE_SATOSHI = parseUnits("1", 10);
 export const MIDL_SCRIPT_SIZE = 206n;
 export const RUNES_DEPOSIT_SIZE = 453n;
 export const DEPOSIT_SIZE = 190n;
