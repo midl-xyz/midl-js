@@ -1,9 +1,15 @@
 import {
 	type EdictRuneParams,
 	type EdictRuneResponse,
+	type TransferBTCParams,
+	type TransferBTCResponse,
 	ensureMoreThanDust,
 } from "@midl-xyz/midl-js-core";
-import { useEdictRune, useMidlContext } from "@midl-xyz/midl-js-react";
+import {
+	useEdictRune,
+	useMidlContext,
+	useTransferBTC,
+} from "@midl-xyz/midl-js-react";
 import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
 import type { Client, StateOverride } from "viem";
 import { estimateGasMulti } from "viem/actions";
@@ -15,11 +21,7 @@ import { useLastNonce } from "~/hooks/useLastNonce";
 import { usePublicKey } from "~/hooks/usePublicKey";
 import { useSignTransaction } from "~/hooks/useSignTransaction";
 import type { TransactionIntention } from "~/types/intention";
-import {
-	calculateTransactionsCost,
-	convertETHtoBTC,
-	ONE_SATOSHI,
-} from "~/utils";
+import { calculateTransactionsCost, convertETHtoBTC } from "~/utils";
 
 type FinalizeMutationVariables = {
 	/**
@@ -28,9 +30,15 @@ type FinalizeMutationVariables = {
 	stateOverride?: StateOverride;
 };
 
+type UseFinalizeTxIntentionsResponse = EdictRuneResponse | TransferBTCResponse;
+
 type UseFinalizeTxIntentionsParams = {
 	mutation?: Omit<
-		UseMutationOptions<EdictRuneResponse, Error, FinalizeMutationVariables>,
+		UseMutationOptions<
+			UseFinalizeTxIntentionsResponse,
+			Error,
+			FinalizeMutationVariables
+		>,
 		"mutationFn"
 	>;
 };
@@ -69,6 +77,7 @@ export const useFinalizeTxIntentions = ({
 	const { store, config } = useMidlContext();
 	const { intentions = [] } = useStore(store);
 	const { edictRuneAsync } = useEdictRune();
+	const { transferBTCAsync } = useTransferBTC();
 	const { signTransactionAsync } = useSignTransaction();
 	const publicKey = usePublicKey();
 	const { data: publicClient } = useWalletClient();
@@ -77,7 +86,7 @@ export const useFinalizeTxIntentions = ({
 	const { data: gasPrice } = useGasPrice();
 
 	const { mutate, mutateAsync, data, ...rest } = useMutation<
-		EdictRuneResponse,
+		UseFinalizeTxIntentionsResponse,
 		Error,
 		FinalizeMutationVariables
 	>({
@@ -174,12 +183,17 @@ export const useFinalizeTxIntentions = ({
 				});
 			}
 
-			const data = await edictRuneAsync({
-				transfers,
+			if (runes.length > 0) {
+				return edictRuneAsync({
+					transfers,
+					publish: false,
+				});
+			}
+
+			return transferBTCAsync({
+				transfers: transfers as TransferBTCParams["transfers"],
 				publish: false,
 			});
-
-			return data;
 		},
 		...mutation,
 	});

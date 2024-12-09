@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor
 
+## 0.0.56
+
+### Patch Changes
+
+- fix: finalize without runes
+
 ## 0.0.55
 
 ### Patch Changes
