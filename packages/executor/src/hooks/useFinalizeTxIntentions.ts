@@ -227,6 +227,7 @@ export const useFinalizeTxIntentions = ({
 				addTxIntention({
 					evmTransaction: {
 						to: executorAddress[config.network.id] as Address,
+						gas: 300_000n,
 						data: encodeFunctionData({
 							abi: executorAbi,
 							functionName: "completeTx",

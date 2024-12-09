@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor
 
+## 0.0.58
+
+### Patch Changes
+
+- fix: add gas and gasPrice to the intention
+
 ## 0.0.57
 
 ### Patch Changes
