@@ -6,13 +6,13 @@ describe("calculateTransactionCost", () => {
 	it("deposit", async () => {
 		expect(
 			await calculateTransactionsCost([], midlConfig, { hasDeposit: true }),
-		).toBe(788n);
+		).toBe(792n);
 	});
 
 	it("withdraw", async () => {
 		expect(
 			await calculateTransactionsCost([], midlConfig, { hasWithdraw: true }),
-		).toBe(738n);
+		).toBe(742n);
 	});
 
 	it("runes deposit", async () => {
@@ -20,7 +20,7 @@ describe("calculateTransactionCost", () => {
 			await calculateTransactionsCost([], midlConfig, {
 				hasRunesDeposit: true,
 			}),
-		).toBe(1314n);
+		).toBe(1318n);
 	});
 
 	it("runes withdraw", async () => {
@@ -28,10 +28,10 @@ describe("calculateTransactionCost", () => {
 			await calculateTransactionsCost([], midlConfig, {
 				hasRunesWithdraw: true,
 			}),
-		).toBe(1214n);
+		).toBe(1218n);
 	});
 
 	it("no deposit or withdraw", async () => {
-		expect(await calculateTransactionsCost([], midlConfig, {})).toBe(410n);
+		expect(await calculateTransactionsCost([], midlConfig, {})).toBe(412n);
 	});
 });
