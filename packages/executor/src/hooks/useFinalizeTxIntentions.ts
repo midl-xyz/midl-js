@@ -39,6 +39,8 @@ type FinalizeMutationVariables = {
 	 * If true, send complete transaction
 	 */
 	shouldComplete?: boolean;
+
+	assetsToWithdraw?: [Address] | [Address, Address];
 };
 
 type UseFinalizeTxIntentionsResponse = EdictRuneResponse | TransferBTCResponse;
@@ -103,7 +105,11 @@ export const useFinalizeTxIntentions = ({
 		Error,
 		FinalizeMutationVariables
 	>({
-		mutationFn: async ({ stateOverride, shouldComplete } = {}) => {
+		mutationFn: async ({
+			stateOverride,
+			shouldComplete,
+			assetsToWithdraw,
+		} = {}) => {
 			if (!config.network) {
 				throw new Error("No network set");
 			}
@@ -125,7 +131,8 @@ export const useFinalizeTxIntentions = ({
 			});
 
 			intentions.forEach((it, i) => {
-				it.evmTransaction.gas = gasLimits[i];
+				// TODO: remove 1.2x multiplier
+				it.evmTransaction.gas = BigInt(Number(gasLimits[i]) * 1.2);
 			});
 
 			const totalCost = await calculateTransactionsCost(
@@ -234,7 +241,7 @@ export const useFinalizeTxIntentions = ({
 							args: [
 								`0x${btcTx.tx.id}`,
 								publicKey as `0x${string}`,
-								[evmAddress],
+								assetsToWithdraw ?? [],
 								[0n],
 							],
 						}),

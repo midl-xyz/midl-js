@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor
 
+## 0.0.59
+
+### Patch Changes
+
+- feat: add assets to withdraw
+
 ## 0.0.58
 
 ### Patch Changes
