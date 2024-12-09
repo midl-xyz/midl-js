@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor
 
+## 0.0.57
+
+### Patch Changes
+
+- feat: add completeTx
+
 ## 0.0.56
 
 ### Patch Changes

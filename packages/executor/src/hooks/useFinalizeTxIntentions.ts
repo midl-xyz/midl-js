@@ -11,11 +11,18 @@ import {
 	useTransferBTC,
 } from "@midl-xyz/midl-js-react";
 import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
-import type { Client, StateOverride } from "viem";
+import {
+	encodeFunctionData,
+	type Address,
+	type Client,
+	type StateOverride,
+} from "viem";
 import { estimateGasMulti } from "viem/actions";
-import { useGasPrice, useWalletClient } from "wagmi";
+import { useChainId, useGasPrice, useWalletClient } from "wagmi";
 import { useStore } from "zustand";
-import { multisigAddress } from "~/config";
+import { executorAddress, multisigAddress } from "~/config";
+import { executorAbi } from "~/contracts/abi";
+import { useAddTxIntention } from "~/hooks/useAddTxIntention";
 import { useEVMAddress } from "~/hooks/useEVMAddress";
 import { useLastNonce } from "~/hooks/useLastNonce";
 import { usePublicKey } from "~/hooks/usePublicKey";
@@ -28,6 +35,10 @@ type FinalizeMutationVariables = {
 	 * State override to estimate the cost of the transaction
 	 */
 	stateOverride?: StateOverride;
+	/**
+	 * If true, send complete transaction
+	 */
+	shouldComplete?: boolean;
 };
 
 type UseFinalizeTxIntentionsResponse = EdictRuneResponse | TransferBTCResponse;
@@ -84,13 +95,15 @@ export const useFinalizeTxIntentions = ({
 	const nonce = useLastNonce();
 	const evmAddress = useEVMAddress();
 	const { data: gasPrice } = useGasPrice();
+	const { addTxIntention } = useAddTxIntention();
+	const chainId = useChainId();
 
 	const { mutate, mutateAsync, data, ...rest } = useMutation<
 		UseFinalizeTxIntentionsResponse,
 		Error,
 		FinalizeMutationVariables
 	>({
-		mutationFn: async ({ stateOverride } = {}) => {
+		mutationFn: async ({ stateOverride, shouldComplete } = {}) => {
 			if (!config.network) {
 				throw new Error("No network set");
 			}
@@ -101,8 +114,12 @@ export const useFinalizeTxIntentions = ({
 				throw new Error("No intentions set");
 			}
 
+			const evmTransactions = intentions
+				.map((it) => it.evmTransaction)
+				.filter(Boolean);
+
 			const gasLimits = await estimateGasMulti(publicClient as Client, {
-				transactions: intentions.map((it) => it.evmTransaction).filter(Boolean),
+				transactions: evmTransactions,
 				stateOverride,
 				account: evmAddress,
 			});
@@ -112,7 +129,16 @@ export const useFinalizeTxIntentions = ({
 			});
 
 			const totalCost = await calculateTransactionsCost(
-				intentions.map((it) => it.evmTransaction).filter(Boolean),
+				[
+					...evmTransactions,
+					...(shouldComplete
+						? [
+								{
+									gas: 300_000n,
+								},
+							]
+						: []),
+				],
 				config,
 				{
 					gasPrice,
@@ -183,17 +209,40 @@ export const useFinalizeTxIntentions = ({
 				});
 			}
 
+			let btcTx: EdictRuneResponse | TransferBTCResponse;
+
 			if (runes.length > 0) {
-				return edictRuneAsync({
+				btcTx = await edictRuneAsync({
 					transfers,
+					publish: false,
+				});
+			} else {
+				btcTx = await transferBTCAsync({
+					transfers: transfers as TransferBTCParams["transfers"],
 					publish: false,
 				});
 			}
 
-			return transferBTCAsync({
-				transfers: transfers as TransferBTCParams["transfers"],
-				publish: false,
-			});
+			if (shouldComplete) {
+				addTxIntention({
+					evmTransaction: {
+						to: executorAddress[config.network.id] as Address,
+						data: encodeFunctionData({
+							abi: executorAbi,
+							functionName: "completeTx",
+							args: [
+								`0x${btcTx.tx.id}`,
+								publicKey as `0x${string}`,
+								[evmAddress],
+								[0n],
+							],
+						}),
+						chainId,
+					},
+				});
+			}
+
+			return btcTx;
 		},
 		...mutation,
 	});
