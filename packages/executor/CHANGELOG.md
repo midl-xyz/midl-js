@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor
 
+## 0.0.55
+
+### Patch Changes
+
+- feat: use conversion for finalize tx
+
 ## 0.0.54
 
 ### Patch Changes
