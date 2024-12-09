@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor
 
+## 0.0.60
+
+### Patch Changes
+
+- fix: gas multiplier
+
 ## 0.0.59
 
 ### Patch Changes

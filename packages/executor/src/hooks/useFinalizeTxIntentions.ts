@@ -132,7 +132,7 @@ export const useFinalizeTxIntentions = ({
 
 			intentions.forEach((it, i) => {
 				// TODO: remove 1.2x multiplier
-				it.evmTransaction.gas = BigInt(Number(gasLimits[i]) * 1.2);
+				it.evmTransaction.gas = BigInt(Math.ceil(Number(gasLimits[i]) * 1.2));
 			});
 
 			const totalCost = await calculateTransactionsCost(
