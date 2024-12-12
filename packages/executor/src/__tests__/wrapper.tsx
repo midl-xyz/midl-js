@@ -6,17 +6,23 @@ import { midlConfig } from "~/__tests__/midlConfig";
 import { wagmiConfig } from "~/__tests__/wagmiConfig";
 import { WagmiMidlProvider } from "~/provider";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      experimental_prefetchInRender: true,
+    },
+  },
+});
 
 export const wrapper = ({ children }: { children: ReactNode }) => {
-	return (
-		<MidlProvider config={midlConfig}>
-			<WagmiProvider config={wagmiConfig}>
-				<QueryClientProvider client={queryClient}>
-					<WagmiMidlProvider />
-					{children}
-				</QueryClientProvider>
-			</WagmiProvider>
-		</MidlProvider>
-	);
+  return (
+    <MidlProvider config={midlConfig}>
+      <WagmiProvider config={wagmiConfig}>
+        <QueryClientProvider client={queryClient}>
+          <WagmiMidlProvider />
+          {children}
+        </QueryClientProvider>
+      </WagmiProvider>
+    </MidlProvider>
+  );
 };

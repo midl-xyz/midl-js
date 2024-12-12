@@ -41,6 +41,8 @@ type FinalizeMutationVariables = {
 	shouldComplete?: boolean;
 
 	assetsToWithdraw?: [Address] | [Address, Address];
+
+	feeRateMultiplier?: number;
 };
 
 type UseFinalizeTxIntentionsResponse = EdictRuneResponse | TransferBTCResponse;
@@ -109,6 +111,7 @@ export const useFinalizeTxIntentions = ({
 			stateOverride,
 			shouldComplete,
 			assetsToWithdraw,
+			feeRateMultiplier,
 		} = {}) => {
 			if (!config.network) {
 				throw new Error("No network set");
@@ -154,6 +157,7 @@ export const useFinalizeTxIntentions = ({
 				],
 				config,
 				{
+					feeRateMultiplier,
 					gasPrice,
 					hasDeposit: intentions.some((it) => it.hasDeposit),
 					hasWithdraw: hasWithdraw,

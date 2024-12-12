@@ -17,6 +17,7 @@ export const executorAbi = [
   { type: 'error', inputs: [], name: 'AlreadyAcknowleged' },
   { type: 'error', inputs: [], name: 'AlreadyCommitted' },
   { type: 'error', inputs: [], name: 'AlreadyKnown' },
+  { type: 'error', inputs: [], name: 'AlreadyRefunded' },
   { type: 'error', inputs: [], name: 'ExceedsMaxAssets' },
   { type: 'error', inputs: [], name: 'FailedTransfer' },
   { type: 'error', inputs: [], name: 'HasTransaction' },
@@ -25,6 +26,7 @@ export const executorAbi = [
   { type: 'error', inputs: [], name: 'InvalidInput' },
   { type: 'error', inputs: [], name: 'InvalidTx' },
   { type: 'error', inputs: [], name: 'InvalidTxsNumber' },
+  { type: 'error', inputs: [], name: 'LowBalance' },
   { type: 'error', inputs: [], name: 'NoBlock' },
   { type: 'error', inputs: [], name: 'NotPending' },
   { type: 'error', inputs: [], name: 'TooEarly' },
@@ -55,6 +57,25 @@ export const executorAbi = [
       },
     ],
     name: 'Acknowledged',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'cMidlAddress',
+        internalType: 'contract IERC20Extended',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'btcAddress',
+        internalType: 'bytes32',
+        type: 'bytes32',
+        indexed: false,
+      },
+    ],
+    name: 'AddedAsset',
   },
   {
     type: 'event',
@@ -242,6 +263,50 @@ export const executorAbi = [
     anonymous: false,
     inputs: [
       {
+        name: 'from',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'txHash',
+        internalType: 'bytes32',
+        type: 'bytes32',
+        indexed: false,
+      },
+      {
+        name: 'btcAmount',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'RefundedCompleteTx',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'cMidlAddress',
+        internalType: 'contract IERC20Extended',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'btcAddress',
+        internalType: 'bytes32',
+        type: 'bytes32',
+        indexed: false,
+      },
+    ],
+    name: 'RemovedAsset',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
         name: 'validator',
         internalType: 'address',
         type: 'address',
@@ -270,6 +335,53 @@ export const executorAbi = [
     name: 'ResetBlock',
   },
   {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'lastFeeUpdatedIndex',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+      {
+        name: 'feeRate',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'UpdatedBTCFeeRate',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'BTC_TX_SIZE_NO_RUNES',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'BTC_TX_SIZE_RUNES',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'COMPLETE_TX_COST',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'GAS_PRICE',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
     type: 'function',
     inputs: [],
     name: 'MAX_ASSETS',
@@ -285,14 +397,36 @@ export const executorAbi = [
   },
   {
     type: 'function',
+    inputs: [],
+    name: 'RUNES_MAGIC_VALUE',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'SCALE_BTC',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
     inputs: [
-      { name: 'txHash', internalType: 'bytes32', type: 'bytes32' },
-      { name: 'from', internalType: 'address', type: 'address' },
-      { name: 'midlTxs', internalType: 'bytes32[]', type: 'bytes32[]' },
-      { name: 'btcAmount', internalType: 'uint256', type: 'uint256' },
-      { name: 'assets', internalType: 'bytes32[]', type: 'bytes32[]' },
-      { name: 'amounts', internalType: 'uint256[]', type: 'uint256[]' },
-      { name: 'proof', internalType: 'bytes32[]', type: 'bytes32[]' },
+      {
+        name: 'txData',
+        internalType: 'struct Executor.AcknowledgeTxData',
+        type: 'tuple',
+        components: [
+          { name: 'txHash', internalType: 'bytes32', type: 'bytes32' },
+          { name: 'from', internalType: 'address', type: 'address' },
+          { name: 'midlTxs', internalType: 'bytes32[]', type: 'bytes32[]' },
+          { name: 'btcAmount', internalType: 'uint256', type: 'uint256' },
+          { name: 'assets', internalType: 'bytes32[]', type: 'bytes32[]' },
+          { name: 'amounts', internalType: 'uint256[]', type: 'uint256[]' },
+          { name: 'proof', internalType: 'bytes32[]', type: 'bytes32[]' },
+          { name: 'metadata', internalType: 'bytes32[]', type: 'bytes32[]' },
+        ],
+      },
     ],
     name: 'acknowledgeTx',
     outputs: [],
@@ -351,6 +485,13 @@ export const executorAbi = [
   },
   {
     type: 'function',
+    inputs: [],
+    name: 'btcFeeRate',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
     inputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
     name: 'btcMidlTxs',
     outputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
@@ -375,6 +516,7 @@ export const executorAbi = [
   {
     type: 'function',
     inputs: [
+      { name: 'blockNum', internalType: 'uint256', type: 'uint256' },
       { name: 'lastCommittedBlock', internalType: 'uint256', type: 'uint256' },
     ],
     name: 'commitBlocksToBTC',
@@ -422,10 +564,24 @@ export const executorAbi = [
   },
   {
     type: 'function',
+    inputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
+    name: 'completeTxRefunded',
+    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
     inputs: [],
     name: 'emergencyBTCWithdrawal',
     outputs: [],
     stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'lastAssetRequest',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
   },
   {
     type: 'function',
@@ -438,6 +594,13 @@ export const executorAbi = [
     type: 'function',
     inputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
     name: 'lastCommittedMidlBlock',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'lastFeeUpdate',
     outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
     stateMutability: 'view',
   },
@@ -456,6 +619,18 @@ export const executorAbi = [
     name: 'reachedQuorum',
     outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
     stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'txHash', internalType: 'bytes32', type: 'bytes32' },
+      { name: 'btcAmount', internalType: 'uint256', type: 'uint256' },
+      { name: 'assets', internalType: 'bytes32[]', type: 'bytes32[]' },
+      { name: 'amounts', internalType: 'uint256[]', type: 'uint256[]' },
+    ],
+    name: 'refundCompleteTx',
+    outputs: [],
+    stateMutability: 'nonpayable',
   },
   {
     type: 'function',
@@ -511,6 +686,13 @@ export const executorAbi = [
     name: 'txsOrigins',
     outputs: [{ name: '', internalType: 'address', type: 'address' }],
     stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'feeRate', internalType: 'uint256', type: 'uint256' }],
+    name: 'updateFeeRate',
+    outputs: [],
+    stateMutability: 'nonpayable',
   },
   {
     type: 'function',

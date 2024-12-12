@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor
 
+## 0.0.66
+
+### Patch Changes
+
+- feat: allow fee rate multiplier change
+
 ## 0.0.65
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 {
   "name": "@midl-xyz/midl-js-executor",
-  "version": "0.0.65",
+  "version": "0.0.66",
   "scripts": {
     "build": "pnpm run clean && tsc --project tsconfig.build.json && tsc-alias -p tsconfig.build.json",
     "dev": "concurrently \"tsc --watch --preserveWatchOutput --project tsconfig.build.json\" \"tsc-alias -w -p tsconfig.build.json\"",
@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "@bitcoinerlab/secp256k1": "^1.1.1",
-    "@midl-xyz/contracts": "^0.0.2",
+    "@midl-xyz/contracts": "^0.0.4-alpha",
     "@midl-xyz/midl-js-core": "workspace:^",
     "zustand": "^5.0.1"
   },
