@@ -135,6 +135,12 @@ export const useFinalizeTxIntentions = ({
 				it.evmTransaction.gas = BigInt(Math.ceil(Number(gasLimits[i]) * 1.2));
 			});
 
+			const hasWithdraw =
+				intentions.some((it) => it.hasWithdraw) || shouldComplete;
+			const hasRunesWithdraw =
+				intentions.some((it) => it.hasRunesWithdraw) ||
+				(shouldComplete && (assetsToWithdraw?.length ?? 0) > 0);
+
 			const totalCost = await calculateTransactionsCost(
 				[
 					...evmTransactions,
@@ -150,9 +156,9 @@ export const useFinalizeTxIntentions = ({
 				{
 					gasPrice,
 					hasDeposit: intentions.some((it) => it.hasDeposit),
-					hasWithdraw: intentions.some((it) => it.hasWithdraw),
+					hasWithdraw: hasWithdraw,
 					hasRunesDeposit: intentions.some((it) => it.hasRunesDeposit),
-					hasRunesWithdraw: intentions.some((it) => it.hasRunesWithdraw),
+					hasRunesWithdraw: hasRunesWithdraw,
 				},
 			);
 
@@ -232,8 +238,8 @@ export const useFinalizeTxIntentions = ({
 
 			if (shouldComplete) {
 				addTxIntention({
-					hasWithdraw: true,
-					hasRunesWithdraw: (assetsToWithdraw?.length ?? 0) > 0,
+					hasWithdraw,
+					hasRunesWithdraw,
 					evmTransaction: {
 						to: executorAddress[config.network.id] as Address,
 						gas: 300_000n,
