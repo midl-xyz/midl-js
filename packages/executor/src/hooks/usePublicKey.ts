@@ -1,8 +1,5 @@
-import { extractXCoordinate } from "@midl-xyz/midl-js-core";
 import { useAccounts, useConfig } from "@midl-xyz/midl-js-react";
-import { initEccLib, networks, payments } from "bitcoinjs-lib";
-import { toHex } from "viem";
-import * as ecc from "@bitcoinerlab/secp256k1";
+import { getPublicKey } from "~/actions";
 
 type UsePublicKeyParams = {
 	/**
@@ -30,22 +27,8 @@ export const usePublicKey = ({ publicKey }: UsePublicKeyParams = {}) => {
 		const pk =
 			publicKey ?? paymentAccount?.publicKey ?? ordinalsAccount?.publicKey;
 
-		if (!pk || !config.network) {
-			return null;
-		}
-
-		if (paymentAccount) {
-			return toHex(Buffer.from(extractXCoordinate(pk), "hex"));
-		}
-
-		initEccLib(ecc);
-
-		const p2tr = payments.p2tr({
-			internalPubkey: Buffer.from(extractXCoordinate(pk), "hex"),
-			network: networks[config.network.network],
-		});
-		// biome-ignore lint/style/noNonNullAssertion: Output is guaranteed to be defined
-		return toHex(p2tr.output!.slice(2));
+		// biome-ignore lint/style/noNonNullAssertion: Public key is guaranteed to be defined
+		return getPublicKey(config, pk!);
 	} catch (e) {
 		console.error(e);
 		return null;

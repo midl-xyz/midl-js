@@ -1,18 +1,14 @@
-import { useMidlContext, useStore } from "@midl-xyz/midl-js-react";
-import type { TransactionSerializableBTC } from "viem";
-import { useChainId } from "wagmi";
-import { useEVMAddress } from "~/hooks/useEVMAddress";
-import type { TransactionIntention } from "~/types/intention";
+import { useConfig, useMidlContext, useStore } from "@midl-xyz/midl-js-react";
+import { useMutation } from "@tanstack/react-query";
+import { type PartialIntention, addTxIntention } from "~/actions";
 
-type AddTxIntentionVariables = Omit<TransactionIntention, "evmTransaction"> & {
-	evmTransaction?: Omit<TransactionIntention["evmTransaction"], "chainId"> & {
-		chainId?: TransactionSerializableBTC["chainId"];
-	};
-} & {
+type AddTxIntentionVariables = PartialIntention & {
+	intention: PartialIntention;
 	/**
 	 * If true, the array of intentions will be cleared before adding the new one
 	 */
 	reset?: boolean;
+	publicKey?: string;
 };
 
 /**
@@ -23,59 +19,33 @@ type AddTxIntentionVariables = Omit<TransactionIntention, "evmTransaction"> & {
  *
  * @example
  * ```typescript
- * const { addTxIntention, txIntentions } = useAddTxIntention();
  *
- * addTxIntention({
- *   from: 'senderAddress',
- *   to: 'receiverAddress',
- *   amount: 1000,
- *   hasRunesDeposit: true,
- *   // other intention fields
- * });
+ * const { addTxIntention, addTxIntentionAsync, txIntentions, isLoading } = useAddTxIntention();
+ *
+ * const intention = {
+ *    // Intention object
+ * };
+ *
+ * addTxIntention(intention);
  * ```
  *
- * @returns
- * - **addTxIntention**: `(variables: AddTxIntentionVariables) => void` – Function to add a new transaction intention.
- * - **txIntentions**: `TransactionIntention[]` – The current list of transaction intentions.
+ * @returns `AddTxIntentionResponse` – The response object containing the mutation function and the current transaction intentions.
  */
 export const useAddTxIntention = () => {
 	const { store } = useMidlContext();
 	const { intentions = [] } = useStore();
-	const chainId = useChainId();
-	const evmAddress = useEVMAddress();
+	const config = useConfig();
 
-	const addTxIntention = ({ reset, ...intention }: AddTxIntentionVariables) => {
-		const { intentions = [] } = store.getState();
-		if (intentions?.length === 10) {
-			throw new Error("Maximum number of intentions reached");
-		}
-
-		if (
-			intentions.filter((it) => it.hasRunesDeposit).length >= 2 &&
-			intention.hasRunesDeposit
-		) {
-			throw new Error(
-				"Transferring more than 2 rune deposits at once is not allowed",
-			);
-		}
-
-		if (intention.evmTransaction) {
-			intention.evmTransaction.chainId =
-				intention.evmTransaction.chainId ?? chainId;
-
-			intention.evmTransaction.from =
-				intention.evmTransaction.from ?? evmAddress;
-		}
-
-		store.setState({
-			intentions: reset
-				? [intention as TransactionIntention]
-				: [...intentions, intention as TransactionIntention],
-		});
-	};
+	const { mutate, mutateAsync, ...rest } = useMutation({
+		mutationFn: ({ reset, publicKey, intention }: AddTxIntentionVariables) => {
+			return addTxIntention(config, store, intention, reset, publicKey);
+		},
+	});
 
 	return {
-		addTxIntention,
+		addTxIntention: mutate,
+		addTxIntentionAsync: mutateAsync,
 		txIntentions: intentions,
+		...rest,
 	};
 };

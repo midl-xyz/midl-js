@@ -97,7 +97,7 @@ export const useFinalizeTxIntentions = ({
 	const nonce = useLastNonce();
 	const evmAddress = useEVMAddress();
 	const { data: gasPrice } = useGasPrice();
-	const { addTxIntention } = useAddTxIntention();
+	const { addTxIntentionAsync } = useAddTxIntention();
 	const chainId = useChainId();
 
 	const { mutate, mutateAsync, data, ...rest } = useMutation<
@@ -231,21 +231,23 @@ export const useFinalizeTxIntentions = ({
 			}
 
 			if (shouldComplete) {
-				addTxIntention({
-					evmTransaction: {
-						to: executorAddress[config.network.id] as Address,
-						gas: 300_000n,
-						data: encodeFunctionData({
-							abi: executorAbi,
-							functionName: "completeTx",
-							args: [
-								`0x${btcTx.tx.id}`,
-								publicKey as `0x${string}`,
-								assetsToWithdraw ?? [],
-								new Array(assetsToWithdraw?.length ?? 0).fill(0n),
-							],
-						}),
-						chainId,
+				await addTxIntentionAsync({
+					intention: {
+						evmTransaction: {
+							to: executorAddress[config.network.id] as Address,
+							gas: 300_000n,
+							data: encodeFunctionData({
+								abi: executorAbi,
+								functionName: "completeTx",
+								args: [
+									`0x${btcTx.tx.id}`,
+									publicKey as `0x${string}`,
+									assetsToWithdraw ?? [],
+									new Array(assetsToWithdraw?.length ?? 0).fill(0n),
+								],
+							}),
+							chainId,
+						},
 					},
 				});
 			}
