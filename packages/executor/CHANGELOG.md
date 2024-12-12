@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor
 
+## 0.0.64
+
+### Patch Changes
+
+- fix: add tx costs for runes transfer
+
 ## 0.0.63
 
 ### Patch Changes

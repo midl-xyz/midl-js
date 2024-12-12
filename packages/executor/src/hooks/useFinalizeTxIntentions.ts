@@ -159,6 +159,7 @@ export const useFinalizeTxIntentions = ({
 					hasWithdraw: hasWithdraw,
 					hasRunesDeposit: intentions.some((it) => it.hasRunesDeposit),
 					hasRunesWithdraw: hasRunesWithdraw,
+					assetsToWithdrawSize: assetsToWithdraw?.length ?? 0,
 				},
 			);
 
