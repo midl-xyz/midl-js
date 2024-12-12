@@ -232,6 +232,8 @@ export const useFinalizeTxIntentions = ({
 
 			if (shouldComplete) {
 				addTxIntention({
+					hasWithdraw: true,
+					hasRunesWithdraw: (assetsToWithdraw?.length ?? 0) > 0,
 					evmTransaction: {
 						to: executorAddress[config.network.id] as Address,
 						gas: 300_000n,

@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor
 
+## 0.0.62
+
+### Patch Changes
+
+- 5f60560: fix: withdraw
+
 ## 0.0.61
 
 ### Patch Changes
