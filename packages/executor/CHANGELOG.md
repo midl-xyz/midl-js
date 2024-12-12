@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor
 
+## 0.0.65
+
+### Patch Changes
+
+- fix: multiply by fee rate
+
 ## 0.0.64
 
 ### Patch Changes

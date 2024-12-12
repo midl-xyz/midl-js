@@ -1,5 +1,12 @@
 # e2e
 
+## 1.0.37
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@0.0.65
+
 ## 1.0.36
 
 ### Patch Changes

@@ -56,9 +56,11 @@ export const calculateTransactionsCost = async (
 
 	const fees =
 		(gasPrice * totalGas) / ONE_SATOSHI +
-		(MIDL_SCRIPT_SIZE + btcDepositSize + btcWithdrawSize) *
-			BigInt(feeRate.halfHourFee * feeRateMultiplier) +
-		BigInt(assetsToWithdrawSize) * RUNES_MAGIC_VALUE;
+		(MIDL_SCRIPT_SIZE +
+			btcDepositSize +
+			btcWithdrawSize +
+			BigInt(assetsToWithdrawSize) * RUNES_MAGIC_VALUE) *
+			BigInt(feeRate.halfHourFee * feeRateMultiplier);
 
 	return fees;
 };
