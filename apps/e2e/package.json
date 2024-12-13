@@ -1,6 +1,6 @@
 {
   "name": "e2e",
-  "version": "1.0.33",
+  "version": "1.0.39",
   "description": "",
   "main": "index.js",
   "type": "module",

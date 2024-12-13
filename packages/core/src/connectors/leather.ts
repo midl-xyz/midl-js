@@ -103,7 +103,15 @@ class LeatherConnector implements Connector {
 	private getNetworkName() {
 		const network = this.config.getState().network;
 
-		return network.network === "bitcoin" ? "mainnet" : network.network;
+		switch (network.network) {
+			case "bitcoin":
+				return "mainnet";
+			case "regtest":
+				return "devnet";
+
+			default:
+				return network.network;
+		}
 	}
 
 	async signMessage(params: SignMessageParams): Promise<SignMessageResponse> {

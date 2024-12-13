@@ -7,6 +7,7 @@ export const RUNES_DEPOSIT_SIZE = 453n;
 export const DEPOSIT_SIZE = 190n;
 export const WITHDRAW_SIZE = 165n;
 export const RUNES_WITHDRAW_SIZE = 403n;
+export const RUNES_MAGIC_VALUE = 546n;
 
 /**
  * Calculate the cost of transactions batch
@@ -26,6 +27,7 @@ export const calculateTransactionsCost = async (
 		hasDeposit,
 		hasWithdraw,
 		hasRunesWithdraw,
+		assetsToWithdrawSize = 0,
 	}: {
 		gasPrice?: bigint;
 		feeRateMultiplier?: number;
@@ -33,6 +35,7 @@ export const calculateTransactionsCost = async (
 		hasDeposit?: boolean;
 		hasWithdraw?: boolean;
 		hasRunesWithdraw?: boolean;
+		assetsToWithdrawSize?: number;
 	},
 ) => {
 	const feeRate = await getFeeRate(config);
@@ -53,7 +56,10 @@ export const calculateTransactionsCost = async (
 
 	const fees =
 		(gasPrice * totalGas) / ONE_SATOSHI +
-		(MIDL_SCRIPT_SIZE + btcDepositSize + btcWithdrawSize) *
+		(MIDL_SCRIPT_SIZE +
+			btcDepositSize +
+			btcWithdrawSize +
+			BigInt(assetsToWithdrawSize) * RUNES_MAGIC_VALUE) *
 			BigInt(feeRate.halfHourFee * feeRateMultiplier);
 
 	return fees;

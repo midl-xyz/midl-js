@@ -41,6 +41,8 @@ type FinalizeMutationVariables = {
 	shouldComplete?: boolean;
 
 	assetsToWithdraw?: [Address] | [Address, Address];
+
+	feeRateMultiplier?: number;
 };
 
 type UseFinalizeTxIntentionsResponse = EdictRuneResponse | TransferBTCResponse;
@@ -109,6 +111,7 @@ export const useFinalizeTxIntentions = ({
 			stateOverride,
 			shouldComplete,
 			assetsToWithdraw,
+			feeRateMultiplier,
 		} = {}) => {
 			if (!config.network) {
 				throw new Error("No network set");
@@ -135,6 +138,12 @@ export const useFinalizeTxIntentions = ({
 				it.evmTransaction.gas = BigInt(Math.ceil(Number(gasLimits[i]) * 1.2));
 			});
 
+			const hasWithdraw =
+				intentions.some((it) => it.hasWithdraw) || shouldComplete;
+			const hasRunesWithdraw =
+				intentions.some((it) => it.hasRunesWithdraw) ||
+				(shouldComplete && (assetsToWithdraw?.length ?? 0) > 0);
+
 			const totalCost = await calculateTransactionsCost(
 				[
 					...evmTransactions,
@@ -148,11 +157,13 @@ export const useFinalizeTxIntentions = ({
 				],
 				config,
 				{
+					feeRateMultiplier,
 					gasPrice,
 					hasDeposit: intentions.some((it) => it.hasDeposit),
-					hasWithdraw: intentions.some((it) => it.hasWithdraw),
+					hasWithdraw: hasWithdraw,
 					hasRunesDeposit: intentions.some((it) => it.hasRunesDeposit),
-					hasRunesWithdraw: intentions.some((it) => it.hasRunesWithdraw),
+					hasRunesWithdraw: hasRunesWithdraw,
+					assetsToWithdrawSize: assetsToWithdraw?.length ?? 0,
 				},
 			);
 
@@ -231,8 +242,11 @@ export const useFinalizeTxIntentions = ({
 			}
 
 			if (shouldComplete) {
-				await addTxIntentionAsync({
+				addTxIntentionAsync({
 					intention: {
+						hasWithdraw,
+						hasRunesWithdraw,
+
 						evmTransaction: {
 							to: executorAddress[config.network.id] as Address,
 							gas: 300_000n,

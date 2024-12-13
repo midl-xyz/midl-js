@@ -1,5 +1,49 @@
 # e2e
 
+## 1.0.39
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-core@0.0.34
+  - @midl-xyz/midl-js-executor@0.0.67
+  - @midl-xyz/midl-js-react@0.0.41
+
+## 1.0.38
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@0.0.66
+
+## 1.0.37
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@0.0.65
+
+## 1.0.36
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@0.0.64
+
+## 1.0.35
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@0.0.63
+
+## 1.0.34
+
+### Patch Changes
+
+- Updated dependencies [5f60560]
+  - @midl-xyz/midl-js-executor@0.0.62
+
 ## 1.0.33
 
 ### Patch Changes

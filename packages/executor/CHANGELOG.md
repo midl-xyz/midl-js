@@ -1,5 +1,43 @@
 # @midl-xyz/midl-js-executor
 
+## 0.0.67
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-core@0.0.34
+  - @midl-xyz/midl-js-react@0.0.41
+
+## 0.0.66
+
+### Patch Changes
+
+- feat: allow fee rate multiplier change
+
+## 0.0.65
+
+### Patch Changes
+
+- fix: multiply by fee rate
+
+## 0.0.64
+
+### Patch Changes
+
+- fix: add tx costs for runes transfer
+
+## 0.0.63
+
+### Patch Changes
+
+- fix: calc withdraw tx
+
+## 0.0.62
+
+### Patch Changes
+
+- 5f60560: fix: withdraw
+
 ## 0.0.61
 
 ### Patch Changes
