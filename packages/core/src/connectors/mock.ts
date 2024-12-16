@@ -17,7 +17,7 @@ import {
 import { AddressPurpose, AddressType } from "~/constants";
 import type { BitcoinNetwork } from "~/createConfig";
 import { extractXCoordinate, isCorrectAddress } from "~/utils";
-import * as ecc from "tiny-secp256k1";
+import ecc from "@bitcoinerlab/secp256k1";
 import BIP32Factory from "bip32";
 
 bitcoin.initEccLib(ecc);

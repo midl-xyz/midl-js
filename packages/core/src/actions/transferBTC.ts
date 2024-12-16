@@ -5,6 +5,9 @@ import { getFeeRate } from "~/actions/getFeeRate";
 import { getUTXOs } from "~/actions/getUTXOs";
 import type { Config } from "~/createConfig";
 import { makePSBTInputs } from "~/utils";
+import ecc from "@bitcoinerlab/secp256k1";
+
+initEccLib(ecc);
 
 export type TransferBTCParams = {
 	transfers: {
@@ -35,8 +38,6 @@ export const transferBTC = async (
 	if (!config.network) {
 		throw new Error("No network");
 	}
-
-	await import("tiny-secp256k1").then(initEccLib);
 
 	const { accounts } = config.getState();
 

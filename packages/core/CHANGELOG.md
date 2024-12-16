@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 0.0.35
+
+### Patch Changes
+
+- feat: migrate ecc to bitcoinerlab
+
 ## 0.0.34
 
 ### Patch Changes
