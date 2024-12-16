@@ -29,7 +29,7 @@ describe("executor | hooks | useSerializeTransaction", () => {
 	it.skip("should serialize a transaction with nonce increment", async () => {
 		const { result, rerender } = renderHook(
 			() => {
-				return useSerializeTransaction({ shouldIncrementNonce: true });
+				return useSerializeTransaction();
 			},
 			{ wrapper },
 		);

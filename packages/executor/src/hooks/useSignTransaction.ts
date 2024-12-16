@@ -84,9 +84,7 @@ export const useSignTransaction = (
 
 	const { signMessageAsync } = useSignMessage();
 	const { paymentAccount, ordinalsAccount, accounts } = useAccounts();
-	const serializeTransaction = useSerializeTransaction({
-		shouldIncrementNonce: false,
-	});
+	const serializeTransaction = useSerializeTransaction();
 
 	const { mutate, mutateAsync, ...rest } = useMutation<
 		SignTransactionResult,
