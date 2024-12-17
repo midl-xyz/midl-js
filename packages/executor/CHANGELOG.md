@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor
 
+## 0.0.72
+
+### Patch Changes
+
+- fix: add value for evm tx only
+
 ## 0.0.71
 
 ### Patch Changes
