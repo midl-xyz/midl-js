@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 0.0.36
+
+### Patch Changes
+
+- feat: add keypair connector
+
 ## 0.0.35
 
 ### Patch Changes

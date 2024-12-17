@@ -1,0 +1,229 @@
+import { Verifier } from "bip322-js";
+import { describe, expect, it, afterEach } from "vitest";
+import { getKeyPair } from "~/__tests__/keyPair";
+import { SignMessageProtocol } from "~/actions";
+import { keyPair, keyPair as keyPairConnector } from "~/connectors/keyPair";
+import { AddressPurpose } from "~/constants";
+import { createConfig } from "~/createConfig";
+import { regtest } from "~/networks";
+import bitcoinMessage from "bitcoinjs-message";
+import { Psbt } from "bitcoinjs-lib";
+import * as bitcoin from "bitcoinjs-lib";
+import { extractXCoordinate } from "~/utils";
+
+const key = getKeyPair();
+
+describe("core | connectors | keyPair", () => {
+	const midlConfig = createConfig({
+		networks: [regtest],
+		connectors: [
+			keyPairConnector({
+				keyPair: key,
+			}),
+		],
+	});
+
+	afterEach(async () => {
+		await midlConfig.currentConnection?.disconnect?.();
+	});
+
+	it("should connect", async () => {
+		const accounts = await midlConfig.connectors[0].connect({
+			purposes: [AddressPurpose.Ordinals, AddressPurpose.Payment],
+		});
+
+		expect(accounts.length).toBe(2);
+	});
+
+	it("should connect with only one purpose", async () => {
+		const accounts = await midlConfig.connectors[0].connect({
+			purposes: [AddressPurpose.Ordinals],
+		});
+
+		expect(accounts.length).toBe(1);
+	});
+
+	it("should return correct network", async () => {
+		await midlConfig.connectors[0].connect({
+			purposes: [AddressPurpose.Ordinals],
+		});
+
+		expect(await midlConfig.currentConnection?.getNetwork()).toBe(regtest);
+	});
+
+	it("should return correct addresses", async () => {
+		const [p2tr, p2sh] = await midlConfig.connectors[0].connect({
+			purposes: [AddressPurpose.Ordinals, AddressPurpose.Payment],
+		});
+
+		expect(p2tr.address).toBe(
+			"bcrt1phsg5adtfvvs3yav9ngpyvm9jkqqwt6cye8nfu4hmfrnln2g2pvrsvq54xj",
+		);
+
+		expect(p2sh.address).toBe("2MsR5XZmtjWUZbWTrCtb72zyW5o1cejUWF2");
+	});
+
+	it("should disconnect", async () => {
+		await midlConfig.connectors[0].connect({
+			purposes: [AddressPurpose.Ordinals],
+		});
+
+		await midlConfig.currentConnection?.disconnect?.();
+
+		expect(midlConfig.getState().connection).toBeUndefined();
+	});
+
+	it("should get accounts", async () => {
+		await midlConfig.connectors[0].connect({
+			purposes: [AddressPurpose.Ordinals],
+		});
+
+		const accounts = await midlConfig.currentConnection?.getAccounts();
+
+		expect(accounts?.length).toBe(1);
+	});
+
+	it("should sign message bip322", async () => {
+		const [account] = await midlConfig.connectors[0].connect({
+			purposes: [AddressPurpose.Ordinals],
+		});
+
+		const signature = await midlConfig.currentConnection?.signMessage({
+			message: "test message",
+			address: account.address,
+			protocol: SignMessageProtocol.Bip322,
+		});
+
+		const valid = Verifier.verifySignature(
+			account.address,
+			"test message",
+			// biome-ignore lint/style/noNonNullAssertion: signature is defined
+			signature!.signature,
+		);
+
+		expect(valid).toBeTruthy();
+	});
+
+	it("should sign message ecdsa", async () => {
+		const [account] = await midlConfig.connectors[0].connect({
+			purposes: [AddressPurpose.Payment],
+		});
+
+		const signature = await midlConfig.currentConnection?.signMessage({
+			message: "test message",
+			address: account.address,
+			protocol: SignMessageProtocol.Ecdsa,
+		});
+
+		const valid = bitcoinMessage.verify(
+			"test message",
+			account.address,
+			// biome-ignore lint/style/noNonNullAssertion: signature is defined
+			Buffer.from(signature!.signature, "base64"),
+		);
+
+		expect(valid).toBeTruthy();
+	});
+
+	it("should sign psbt payment", async () => {
+		const [account] = await midlConfig.connectors[0].connect({
+			purposes: [AddressPurpose.Payment],
+		});
+
+		const psbt = new Psbt();
+
+		const p2sh = bitcoin.payments.p2sh({
+			redeem: bitcoin.payments.p2wpkh({
+				pubkey: key.publicKey,
+				network: bitcoin.networks.regtest,
+			}),
+			network: bitcoin.networks.regtest,
+		});
+
+		psbt.addInput({
+			hash: "e2d7f2123d9351f4f12a7cdb8b1d1aeb3e8d53d556cb6b564a3f2b093cf02fa3",
+			index: 0,
+			witnessUtxo: {
+				// biome-ignore lint/style/noNonNullAssertion: <explanation>
+				script: p2sh.output!,
+				value: 50000n, // Amount in satoshis
+			},
+			// biome-ignore lint/style/noNonNullAssertion: <explanation>
+			redeemScript: p2sh.redeem!.output,
+		});
+
+		psbt.addOutput({
+			script: Buffer.from(""),
+			value: 0n,
+		});
+
+		const psbtData = psbt.toBase64();
+
+		const signedPsbt = await midlConfig.currentConnection?.signPSBT({
+			psbt: psbtData,
+			signInputs: {
+				[account.address]: [0],
+			},
+		});
+
+		if (!signedPsbt) {
+			throw new Error("Invalid response");
+		}
+
+		expect(
+			// biome-ignore lint/style/noNonNullAssertion: <explanation>
+			Psbt.fromBase64(signedPsbt.psbt).data.inputs[0].partialSig!.length,
+		).toBe(1);
+	});
+
+	it("should sign psbt ordinals", async () => {
+		const [account] = await midlConfig.connectors[0].connect({
+			purposes: [AddressPurpose.Ordinals],
+		});
+
+		const psbt = new Psbt();
+
+		const xOnly = Buffer.from(
+			extractXCoordinate(key.publicKey.toString("hex")),
+			"hex",
+		);
+
+		const p2tr = bitcoin.payments.p2tr({
+			internalPubkey: xOnly,
+			network: bitcoin.networks.regtest,
+		});
+
+		psbt.addInput({
+			hash: "e2d7f2123d9351f4f12a7cdb8b1d1aeb3e8d53d556cb6b564a3f2b093cf02fa3",
+			index: 0,
+			witnessUtxo: {
+				// biome-ignore lint/style/noNonNullAssertion: <explanation>
+				script: p2tr.output!,
+				value: 50000n, // Amount in satoshis
+			},
+			tapInternalKey: xOnly,
+		});
+
+		psbt.addOutput({
+			script: Buffer.from(""),
+			value: 0n,
+		});
+
+		const psbtData = psbt.toBase64();
+
+		const signedPsbt = await midlConfig.currentConnection?.signPSBT({
+			psbt: psbtData,
+			signInputs: {
+				[account.address]: [0],
+			},
+		});
+
+		if (!signedPsbt) {
+			throw new Error("Invalid response");
+		}
+
+		expect(
+			Psbt.fromBase64(signedPsbt.psbt).data.inputs[0].tapKeySig,
+		).toBeDefined();
+	});
+});

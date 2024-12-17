@@ -1,10 +1,10 @@
 import * as bitcoin from "bitcoinjs-lib";
 import { beforeAll, describe, expect, it } from "vitest";
-import { keyPair } from "~/__tests__/keyPair";
+import { getKeyPair } from "~/__tests__/keyPair";
 import { makeRandomAddress } from "~/__tests__/makeRandomAddress";
 import { mockServer } from "~/__tests__/mockServer";
 import { edictRune } from "~/actions/edictRune";
-import { mock } from "~/connectors/mock";
+import { keyPair } from "~/connectors/keyPair";
 import { AddressPurpose } from "~/constants";
 import { type Config, createConfig } from "~/createConfig";
 import { regtest } from "~/networks";
@@ -18,8 +18,8 @@ describe("core | actions | edictRune", () => {
 		config = createConfig({
 			networks: [regtest],
 			connectors: [
-				mock({
-					keyPair: keyPair,
+				keyPair({
+					keyPair: getKeyPair(),
 				}),
 			],
 		});
