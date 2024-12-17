@@ -133,11 +133,9 @@ export const useFinalizeTxIntentions = ({
 				account: evmAddress,
 			});
 
-			for (const [i, intention] of intentions.entries()) {
-				if (!intention.evmTransaction) {
-					continue;
-				}
-
+			for (const [i, intention] of intentions
+				.filter((it) => Boolean(it.evmTransaction))
+				.entries()) {
 				intention.evmTransaction.gas = BigInt(
 					Math.ceil(Number(gasLimits[i]) * 1.2),
 				);

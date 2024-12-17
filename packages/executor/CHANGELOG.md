@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor
 
+## 0.0.71
+
+### Patch Changes
+
+- fix: filter before gas set
+
 ## 0.0.70
 
 ### Patch Changes
