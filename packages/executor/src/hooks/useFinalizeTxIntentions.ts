@@ -133,10 +133,13 @@ export const useFinalizeTxIntentions = ({
 				account: evmAddress,
 			});
 
-			intentions.forEach((it, i) => {
-				// TODO: remove 1.2x multiplier
-				it.evmTransaction.gas = BigInt(Math.ceil(Number(gasLimits[i]) * 1.2));
-			});
+			for (const [i, intention] of intentions
+				.filter((it) => Boolean(it.evmTransaction))
+				.entries()) {
+				intention.evmTransaction.gas = BigInt(
+					Math.ceil(Number(gasLimits[i]) * 1.2),
+				);
+			}
 
 			const hasWithdraw =
 				intentions.some((it) => it.hasWithdraw) || shouldComplete;
@@ -169,7 +172,7 @@ export const useFinalizeTxIntentions = ({
 
 			const btcTransfer = convertETHtoBTC(
 				intentions.reduce((acc, it) => {
-					return acc + (it.evmTransaction.value ?? 0n);
+					return acc + (it.evmTransaction?.value ?? 0n);
 				}, 0n),
 			);
 

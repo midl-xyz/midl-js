@@ -1,5 +1,40 @@
 # @midl-xyz/midl-js-executor
 
+## 0.0.72
+
+### Patch Changes
+
+- fix: add value for evm tx only
+
+## 0.0.71
+
+### Patch Changes
+
+- fix: filter before gas set
+
+## 0.0.70
+
+### Patch Changes
+
+- fix: set gas only for intentions with evm tx
+
+## 0.0.69
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-core@0.0.36
+  - @midl-xyz/midl-js-react@0.0.43
+
+## 0.0.68
+
+### Patch Changes
+
+- feat: migrate ecc to bitcoinerlab
+- Updated dependencies
+  - @midl-xyz/midl-js-core@0.0.35
+  - @midl-xyz/midl-js-react@0.0.42
+
 ## 0.0.67
 
 ### Patch Changes

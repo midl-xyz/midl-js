@@ -8,6 +8,9 @@ import { type RuneUTXO, getRuneUTXO } from "~/actions/getRuneUTXO";
 import { getUTXOs } from "~/actions/getUTXOs";
 import type { Config } from "~/createConfig";
 import { extractXCoordinate, makePSBTInputs, runeUTXOSelect } from "~/utils";
+import ecc from "@bitcoinerlab/secp256k1";
+
+initEccLib(ecc);
 
 type TransferOutput = {
 	address: string;
@@ -52,8 +55,6 @@ export const edictRune = async (
 	if (!config.network) {
 		throw new Error("No network");
 	}
-
-	await import("tiny-secp256k1").then(initEccLib);
 
 	const { accounts } = config.getState();
 

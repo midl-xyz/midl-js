@@ -1,11 +1,14 @@
+import ecc from "@bitcoinerlab/secp256k1";
+import * as bip322 from "bip322-js";
 import * as bitcoin from "bitcoinjs-lib";
 import { Psbt } from "bitcoinjs-lib";
+import bitcoinMessage from "bitcoinjs-message";
 import type { ECPairInterface } from "ecpair";
-import type {
-	SignMessageParams,
-	SignMessageResponse,
-	SignPSBTParams,
-	SignPSBTResponse,
+import {
+	type SignMessageParams,
+	SignMessageProtocol,
+	type SignMessageResponse,
+	type SignPSBTParams,
 } from "~/actions";
 import {
 	type Account,
@@ -16,20 +19,17 @@ import {
 } from "~/connectors/createConnector";
 import { AddressPurpose, AddressType } from "~/constants";
 import type { BitcoinNetwork } from "~/createConfig";
-import { extractXCoordinate, isCorrectAddress } from "~/utils";
-import ecc from "@bitcoinerlab/secp256k1";
-import BIP32Factory from "bip32";
+import { extractXCoordinate, getAddressType, isCorrectAddress } from "~/utils";
 
 bitcoin.initEccLib(ecc);
-const bip32 = BIP32Factory(ecc);
 
-type MockConnectorParams = {
+type KeyPairConnectorParams = {
 	keyPair: ECPairInterface;
 };
 
-class MockConnector implements Connector {
-	public readonly id = "mock";
-	public readonly name = "Mock";
+class KeyPairConnector implements Connector {
+	public readonly id = "keyPair";
+	public readonly name = "KeyPair";
 
 	constructor(
 		private config: CreateConnectorConfig,
@@ -41,7 +41,7 @@ class MockConnector implements Connector {
 
 		if (purposes.includes(AddressPurpose.Ordinals)) {
 			const p2tr = bitcoin.payments.p2tr({
-				pubkey: Buffer.from(
+				internalPubkey: Buffer.from(
 					extractXCoordinate(this.keyPair.publicKey.toString("hex")),
 					"hex",
 				),
@@ -83,7 +83,7 @@ class MockConnector implements Connector {
 
 		return accounts;
 	}
-	async disconnect(): Promise<void> {
+	async disconnect() {
 		this.config.setState({
 			connection: undefined,
 			publicKey: undefined,
@@ -111,30 +111,81 @@ class MockConnector implements Connector {
 	async getNetwork(): Promise<BitcoinNetwork> {
 		return this.config.getState().network;
 	}
-	signMessage(params: SignMessageParams): Promise<SignMessageResponse> {
-		throw new Error("Method not implemented.");
+	async signMessage(params: SignMessageParams): Promise<SignMessageResponse> {
+		if (!this.keyPair.privateKey) {
+			throw new Error("No private key");
+		}
+
+		switch (params.protocol) {
+			case SignMessageProtocol.Bip322: {
+				const signature = bip322.Signer.sign(
+					this.keyPair.toWIF(),
+					params.address,
+					params.message,
+				);
+
+				return {
+					signature: signature.toString("hex"),
+					address: params.address,
+				};
+			}
+
+			case SignMessageProtocol.Ecdsa: {
+				const signature = bitcoinMessage.sign(
+					params.message,
+					this.keyPair.privateKey,
+					this.keyPair.compressed,
+					{ segwitType: "p2sh(p2wpkh)" },
+				);
+
+				return {
+					signature: signature.toString("base64"),
+					address: params.address,
+				};
+			}
+
+			default:
+				throw new Error("Unsupported protocol");
+		}
 	}
-	async signPSBT(
-		params: Omit<SignPSBTParams, "publish">,
-	): Promise<Omit<SignPSBTResponse, "txId">> {
-		const psbt = Psbt.fromBase64(params.psbt);
-		const node = bip32.fromPrivateKey(
-			// biome-ignore lint/style/noNonNullAssertion: <explanation>
-			this.keyPair.privateKey!,
-			Buffer.alloc(32),
-		);
+	async signPSBT({
+		psbt: psbtData,
+		signInputs,
+		disableTweakSigner,
+	}: Omit<SignPSBTParams, "publish">) {
+		const psbt = Psbt.fromBase64(psbtData);
 
-		const tweakedChildNode = node.tweak(
-			bitcoin.crypto.taggedHash(
-				"TapTweak",
-				Buffer.from(
-					extractXCoordinate(this.keyPair.publicKey.toString("hex")),
-					"hex",
-				),
-			),
-		);
+		for (const [address, inputs] of Object.entries(signInputs)) {
+			const type = getAddressType(address);
 
-		psbt.signAllInputs(tweakedChildNode);
+			switch (type) {
+				case AddressType.P2SH: {
+					for (const input of inputs) {
+						psbt.signInput(input, this.keyPair);
+					}
+					break;
+				}
+
+				case AddressType.P2TR: {
+					for (const input of inputs) {
+						const signer = this.keyPair.tweak(
+							Buffer.from(
+								bitcoin.crypto.taggedHash(
+									"TapTweak",
+									Buffer.from(
+										extractXCoordinate(this.keyPair.publicKey.toString("hex")),
+										"hex",
+									),
+								),
+							),
+						);
+
+						psbt.signInput(input, disableTweakSigner ? this.keyPair : signer);
+					}
+					break;
+				}
+			}
+		}
 
 		return {
 			psbt: psbt.toBase64(),
@@ -142,7 +193,7 @@ class MockConnector implements Connector {
 	}
 }
 
-export const mock = ({ keyPair }: MockConnectorParams) =>
+export const keyPair = ({ keyPair }: KeyPairConnectorParams) =>
 	createConnector((config) => {
-		return new MockConnector(config, keyPair);
+		return new KeyPairConnector(config, keyPair);
 	});

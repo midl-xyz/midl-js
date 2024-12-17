@@ -18,6 +18,9 @@ import { signPSBT } from "~/actions/signPSBT";
 import { AddressPurpose } from "~/constants";
 import type { Config } from "~/createConfig";
 import { extractXCoordinate, formatRuneName, makePSBTInputs } from "~/utils";
+import ecc from "@bitcoinerlab/secp256k1";
+
+initEccLib(ecc);
 
 export type EtchRuneParams = {
 	from?: string;
@@ -103,8 +106,6 @@ export const etchRune = async (
 	const inscription = new EtchInscription();
 	const runeName = formatRuneName(name);
 	const feeRate = customFeeRate || (await getFeeRate(config)).hourFee;
-
-	await import("tiny-secp256k1").then(initEccLib);
 
 	if (!config.currentConnection) {
 		throw new Error("No connection");
