@@ -1,8 +1,8 @@
-import { AddressPurpose, type Config } from "@midl-xyz/midl-js-core";
+import type { Config } from "@midl-xyz/midl-js-core";
 import type { MidlContextState } from "@midl-xyz/midl-js-react";
 import type { TransactionSerializableBTC } from "viem";
 import type { StoreApi } from "zustand";
-import { getPublicKey } from "~/actions";
+import { getPublicKeyForAccount } from "~/actions/getPublicKeyForAccount";
 import type { TransactionIntention } from "~/types/intention";
 import { getEVMAddress, getEVMFromBitcoinNetwork } from "~/utils";
 
@@ -23,24 +23,7 @@ export const addTxIntention = async (
 		throw new Error("No network found");
 	}
 
-	const accounts = await config.currentConnection?.getAccounts();
-
-	const ordinalsAccount = accounts?.find(
-		(it) => it.purpose === AddressPurpose.Ordinals,
-	);
-	const paymentAccount = accounts?.find(
-		(it) => it.purpose === AddressPurpose.Payment,
-	);
-
-	const pk = getPublicKey(
-		config,
-		publicKey ?? paymentAccount?.publicKey ?? ordinalsAccount?.publicKey ?? "",
-	);
-
-	if (!pk) {
-		throw new Error("No public key found");
-	}
-
+	const pk = await getPublicKeyForAccount(config, publicKey);
 	const chain = getEVMFromBitcoinNetwork(config.network);
 	const evmAddress = getEVMAddress(pk);
 	const { intentions = [] } = store.getState();

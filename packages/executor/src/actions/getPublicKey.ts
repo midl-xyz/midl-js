@@ -1,4 +1,4 @@
-import * as ecc from "@bitcoinerlab/secp256k1";
+import ecc from "@bitcoinerlab/secp256k1";
 import { type Config, extractXCoordinate } from "@midl-xyz/midl-js-core";
 import { initEccLib, networks, payments } from "bitcoinjs-lib";
 import { toHex } from "viem";

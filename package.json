@@ -17,11 +17,12 @@
     "turbo": "^2.0.9",
     "typescript": "^5.5.3",
     "vite-tsconfig-paths": "^4.3.2",
-    "vitest": "^2.0.4"
+    "vitest": "^2.1.8"
   },
   "pnpm": {
     "overrides": {
-      "viem": "npm:@midl-xyz/midl-viem@2.21.36"
+      "viem": "npm:@midl-xyz/midl-viem@2.21.36",
+      "@bitcoinerlab/secp256k1": "^1.2.0"
     }
   }
 }

@@ -12,6 +12,6 @@ describe("useBTCFeeRate", () => {
 		await waitFor(() => expect(result.current.isSuccess).toBe(true));
 		rerender();
 
-		expect(result.current.data).toBeGreaterThan(0n);
+		expect(result.current.data).toBeGreaterThan(1n);
 	});
 });
