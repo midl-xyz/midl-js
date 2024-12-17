@@ -172,7 +172,7 @@ export const useFinalizeTxIntentions = ({
 
 			const btcTransfer = convertETHtoBTC(
 				intentions.reduce((acc, it) => {
-					return acc + (it.evmTransaction.value ?? 0n);
+					return acc + (it.evmTransaction?.value ?? 0n);
 				}, 0n),
 			);
 
