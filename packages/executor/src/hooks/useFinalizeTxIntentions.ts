@@ -133,10 +133,15 @@ export const useFinalizeTxIntentions = ({
 				account: evmAddress,
 			});
 
-			intentions.forEach((it, i) => {
-				// TODO: remove 1.2x multiplier
-				it.evmTransaction.gas = BigInt(Math.ceil(Number(gasLimits[i]) * 1.2));
-			});
+			for (const [i, intention] of intentions.entries()) {
+				if (!intention.evmTransaction) {
+					continue;
+				}
+
+				intention.evmTransaction.gas = BigInt(
+					Math.ceil(Number(gasLimits[i]) * 1.2),
+				);
+			}
 
 			const hasWithdraw =
 				intentions.some((it) => it.hasWithdraw) || shouldComplete;

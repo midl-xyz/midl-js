@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor
 
+## 0.0.70
+
+### Patch Changes
+
+- fix: set gas only for intentions with evm tx
+
 ## 0.0.69
 
 ### Patch Changes
