@@ -144,10 +144,12 @@ export const leather: Wallet = {
 	async acceptSign({ context, extensionId }) {
 		let page = context
 			.pages()
-			.find((page) =>
-				page
-					.url()
-					.includes(`chrome-extension://${extensionId}/notification.html`),
+			.find(
+				(page) =>
+					page
+						.url()
+						.includes(`chrome-extension://${extensionId}/notification.html`) ||
+					page.url().includes(`chrome-extension://${extensionId}/popup.html`),
 			);
 
 		if (!page) {
@@ -157,28 +159,37 @@ export const leather: Wallet = {
 						resolve(page);
 					}
 
-					await context.off("page", onNewPage);
+					context.off("page", onNewPage);
 				};
 
 				context.on("page", onNewPage);
 			});
-			await page.bringToFront();
+		}
+
+		if (!page) {
+			throw new Error("No notification page found");
+		}
+
+		await page.bringToFront();
+		await page.waitForLoadState("networkidle");
+
+		console.log(await page.getByTestId("password-input").isVisible());
+
+		if (await page.getByTestId("password-input").isVisible()) {
 			await leather.unlockWallet({ page, skipNavigation: true });
 
 			await page.getByTestId("password-input").fill("533LZVJ55G7Z965DH9QHWVRH");
 			await page.waitForTimeout(100);
 			await page.getByText("Continue").click();
 			await page.waitForTimeout(3000);
-			await page.getByText("Confirm").click();
-			const check = await page.getByText("Sign");
-			if ((await check.count()) > 0) {
-				console.log("tut");
-			}
 		}
-		await page.getByText("Sign").click();
 
-		if (!page) {
-			throw new Error("No notification page found");
+		const confirm = await page.getByText("Confirm").isVisible();
+
+		if (confirm) {
+			await page.getByText("Confirm").click();
+		} else {
+			await page.getByText("Sign", { exact: true }).click();
 		}
 	},
 };
