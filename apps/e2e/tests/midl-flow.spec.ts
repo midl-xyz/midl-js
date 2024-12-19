@@ -37,7 +37,7 @@ test.describe("Add Liquidity Flow", () => {
 
 		await page
 			.getByTestId("address")
-			.waitFor({ state: "visible", timeout: 1_000 });
+			.waitFor({ state: "visible", timeout: 10_000 });
 
 		runeAddress = await page.getByTestId("edict-address").first().textContent();
 

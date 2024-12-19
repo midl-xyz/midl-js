@@ -1,6 +1,5 @@
 import type { Page } from "@playwright/test";
-import { text } from "stream/consumers";
-import type { TestArgs } from "~/fixtures/test";
+
 import type { Wallet } from "~/fixtures/wallet";
 
 export const leather: Wallet = {
@@ -61,8 +60,6 @@ export const leather: Wallet = {
 			await page.waitForTimeout(100);
 			await page.getByText("Continue").click();
 			await page.waitForTimeout(3000);
-
-			await page.screenshot({ path: "screen4.png" });
 		}
 		if ((await blockPage.count()) > 0) {
 			await page.getByTestId("password-input").fill("533LZVJ55G7Z965DH9QHWVRH");
@@ -72,56 +69,113 @@ export const leather: Wallet = {
 	},
 
 	async changeNetwork({ page, extensionId }) {
-		const blockPage = await page.locator('input[data-testid="password-input"]');
+		const blockPage = page.locator('input[data-testid="password-input"]');
 
 		await page.goto(`chrome-extension://${extensionId}/index.html`);
 		if ((await blockPage.count()) > 0) {
 			await page.getByTestId("password-input").fill("533LZVJ55G7Z965DH9QHWVRH");
 			await page.waitForTimeout(100);
 			await page.getByText("Continue").click();
+			await page.waitForTimeout(3000);
 		}
-		// await page.getByTestId("password-input").fill("533LZVJ55G7Z965DH9QHWVRH");
-		// await page.waitForTimeout(100);
-		// await page.getByText("Continue").click();
-		await page.waitForTimeout(3000);
-		const menu = await page.locator('[aria-haspopup="menu"]');
+
+		const menu = page.locator('[aria-haspopup="menu"]');
 
 		await menu.click();
 
-		const network = await page.locator("text=mainnet");
-		await network.click({ force: true });
+		const network = page.locator("text=mainnet");
 
-		const span = await page.getByText("Add a network");
+		if ((await network.count()) > 0) {
+			await network.click({ force: true });
 
-		await span.click();
-		await page.getByTestId("network-name").fill("MIDL REGTEST");
-		await page.getByTestId("network-key").fill("regtest");
-		await page
-			.getByTestId("network-bitcoin-address")
-			.fill("https://regtest-mempool.midl.xyz/api");
+			const span = page.getByText("Add a network");
 
-		await page.getByTestId("add-network-bitcoin-api-selector").click();
-		await page.waitForTimeout(1000);
-		// await page.locator("text=Regtest").click();
-		const regtestElement = page.locator('option[value="regtest"]');
+			await span.click();
+			await page.getByTestId("network-name").fill("MIDL REGTEST");
+			await page.getByTestId("network-key").fill("regtest");
+			await page
+				.getByTestId("network-bitcoin-address")
+				.fill("https://regtest-mempool.midl.xyz/api");
 
-		await page.waitForTimeout(1000);
+			await page.getByTestId("add-network-bitcoin-api-selector").click();
+			await page.waitForTimeout(1000);
+			// await page.locator("text=Regtest").click();
+			const regtestElement = page.getByTestId("bitcoin-api-option-regtest");
 
-		await regtestElement.click();
+			await page.waitForTimeout(1000);
 
-		await page.screenshot({ path: "screen4.png" });
+			await regtestElement.click();
+
+			await page.getByTestId("add-network-btn").click();
+			await page.waitForTimeout(3000);
+		}
+
+		await page.waitForTimeout(3000);
 	},
 
-	connectWallet: ({
-		context,
-		extensionId,
-	}: Pick<TestArgs, "context" | "extensionId">): Promise<void> => {
-		throw new Error("Function not implemented.");
+	async connectWallet({ context, extensionId }) {
+		const page = await new Promise<Page>((resolve) => {
+			const onNewPage = async (page: Page) => {
+				if (page.url().includes(extensionId)) {
+					await page.waitForTimeout(500);
+					await page.bringToFront();
+
+					resolve(page);
+				}
+
+				context.off("page", onNewPage);
+				await page
+					.getByTestId("password-input")
+					.fill("533LZVJ55G7Z965DH9QHWVRH");
+				await page.waitForTimeout(100);
+				await page.getByText("Continue").click();
+				await page.waitForTimeout(3000);
+				await page.getByText("Confirm").click();
+				await page.waitForTimeout(5000);
+			};
+
+			context.on("page", onNewPage);
+		});
+
+		if (!page) {
+			throw new Error("No notification page found");
+		}
 	},
-	acceptSign: ({
-		context,
-		extensionId,
-	}: Pick<TestArgs, "context" | "extensionId">): Promise<void> => {
-		throw new Error("Function not implemented.");
+
+	async acceptSign({ context, extensionId }) {
+		let page = context
+			.pages()
+			.find((page) =>
+				page
+					.url()
+					.includes(`chrome-extension://${extensionId}/notification.html`),
+			);
+
+		if (!page) {
+			page = await new Promise<Page>((resolve) => {
+				const onNewPage = async (page: Page) => {
+					if (page.url().includes(extensionId)) {
+						resolve(page);
+					}
+
+					context.off("page", onNewPage);
+				};
+
+				context.on("page", onNewPage);
+			});
+			await page.bringToFront();
+			await leather.unlockWallet({ page, skipNavigation: true });
+
+			await page.getByTestId("password-input").fill("533LZVJ55G7Z965DH9QHWVRH");
+			await page.waitForTimeout(100);
+			await page.getByText("Continue").click();
+			await page.waitForTimeout(3000);
+			await page.getByText("Confirm").click();
+			await page.screenshot({ path: "screen.png" });
+		}
+
+		if (!page) {
+			throw new Error("No notification page found");
+		}
 	},
 };
