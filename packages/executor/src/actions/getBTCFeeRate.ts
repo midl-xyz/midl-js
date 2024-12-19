@@ -1,13 +1,13 @@
 import type { Config } from "@midl-xyz/midl-js-core";
+import { JsonRpcProvider, ethers } from "ethers";
 import type { Address, Client } from "viem";
 import { readContract } from "viem/actions";
 import { executorAddress } from "~/config";
 import { executorAbi } from "~/contracts/abi";
-import { AbstractProvider, ethers } from "ethers";
 
 export type GetBTCFeeRateResponse = ReturnType<typeof getBTCFeeRateViem>;
 
-const getBTCFeeRateEthers = (config: Config, provider: AbstractProvider) => {
+const getBTCFeeRateEthers = (config: Config, provider: JsonRpcProvider) => {
 	const contract = new ethers.Contract(
 		// biome-ignore lint/style/noNonNullAssertion: <explanation>
 		executorAddress[config.network!.id],
@@ -29,13 +29,13 @@ const getBTCFeeRateViem = (config: Config, client: Client) => {
 
 export const getBTCFeeRate = async (
 	config: Config,
-	client: Client | AbstractProvider,
+	client: Client | JsonRpcProvider,
 ) => {
 	if (!config.network) {
 		throw new Error("Network not set");
 	}
 
-	if (client instanceof AbstractProvider) {
+	if (client instanceof JsonRpcProvider) {
 		return getBTCFeeRateEthers(config, client);
 	}
 

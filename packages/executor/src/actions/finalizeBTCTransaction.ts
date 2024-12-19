@@ -9,7 +9,7 @@ import {
 	transferBTC,
 } from "@midl-xyz/midl-js-core";
 import type { MidlContextState } from "@midl-xyz/midl-js-react";
-import { AbstractProvider } from "ethers";
+import { AbstractProvider, JsonRpcProvider } from "ethers";
 import {
 	type Address,
 	type Client,
@@ -45,7 +45,7 @@ type FinalizeBTCTransactionOptions = {
 export const finalizeBTCTransaction = async (
 	config: Config,
 	store: StoreApi<MidlContextState>,
-	client: Client | AbstractProvider,
+	client: Client | JsonRpcProvider,
 	options: FinalizeBTCTransactionOptions,
 ) => {
 	if (!config.network) {
@@ -63,7 +63,9 @@ export const finalizeBTCTransaction = async (
 	const evmIntentions = intentions.filter((it) => Boolean(it.evmTransaction));
 	const evmTransactions = evmIntentions.map((it) => it.evmTransaction);
 
-	if (client instanceof AbstractProvider) {
+	if (client instanceof JsonRpcProvider) {
+		client.send("eth_estimateGasMulti", []);
+
 		throw new Error("Not implemented");
 	}
 
