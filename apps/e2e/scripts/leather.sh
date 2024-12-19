@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define URL and destination directory
-URL="https://github.com/leather-io/extension/releases/download/v6.51.1/leather-chromium.v6.51.1.zip"
+URL="https://github.com/leather-io/extension/releases/download/v6.55.0/leather-chromium.v6.55.0.zip"
 SCRIPT_DIR=$(dirname "$0")
 DEST_DIR="$SCRIPT_DIR/../extensions"
 
@@ -20,7 +20,7 @@ curl -L -o leather.zip "$URL"
 
 # Extract the contents to the destination directory
 unzip -o leather.zip  -d "$DEST_DIR"
-mv "$DEST_DIR/leather-chromium-v6.51.1" "$DEST_DIR/leather"
+mv "$DEST_DIR/leather-chromium-v6.55.0" "$DEST_DIR/leather"
 
 # Clean up the downloaded zip file
 rm leather.zip
