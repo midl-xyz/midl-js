@@ -1,4 +1,5 @@
 import type { Page } from "@playwright/test";
+import { text } from "stream/consumers";
 import type { TestArgs } from "~/fixtures/test";
 import type { Wallet } from "~/fixtures/wallet";
 
@@ -38,12 +39,10 @@ export const leather: Wallet = {
 
 			return;
 		}
+		const blockPage = await page.locator('input[data-testid="password-input"]');
+		const startPage = await page.getByText("Use existing key");
 
-		if (
-			!(await page.getByText(
-				"Your password is used to secure your Secret Key and is only used locally on your device",
-			))
-		) {
+		if ((await startPage.count()) > 0) {
 			await page.getByText("Use existing key").click();
 
 			const seedPassword = process.env.MNEMONIC.split(" ");
@@ -61,7 +60,11 @@ export const leather: Wallet = {
 				.fill("533LZVJ55G7Z965DH9QHWVRH");
 			await page.waitForTimeout(100);
 			await page.getByText("Continue").click();
-		} else {
+			await page.waitForTimeout(3000);
+
+			await page.screenshot({ path: "screen4.png" });
+		}
+		if ((await blockPage.count()) > 0) {
 			await page.getByTestId("password-input").fill("533LZVJ55G7Z965DH9QHWVRH");
 			await page.waitForTimeout(100);
 			await page.getByText("Continue").click();
@@ -69,10 +72,17 @@ export const leather: Wallet = {
 	},
 
 	async changeNetwork({ page, extensionId }) {
+		const blockPage = await page.locator('input[data-testid="password-input"]');
+
 		await page.goto(`chrome-extension://${extensionId}/index.html`);
-		await page.getByTestId("password-input").fill("533LZVJ55G7Z965DH9QHWVRH");
-		await page.waitForTimeout(100);
-		await page.getByText("Continue").click();
+		if ((await blockPage.count()) > 0) {
+			await page.getByTestId("password-input").fill("533LZVJ55G7Z965DH9QHWVRH");
+			await page.waitForTimeout(100);
+			await page.getByText("Continue").click();
+		}
+		// await page.getByTestId("password-input").fill("533LZVJ55G7Z965DH9QHWVRH");
+		// await page.waitForTimeout(100);
+		// await page.getByText("Continue").click();
 		await page.waitForTimeout(3000);
 		const menu = await page.locator('[aria-haspopup="menu"]');
 
