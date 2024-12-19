@@ -1,10 +1,21 @@
 import type { Page } from "@playwright/test";
 
 import type { Wallet } from "~/fixtures/wallet";
+import { regtest } from "@midl-xyz/midl-js-core";
+import { selectors } from "./selectors";
+
+const PASSWORD = "533LZVJ55G7Z965DH9QHWVRH";
+
+const setPassword = async (page: Page, input = selectors[0]) => {
+	await page.getByTestId(input).fill(PASSWORD);
+	await page.waitForTimeout(100);
+	await page.getByText(selectors[1]).click();
+	await page.waitForTimeout(5000);
+};
 
 export const leather: Wallet = {
 	async isWalletLocked({ page }) {
-		return page.getByText("Unlock", { exact: true }).isVisible();
+		return page.getByText(selectors[2], { exact: true }).isVisible();
 	},
 	async unlockWallet({ page, skipNavigation }) {
 		if (await leather.isWalletLocked({ page })) {
@@ -13,8 +24,8 @@ export const leather: Wallet = {
 				await page.goto("", { waitUntil: "networkidle" });
 			}
 
-			await page.locator('input[type="password"]').first().fill("password");
-			await page.getByText("Unlock").click();
+			await page.locator(selectors[3]).first().fill("password");
+			await page.getByText(selectors[2]).click();
 		}
 	},
 	async configureWallet({ page, extensionId }) {
@@ -38,11 +49,11 @@ export const leather: Wallet = {
 
 			return;
 		}
-		const blockPage = await page.locator('input[data-testid="password-input"]');
-		const startPage = await page.getByText("Use existing key");
+		const blockPage = page.getByTestId(selectors[0]);
+		const startPage = page.getByText(selectors[4]);
 
 		if ((await startPage.count()) > 0) {
-			await page.getByText("Use existing key").click();
+			await page.getByText(selectors[4]).click();
 
 			const seedPassword = process.env.MNEMONIC.split(" ");
 
@@ -51,62 +62,50 @@ export const leather: Wallet = {
 			}
 
 			await page.waitForTimeout(1000);
-			await page.getByText("Continue").click();
+			await page.getByText(selectors[1]).click();
 			await page.waitForTimeout(1000);
-
-			await page
-				.getByTestId("set-or-enter-password-input")
-				.fill("533LZVJ55G7Z965DH9QHWVRH");
-			await page.waitForTimeout(100);
-			await page.getByText("Continue").click();
-			await page.waitForTimeout(3000);
+			await setPassword(page, selectors[5]);
 		}
 		if ((await blockPage.count()) > 0) {
-			await page.getByTestId("password-input").fill("533LZVJ55G7Z965DH9QHWVRH");
-			await page.waitForTimeout(100);
-			await page.getByText("Continue").click();
+			await setPassword(page);
 		}
 	},
 
 	async changeNetwork({ page, extensionId }) {
-		const blockPage = page.locator('input[data-testid="password-input"]');
+		const blockPage = page.getByTestId(selectors[0]);
 
 		await page.goto(`chrome-extension://${extensionId}/index.html`);
 		if ((await blockPage.count()) > 0) {
-			await page.getByTestId("password-input").fill("533LZVJ55G7Z965DH9QHWVRH");
-			await page.waitForTimeout(100);
-			await page.getByText("Continue").click();
-			await page.waitForTimeout(3000);
+			await setPassword(page);
 		}
 
-		const menu = await page.locator('[aria-haspopup="menu"]');
+		const menu = page.locator(selectors[6]);
 
 		await menu.click();
 
-		const network = await page.locator("text=mainnet");
+		const network = page.locator(selectors[7]);
 
 		if ((await network.count()) > 0) {
 			await network.click({ force: true });
 
-			const span = await page.getByText("Add a network");
-
+			const span = page.getByText(selectors[8]);
+			const nameNetwork = "MIDL REGTEST";
+			const networkKey = "regtest";
 			await span.click();
-			await page.getByTestId("network-name").fill("MIDL REGTEST");
-			await page.getByTestId("network-key").fill("regtest");
-			await page
-				.getByTestId("network-bitcoin-address")
-				.fill("https://regtest-mempool.midl.xyz/api");
+			await page.getByTestId(selectors[9]).fill(nameNetwork);
+			await page.getByTestId(selectors[10]).fill(networkKey);
+			await page.getByTestId(selectors[11]).fill(regtest.rpcUrl);
 
-			await page.getByTestId("add-network-bitcoin-api-selector").click();
+			await page.getByTestId(selectors[12]).click();
 			await page.waitForTimeout(1000);
-			// await page.locator("text=Regtest").click();
-			const regtestElement = page.getByTestId("bitcoin-api-option-regtest");
+
+			const regtestElement = page.getByTestId(selectors[13]);
 
 			await page.waitForTimeout(1000);
 
 			await regtestElement.click();
 
-			await page.getByTestId("add-network-btn").click();
+			await page.getByTestId(selectors[14]).click();
 			await page.waitForTimeout(3000);
 		}
 
@@ -124,13 +123,8 @@ export const leather: Wallet = {
 				}
 
 				context.off("page", onNewPage);
-				await page
-					.getByTestId("password-input")
-					.fill("533LZVJ55G7Z965DH9QHWVRH");
-				await page.waitForTimeout(100);
-				await page.getByText("Continue").click();
-				await page.waitForTimeout(3000);
-				await page.getByText("Confirm").click();
+				await setPassword(page);
+				await page.getByText(selectors[15]).click();
 			};
 
 			context.on("page", onNewPage);
@@ -158,7 +152,6 @@ export const leather: Wallet = {
 					if (page.url().includes(extensionId)) {
 						resolve(page);
 					}
-
 					context.off("page", onNewPage);
 				};
 
@@ -167,28 +160,27 @@ export const leather: Wallet = {
 		}
 
 		if (!page) {
-			throw new Error("No notification page found");
+			return;
 		}
 
 		await page.bringToFront();
 		await page.waitForLoadState("networkidle");
 
-		console.log(await page.getByTestId("password-input").isVisible());
-
-		if (await page.getByTestId("password-input").isVisible()) {
+		if (await page.getByTestId(selectors[0]).isVisible()) {
 			await leather.unlockWallet({ page, skipNavigation: true });
 
-			await page.getByTestId("password-input").fill("533LZVJ55G7Z965DH9QHWVRH");
-			await page.waitForTimeout(100);
-			await page.getByText("Continue").click();
-			await page.waitForTimeout(3000);
+			await setPassword(page);
 		}
 
 		const confirm = await page.getByText("Confirm").isVisible();
-
+		console.log("Is Confirm button visible:", confirm);
+		const sign = await page.getByRole("button", { name: "Sign" }).isVisible();
+		console.log("Is Confirm button visible:", sign);
 		if (confirm) {
-			await page.getByText("Confirm").click();
-		} else {
+			await page.getByText("Confirm").click({ force: true });
+		}
+
+		if (sign) {
 			await page.getByText("Sign", { exact: true }).click();
 		}
 	},

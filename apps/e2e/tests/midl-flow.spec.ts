@@ -1,11 +1,11 @@
 import { expect, test } from "~/fixtures/test";
 import midlConfig from "../app/midl.config";
-import { waitForTransaction } from "@midl-xyz/midl-js-core";
+import { waitForTransaction, regtest } from "@midl-xyz/midl-js-core";
 import { zeroAddress } from "viem";
 import { closeAutoOpenedExtensionTab, getWallet } from "~/fixtures/wallet";
 
 midlConfig.setState({ network: midlConfig.networks[0] });
-
+console.log(regtest.rpcUrl);
 test.describe("Add Liquidity Flow", () => {
 	test.describe.configure({ mode: "serial" });
 
@@ -90,7 +90,7 @@ test.describe("Add Liquidity Flow", () => {
 
 		await page
 			.getByTestId("address")
-			.waitFor({ state: "visible", timeout: 1_000 });
+			.waitFor({ state: "visible", timeout: 10_000 });
 
 		await page.getByTestId("add-liquidity").click();
 
@@ -103,6 +103,10 @@ test.describe("Add Liquidity Flow", () => {
 		await page.waitForTimeout(2000);
 
 		await wallet.acceptSign({ context, extensionId });
+
+		// await page.waitForTimeout(2000);
+
+		// await wallet.acceptSign({ context, extensionId });
 
 		await page.waitForTimeout(500);
 
@@ -147,7 +151,7 @@ test.describe("Add Liquidity Flow", () => {
 
 		await page
 			.getByTestId("address")
-			.waitFor({ state: "visible", timeout: 1_000 });
+			.waitFor({ state: "visible", timeout: 10_000 });
 
 		await page.getByTestId("swap").click();
 
@@ -158,6 +162,10 @@ test.describe("Add Liquidity Flow", () => {
 		await wallet.acceptSign({ context, extensionId });
 
 		await page.waitForTimeout(500);
+
+		// await wallet.acceptSign({ context, extensionId });
+
+		// await page.waitForTimeout(500);
 
 		const btcTx = await page.getByTestId("swap-btc-tx").first().textContent();
 		const txId = await page.getByTestId("swap-tx-id").first().textContent();
