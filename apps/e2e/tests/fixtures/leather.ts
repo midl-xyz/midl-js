@@ -79,16 +79,16 @@ export const leather: Wallet = {
 			await page.waitForTimeout(3000);
 		}
 
-		const menu = page.locator('[aria-haspopup="menu"]');
+		const menu = await page.locator('[aria-haspopup="menu"]');
 
 		await menu.click();
 
-		const network = page.locator("text=mainnet");
+		const network = await page.locator("text=mainnet");
 
 		if ((await network.count()) > 0) {
 			await network.click({ force: true });
 
-			const span = page.getByText("Add a network");
+			const span = await page.getByText("Add a network");
 
 			await span.click();
 			await page.getByTestId("network-name").fill("MIDL REGTEST");
@@ -131,7 +131,6 @@ export const leather: Wallet = {
 				await page.getByText("Continue").click();
 				await page.waitForTimeout(3000);
 				await page.getByText("Confirm").click();
-				await page.waitForTimeout(5000);
 			};
 
 			context.on("page", onNewPage);
@@ -158,7 +157,7 @@ export const leather: Wallet = {
 						resolve(page);
 					}
 
-					context.off("page", onNewPage);
+					await context.off("page", onNewPage);
 				};
 
 				context.on("page", onNewPage);
@@ -171,8 +170,12 @@ export const leather: Wallet = {
 			await page.getByText("Continue").click();
 			await page.waitForTimeout(3000);
 			await page.getByText("Confirm").click();
-			await page.screenshot({ path: "screen.png" });
+			const check = await page.getByText("Sign");
+			if ((await check.count()) > 0) {
+				console.log("tut");
+			}
 		}
+		await page.getByText("Sign").click();
 
 		if (!page) {
 			throw new Error("No notification page found");
