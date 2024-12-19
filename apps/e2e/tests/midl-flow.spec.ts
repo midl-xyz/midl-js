@@ -15,7 +15,7 @@ test.describe("Add Liquidity Flow", () => {
 	test.beforeAll(async ({ page, extensionId, context }) => {
 		await closeAutoOpenedExtensionTab({ context, extensionId });
 		await wallet.configureWallet({ page, extensionId });
-		await wallet.changeNetwork({ page, extensionId }, "Bitcoin Testnet4");
+		await wallet.changeNetwork({ page, extensionId }, "REGTEST");
 	});
 
 	test.beforeEach(async ({ context, extensionId }) => {
@@ -32,7 +32,7 @@ test.describe("Add Liquidity Flow", () => {
 		if (!isConnected) {
 			await page.getByTestId("connect").click();
 
-			await connectWallet({ page, context, extensionId });
+			await wallet.connectWallet({ context, extensionId });
 		}
 
 		await page
@@ -44,7 +44,7 @@ test.describe("Add Liquidity Flow", () => {
 		if (!runeAddress || runeAddress === zeroAddress) {
 			await page.getByTestId("edict").click();
 
-			await acceptSign({ page, context, extensionId });
+			await wallet.acceptSign({ context, extensionId });
 
 			await page.waitForTimeout(500);
 
