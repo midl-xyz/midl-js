@@ -1,5 +1,11 @@
 import { defineConfig, devices } from "@playwright/test";
-import "dotenv/config";
+import { config } from "dotenv";
+import path from "node:path";
+import { URL } from "node:url";
+
+config({
+	path: path.resolve(path.dirname(new URL(import.meta.url).pathname), ".env"),
+});
 
 /**
  * Read environment variables from file.
@@ -32,7 +38,7 @@ export default defineConfig({
 		/* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
 		trace: "on-first-retry",
 	},
-	timeout: 1000 * 60 * 1,
+	// timeout: 1000 * 60 * 1,
 	/* Configure projects for major browsers */
 	projects: [
 		{

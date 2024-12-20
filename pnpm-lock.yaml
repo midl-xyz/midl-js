@@ -135,6 +135,9 @@ importers:
       '@midl-xyz/midl-js-react':
         specifier: workspace:^
         version: link:../../packages/react
+      '@midl-xyz/playwright-btc-wallets':
+        specifier: workspace:^
+        version: link:../../packages/playwright-btc-wallets
       '@tanstack/react-query':
         specifier: 5.69.0
         version: 5.69.0(react@18.3.1)
@@ -509,6 +512,16 @@ importers:
       hardhat-deploy:
         specifier: ^1.0.3
         version: 1.0.3(bufferutil@4.0.9)(utf-8-validate@5.0.10)
+
+  packages/playwright-btc-wallets:
+    dependencies:
+      '@midl-xyz/midl-js-core':
+        specifier: workspace:^
+        version: link:../core
+    devDependencies:
+      '@playwright/test':
+        specifier: ^1.48.2
+        version: 1.48.2
 
   packages/react:
     dependencies:
