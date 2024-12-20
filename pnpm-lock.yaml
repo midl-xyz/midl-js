@@ -102,6 +102,9 @@ importers:
       '@midl-xyz/midl-js-react':
         specifier: workspace:^
         version: link:../../packages/react
+      '@midl-xyz/playwright-btc-wallets':
+        specifier: workspace:^
+        version: link:../../packages/playwright-btc-wallets
       '@tanstack/react-query':
         specifier: '*'
         version: 5.59.20(react@18.3.1)
@@ -387,6 +390,16 @@ importers:
       wagmi:
         specifier: ^2.*
         version: 2.12.29(@midl-xyz/midl-viem@2.21.36(bufferutil@4.0.8)(typescript@5.6.3)(utf-8-validate@5.0.10)(zod@3.23.8))(@tanstack/query-core@5.59.20)(@tanstack/react-query@5.59.20(react@18.3.1))(@types/node@22.9.0)(@types/react@18.3.12)(bufferutil@4.0.8)(immer@10.1.1)(jsdom@25.0.1(bufferutil@4.0.8)(utf-8-validate@5.0.10))(lightningcss@1.28.1)(msw@2.6.4(@types/node@22.9.0)(typescript@5.6.3))(react-dom@18.3.1(react@18.3.1))(react-native@0.76.1(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@react-native-community/cli-server-api@15.1.2(bufferutil@4.0.8)(utf-8-validate@5.0.10))(@types/react@18.3.12)(bufferutil@4.0.8)(react@18.3.1)(utf-8-validate@5.0.10))(react@18.3.1)(terser@5.36.0)(typescript@5.6.3)(utf-8-validate@5.0.10)(zod@3.23.8)
+
+  packages/playwright-btc-wallets:
+    dependencies:
+      '@midl-xyz/midl-js-core':
+        specifier: workspace:^
+        version: link:../core
+    devDependencies:
+      '@playwright/test':
+        specifier: ^1.48.2
+        version: 1.48.2
 
   packages/react:
     dependencies:
