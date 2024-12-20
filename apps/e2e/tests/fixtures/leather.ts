@@ -6,16 +6,16 @@ import { selectors } from "./selectors";
 
 const PASSWORD = "533LZVJ55G7Z965DH9QHWVRH";
 
-const setPassword = async (page: Page, input = selectors[0]) => {
+const setPassword = async (page: Page, input = selectors.passwordInput) => {
 	await page.getByTestId(input).fill(PASSWORD);
 	await page.waitForTimeout(100);
-	await page.getByText(selectors[1]).click();
+	await page.getByText(selectors.continue).click();
 	await page.waitForTimeout(5000);
 };
 
 export const leather: Wallet = {
 	async isWalletLocked({ page }) {
-		return page.getByText(selectors[2], { exact: true }).isVisible();
+		return page.getByText("Unlock", { exact: true }).isVisible();
 	},
 	async unlockWallet({ page, skipNavigation }) {
 		if (await leather.isWalletLocked({ page })) {
@@ -24,8 +24,8 @@ export const leather: Wallet = {
 				await page.goto("", { waitUntil: "networkidle" });
 			}
 
-			await page.locator(selectors[3]).first().fill("password");
-			await page.getByText(selectors[2]).click();
+			await page.locator(selectors.passwordType).first().fill("password");
+			await page.getByText(selectors.unlock).click();
 		}
 	},
 	async configureWallet({ page, extensionId }) {
@@ -49,11 +49,11 @@ export const leather: Wallet = {
 
 			return;
 		}
-		const blockPage = page.getByTestId(selectors[0]);
-		const startPage = page.getByText(selectors[4]);
+		const blockPage = page.getByTestId(selectors.passwordInput);
+		const startPage = page.getByText(selectors.useKey);
 
 		if ((await startPage.count()) > 0) {
-			await page.getByText(selectors[4]).click();
+			await page.getByText(selectors.useKey).click();
 
 			const seedPassword = process.env.MNEMONIC.split(" ");
 
@@ -62,9 +62,9 @@ export const leather: Wallet = {
 			}
 
 			await page.waitForTimeout(1000);
-			await page.getByText(selectors[1]).click();
+			await page.getByText(selectors.continue).click();
 			await page.waitForTimeout(1000);
-			await setPassword(page, selectors[5]);
+			await setPassword(page, selectors.setOrEnterPassword);
 		}
 		if ((await blockPage.count()) > 0) {
 			await setPassword(page);
@@ -72,40 +72,40 @@ export const leather: Wallet = {
 	},
 
 	async changeNetwork({ page, extensionId }) {
-		const blockPage = page.getByTestId(selectors[0]);
+		const blockPage = page.getByTestId(selectors.passwordInput);
 
 		await page.goto(`chrome-extension://${extensionId}/index.html`);
 		if ((await blockPage.count()) > 0) {
 			await setPassword(page);
 		}
 
-		const menu = page.locator(selectors[6]);
+		const menu = page.locator(selectors.menu);
 
 		await menu.click();
 
-		const network = page.locator(selectors[7]);
+		const network = page.locator(selectors.mainnet);
 
 		if ((await network.count()) > 0) {
 			await network.click({ force: true });
 
-			const span = page.getByText(selectors[8]);
+			const span = page.getByText(selectors.addNetwork);
 			const nameNetwork = "MIDL REGTEST";
 			const networkKey = "regtest";
 			await span.click();
-			await page.getByTestId(selectors[9]).fill(nameNetwork);
-			await page.getByTestId(selectors[10]).fill(networkKey);
-			await page.getByTestId(selectors[11]).fill(regtest.rpcUrl);
+			await page.getByTestId(selectors.networkName).fill(nameNetwork);
+			await page.getByTestId(selectors.networkKey).fill(networkKey);
+			await page.getByTestId(selectors.networkBTC).fill(regtest.rpcUrl);
 
-			await page.getByTestId(selectors[12]).click();
+			await page.getByTestId(selectors.addBTC).click();
 			await page.waitForTimeout(1000);
 
-			const regtestElement = page.getByTestId(selectors[13]);
+			const regtestElement = page.getByTestId(selectors.btcRegtest);
 
 			await page.waitForTimeout(1000);
 
 			await regtestElement.click();
 
-			await page.getByTestId(selectors[14]).click();
+			await page.getByTestId(selectors.addNetworkBtn).click();
 			await page.waitForTimeout(3000);
 		}
 
@@ -124,7 +124,7 @@ export const leather: Wallet = {
 
 				context.off("page", onNewPage);
 				await setPassword(page);
-				await page.getByText(selectors[15]).click();
+				await page.getByText(selectors.confirm).click();
 			};
 
 			context.on("page", onNewPage);
@@ -166,22 +166,24 @@ export const leather: Wallet = {
 		await page.bringToFront();
 		await page.waitForLoadState("networkidle");
 
-		if (await page.getByTestId(selectors[0]).isVisible()) {
+		if (await page.getByTestId(selectors.passwordInput).isVisible()) {
 			await leather.unlockWallet({ page, skipNavigation: true });
 
 			await setPassword(page);
 		}
 
-		const confirm = await page.getByText("Confirm").isVisible();
+		const confirm = await page.getByText(selectors.confirm).isVisible();
 		console.log("Is Confirm button visible:", confirm);
-		const sign = await page.getByRole("button", { name: "Sign" }).isVisible();
+		const sign = await page
+			.getByRole("button", { name: selectors.sign })
+			.isVisible();
 		console.log("Is Confirm button visible:", sign);
 		if (confirm) {
-			await page.getByText("Confirm").click({ force: true });
+			await page.getByText(selectors.confirm).click({ force: true });
 		}
 
 		if (sign) {
-			await page.getByText("Sign", { exact: true }).click();
+			await page.getByText(selectors.sign, { exact: true }).click();
 		}
 	},
 };
