@@ -65,7 +65,7 @@ export const RuneForm = () => {
 		defaultValues: {
 			name: "RUNE•TO•THE•MOON",
 			symbol: "🚀",
-			divisibility: 0,
+			divisibility: 8,
 			premine: 1000000000000,
 			mintable: false,
 		},
@@ -389,7 +389,7 @@ export const RuneForm = () => {
 								<FormItem className="flex-grow">
 									<FormLabel>Divisibility</FormLabel>
 									<FormControl>
-										<Input {...field} type="number" />
+										<Input {...field} type="number" disabled />
 									</FormControl>
 									<FormDescription>
 										Enter the divisibility of the rune
