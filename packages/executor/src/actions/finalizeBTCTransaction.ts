@@ -65,8 +65,8 @@ export const finalizeBTCTransaction = async (
 
 	if (client instanceof JsonRpcProvider) {
 		client.send("eth_estimateGasMulti", []);
-
-		throw new Error("Not implemented");
+		// TODO: implement btc transaction estimation
+		throw new Error("Ethers provider is not supported");
 	}
 
 	const gasLimits = await estimateGasMulti(client, {

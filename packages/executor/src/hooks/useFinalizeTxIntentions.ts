@@ -1,34 +1,15 @@
-import {
-	type EdictRuneParams,
-	type EdictRuneResponse,
-	type TransferBTCParams,
-	type TransferBTCResponse,
-	ensureMoreThanDust,
+import type {
+	EdictRuneResponse,
+	TransferBTCResponse,
 } from "@midl-xyz/midl-js-core";
-import {
-	useEdictRune,
-	useMidlContext,
-	useTransferBTC,
-} from "@midl-xyz/midl-js-react";
+import { useMidlContext } from "@midl-xyz/midl-js-react";
 import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
-import {
-	encodeFunctionData,
-	type Address,
-	type Client,
-	type StateOverride,
-} from "viem";
-import { estimateGasMulti } from "viem/actions";
-import { useChainId, useGasPrice, useWalletClient } from "wagmi";
+import type { Address, StateOverride } from "viem";
+import { useGasPrice, useWalletClient } from "wagmi";
 import { useStore } from "zustand";
-import { executorAddress, multisigAddress } from "~/config";
-import { executorAbi } from "~/contracts/abi";
-import { useAddTxIntention } from "~/hooks/useAddTxIntention";
-import { useEVMAddress } from "~/hooks/useEVMAddress";
+import { finalizeBTCTransaction, signIntention } from "~/actions";
 import { useLastNonce } from "~/hooks/useLastNonce";
-import { usePublicKey } from "~/hooks/usePublicKey";
-import { useSignTransaction } from "~/hooks/useSignTransaction";
 import type { TransactionIntention } from "~/types/intention";
-import { calculateTransactionsCost, convertETHtoBTC } from "~/utils";
 
 type FinalizeMutationVariables = {
 	/**
@@ -91,16 +72,9 @@ export const useFinalizeTxIntentions = ({
 }: UseFinalizeTxIntentionsParams = {}) => {
 	const { store, config } = useMidlContext();
 	const { intentions = [] } = useStore(store);
-	const { edictRuneAsync } = useEdictRune();
-	const { transferBTCAsync } = useTransferBTC();
-	const { signTransactionAsync } = useSignTransaction();
-	const publicKey = usePublicKey();
 	const { data: publicClient } = useWalletClient();
 	const nonce = useLastNonce();
-	const evmAddress = useEVMAddress();
 	const { data: gasPrice } = useGasPrice();
-	const { addTxIntentionAsync } = useAddTxIntention();
-	const chainId = useChainId();
 
 	const { mutate, mutateAsync, data, ...rest } = useMutation<
 		UseFinalizeTxIntentionsResponse,
@@ -113,169 +87,22 @@ export const useFinalizeTxIntentions = ({
 			assetsToWithdraw,
 			feeRateMultiplier,
 		} = {}) => {
-			if (!config.network) {
-				throw new Error("No network set");
+			if (!publicClient) {
+				throw new Error("No public client set");
 			}
 
-			const { intentions } = store.getState();
-
-			if (!intentions) {
-				throw new Error("No intentions set");
-			}
-
-			const evmTransactions = intentions
-				.map((it) => it.evmTransaction)
-				.filter(Boolean);
-
-			const gasLimits = await estimateGasMulti(publicClient as Client, {
-				transactions: evmTransactions,
+			return finalizeBTCTransaction(config, store, publicClient, {
 				stateOverride,
-				account: evmAddress,
+				shouldComplete,
+				assetsToWithdraw,
+				feeRateMultiplier,
 			});
-
-			for (const [i, intention] of intentions
-				.filter((it) => Boolean(it.evmTransaction))
-				.entries()) {
-				intention.evmTransaction.gas = BigInt(
-					Math.ceil(Number(gasLimits[i]) * 1.2),
-				);
-			}
-
-			const hasWithdraw =
-				intentions.some((it) => it.hasWithdraw) || shouldComplete;
-			const hasRunesWithdraw =
-				intentions.some((it) => it.hasRunesWithdraw) ||
-				(shouldComplete && (assetsToWithdraw?.length ?? 0) > 0);
-
-			const totalCost = await calculateTransactionsCost(
-				[
-					...evmTransactions,
-					...(shouldComplete
-						? [
-								{
-									gas: 300_000n,
-								},
-							]
-						: []),
-				],
-				config,
-				{
-					feeRateMultiplier,
-					gasPrice,
-					hasDeposit: intentions.some((it) => it.hasDeposit),
-					hasWithdraw: hasWithdraw,
-					hasRunesDeposit: intentions.some((it) => it.hasRunesDeposit),
-					hasRunesWithdraw: hasRunesWithdraw,
-					assetsToWithdrawSize: assetsToWithdraw?.length ?? 0,
-				},
-			);
-
-			const btcTransfer = convertETHtoBTC(
-				intentions.reduce((acc, it) => {
-					return acc + (it.evmTransaction?.value ?? 0n);
-				}, 0n),
-			);
-
-			const transfers: EdictRuneParams["transfers"] = [
-				{
-					receiver: multisigAddress[config.network.id],
-					amount: ensureMoreThanDust(
-						Math.ceil(Number(totalCost) + btcTransfer),
-					),
-				},
-			];
-
-			const runes = Array.from(
-				intentions
-					.filter((it) => it.hasRunesDeposit)
-					.map((it) => {
-						if (!it.rune) {
-							throw new Error("No rune set");
-						}
-
-						return it.rune;
-					})
-					.reduce(
-						(acc, rune) => {
-							acc.set(rune.id, {
-								id: rune.id,
-								value: acc.get(rune.id)
-									? // biome-ignore lint/style/noNonNullAssertion: <explanation>
-										acc.get(rune.id)!.value + rune.value
-									: rune.value,
-							});
-
-							return acc;
-						},
-						new Map<
-							string,
-							{
-								id: string;
-								value: bigint;
-							}
-						>(),
-					)
-					.values(),
-			);
-
-			if (runes.length > 2) {
-				throw new Error("Transferring more than two runes is not allowed");
-			}
-
-			for (const rune of runes) {
-				transfers.push({
-					receiver: multisigAddress[config.network.id],
-					amount: rune.value,
-					runeId: rune.id,
-				});
-			}
-
-			let btcTx: EdictRuneResponse | TransferBTCResponse;
-
-			if (runes.length > 0) {
-				btcTx = await edictRuneAsync({
-					transfers,
-					publish: false,
-				});
-			} else {
-				btcTx = await transferBTCAsync({
-					transfers: transfers as TransferBTCParams["transfers"],
-					publish: false,
-				});
-			}
-
-			if (shouldComplete) {
-				addTxIntentionAsync({
-					intention: {
-						hasWithdraw,
-						hasRunesWithdraw,
-
-						evmTransaction: {
-							to: executorAddress[config.network.id] as Address,
-							gas: 300_000n,
-							data: encodeFunctionData({
-								abi: executorAbi,
-								functionName: "completeTx",
-								args: [
-									`0x${btcTx.tx.id}`,
-									publicKey as `0x${string}`,
-									assetsToWithdraw ?? [],
-									new Array(assetsToWithdraw?.length ?? 0).fill(0n),
-								],
-							}),
-							chainId,
-						},
-					},
-				});
-			}
-
-			return btcTx;
 		},
 		...mutation,
 	});
 
 	const {
-		mutate: signIntention,
+		mutate: _signIntention,
 		mutateAsync: signIntentionAsync,
 		...restSignIntention
 	} = useMutation({
@@ -286,51 +113,22 @@ export const useFinalizeTxIntentions = ({
 			intention: TransactionIntention;
 			txId: string;
 		}) => {
-			if (!publicKey) {
-				throw new Error("No public key set");
+			if (!publicClient) {
+				throw new Error("No public client set");
 			}
 
-			if (!intention.evmTransaction) {
-				throw new Error("No EVM transaction set");
-			}
-
-			intention.evmTransaction = {
-				...intention.evmTransaction,
-				nonce:
-					nonce +
-					intentions
-						.filter((it) => Boolean(it.evmTransaction))
-						.findIndex((it) => it === intention),
+			return signIntention(config, store, publicClient, intention, {
+				txId,
 				gasPrice,
-				publicKey,
-				btcTxHash: `0x${txId}`,
-			};
-
-			const signed = await signTransactionAsync({
-				tx: intention.evmTransaction,
+				nonce,
 			});
-
-			store.setState({
-				intentions: intentions.map((it) => {
-					if (it === intention) {
-						return {
-							...it,
-							signedEvmTransaction: signed,
-						};
-					}
-
-					return it;
-				}),
-			});
-
-			return signed;
 		},
 	});
 
 	return {
 		finalizeBTCTransaction: mutate,
 		finalizeBTCTransactionAsync: mutateAsync,
-		signIntention,
+		signIntention: _signIntention,
 		signIntentionAsync,
 		intentions,
 		signIntentionState: restSignIntention,

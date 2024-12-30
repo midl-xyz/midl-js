@@ -1,13 +1,9 @@
 import { SignMessageProtocol } from "@midl-xyz/midl-js-core";
-import { useAccounts, useSignMessage } from "@midl-xyz/midl-js-react";
+import { useConfig } from "@midl-xyz/midl-js-react";
 import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
-import {
-	type TransactionSerializableBTC,
-	keccak256,
-	serializeTransaction as viemSerializeTransaction,
-} from "viem";
-import { useSerializeTransaction } from "~/hooks/useSerializeTransaction";
-import { extractEVMSignature, getBTCAddressByte } from "~/utils";
+import type { TransactionSerializableBTC } from "viem";
+import { useWalletClient } from "wagmi";
+import { signTransaction } from "~/actions";
 
 type SignTransactionParams = {
 	tx: TransactionSerializableBTC;
@@ -19,9 +15,9 @@ type SignTransactionError = Error;
 
 type UseSignTransactionParams = {
 	/**
-	 * The address of the account to sign the transaction with.
+	 * The public key to use for signing the transaction.
 	 */
-	signer?: string;
+	publicKey?: string;
 	/**
 	 * The protocol to use for signing the message.
 	 */
@@ -58,11 +54,6 @@ type UseSignTransactionParams = {
  * });
  * ```
  *
- * @param {UseSignTransactionParams} params - Configuration options for signing the transaction.
- * @param {string} [params.signer] - The address of the account to sign the transaction with. If not provided, defaults to the connected payment or ordinals account.
- * @param {SignMessageProtocol} [params.protocol=SignMessageProtocol.Bip322] - The protocol to use for signing the message.
- * @param {UseMutationOptions} [params.mutation] - Additional mutation options.
- *
  * @returns
  * - **signTransaction**: `(variables: SignTransactionParams) => void` – Function to initiate transaction signing.
  * - **signTransactionAsync**: `(variables: SignTransactionParams) => Promise<SignTransactionResult>` – Function to asynchronously sign the transaction.
@@ -71,7 +62,7 @@ type UseSignTransactionParams = {
 export const useSignTransaction = (
 	{
 		mutation,
-		signer,
+		publicKey,
 		protocol = SignMessageProtocol.Bip322,
 	}: UseSignTransactionParams = {
 		mutation: {},
@@ -82,9 +73,8 @@ export const useSignTransaction = (
 		throw new Error("Only BIP322 protocol is supported");
 	}
 
-	const { signMessageAsync } = useSignMessage();
-	const { paymentAccount, ordinalsAccount, accounts } = useAccounts();
-	const serializeTransaction = useSerializeTransaction();
+	const { data: client } = useWalletClient();
+	const config = useConfig();
 
 	const { mutate, mutateAsync, ...rest } = useMutation<
 		SignTransactionResult,
@@ -92,40 +82,13 @@ export const useSignTransaction = (
 		SignTransactionParams
 	>({
 		mutationFn: async ({ tx }) => {
-			const account =
-				accounts?.find((it) => it.address === signer) ??
-				paymentAccount ??
-				ordinalsAccount;
-
-			if (!account) {
-				throw new Error("No account found");
+			if (!client) {
+				throw new Error("No client found");
 			}
 
-			const btcAddressByte = getBTCAddressByte(account);
-
-			tx.btcAddressByte = btcAddressByte;
-
-			const serialized = await serializeTransaction(tx);
-
-			const data = await signMessageAsync({
-				message: keccak256(serialized),
-				address: account.address,
-				protocol,
+			return await signTransaction(config, tx, client, {
+				publicKey,
 			});
-
-			const { r, s, v } = extractEVMSignature(data.signature, account);
-			const signedSerializedTransaction = viemSerializeTransaction(
-				{
-					...tx,
-				},
-				{
-					r,
-					s,
-					v,
-				},
-			);
-
-			return signedSerializedTransaction;
 		},
 		...mutation,
 	});
