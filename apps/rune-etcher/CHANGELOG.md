@@ -1,5 +1,13 @@
 # rune-etcher
 
+## 0.1.26
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-core@0.0.37
+  - @midl-xyz/midl-js-react@0.0.44
+
 ## 0.1.25
 
 ### Patch Changes

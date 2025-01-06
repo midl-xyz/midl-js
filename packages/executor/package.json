@@ -1,6 +1,6 @@
 {
   "name": "@midl-xyz/midl-js-executor",
-  "version": "0.0.72",
+  "version": "0.0.73",
   "scripts": {
     "build": "pnpm run clean && tsc --project tsconfig.build.json && tsc-alias -p tsconfig.build.json",
     "dev": "concurrently \"tsc --watch --preserveWatchOutput --project tsconfig.build.json\" \"tsc-alias -w -p tsconfig.build.json\"",
