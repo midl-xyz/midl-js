@@ -1,5 +1,14 @@
 # @midl-xyz/midl-js-executor
 
+## 0.0.73
+
+### Patch Changes
+
+- feat: support nodejs and ethers
+- Updated dependencies
+  - @midl-xyz/midl-js-core@0.0.37
+  - @midl-xyz/midl-js-react@0.0.44
+
 ## 0.0.72
 
 ### Patch Changes

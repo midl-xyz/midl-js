@@ -14,3 +14,4 @@ export * from "./signPSBT";
 export * from "./switchNetwork";
 export * from "./transferBTC";
 export * from "./waitForTransaction";
+export * from "./getDefaultAccount";

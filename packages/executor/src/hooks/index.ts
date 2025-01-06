@@ -4,7 +4,6 @@ export * from "./useERC20Rune";
 export * from "./useEVMAddress";
 export * from "./useEVMChain";
 export * from "./useFinalizeTxIntentions";
-export * from "./useIncrementNonce";
 export * from "./useLastBlock";
 export * from "./useLastNonce";
 export * from "./usePublicKey";

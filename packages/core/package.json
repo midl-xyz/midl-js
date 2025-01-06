@@ -1,6 +1,6 @@
 {
   "name": "@midl-xyz/midl-js-core",
-  "version": "0.0.36",
+  "version": "0.0.37",
   "scripts": {
     "build": "pnpm run clean && tsc --project tsconfig.build.json && tsc-alias -p tsconfig.build.json",
     "dev": "concurrently \"tsc --watch --preserveWatchOutput --project tsconfig.build.json\" \"tsc-alias -w -p tsconfig.build.json\"",
@@ -22,7 +22,7 @@
     "msw": "^2.5.2"
   },
   "dependencies": {
-    "@bitcoinerlab/secp256k1": "^1.1.1",
+    "@bitcoinerlab/secp256k1": "^1.2.0",
     "@metamask/providers": "^17.1.1",
     "@noble/secp256k1": "^2.1.0",
     "bip32": "5.0.0-rc.0",

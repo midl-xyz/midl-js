@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 0.0.37
+
+### Patch Changes
+
+- feat: support nodejs and ethers
+
 ## 0.0.36
 
 ### Patch Changes
