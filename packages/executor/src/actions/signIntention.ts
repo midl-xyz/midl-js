@@ -41,17 +41,19 @@ export const signIntention = async (
 		throw new Error("No public key set");
 	}
 
-	if (client instanceof JsonRpcProvider) {
-		throw new Error("Ethers provider is not supported");
-	}
-
 	const evmAddress = getEVMAddress(publicKey);
 
-	const nonce =
-		options.nonce ??
-		(await getTransactionCount(client, {
+	const getNonce = async () => {
+		if (client instanceof JsonRpcProvider) {
+			return client.getTransactionCount(evmAddress);
+		}
+
+		return getTransactionCount(client, {
 			address: evmAddress,
-		}));
+		});
+	};
+
+	const nonce = options.nonce ?? (await getNonce());
 
 	const intentions = store.getState().intentions;
 

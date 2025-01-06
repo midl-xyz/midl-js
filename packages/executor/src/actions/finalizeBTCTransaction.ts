@@ -9,7 +9,7 @@ import {
 	transferBTC,
 } from "@midl-xyz/midl-js-core";
 import type { MidlContextState } from "@midl-xyz/midl-js-react";
-import { AbstractProvider, JsonRpcProvider } from "ethers";
+import { JsonRpcProvider } from "ethers";
 import {
 	type Address,
 	type Client,
@@ -26,6 +26,9 @@ import {
 	calculateTransactionsCost,
 	convertETHtoBTC,
 	getEVMAddress,
+	getEVMFromBitcoinNetwork,
+	transformViemToEthersStateOverride,
+	transformViemToEthersTx,
 } from "~/utils";
 
 type FinalizeBTCTransactionOptions = {
@@ -63,17 +66,20 @@ export const finalizeBTCTransaction = async (
 	const evmIntentions = intentions.filter((it) => Boolean(it.evmTransaction));
 	const evmTransactions = evmIntentions.map((it) => it.evmTransaction);
 
-	if (client instanceof JsonRpcProvider) {
-		client.send("eth_estimateGasMulti", []);
-		// TODO: implement btc transaction estimation
-		throw new Error("Ethers provider is not supported");
-	}
+	let gasLimits: bigint[];
 
-	const gasLimits = await estimateGasMulti(client, {
-		transactions: evmTransactions,
-		stateOverride: options.stateOverride,
-		account: evmAddress,
-	});
+	if (client instanceof JsonRpcProvider) {
+		gasLimits = await client.estimateGasMulti(
+			evmTransactions.map((it) => transformViemToEthersTx(it)),
+			transformViemToEthersStateOverride(options.stateOverride),
+		);
+	} else {
+		gasLimits = await estimateGasMulti(client, {
+			transactions: evmTransactions,
+			stateOverride: options.stateOverride,
+			account: evmAddress,
+		});
+	}
 
 	for (const [i, intention] of evmIntentions.entries()) {
 		intention.evmTransaction.gas = BigInt(
@@ -200,8 +206,7 @@ export const finalizeBTCTransaction = async (
 						new Array(options.assetsToWithdraw?.length ?? 0).fill(0n),
 					],
 				}),
-				// biome-ignore lint/style/noNonNullAssertion: <explanation>
-				chainId: client.chain!.id,
+				chainId: getEVMFromBitcoinNetwork(config.network).id,
 			},
 		});
 	}

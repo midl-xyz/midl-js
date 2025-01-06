@@ -13,7 +13,12 @@ import {
 } from "viem";
 import { getTransactionCount } from "viem/actions";
 import { getPublicKey } from "~/actions/getPublicKey";
-import { extractEVMSignature, getBTCAddressByte, getEVMAddress } from "~/utils";
+import {
+	extractEVMSignature,
+	getBTCAddressByte,
+	getEVMAddress,
+	getEVMFromBitcoinNetwork,
+} from "~/utils";
 
 type SignTransactionOptions = {
 	publicKey?: string;
@@ -27,21 +32,20 @@ export const signTransaction = async (
 	client: Client | JsonRpcProvider,
 	{ publicKey: customPublicKey, protocol, nonce }: SignTransactionOptions = {},
 ) => {
+	if (!config.network) {
+		throw new Error("No network set");
+	}
+
 	const account = await getDefaultAccount(
 		config,
 		customPublicKey ? (it) => it.publicKey === customPublicKey : undefined,
 	);
 
-	if (client instanceof JsonRpcProvider) {
-		throw new Error("Ethers provider is not supported");
-	}
-
 	const btcAddressByte = getBTCAddressByte(account);
 
 	tx.btcAddressByte = btcAddressByte;
 
-	// biome-ignore lint/style/noNonNullAssertion: client.chain is always defined
-	const chainIdToUse = chainId || client.chain!.id;
+	const chainIdToUse = chainId || getEVMFromBitcoinNetwork(config.network).id;
 
 	const publicKey = getPublicKey(config, account.publicKey);
 
@@ -49,11 +53,17 @@ export const signTransaction = async (
 		throw new Error("No public key found");
 	}
 
-	const lastNonce =
-		nonce ??
-		(await getTransactionCount(client, {
+	const getNonce = async () => {
+		if (client instanceof JsonRpcProvider) {
+			return client.getTransactionCount(getEVMAddress(publicKey));
+		}
+
+		return getTransactionCount(client, {
 			address: getEVMAddress(publicKey),
-		}));
+		});
+	};
+
+	const lastNonce = nonce ?? (await getNonce());
 
 	const serialized = serializeTransaction({
 		nonce: lastNonce,
