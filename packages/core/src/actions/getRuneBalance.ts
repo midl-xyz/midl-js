@@ -1,5 +1,5 @@
 import type { Config } from "~/createConfig";
-import ky from "ky";
+import axios from "axios";
 
 export type GetRuneBalanceParams = {
 	address: string;
@@ -19,7 +19,9 @@ export const getRuneBalance = async (
 		throw new Error("No network found");
 	}
 
-	return ky<GetRuneBalanceResponse>(
+	const response = await axios<GetRuneBalanceResponse>(
 		`${config.network.runesUrl}/runes/v1/etchings/${runeId}/holders/${address}`,
-	).json();
+	);
+
+	return response.data;
 };

@@ -1,19 +1,15 @@
 {
-  "extends": "@midl-xyz/midl-js-config/tsconfig.base.json",
-  "include": [
-    "./src/**/*.ts",
-    "src/context.tsx",
-    "src/**/*.tsx",
-    "./src/**/*.d.ts",
-    "../core/src/utils/ensureMoreThanDust.ts"
-  ],
-  "compilerOptions": {
-    "baseUrl": ".",
-    "jsx": "react-jsx",
-    "declaration": true,
-    "declarationDir": "./dist",
-    "paths": {
-      "~/*": ["./src/*"]
-    }
-  }
+	"extends": "@midl-xyz/midl-js-config/tsconfig.base.json",
+	"include": ["src/**/*.ts"],
+	"compilerOptions": {
+		"baseUrl": ".",
+		"jsx": "react-jsx",
+		"paths": {
+			"~/*": ["./src/*"]
+		},
+		"plugins": [
+			{ "transform": "typescript-transform-paths" },
+			{ "transform": "typescript-transform-paths", "afterDeclarations": true }
+		]
+	}
 }

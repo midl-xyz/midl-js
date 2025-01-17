@@ -1,5 +1,5 @@
 import type { Config } from "~/createConfig";
-import ky from "ky";
+import axios from "axios";
 
 export type GetRuneResponse = {
 	id: string;
@@ -36,12 +36,14 @@ export type GetRuneResponse = {
 	};
 };
 
-export const getRune = (config: Config, runeId: string) => {
+export const getRune = async (config: Config, runeId: string) => {
 	if (!config.network) {
 		throw new Error("No network found");
 	}
 
-	return ky<GetRuneResponse>(
+	const response = await axios<GetRuneResponse>(
 		`${config.network.runesUrl}/runes/v1/etchings/${runeId}`,
-	).json();
+	);
+
+	return response.data;
 };

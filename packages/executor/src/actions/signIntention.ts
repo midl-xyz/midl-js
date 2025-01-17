@@ -1,4 +1,4 @@
-import type { Config } from "@midl-xyz/midl-js-core";
+import type { Config, SignMessageProtocol } from "@midl-xyz/midl-js-core";
 import type { MidlContextState } from "@midl-xyz/midl-js-react";
 import { JsonRpcProvider } from "ethers";
 import { isHex, type Client } from "viem";
@@ -22,6 +22,7 @@ type SignIntentionOptions = {
 	 * Transaction hash of the BTC transaction
 	 */
 	txId: string;
+	protocol?: SignMessageProtocol;
 };
 
 export const signIntention = async (
@@ -85,6 +86,7 @@ export const signIntention = async (
 		client,
 		{
 			nonce,
+			protocol: options.protocol,
 			publicKey: options.publicKey,
 		},
 	);

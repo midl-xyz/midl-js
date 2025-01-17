@@ -1,5 +1,5 @@
 import type { Config } from "~/createConfig";
-import ky from "ky";
+import axios from "axios";
 
 export type UTXO = {
 	readonly txid: string;
@@ -24,9 +24,9 @@ export const getUTXOs = async (
 		throw new Error("No network");
 	}
 
-	const utxos = await ky<UTXO[]>(
+	const { data: utxos } = await axios<UTXO[]>(
 		`${config.network.rpcUrl}/address/${address}/utxo`,
-	).json();
+	);
 
 	if (!includeRunes) {
 		return utxos.filter((utxo) => utxo.value !== RUNE_MAGIC_VALUE);

@@ -1,5 +1,9 @@
-import { AddressPurpose, createConfig, regtest } from "@midl-xyz/midl-js-core";
-import { keyPair } from "@midl-xyz/midl-js-core/dist/connectors/keyPair";
+import {
+	AddressPurpose,
+	createConfig,
+	keyPair,
+	regtest,
+} from "@midl-xyz/midl-js-core";
 import type { MidlContextState } from "@midl-xyz/midl-js-react";
 import * as bitcoin from "bitcoinjs-lib";
 import { zeroAddress } from "viem";

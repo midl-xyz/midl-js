@@ -4,7 +4,7 @@ import type { RuneUTXO, UTXO } from "~/actions";
 import { randomBytes } from "node:crypto";
 
 const handlers: RequestHandler[] = [
-	http.get("https://regtest-mempool.midl.xyz/api/v1/fees/recommended", () => {
+	http.get("https://mempool.regtest.midl.xyz/api/v1/fees/recommended", () => {
 		return HttpResponse.json({
 			fastestFee: 1,
 			halfHourFee: 1,
@@ -13,7 +13,7 @@ const handlers: RequestHandler[] = [
 			minimumFee: 1,
 		});
 	}),
-	http.get("https://regtest-mempool.midl.xyz/api/address/:address/utxo", () => {
+	http.get("https://mempool.regtest.midl.xyz/api/address/:address/utxo", () => {
 		const utxos: UTXO[] = [
 			{
 				txid: randomBytes(32).toString("hex"),
@@ -30,7 +30,7 @@ const handlers: RequestHandler[] = [
 
 		return HttpResponse.json(utxos);
 	}),
-	http.get("https://regtest-mempool.midl.xyz/utxos/:address", ({ request }) => {
+	http.get("https://mempool.regtest.midl.xyz/utxos/:address", ({ request }) => {
 		const url = new URL(request.url);
 
 		const runeUTXOS: RuneUTXO[] = [

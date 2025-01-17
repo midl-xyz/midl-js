@@ -1,5 +1,5 @@
 import type { Config } from "~/createConfig";
-import ky from "ky";
+import axios from "axios";
 
 export type RuneUTXO = {
 	height: number;
@@ -27,9 +27,14 @@ export const getRuneUTXO = async (
 		throw new Error("No network");
 	}
 
-	return ky<RuneUTXO[]>(`${config.network.runesUTXOUrl}/utxos/${address}/`, {
-		searchParams: {
-			runeId,
+	const response = await axios<RuneUTXO[]>(
+		`${config.network.runesUTXOUrl}/utxos/${address}/`,
+		{
+			params: {
+				runeId,
+			},
 		},
-	}).json();
+	);
+
+	return response.data;
 };

@@ -1,5 +1,4 @@
-import { createConfig, leather, regtest } from "@midl-xyz/midl-js-core";
-import { keyPair } from "@midl-xyz/midl-js-core/dist/connectors/keyPair";
+import { createConfig, keyPair, regtest } from "@midl-xyz/midl-js-core";
 import { getKeyPair } from "~/__tests__/keyPair";
 import * as bitcoin from "bitcoinjs-lib";
 

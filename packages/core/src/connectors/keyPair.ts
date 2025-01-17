@@ -1,5 +1,6 @@
 import ecc from "@bitcoinerlab/secp256k1";
-import * as bip322 from "bip322-js";
+import * as unisat from "@unisat/wallet-sdk";
+import { toNetworkType } from "@unisat/wallet-sdk/lib/network";
 import * as bitcoin from "bitcoinjs-lib";
 import { Psbt } from "bitcoinjs-lib";
 import bitcoinMessage from "bitcoinjs-message";
@@ -118,14 +119,24 @@ class KeyPairConnector implements Connector {
 
 		switch (params.protocol) {
 			case SignMessageProtocol.Bip322: {
-				const signature = bip322.Signer.sign(
+				const network = bitcoin.networks[(await this.getNetwork()).network];
+				const unisatNetworkType = toNetworkType(network);
+
+				const wallet = new unisat.wallet.LocalWallet(
 					this.keyPair.toWIF(),
-					params.address,
-					params.message,
+					unisat.address.getAddressType(params.address, unisatNetworkType),
+					unisatNetworkType,
 				);
 
+				const signature = await unisat.message.signMessageOfBIP322Simple({
+					message: params.message,
+					address: params.address,
+					networkType: unisatNetworkType,
+					wallet,
+				});
+
 				return {
-					signature: signature.toString("hex"),
+					signature: signature as string,
 					address: params.address,
 				};
 			}
@@ -153,7 +164,11 @@ class KeyPairConnector implements Connector {
 		signInputs,
 		disableTweakSigner,
 	}: Omit<SignPSBTParams, "publish">) {
-		const psbt = Psbt.fromBase64(psbtData);
+		const network = bitcoin.networks[(await this.getNetwork()).network];
+
+		const psbt = Psbt.fromBase64(psbtData, {
+			network,
+		});
 
 		for (const [address, inputs] of Object.entries(signInputs)) {
 			const type = getAddressType(address);

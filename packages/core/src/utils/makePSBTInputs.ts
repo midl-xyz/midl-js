@@ -3,8 +3,8 @@ import type { UTXO } from "bitcoinselect";
 import type { Account } from "~/connectors";
 import { AddressType } from "~/constants";
 import type { Config } from "~/createConfig";
-import ky from "ky";
 import { extractXCoordinate } from "~/utils/extractXCoordinate";
+import axios from "axios";
 
 type PSBTInput = Parameters<typeof Psbt.prototype.addInput>[0];
 
@@ -38,9 +38,9 @@ export const makePSBTInputs = async (
 			});
 
 			for (const utxo of utxos) {
-				const hex = await ky(`${config.network.rpcUrl}/tx/${utxo.txid}/hex`, {
-					retry: { limit: 5 },
-				}).text();
+				const { data: hex } = await axios(
+					`${config.network.rpcUrl}/tx/${utxo.txid}/hex`,
+				);
 
 				inputs.push({
 					hash: utxo.txid as string,

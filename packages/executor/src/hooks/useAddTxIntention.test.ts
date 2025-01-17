@@ -1,9 +1,7 @@
-import { AddressPurpose } from "@midl-xyz/midl-js-core";
 import { renderHook, waitFor } from "@testing-library/react";
 import { zeroAddress } from "viem";
-import { beforeAll, describe, expect, it } from "vitest";
+import { describe, expect, it } from "vitest";
 import { wrapper } from "~/__tests__";
-import { midlConfig } from "~/__tests__/midlConfig";
 import { useAddTxIntention } from "~/hooks/useAddTxIntention";
 
 describe("useAddTxIntention", () => {
@@ -29,7 +27,7 @@ describe("useAddTxIntention", () => {
 		expect(result.current.txIntentions?.[0]).toEqual({
 			evmTransaction: {
 				to: zeroAddress,
-				from: "0xBF8fb6Ca403EA249838FFc8d230b20cf5cb38851",
+				from: "0x8Ccf062691b33747c2C0950621992BCDe33A8d5C",
 				value: 1n,
 				chainId: 1,
 			},

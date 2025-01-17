@@ -1,5 +1,5 @@
 import { Psbt, initEccLib, networks } from "bitcoinjs-lib";
-import coinSelect from "bitcoinselect";
+import coinSelect, { type Target } from "bitcoinselect";
 import { broadcastTransaction } from "~/actions/broadcastTransaction";
 import { getFeeRate } from "~/actions/getFeeRate";
 import { getUTXOs } from "~/actions/getUTXOs";
@@ -52,7 +52,7 @@ export const transferBTC = async (
 	const network = networks[config.network.network];
 	const feeRate = customFeeRate || (await getFeeRate(config)).hourFee;
 	const utxos = await getUTXOs(config, account.address);
-	const outputs = [];
+	const outputs: Target[] = [];
 
 	for (const transfer of transfers) {
 		outputs.push({
@@ -70,6 +70,11 @@ export const transferBTC = async (
 	const psbt = new Psbt({ network });
 
 	const inputs = await makePSBTInputs(config, account, selectedUTXOs.inputs);
+
+	if (inputs.length === 0) {
+		throw new Error("No inputs");
+	}
+
 	psbt.addInputs(inputs);
 
 	for (const output of selectedUTXOs.outputs) {
@@ -92,7 +97,9 @@ export const transferBTC = async (
 		},
 	});
 
-	const signedPSBT = Psbt.fromBase64(data.psbt);
+	const signedPSBT = Psbt.fromBase64(data.psbt, {
+		network,
+	});
 
 	signedPSBT.finalizeAllInputs();
 
@@ -100,6 +107,8 @@ export const transferBTC = async (
 
 	if (publish) {
 		const hex = signedPSBT.extractTransaction().toHex();
+
+		console.log("hex", hex);
 
 		const txId = await broadcastTransaction(config, hex);
 

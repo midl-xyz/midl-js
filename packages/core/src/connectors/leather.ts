@@ -1,4 +1,4 @@
-import { address, Psbt } from "bitcoinjs-lib";
+import { address, networks, Psbt } from "bitcoinjs-lib";
 import {
 	type SignMessageParams,
 	SignMessageProtocol,
@@ -151,8 +151,12 @@ class LeatherConnector implements Connector {
 			});
 		});
 
+		const network = networks[(await this.getNetwork()).network];
+
 		const response = await window.LeatherProvider.request("signPsbt", {
-			hex: Psbt.fromBase64(psbt).toHex(),
+			hex: Psbt.fromBase64(psbt, {
+				network,
+			}).toHex(),
 			signInputs: toSignInputs,
 			network: this.getNetworkName(),
 		});
@@ -161,7 +165,9 @@ class LeatherConnector implements Connector {
 			throw new Error("Invalid response");
 		}
 
-		const base64Psbt = Psbt.fromHex(response.result.hex).toBase64();
+		const base64Psbt = Psbt.fromHex(response.result.hex, {
+			network,
+		}).toBase64();
 
 		return {
 			psbt: base64Psbt,

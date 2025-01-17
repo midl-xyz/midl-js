@@ -8,7 +8,7 @@ import {
 	vi,
 } from "vitest";
 import { broadcastTransaction } from "~/actions/broadcastTransaction";
-import { satsConnect } from "~/connectors";
+import { satsConnect } from "~/connectors/sats-connect";
 import { createConfig } from "~/createConfig";
 import { regtest } from "~/networks";
 

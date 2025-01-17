@@ -2,7 +2,7 @@ import { http, HttpResponse } from "msw";
 import { setupServer } from "msw/node";
 import { afterAll, afterEach, beforeAll, describe, expect, it } from "vitest";
 import { waitForTransaction } from "~/actions/waitForTransaction";
-import { satsConnect } from "~/connectors";
+import { satsConnect } from "~/connectors/sats-connect";
 import { type Config, createConfig } from "~/createConfig";
 import { testnet } from "~/networks";
 
