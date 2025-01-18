@@ -1,3 +1,32 @@
 {
-    "name": "@midl-xyz/executor-react"
+    "name": "@midl-xyz/executor-react",
+    "version": "0.0.0",
+    "scripts": {
+        "build": "pnpm run clean && tspc --project tsconfig.esm.json && tspc --project tsconfig.cjs.json",
+        "dev": "concurrently \"tspc --watch --preserveWatchOutput --project tsconfig.esm.json\" \"tspc --watch --preserveWatchOutput --project tsconfig.cjs.json\"",
+        "clean": "rm -rf dist",
+        "test": "vitest"
+    },
+    "main": "./dist/cjs/index.js",
+    "module": "./dist/esm/index.js",
+    "types": "./dist/types/index.d.ts",
+    "exports": {
+        "./package.json": "./package.json",
+        ".": {
+            "import": "./dist/esm/index.js",
+            "require": "./dist/cjs/index.js",
+            "types": "./dist/types/index.d.ts"
+        },
+        "./*": {
+            "import": "./dist/esm/*.js",
+            "require": "./dist/cjs/*.js",
+            "types": "./dist/types/*.d.ts"
+        }
+    },
+    "files": [
+        "dist"
+    ],
+    "dependencies": {
+        "@midl-xyz/midl-js-executor": "workspace:^"
+    }
 }

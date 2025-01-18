@@ -1,5 +1,5 @@
 import { useConfig } from "@midl-xyz/midl-js-react";
-import { getEVMFromBitcoinNetwork } from "~/utils";
+import { getEVMFromBitcoinNetwork } from "@midl-xyz/midl-js-executor";
 
 /**
  * Custom hook to retrieve the EVM chain associated with the current Bitcoin network.

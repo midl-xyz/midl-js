@@ -1,5 +1,5 @@
 import { useAccounts, useConfig } from "@midl-xyz/midl-js-react";
-import { getPublicKey } from "~/actions";
+import { getPublicKey } from "@midl-xyz/midl-js-executor";
 
 type UsePublicKeyParams = {
 	/**

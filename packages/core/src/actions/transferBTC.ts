@@ -108,8 +108,6 @@ export const transferBTC = async (
 	if (publish) {
 		const hex = signedPSBT.extractTransaction().toHex();
 
-		console.log("hex", hex);
-
 		const txId = await broadcastTransaction(config, hex);
 
 		return {

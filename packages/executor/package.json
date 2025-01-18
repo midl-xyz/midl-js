@@ -25,8 +25,7 @@
     }
   },
   "files": [
-    "dist",
-    "src/**/*.d.ts"
+    "dist"
   ],
   "devDependencies": {
     "@midl-xyz/midl-js-config": "workspace:^",

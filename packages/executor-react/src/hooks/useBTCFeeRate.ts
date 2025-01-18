@@ -4,7 +4,7 @@ import { usePublicClient } from "wagmi";
 import {
 	type GetBTCFeeRateResponse,
 	getBTCFeeRate,
-} from "~/actions/getBTCFeeRate";
+} from "@midl-xyz/midl-js-executor";
 
 type QueryOptions = Omit<
 	UseQueryOptions<GetBTCFeeRateResponse>,

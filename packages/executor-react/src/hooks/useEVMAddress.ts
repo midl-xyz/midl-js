@@ -1,7 +1,7 @@
-import { useAccounts, useConfig } from "@midl-xyz/midl-js-react";
+import { getEVMAddress } from "@midl-xyz/midl-js-executor";
+import { useConfig } from "@midl-xyz/midl-js-react";
 import { zeroAddress } from "viem";
 import { usePublicKey } from "~/hooks/usePublicKey";
-import { getEVMAddress } from "~/utils/getEVMAddress";
 
 type UseEVMAddressParams = {
 	/**

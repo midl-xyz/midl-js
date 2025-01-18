@@ -1,6 +1,9 @@
 import { useConfig, useMidlContext, useStore } from "@midl-xyz/midl-js-react";
 import { useMutation } from "@tanstack/react-query";
-import { type PartialIntention, addTxIntention } from "~/actions";
+import {
+	type PartialIntention,
+	addTxIntention,
+} from "@midl-xyz/midl-js-executor";
 
 type AddTxIntentionVariables = PartialIntention & {
 	intention: PartialIntention;

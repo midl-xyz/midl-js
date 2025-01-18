@@ -1,5 +1,5 @@
 import { useMidlContext } from "@midl-xyz/midl-js-react";
-import { clearTxIntentions } from "~/actions";
+import { clearTxIntentions } from "@midl-xyz/midl-js-executor";
 
 /**
  * Custom hook to clear all transaction intentions.

@@ -3,7 +3,7 @@ import { useConfig } from "@midl-xyz/midl-js-react";
 import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
 import type { TransactionSerializableBTC } from "viem";
 import { useWalletClient } from "wagmi";
-import { signTransaction } from "~/actions";
+import { signTransaction } from "@midl-xyz/midl-js-executor";
 
 type SignTransactionParams = {
 	tx: TransactionSerializableBTC;
