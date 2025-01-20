@@ -6,6 +6,7 @@ module.exports = {
   midl: {
     mnemonic:
       "face spike layer label health knee cry taste carpet found elegant october",
+    path: "deployments",
   },
   networks: {
     default: {

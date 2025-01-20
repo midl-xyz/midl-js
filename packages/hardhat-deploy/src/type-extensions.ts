@@ -6,6 +6,7 @@ declare module "hardhat/types/config" {
 	export interface HardhatUserConfig {
 		midl: {
 			mnemonic: string;
+			path: string;
 		};
 	}
 }

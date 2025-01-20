@@ -6,7 +6,6 @@ import { getAddressType } from "~/utils/getAddressType";
 import { AddressType } from "~/constants";
 import { extractXCoordinate } from "~/utils/extractXCoordinate";
 import { encode } from "varuint-bitcoin";
-import { tweakSigner } from "@leather.io/bitcoin";
 
 const ECPair = ECPairFactory(ecc);
 

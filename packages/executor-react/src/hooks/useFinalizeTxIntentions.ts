@@ -10,9 +10,9 @@ import { useStore } from "zustand";
 import {
 	finalizeBTCTransaction,
 	signIntention,
+	type TransactionIntention,
 } from "@midl-xyz/midl-js-executor";
 import { useLastNonce } from "~/hooks/useLastNonce";
-import type { TransactionIntention } from "~/types/intention";
 
 type FinalizeMutationVariables = {
 	/**

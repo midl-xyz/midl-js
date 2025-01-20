@@ -1,5 +1,4 @@
 import { Psbt, initEccLib, networks, payments, script } from "bitcoinjs-lib";
-import type { Taptree } from "bitcoinjs-lib/src/types";
 import coinselect from "bitcoinselect";
 import {
 	EtchInscription,
@@ -149,7 +148,7 @@ export const etchRune = async (
 		inscription.encipher(),
 	]);
 
-	const scriptTree: Taptree = {
+	const scriptTree: payments.Payment["scriptTree"] = {
 		output: etchingScript,
 	};
 

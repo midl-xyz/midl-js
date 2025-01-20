@@ -17,5 +17,7 @@ describe("MidlHardhatEnvironment", () => {
 			},
 			{},
 		);
+
+		await hre.midl.execute();
 	});
 });

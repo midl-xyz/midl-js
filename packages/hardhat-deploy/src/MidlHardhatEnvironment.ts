@@ -13,6 +13,7 @@ import {
 import type { TransactionIntention } from "@midl-xyz/midl-js-executor";
 import {
 	addTxIntention,
+	clearTxIntentions,
 	finalizeBTCTransaction,
 	getEVMAddress,
 	getPublicKey,
@@ -31,6 +32,8 @@ import {
 	type WalletClient,
 	createWalletClient,
 	encodeDeployData,
+	getContractAddress,
+	getCreate2Address,
 	http,
 } from "viem";
 import { type StoreApi, createStore } from "zustand";
@@ -45,6 +48,8 @@ export class MidlHardhatEnvironment {
 			intentions: [],
 		}));
 
+	private readonly deploymentsPath: string;
+
 	private walletClient: WalletClient | undefined;
 
 	constructor(private readonly hre: HardhatRuntimeEnvironment) {
@@ -54,12 +59,16 @@ export class MidlHardhatEnvironment {
 			networks: [regtest],
 			connectors: [keyPair({ keyPair: keys })],
 		});
+
+		this.deploymentsPath = this.hre.userConfig.midl.path;
 	}
 
 	public async initialize() {
 		const accounts = await this.config.connectors[0].connect({
 			purposes: [AddressPurpose.Ordinals],
 		});
+
+		clearTxIntentions(this.store);
 
 		console.log(
 			"Initialized with addresses:",
@@ -100,26 +109,6 @@ export class MidlHardhatEnvironment {
 		>,
 	) {
 		const data = await this.hre.artifacts.readArtifact(name);
-		const walletClient = await this.getWalletClient();
-
-		try {
-			const data = await transferBTC(this.config, {
-				transfers: [
-					{
-						amount: 50000,
-						receiver:
-							"bcrt1pzwvl8h8hl388nmdm53c0paqrshh6w6v3hy8mfxmt4zf0cljlf3ks8499zm",
-					},
-				],
-				// from: "bcrt1puwn2akldaf2hqv64kmkjt3lgutk4se8rlmr8rcpk2v0ygg6zqqtqzzjdq9",
-				feeRate: 4,
-				publish: true,
-			});
-		} catch (e) {
-			console.error(e);
-			throw new Error("error transferring btc");
-		}
-
 		const deployData = encodeDeployData({
 			abi: data.abi,
 			args: options.args,
@@ -134,9 +123,16 @@ export class MidlHardhatEnvironment {
 			},
 			...intentionOptions,
 		});
+	}
 
-		// biome-ignore lint/style/noNonNullAssertion: <explanation>
-		const [intention] = this.store.getState().intentions!;
+	public async execute() {
+		const intentions = this.store.getState().intentions;
+
+		if (!intentions || intentions.length === 0) {
+			throw new Error("No intentions to execute");
+		}
+
+		const walletClient = await this.getWalletClient();
 
 		const tx = await finalizeBTCTransaction(
 			this.config,
@@ -147,37 +143,37 @@ export class MidlHardhatEnvironment {
 			},
 		);
 
-		const signed = await signIntention(
-			this.config,
-			this.store,
-			walletClient,
-			intention,
-			{
-				gasPrice: 1000n,
-				txId: tx.tx.id,
-				protocol: SignMessageProtocol.Bip322,
-			},
-		);
+		for (const intention of intentions) {
+			const signed = await signIntention(
+				this.config,
+				this.store,
+				walletClient,
+				intention,
+				{
+					gasPrice: 1000n,
+					txId: tx.tx.id,
+					protocol: SignMessageProtocol.Bip322,
+				},
+			);
 
-		const sent = await walletClient.sendRawTransaction({
-			serializedTransaction: signed,
-		});
+			console.log(
+				"Contract address",
+				getContractAddress({
+					from: await this.getAddress(),
+					nonce: BigInt(intention.evmTransaction.nonce ?? 0),
+				}),
+			);
 
-		console.log("Deploy tx evm", sent);
+			const txId = await walletClient.sendRawTransaction({
+				serializedTransaction: signed,
+			});
 
-		try {
-			await broadcastTransaction(this.config, tx.tx.hex);
-		} catch (e) {
-			console.log("error broadcasting tx");
-			console.error(e);
+			console.log("Transaction sent", txId);
 		}
 
-		console.log("deployed tx btc", tx.tx.id);
-
-		// addTxIntention(this.config, this.store, args, false);
+		await broadcastTransaction(this.config, tx.tx.hex);
+		clearTxIntentions(this.store);
 	}
-
-	public execute() {}
 
 	private getKeyPair() {
 		const {
