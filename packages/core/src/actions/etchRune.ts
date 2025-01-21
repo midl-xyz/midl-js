@@ -22,8 +22,10 @@ import ecc from "@bitcoinerlab/secp256k1";
 initEccLib(ecc);
 
 export type EtchRuneParams = {
+	/**
+	 * The address to etch the rune from
+	 */
 	from?: string;
-
 	/**
 	 * The name of the rune to etch. Should be uppercase and spaced with • (U+2022).
 	 * Example: "RUNE•NAME"
