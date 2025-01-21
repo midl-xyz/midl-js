@@ -1,4 +1,4 @@
-import ky from "ky";
+import axios from "axios";
 import type { Config } from "~/createConfig";
 
 export const broadcastTransaction = async (
@@ -9,9 +9,10 @@ export const broadcastTransaction = async (
 		throw new Error("No network");
 	}
 
-	return ky
-		.post<string>(`${config.network.rpcUrl}/tx`, {
-			body: txHex,
-		})
-		.text();
+	const { data } = await axios.post<string>(
+		`${config.network.rpcUrl}/tx`,
+		txHex,
+	);
+
+	return data;
 };

@@ -1,5 +1,4 @@
 import { Psbt, initEccLib, networks, payments, script } from "bitcoinjs-lib";
-import type { Taptree } from "bitcoinjs-lib/src/types";
 import coinselect from "bitcoinselect";
 import {
 	EtchInscription,
@@ -149,7 +148,7 @@ export const etchRune = async (
 		inscription.encipher(),
 	]);
 
-	const scriptTree: Taptree = {
+	const scriptTree: payments.Payment["scriptTree"] = {
 		output: etchingScript,
 	};
 
@@ -250,7 +249,7 @@ export const etchRune = async (
 		disableTweakSigner: false,
 	});
 
-	const signedFundingPSBT = Psbt.fromBase64(fundingData.psbt);
+	const signedFundingPSBT = Psbt.fromBase64(fundingData.psbt, { network });
 
 	signedFundingPSBT.finalizeAllInputs();
 
@@ -317,7 +316,7 @@ export const etchRune = async (
 		},
 	});
 
-	const signedPSBT = Psbt.fromBase64(data.psbt);
+	const signedPSBT = Psbt.fromBase64(data.psbt, { network });
 
 	signedPSBT.finalizeAllInputs();
 
@@ -361,7 +360,9 @@ export const etchRune = async (
 		disableTweakSigner: true,
 	});
 
-	const revealSignedPSBT = Psbt.fromBase64(revealData.psbt).finalizeAllInputs();
+	const revealSignedPSBT = Psbt.fromBase64(revealData.psbt, {
+		network,
+	}).finalizeAllInputs();
 
 	const etchingTx = signedPSBT.extractTransaction();
 

@@ -1,5 +1,5 @@
 import type { Config } from "~/createConfig";
-import ky from "ky";
+import axios from "axios";
 
 export type GetRunesParams = {
 	limit?: number;
@@ -31,15 +31,15 @@ export const getRunes = async (
 		throw new Error("No network found");
 	}
 
-	return ky
-		.get<GetRunesResponse>(
-			`${config.network.runesUrl}/runes/v1/addresses/${address}/balances`,
-			{
-				searchParams: {
-					limit,
-					offset,
-				},
+	const response = await axios.get<GetRunesResponse>(
+		`${config.network.runesUrl}/runes/v1/addresses/${address}/balances`,
+		{
+			params: {
+				limit,
+				offset,
 			},
-		)
-		.json();
+		},
+	);
+
+	return response.data;
 };

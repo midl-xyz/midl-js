@@ -1,14 +1,14 @@
 import type { Config } from "~/createConfig";
-import ky from "ky";
+import axios from "axios";
 
 export const getBlockNumber = async (config: Config) => {
 	if (!config.network) {
 		throw new Error("No network");
 	}
 
-	const height = await ky<string>(
+	const response = await axios.get<string>(
 		`${config.network.rpcUrl}/blocks/tip/height`,
-	).text();
+	);
 
-	return Number.parseInt(height, 10);
+	return Number.parseInt(response.data, 10);
 };

@@ -1,5 +1,5 @@
 import type { Config } from "~/createConfig";
-import ky from "ky";
+import axios from "axios";
 
 export type GetFeeRateResponse = {
 	fastestFee: number;
@@ -16,7 +16,9 @@ export const getFeeRate = async (
 		throw new Error("No network");
 	}
 
-	return ky<GetFeeRateResponse>(
+	const response = await axios.get<GetFeeRateResponse>(
 		`${config.network.rpcUrl}/v1/fees/recommended`,
-	).json();
+	);
+
+	return response.data;
 };

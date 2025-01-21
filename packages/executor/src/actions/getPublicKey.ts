@@ -8,9 +8,9 @@ export const getPublicKey = (config: Config, publicKey: string) => {
 		return null;
 	}
 
-	if (publicKey) {
-		return toHex(Buffer.from(extractXCoordinate(publicKey), "hex"));
-	}
+	// if (publicKey) {
+	// 	return toHex(Buffer.from(extractXCoordinate(publicKey), "hex"));
+	// }
 
 	initEccLib(ecc);
 

@@ -1,5 +1,4 @@
 import ecc from "@bitcoinerlab/secp256k1";
-import * as bip322 from "bip322-js";
 import * as bitcoin from "bitcoinjs-lib";
 import { Psbt } from "bitcoinjs-lib";
 import bitcoinMessage from "bitcoinjs-message";
@@ -20,6 +19,7 @@ import {
 import { AddressPurpose, AddressType } from "~/constants";
 import type { BitcoinNetwork } from "~/createConfig";
 import { extractXCoordinate, getAddressType, isCorrectAddress } from "~/utils";
+import { signBIP322Simple } from "~/utils/signBIP322Simple";
 
 bitcoin.initEccLib(ecc);
 
@@ -118,14 +118,17 @@ class KeyPairConnector implements Connector {
 
 		switch (params.protocol) {
 			case SignMessageProtocol.Bip322: {
-				const signature = bip322.Signer.sign(
+				const network = bitcoin.networks[(await this.getNetwork()).network];
+
+				const signature = signBIP322Simple(
+					params.message,
 					this.keyPair.toWIF(),
 					params.address,
-					params.message,
+					network,
 				);
 
 				return {
-					signature: signature.toString("hex"),
+					signature: signature as string,
 					address: params.address,
 				};
 			}
@@ -153,7 +156,11 @@ class KeyPairConnector implements Connector {
 		signInputs,
 		disableTweakSigner,
 	}: Omit<SignPSBTParams, "publish">) {
-		const psbt = Psbt.fromBase64(psbtData);
+		const network = bitcoin.networks[(await this.getNetwork()).network];
+
+		const psbt = Psbt.fromBase64(psbtData, {
+			network,
+		});
 
 		for (const [address, inputs] of Object.entries(signInputs)) {
 			const type = getAddressType(address);

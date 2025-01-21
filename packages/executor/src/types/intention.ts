@@ -1,6 +1,6 @@
 import type { Address, TransactionSerializableBTC } from "viem";
 
-export type TransactionIntention = {
+export interface TransactionIntention {
 	/**
 	 * EVM transaction to execute
 	 */
@@ -30,4 +30,4 @@ export type TransactionIntention = {
 	hasWithdraw?: boolean;
 	hasDeposit?: boolean;
 	hasRunesDeposit?: boolean;
-};
+}

@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 0.0.38
+
+### Patch Changes
+
+- 91a6cb6: feat: hardhat-deploy
+
 ## 0.0.37
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 import { getBlockNumber } from "~/actions/getBlockNumber";
 import type { Config } from "~/createConfig";
-import ky from "ky";
+import axios from "axios";
 
 export const waitForTransaction = (
 	config: Config,
@@ -21,10 +21,10 @@ export const waitForTransaction = (
 			}
 
 			try {
-				const data = await ky<{
+				const { data } = await axios.get<{
 					confirmed: boolean;
 					block_height: number;
-				}>(`${config.network?.rpcUrl}/tx/${txId}/status`).json();
+				}>(`${config.network?.rpcUrl}/tx/${txId}/status`);
 
 				if (data.confirmed) {
 					const currentBlockHeight = await getBlockNumber(config);

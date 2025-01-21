@@ -1,7 +1,6 @@
 import { Psbt, initEccLib, networks, payments } from "bitcoinjs-lib";
 import coinSelect from "bitcoinselect";
 import { Edict, RuneId, Runestone, none, some } from "runelib";
-import { AddressPurpose } from "sats-connect";
 import { broadcastTransaction } from "~/actions/broadcastTransaction";
 import { getFeeRate } from "~/actions/getFeeRate";
 import { type RuneUTXO, getRuneUTXO } from "~/actions/getRuneUTXO";
@@ -9,6 +8,7 @@ import { getUTXOs } from "~/actions/getUTXOs";
 import type { Config } from "~/createConfig";
 import { extractXCoordinate, makePSBTInputs, runeUTXOSelect } from "~/utils";
 import ecc from "@bitcoinerlab/secp256k1";
+import { AddressPurpose } from "~/constants";
 
 initEccLib(ecc);
 
@@ -231,7 +231,9 @@ export const edictRune = async (
 		signInputs,
 	});
 
-	const signedPSBT = Psbt.fromBase64(data.psbt);
+	const signedPSBT = Psbt.fromBase64(data.psbt, {
+		network,
+	});
 
 	signedPSBT.finalizeAllInputs();
 
