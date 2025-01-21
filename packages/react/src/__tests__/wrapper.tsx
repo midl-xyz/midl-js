@@ -1,13 +1,22 @@
-import { createConfig, regtest, satsConnect, testnet } from "@midl-xyz/midl-js-core";
+import {
+	createConfig,
+	keyPair as keyPairConnector,
+	regtest,
+} from "@midl-xyz/midl-js-core";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { ReactNode } from "react";
 import { MidlProvider } from "../context";
+import { getKeyPair } from "~/__tests__/keyPair";
 
 const queryClient = new QueryClient();
 
 const config = createConfig({
 	networks: [regtest],
-	connectors: [satsConnect()],
+	connectors: [
+		keyPairConnector({
+			getKeyPair,
+		}),
+	],
 });
 
 export const wrapper = ({ children }: { children: ReactNode }) => {

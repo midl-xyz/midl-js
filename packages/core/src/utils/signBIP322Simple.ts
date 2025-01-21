@@ -7,8 +7,6 @@ import { encode } from "varuint-bitcoin";
 import ECPairFactory from "ecpair";
 import * as ecc from "@bitcoinerlab/secp256k1";
 
-const ECPair = ECPairFactory(ecc);
-
 function bip0322_hash(message: string) {
 	const tag = "BIP0322-signed-message";
 	const tagHash = sha256(Buffer.from(tag));
@@ -23,6 +21,8 @@ export const signBIP322Simple = (
 	address: string,
 	network: bitcoin.networks.Network,
 ) => {
+	const ECPair = ECPairFactory(ecc);
+
 	const keyPair = ECPair.fromWIF(privateKey, network);
 	const outputScript = bitcoin.address.toOutputScript(address, network);
 	const prevoutHash = Buffer.from(
