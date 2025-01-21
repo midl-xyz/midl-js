@@ -1,6 +1,4 @@
 import ecc from "@bitcoinerlab/secp256k1";
-import * as unisat from "@unisat/wallet-sdk";
-import { toNetworkType } from "@unisat/wallet-sdk/lib/network";
 import * as bitcoin from "bitcoinjs-lib";
 import { Psbt } from "bitcoinjs-lib";
 import bitcoinMessage from "bitcoinjs-message";
@@ -21,6 +19,7 @@ import {
 import { AddressPurpose, AddressType } from "~/constants";
 import type { BitcoinNetwork } from "~/createConfig";
 import { extractXCoordinate, getAddressType, isCorrectAddress } from "~/utils";
+import { signBIP322Simple } from "~/utils/signBIP322Simple";
 
 bitcoin.initEccLib(ecc);
 
@@ -120,20 +119,13 @@ class KeyPairConnector implements Connector {
 		switch (params.protocol) {
 			case SignMessageProtocol.Bip322: {
 				const network = bitcoin.networks[(await this.getNetwork()).network];
-				const unisatNetworkType = toNetworkType(network);
 
-				const wallet = new unisat.wallet.LocalWallet(
+				const signature = signBIP322Simple(
+					params.message,
 					this.keyPair.toWIF(),
-					unisat.address.getAddressType(params.address, unisatNetworkType),
-					unisatNetworkType,
+					params.address,
+					network,
 				);
-
-				const signature = await unisat.message.signMessageOfBIP322Simple({
-					message: params.message,
-					address: params.address,
-					networkType: unisatNetworkType,
-					wallet,
-				});
 
 				return {
 					signature: signature as string,

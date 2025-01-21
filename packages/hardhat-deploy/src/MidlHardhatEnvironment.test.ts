@@ -4,7 +4,7 @@ import { useEnvironment } from "../tests/useEnvironment";
 describe("MidlHardhatEnvironment", () => {
 	useEnvironment();
 
-	it.skip("works", async () => {
+	it("works", async () => {
 		const { hre } = globalThis;
 
 		await hre.midl.initialize();

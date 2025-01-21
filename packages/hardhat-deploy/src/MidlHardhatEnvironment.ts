@@ -138,6 +138,10 @@ export class MidlHardhatEnvironment {
 	}
 
 	public async getDeployment(name: string) {
+		if (!fs.existsSync(`${this.deploymentsPath}/${name}.json`)) {
+			return null;
+		}
+
 		const data = fs.readFileSync(`${this.deploymentsPath}/${name}.json`, {
 			encoding: "utf-8",
 		});
