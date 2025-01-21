@@ -1,7 +1,7 @@
+import { midlRegtest } from "@midl-xyz/midl-js-executor";
 import { mock } from "@wagmi/connectors";
 import type { Chain } from "viem";
 import { http, createConfig } from "wagmi";
-import { midlRegtest } from "~/config/chains";
 
 export const wagmiConfig = createConfig({
 	chains: [midlRegtest as Chain],

@@ -16,7 +16,7 @@ export const getFeeRate = async (
 		throw new Error("No network");
 	}
 
-	const response = await axios<GetFeeRateResponse>(
+	const response = await axios.get<GetFeeRateResponse>(
 		`${config.network.rpcUrl}/v1/fees/recommended`,
 	);
 

@@ -9,17 +9,10 @@ export const broadcastTransaction = async (
 		throw new Error("No network");
 	}
 
-	const data = await fetch(`${config.network.rpcUrl}/tx`, {
-		method: "POST",
-		body: txHex,
-	});
+	const { data } = await axios.post<string>(
+		`${config.network.rpcUrl}/tx`,
+		txHex,
+	);
 
-	// const response = await axios.post<string>(`${config.network.rpcUrl}/tx`, {
-	// 	body: txHex,
-	// 	headers: {
-	// 		"Content-Type": "text/plain",
-	// 	},
-	// });
-
-	return data.text();
+	return data;
 };

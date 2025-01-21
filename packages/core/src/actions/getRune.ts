@@ -41,7 +41,7 @@ export const getRune = async (config: Config, runeId: string) => {
 		throw new Error("No network found");
 	}
 
-	const response = await axios<GetRuneResponse>(
+	const response = await axios.get<GetRuneResponse>(
 		`${config.network.runesUrl}/runes/v1/etchings/${runeId}`,
 	);
 

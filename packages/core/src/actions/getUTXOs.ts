@@ -24,7 +24,7 @@ export const getUTXOs = async (
 		throw new Error("No network");
 	}
 
-	const { data: utxos } = await axios<UTXO[]>(
+	const { data: utxos } = await axios.get<UTXO[]>(
 		`${config.network.rpcUrl}/address/${address}/utxo`,
 	);
 

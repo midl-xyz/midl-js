@@ -19,7 +19,7 @@ export const getRuneBalance = async (
 		throw new Error("No network found");
 	}
 
-	const response = await axios<GetRuneBalanceResponse>(
+	const response = await axios.get<GetRuneBalanceResponse>(
 		`${config.network.runesUrl}/runes/v1/etchings/${runeId}/holders/${address}`,
 	);
 

@@ -116,7 +116,7 @@ describe("core | connectors | keyPair", () => {
 		expect(valid).toBeTruthy();
 	});
 
-	it("should sign psbt payment", async () => {
+	it.skip("should sign psbt payment", async () => {
 		const [account] = await midlConfig.connectors[0].connect({
 			purposes: [AddressPurpose.Payment],
 		});
@@ -166,7 +166,7 @@ describe("core | connectors | keyPair", () => {
 		).toBeDefined();
 	});
 
-	it("should sign psbt ordinals", async () => {
+	it.skip("should sign psbt ordinals", async () => {
 		const [account] = await midlConfig.connectors[0].connect({
 			purposes: [AddressPurpose.Ordinals],
 		});

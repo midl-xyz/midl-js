@@ -6,7 +6,7 @@ export const getBlockNumber = async (config: Config) => {
 		throw new Error("No network");
 	}
 
-	const response = await axios<string>(
+	const response = await axios.get<string>(
 		`${config.network.rpcUrl}/blocks/tip/height`,
 	);
 

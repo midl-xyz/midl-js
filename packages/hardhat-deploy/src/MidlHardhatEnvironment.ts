@@ -25,6 +25,7 @@ import * as bitcoin from "bitcoinjs-lib";
 import ECPairFactory from "ecpair";
 import type { HardhatRuntimeEnvironment } from "hardhat/types";
 import {
+	type Address,
 	type Chain,
 	type TransactionSerializableBTC,
 	type WalletClient,
@@ -34,6 +35,10 @@ import {
 	http,
 } from "viem";
 import { type StoreApi, createStore } from "zustand";
+import "~/types/context";
+import fs from "node:fs";
+import { waitForTransactionReceipt } from "viem/actions";
+import path from "node:path";
 
 const bip32 = BIP32Factory(ecc);
 const ECPair = ECPairFactory(ecc);
@@ -57,20 +62,19 @@ export class MidlHardhatEnvironment {
 			connectors: [keyPair({ keyPair: keys })],
 		});
 
-		this.deploymentsPath = this.hre.userConfig.midl.path;
+		this.deploymentsPath = path.join(this.hre.config.paths.root, "deployments");
+
+		if (!fs.existsSync(this.deploymentsPath)) {
+			fs.mkdirSync(this.deploymentsPath);
+		}
 	}
 
 	public async initialize() {
-		const accounts = await this.config.connectors[0].connect({
+		await this.config.connectors[0].connect({
 			purposes: [AddressPurpose.Ordinals],
 		});
 
 		clearTxIntentions(this.store);
-
-		console.log(
-			"Initialized with addresses:",
-			accounts.map((it) => it.address).join(", "),
-		);
 	}
 
 	public async getAddress() {
@@ -103,8 +107,16 @@ export class MidlHardhatEnvironment {
 			| "hasRunesWithdraw"
 			| "hasWithdraw"
 			| "rune"
-		>,
+		> = {},
 	) {
+		const deployment = await this.getDeployment(name);
+
+		if (deployment) {
+			console.log("Contract already deployed", deployment.address);
+
+			return deployment;
+		}
+
 		const data = await this.hre.artifacts.readArtifact(name);
 		const deployData = encodeDeployData({
 			abi: data.abi,
@@ -118,7 +130,67 @@ export class MidlHardhatEnvironment {
 				chainId: 777,
 				data: deployData,
 			},
+			meta: {
+				contractName: name,
+			},
 			...intentionOptions,
+		});
+	}
+
+	public async getDeployment(name: string) {
+		const data = fs.readFileSync(`${this.deploymentsPath}/${name}.json`, {
+			encoding: "utf-8",
+		});
+
+		if (!data) {
+			return null;
+		}
+
+		const { abi } = await this.hre.artifacts.readArtifact(name);
+
+		return JSON.parse(data) as {
+			txId: string;
+			address: string;
+			abi: typeof abi;
+		};
+	}
+
+	public async callContract(
+		name: string,
+		methodName: string,
+		options: Pick<
+			TransactionSerializableBTC,
+			"to" | "value" | "gasPrice" | "gas" | "nonce"
+			// biome-ignore lint/suspicious/noExplicitAny: Allow any args
+		> & { args: any },
+	) {
+		const deployment = await this.getDeployment(name);
+
+		if (!deployment) {
+			throw new Error("Contract not deployed");
+		}
+
+		const { address, abi } = deployment;
+
+		const method = abi.find((it: { name: string }) => it.name === methodName);
+
+		if (!method) {
+			throw new Error("Method not found");
+		}
+
+		const data = encodeDeployData({
+			abi,
+			args: options.args,
+			bytecode: `0x${method.signature}`,
+		});
+
+		await addTxIntention(this.config, this.store, {
+			evmTransaction: {
+				type: "btc",
+				chainId: 777,
+				data,
+				to: address as Address,
+			},
 		});
 	}
 
@@ -140,6 +212,8 @@ export class MidlHardhatEnvironment {
 			},
 		);
 
+		const confirmationPromises: Promise<unknown>[] = [];
+
 		for (const intention of intentions) {
 			const signed = await signIntention(
 				this.config,
@@ -153,22 +227,30 @@ export class MidlHardhatEnvironment {
 				},
 			);
 
-			console.log(
-				"Contract address",
-				getContractAddress({
-					from: await this.getAddress(),
-					nonce: BigInt(intention.evmTransaction.nonce ?? 0),
-				}),
-			);
-
 			const txId = await walletClient.sendRawTransaction({
 				serializedTransaction: signed,
 			});
+
+			if (intention.meta?.contractName) {
+				this.saveDeployment(intention.meta.contractName, {
+					txId,
+					address: getContractAddress({
+						from: await this.getAddress(),
+						nonce: BigInt(intention.evmTransaction.nonce ?? 0),
+					}),
+				});
+
+				confirmationPromises.push(
+					waitForTransactionReceipt(walletClient, { hash: txId }),
+				);
+			}
 
 			console.log("Transaction sent", txId);
 		}
 
 		await broadcastTransaction(this.config, tx.tx.hex);
+		await Promise.all(confirmationPromises);
+
 		clearTxIntentions(this.store);
 	}
 
@@ -199,5 +281,27 @@ export class MidlHardhatEnvironment {
 		}
 
 		return this.walletClient;
+	}
+
+	private async saveDeployment(
+		name: string,
+		{
+			txId,
+			address,
+		}: {
+			txId: string;
+			address: string;
+		},
+	) {
+		const artifact = await this.hre.artifacts.readArtifact(name);
+
+		fs.writeFileSync(
+			`${this.deploymentsPath}/${name}.json`,
+			JSON.stringify({
+				txId,
+				address,
+				abi: artifact.abi,
+			}),
+		);
 	}
 }

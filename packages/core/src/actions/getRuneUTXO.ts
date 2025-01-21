@@ -27,7 +27,7 @@ export const getRuneUTXO = async (
 		throw new Error("No network");
 	}
 
-	const response = await axios<RuneUTXO[]>(
+	const response = await axios.get<RuneUTXO[]>(
 		`${config.network.runesUTXOUrl}/utxos/${address}/`,
 		{
 			params: {

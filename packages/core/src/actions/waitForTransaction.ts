@@ -21,7 +21,7 @@ export const waitForTransaction = (
 			}
 
 			try {
-				const { data } = await axios<{
+				const { data } = await axios.get<{
 					confirmed: boolean;
 					block_height: number;
 				}>(`${config.network?.rpcUrl}/tx/${txId}/status`);

@@ -38,7 +38,7 @@ export const makePSBTInputs = async (
 			});
 
 			for (const utxo of utxos) {
-				const { data: hex } = await axios(
+				const { data: hex } = await axios.get(
 					`${config.network.rpcUrl}/tx/${utxo.txid}/hex`,
 				);
 

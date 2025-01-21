@@ -21,7 +21,6 @@ import {
 import { AddressPurpose, AddressType } from "~/constants";
 import type { BitcoinNetwork } from "~/createConfig";
 import { extractXCoordinate, getAddressType, isCorrectAddress } from "~/utils";
-import { signBIP322 } from "~/utils/signBIP322";
 
 bitcoin.initEccLib(ecc);
 
@@ -135,13 +134,6 @@ class KeyPairConnector implements Connector {
 					networkType: unisatNetworkType,
 					wallet,
 				});
-
-				// const signature = await signBIP322(
-				// 	params.message,
-				// 	params.address,
-				// 	this.keyPair.toWIF(),
-				// 	network,
-				// );
 
 				return {
 					signature: signature as string,

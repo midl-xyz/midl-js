@@ -18,7 +18,7 @@ export const addTxIntention = async (
 	intention: PartialIntention,
 	reset = false,
 	publicKey?: string,
-): Promise<void> => {
+): Promise<TransactionIntention> => {
 	if (!config.network) {
 		throw new Error("No network found");
 	}
@@ -53,4 +53,6 @@ export const addTxIntention = async (
 			? [intention as TransactionIntention]
 			: [...intentions, intention as TransactionIntention],
 	});
+
+	return intention as TransactionIntention;
 };
