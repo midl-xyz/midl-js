@@ -5,10 +5,8 @@ import {
 	SignMessageProtocol,
 	broadcastTransaction,
 	createConfig,
-	extractXCoordinate,
 	keyPair,
 	regtest,
-	transferBTC,
 } from "@midl-xyz/midl-js-core";
 import type { TransactionIntention } from "@midl-xyz/midl-js-executor";
 import {
@@ -33,7 +31,6 @@ import {
 	createWalletClient,
 	encodeDeployData,
 	getContractAddress,
-	getCreate2Address,
 	http,
 } from "viem";
 import { type StoreApi, createStore } from "zustand";
