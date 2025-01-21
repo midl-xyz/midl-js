@@ -18,32 +18,91 @@ type TransferOutput = {
 };
 
 export type EdictRuneParams = {
+	/**
+	 * The address to transfer the rune from
+	 */
 	from?: string;
+	/**
+	 * An array of transfers, supporting both rune and bitcoin transfers
+	 */
 	transfers: (
 		| {
+				/**
+				 * The rune ID, in the format `blockHeight:txIndex`
+				 */
 				runeId: string;
+				/**
+				 * The amount to transfer
+				 */
 				amount: bigint;
+				/**
+				 * The receiver address
+				 */
 				receiver: string;
 		  }
 		| {
+				/**
+				 * The receiver address
+				 * */
 				receiver: string;
+				/**
+				 *The amount in satoshis to transfer
+				 */
 				amount: number;
 		  }
 	)[];
+	/**
+	 * The fee rate in satoshis per byte
+	 */
 	feeRate?: number;
+	/**
+	 * If true, the transaction will be broadcasted
+	 */
 	publish?: boolean;
 };
 
 export type EdictRuneResponse = {
+	/**
+	 * Base64-encoded PSBT data
+	 */
 	psbt: string;
+	/**
+	 * The transaction data
+	 */
 	tx: {
+		/**
+		 * The transaction hash
+		 */
 		id: string;
+		/**
+		 * The transaction hex
+		 * */
 		hex: string;
 	};
 };
 
 const RUNE_MAGIC_VALUE = 546;
 
+/**
+ * Edicts (transfers) one or more runes to one or more receivers
+ *
+ * @example
+ * ```ts
+ * edictRune(config, {
+ * 	transfers: [
+ * 		{
+ * 			runeId: "1:1",
+ * 			amount: 100n,
+ * 			receiver: "tb1q9zj...zj9q"
+ * 		},
+ * 	]
+ * });
+ * ```
+ *
+ * @param config The configuration object
+ * @param params Edict rune parameters
+ * @returns The PSBT and transaction data
+ */
 export const edictRune = async (
 	config: Config,
 	{ transfers, feeRate: customFeeRate, publish, from }: EdictRuneParams,
