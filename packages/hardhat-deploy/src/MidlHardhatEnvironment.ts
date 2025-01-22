@@ -203,7 +203,9 @@ export class MidlHardhatEnvironment {
 		const intentions = this.store.getState().intentions;
 
 		if (!intentions || intentions.length === 0) {
-			throw new Error("No intentions to execute");
+			console.warn("No intentions to execute");
+
+			return;
 		}
 
 		const walletClient = await this.getWalletClient();
@@ -244,11 +246,11 @@ export class MidlHardhatEnvironment {
 						nonce: BigInt(intention.evmTransaction.nonce ?? 0),
 					}),
 				});
-
-				confirmationPromises.push(
-					waitForTransactionReceipt(walletClient, { hash: txId }),
-				);
 			}
+
+			confirmationPromises.push(
+				waitForTransactionReceipt(walletClient, { hash: txId }),
+			);
 
 			console.log("Transaction sent", txId);
 		}

@@ -1,5 +1,11 @@
 # @midl-xyz/hardhat-deploy
 
+## 0.0.3
+
+### Patch Changes
+
+- 49dd6ce: fix: await tx call contract
+
 ## 0.0.2
 
 ### Patch Changes
