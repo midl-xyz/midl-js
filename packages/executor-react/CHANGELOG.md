@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor-react
 
+## 0.0.4
+
+### Patch Changes
+
+- fix: types for add tx intention
+
 ## 0.0.3
 
 ### Patch Changes
