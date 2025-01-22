@@ -1,4 +1,10 @@
-# @midl-xyz/executor-react
+# @midl-xyz/midl-js-executor-react
+
+## 0.0.3
+
+### Patch Changes
+
+- fix: export hooks
 
 ## 0.0.2
 
