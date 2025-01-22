@@ -12,18 +12,9 @@ Install Midl.js via your package manager of choice.
 <NPMInstall packages={[
     '@midl-xyz/midl-js-core',
     '@midl-xyz/midl-js-react', 
-    '@midl-xyz/midl-js-executor'
    ]} 
 />
 
-:::note
-For using executor layer also install patched viem
-
-```js
-// package.json dependencies
- "viem": "npm:@midl-xyz/midl-viem@2.21.36",
-```
-:::
 
 ## Create config    
 
@@ -46,46 +37,18 @@ Wrap your app with the Midl.js context provider.
 ```tsx
 import {MidlProvider} from '@midl-xyz/midl-js-react';
 import {config} from './config';
-import {WagmiMidlProvider} from '@midl-xyz/midl-js-executor';
 
 
 function App() {
     return (
-        <WagmiProvider
-            config={wagmiConfig}>
-            <MidlProvider config={midlConfig}>
-                <QueryClientProvider client={queryClient}>         
-                    <WagmiMidlProvider />
-                    {children}
-                </QueryClientProvider>
-            </MidlProvider>
-        </WagmiProvider>
+        <MidlProvider config={midlConfig}>
+            <QueryClientProvider client={queryClient}>         
+                {children}
+            </QueryClientProvider>
+        </MidlProvider>
     );
 }
 ```
-
-:::warning
-Only Next.js higher than 15.0.2 is supported. You should enable async WebAssembly support in your `next.config.js` file.
-
-```js
-/**
- * @type {import('next').NextConfig}
- */
-const config = {
-  webpack(config) {
-    config.experiments = {
-      ...(config.experiments || {}),
-      asyncWebAssembly: true,
-    };
-
-    return config;
-  },
-};
-
-module.exports = config;
-```
-
-:::
 
 
 ## Use Midl.js hooks
