@@ -5,7 +5,7 @@ import {
 	addTxIntention,
 } from "@midl-xyz/midl-js-executor";
 
-type AddTxIntentionVariables = PartialIntention & {
+type AddTxIntentionVariables = {
 	intention: PartialIntention;
 	/**
 	 * If true, the array of intentions will be cleared before adding the new one

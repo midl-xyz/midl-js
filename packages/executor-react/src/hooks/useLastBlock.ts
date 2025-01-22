@@ -1,4 +1,4 @@
-import deployment from "@midl-xyz/contracts/deployments/0.0.1/Executor.json";
+import deployment from "@midl-xyz/contracts/deployments/0.0.6-alpha/Executor.json";
 import { type UseReadContractParameters, useReadContract } from "wagmi";
 import { executorAbi } from "@midl-xyz/midl-js-executor";
 

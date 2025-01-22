@@ -26,13 +26,31 @@ export const executorAbi = [
   { type: 'error', inputs: [], name: 'InvalidInput' },
   { type: 'error', inputs: [], name: 'InvalidTx' },
   { type: 'error', inputs: [], name: 'InvalidTxsNumber' },
-  { type: 'error', inputs: [], name: 'LowBalance' },
   { type: 'error', inputs: [], name: 'NoBlock' },
+  {
+    type: 'error',
+    inputs: [
+      { name: 'btcBalance', internalType: 'uint256', type: 'uint256' },
+      { name: 'btcFee', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'NotEnoughBalance',
+  },
   { type: 'error', inputs: [], name: 'NotPending' },
   { type: 'error', inputs: [], name: 'TooEarly' },
   { type: 'error', inputs: [], name: 'UnsupportedAsset' },
   { type: 'error', inputs: [], name: 'WrongAccess' },
   { type: 'error', inputs: [], name: 'WrongLength' },
+  {
+    type: 'error',
+    inputs: [
+      {
+        name: 'asset',
+        internalType: 'contract IERC20Extended',
+        type: 'address',
+      },
+    ],
+    name: 'ZeroRunesBalance',
+  },
   {
     type: 'event',
     anonymous: false,
@@ -164,6 +182,12 @@ export const executorAbi = [
       },
       {
         name: 'receiver',
+        internalType: 'bytes32',
+        type: 'bytes32',
+        indexed: false,
+      },
+      {
+        name: 'receiverBTC',
         internalType: 'bytes32',
         type: 'bytes32',
         indexed: false,
@@ -551,6 +575,7 @@ export const executorAbi = [
     inputs: [
       { name: 'txHash', internalType: 'bytes32', type: 'bytes32' },
       { name: 'receiver', internalType: 'bytes32', type: 'bytes32' },
+      { name: 'receiverBTC', internalType: 'bytes32', type: 'bytes32' },
       {
         name: 'assets',
         internalType: 'contract IERC20Extended[]',

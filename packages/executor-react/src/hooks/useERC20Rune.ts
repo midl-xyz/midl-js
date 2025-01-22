@@ -1,4 +1,4 @@
-import deployment from "@midl-xyz/contracts/deployments/0.0.1/Executor.json";
+import deployment from "@midl-xyz/contracts/deployments/0.0.6-alpha/Executor.json";
 import { executorAbi, runeIdToBytes32 } from "@midl-xyz/midl-js-executor";
 import { useRune } from "@midl-xyz/midl-js-react";
 import { type UseReadContractParameters, useReadContract } from "wagmi";
