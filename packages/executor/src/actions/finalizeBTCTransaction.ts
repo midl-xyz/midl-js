@@ -15,6 +15,7 @@ import {
 	type Client,
 	type StateOverride,
 	encodeFunctionData,
+	padHex,
 } from "viem";
 import { estimateGasMulti } from "viem/actions";
 import type { StoreApi } from "zustand";
@@ -202,6 +203,7 @@ export const finalizeBTCTransaction = async (
 					args: [
 						`0x${btcTx.tx.id}`,
 						pk as `0x${string}`,
+						padHex("0x0", { size: 32 }), // BTC receiver
 						options.assetsToWithdraw ?? [],
 						new Array(options.assetsToWithdraw?.length ?? 0).fill(0n),
 					],

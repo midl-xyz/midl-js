@@ -1,5 +1,13 @@
 # @midl-xyz/executor-react
 
+## 0.0.2
+
+### Patch Changes
+
+- feat: update contracts
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@0.0.75
+
 ## 0.0.1
 
 ### Patch Changes

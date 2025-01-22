@@ -389,8 +389,8 @@ importers:
         specifier: ^1.2.0
         version: 1.2.0
       '@midl-xyz/contracts':
-        specifier: ^0.0.4-alpha
-        version: 0.0.4-alpha
+        specifier: ^0.0.6-alpha
+        version: 0.0.6-alpha
       '@midl-xyz/midl-js-core':
         specifier: workspace:^
         version: link:../core
@@ -423,8 +423,8 @@ importers:
   packages/executor-react:
     dependencies:
       '@midl-xyz/contracts':
-        specifier: ^0.0.4-alpha
-        version: 0.0.4-alpha
+        specifier: ^0.0.6-alpha
+        version: 0.0.6-alpha
       '@midl-xyz/midl-js-core':
         specifier: workspace:^
         version: link:../core
@@ -3001,8 +3001,8 @@ packages:
   '@microsoft/tsdoc@0.15.1':
     resolution: {integrity: sha512-4aErSrCR/On/e5G2hDP0wjooqDdauzEbIq8hIkIe5pXV0rtWJZvdCEKL0ykZxex+IxIwBp0eGeV48hQN07dXtw==}
 
-  '@midl-xyz/contracts@0.0.4-alpha':
-    resolution: {integrity: sha512-TuDNtBt3SUZ+fr/2RjUsIk3sXSG3pbMvydvpUy5TohC/KhnrnLRqzseqND/KDCBUDZYTBgU0Ee2dR4BxZxDyVw==, tarball: https://npm.pkg.github.com/download/@midl-xyz/contracts/0.0.4-alpha/b9389d5b64ccc939fa481f2e14d13da732249367}
+  '@midl-xyz/contracts@0.0.6-alpha':
+    resolution: {integrity: sha512-hfh/5zuu7xVNLfoixz1ccJjpXaFTnqo992nZCffEpmdR58JihNHrOTOC9Erz3HNyDwLhtFKzsUliXFFgmRUgeA==, tarball: https://npm.pkg.github.com/download/@midl-xyz/contracts/0.0.6-alpha/c98335337a40f14642025b7f81c2c24deaa2f41e}
 
   '@midl-xyz/ethers@6.13.0-0':
     resolution: {integrity: sha512-jDF+X6a9oHLKvIEnDzej8ibtcvKITUZ93juwmTt2VRHGZdeIIQ8GHr0+zjdVQKzhDGiR1xC8V+EhLAY9lWA2cA==, tarball: https://npm.pkg.github.com/download/@midl-xyz/ethers/6.13.0-0/363042ba532cd2826e47e6455501a2698d525c4b}
@@ -3012,6 +3012,9 @@ packages:
     resolution: {integrity: sha512-MUiyfv2kpYl1iEmRHFC6gZDlcUzpBl8PGHHuIj3dBhWlwf5jhc5X1FvESKe3xYgYzhvp3gAGHjO+LtB551xXEg==, tarball: https://npm.pkg.github.com/download/@midl-xyz/midl-viem/2.21.36/171dc70bc54c172653191efdc1a281b7472cb706}
     peerDependencies:
       typescript: '>=5.0.4'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
 
   '@motionone/animation@10.18.0':
     resolution: {integrity: sha512-9z2p5GFGCm0gBsZbi8rVMOAJCtw1WqBTIPw3ozk06gDvZInBPIsQcHgYogEJ4yuHJ+akuW8g1SEIOpTOvYs8hw==}
@@ -16183,7 +16186,7 @@ snapshots:
     dependencies:
       '@ethereumjs/tx': 4.2.0
       '@metamask/superstruct': 3.1.0
-      '@noble/hashes': 1.6.1
+      '@noble/hashes': 1.7.1
       '@scure/base': 1.2.1
       '@types/debug': 4.1.12
       debug: 4.4.0
@@ -16242,7 +16245,7 @@ snapshots:
 
   '@microsoft/tsdoc@0.15.1': {}
 
-  '@midl-xyz/contracts@0.0.4-alpha': {}
+  '@midl-xyz/contracts@0.0.6-alpha': {}
 
   '@midl-xyz/ethers@6.13.0-0(bufferutil@4.0.8)(utf-8-validate@5.0.10)':
     dependencies:
@@ -16266,9 +16269,10 @@ snapshots:
       '@scure/bip39': 1.4.0
       abitype: 1.0.5(typescript@5.6.3)(zod@3.23.8)
       isows: 1.0.4(ws@8.17.1(bufferutil@4.0.8)(utf-8-validate@5.0.10))
-      typescript: 5.6.3
       webauthn-p256: 0.0.5
       ws: 8.17.1(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+    optionalDependencies:
+      typescript: 5.6.3
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -16283,9 +16287,10 @@ snapshots:
       '@scure/bip39': 1.4.0
       abitype: 1.0.5(typescript@5.6.3)(zod@3.23.8)
       isows: 1.0.4(ws@8.17.1(bufferutil@4.0.8)(utf-8-validate@6.0.5))
-      typescript: 5.6.3
       webauthn-p256: 0.0.5
       ws: 8.17.1(bufferutil@4.0.8)(utf-8-validate@6.0.5)
+    optionalDependencies:
+      typescript: 5.6.3
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -16300,9 +16305,10 @@ snapshots:
       '@scure/bip39': 1.4.0
       abitype: 1.0.5(typescript@5.7.2)(zod@3.23.8)
       isows: 1.0.4(ws@8.17.1(bufferutil@4.0.8)(utf-8-validate@5.0.10))
-      typescript: 5.7.2
       webauthn-p256: 0.0.5
       ws: 8.17.1(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+    optionalDependencies:
+      typescript: 5.7.2
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -16317,9 +16323,10 @@ snapshots:
       '@scure/bip39': 1.4.0
       abitype: 1.0.5(typescript@5.7.2)(zod@3.23.8)
       isows: 1.0.4(ws@8.17.1(bufferutil@4.0.8)(utf-8-validate@6.0.5))
-      typescript: 5.7.2
       webauthn-p256: 0.0.5
       ws: 8.17.1(bufferutil@4.0.8)(utf-8-validate@6.0.5)
+    optionalDependencies:
+      typescript: 5.7.2
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
