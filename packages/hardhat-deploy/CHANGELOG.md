@@ -1,5 +1,11 @@
 # @midl-xyz/hardhat-deploy
 
+## 0.0.2
+
+### Patch Changes
+
+- fix: encode function data
+
 ## 0.0.1
 
 ### Patch Changes

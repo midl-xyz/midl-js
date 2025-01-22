@@ -31,6 +31,7 @@ import {
 	type WalletClient,
 	createWalletClient,
 	encodeDeployData,
+	encodeFunctionData,
 	getContractAddress,
 	http,
 } from "viem";
@@ -94,11 +95,11 @@ export class MidlHardhatEnvironment {
 
 	public async deploy(
 		name: string,
-		options: Pick<
+		options?: Pick<
 			TransactionSerializableBTC,
 			"to" | "value" | "gasPrice" | "gas" | "nonce"
 			// biome-ignore lint/suspicious/noExplicitAny: Allow any args
-		> & { args: any },
+		> & { args?: any },
 		intentionOptions: Pick<
 			TransactionIntention,
 			| "value"
@@ -120,7 +121,7 @@ export class MidlHardhatEnvironment {
 		const data = await this.hre.artifacts.readArtifact(name);
 		const deployData = encodeDeployData({
 			abi: data.abi,
-			args: options.args,
+			args: options?.args,
 			bytecode: data.bytecode as `0x${string}`,
 		});
 
@@ -182,10 +183,10 @@ export class MidlHardhatEnvironment {
 			throw new Error("Method not found");
 		}
 
-		const data = encodeDeployData({
+		const data = encodeFunctionData({
 			abi,
 			args: options.args,
-			bytecode: `0x${method.signature}`,
+			functionName: methodName,
 		});
 
 		await addTxIntention(this.config, this.store, {
