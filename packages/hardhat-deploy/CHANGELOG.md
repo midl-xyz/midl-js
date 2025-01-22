@@ -1,5 +1,11 @@
 # @midl-xyz/hardhat-deploy
 
+## 0.0.4
+
+### Patch Changes
+
+- feat: add required confirmations
+
 ## 0.0.3
 
 ### Patch Changes

@@ -7,6 +7,7 @@ import {
 	createConfig,
 	keyPair,
 	regtest,
+	waitForTransaction,
 } from "@midl-xyz/midl-js-core";
 import type { TransactionIntention } from "@midl-xyz/midl-js-executor";
 import {
@@ -52,6 +53,8 @@ export class MidlHardhatEnvironment {
 		}));
 
 	private readonly deploymentsPath: string;
+	private readonly confirmationsRequired;
+	private readonly btcConfirmationsRequired;
 
 	private walletClient: WalletClient | undefined;
 
@@ -64,6 +67,10 @@ export class MidlHardhatEnvironment {
 		});
 
 		this.deploymentsPath = path.join(this.hre.config.paths.root, "deployments");
+		this.confirmationsRequired =
+			this.hre.userConfig.midl.confirmationsRequired ?? 5;
+		this.btcConfirmationsRequired =
+			this.hre.userConfig.midl.btcConfirmationsRequired ?? 1;
 
 		if (!fs.existsSync(this.deploymentsPath)) {
 			fs.mkdirSync(this.deploymentsPath);
@@ -249,13 +256,17 @@ export class MidlHardhatEnvironment {
 			}
 
 			confirmationPromises.push(
-				waitForTransactionReceipt(walletClient, { hash: txId }),
+				waitForTransactionReceipt(walletClient, {
+					hash: txId,
+					confirmations: this.confirmationsRequired,
+				}),
 			);
 
 			console.log("Transaction sent", txId);
 		}
 
-		await broadcastTransaction(this.config, tx.tx.hex);
+		const txId = await broadcastTransaction(this.config, tx.tx.hex);
+		await waitForTransaction(this.config, txId, this.btcConfirmationsRequired);
 		await Promise.all(confirmationPromises);
 
 		clearTxIntentions(this.store);

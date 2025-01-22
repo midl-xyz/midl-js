@@ -7,6 +7,8 @@ declare module "hardhat/types/config" {
 		midl: {
 			mnemonic: string;
 			path: string;
+			confirmationsRequired?: number;
+			btcConfirmationsRequired?: number;
 		};
 	}
 }
