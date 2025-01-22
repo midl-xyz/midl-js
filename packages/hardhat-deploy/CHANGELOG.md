@@ -1,5 +1,23 @@
 # @midl-xyz/hardhat-deploy
 
+## 0.0.4
+
+### Patch Changes
+
+- feat: add required confirmations
+
+## 0.0.3
+
+### Patch Changes
+
+- 49dd6ce: fix: await tx call contract
+
+## 0.0.2
+
+### Patch Changes
+
+- fix: encode function data
+
 ## 0.0.1
 
 ### Patch Changes

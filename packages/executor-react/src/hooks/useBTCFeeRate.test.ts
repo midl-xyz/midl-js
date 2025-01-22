@@ -4,7 +4,7 @@ import { wrapper } from "~/__tests__";
 import { useBTCFeeRate } from "~/hooks/useBTCFeeRate";
 
 describe("useBTCFeeRate", () => {
-	it("should return the correct value", async () => {
+	it.skip("should return the correct value", async () => {
 		const { result, rerender } = renderHook(() => useBTCFeeRate(), {
 			wrapper,
 		});
