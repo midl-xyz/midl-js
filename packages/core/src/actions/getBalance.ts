@@ -6,8 +6,6 @@ import type { Config } from "~/createConfig";
  *
  * @example
  * ```ts
- * import { getBalance } from "@midl-xyz/midl-js-core";
- *
  * const balance = await getBalance(config, "bc1q...");
  * console.log(balance);
  * ```

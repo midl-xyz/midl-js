@@ -10,23 +10,74 @@ import ecc from "@bitcoinerlab/secp256k1";
 initEccLib(ecc);
 
 export type TransferBTCParams = {
+	/**
+	 * An array of transfers
+	 */
 	transfers: {
+		/**
+		 * The receiver address
+		 */
 		receiver: string;
+		/**
+		 * The amount in satoshis to transfer
+		 */
 		amount: number;
 	}[];
+	/**
+	 * The fee rate in satoshis per byte
+	 */
 	feeRate?: number;
+	/**
+	 * If true, the transaction will be broadcasted
+	 */
 	publish?: boolean;
+	/**
+	 * The address to transfer the BTC from
+	 */
 	from?: string;
 };
 
 export type TransferBTCResponse = {
+	/**
+	 * Signed Base64 encoded PSBT
+	 */
 	psbt: string;
+	/**
+	 * The transaction
+	 * */
 	tx: {
+		/**
+		 * The transaction ID
+		 */
 		id: string;
+		/**
+		 * The transaction hex
+		 */
 		hex: string;
 	};
 };
 
+/**
+ * Transfers BTC
+ *
+ * @example
+ * ```ts
+ * const tx = await transferBTC(config, {
+ * 	transfers: [
+ * 		{ receiver: "tb1q...", amount: 10000 },
+ * 		{ receiver: "tb1q...", amount: 20000 },
+ * 	],
+ * 	feeRate: 1,
+ * 	publish: true,
+ * });
+ *
+ * console.log(tx);
+ * ```
+ *
+ * @param config The configuration object
+ * @param params The transfer BTC parameters
+ * @returns The signed PSBT and transaction data
+ */
 export const transferBTC = async (
 	config: Config,
 	{ transfers, feeRate: customFeeRate, publish, from }: TransferBTCParams,

@@ -6,8 +6,6 @@ import type { Config } from "~/createConfig";
  *
  * @example
  * ```ts
- * import { broadcastTransaction } from "@midl-xyz/midl-js-core";
- *
  * const txHex = "02000000000101...";
  * const txHash = await broadcastTransaction(config, txHex);
  * console.log(txHash);

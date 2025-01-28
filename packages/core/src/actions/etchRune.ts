@@ -112,7 +112,7 @@ const ETCHING_TX_SIZE = 350;
  *
  * @param config The configuration object
  * @param params The etch rune parameters
- * @returns The etching, funding, and reveal transactions hex encoded PSBTs
+ * @returns The etching, funding, and reveal hex transactions
  */
 export const etchRune = async (
 	config: Config,

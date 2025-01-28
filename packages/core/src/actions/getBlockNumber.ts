@@ -6,8 +6,6 @@ import axios from "axios";
  *
  * @example
  * ```ts
- * import { getBlockNumber } from "@midl-xyz/midl-js-core";
- *
  * const blockNumber = await getBlockNumber(config);
  * console.log(blockNumber);
  * ```

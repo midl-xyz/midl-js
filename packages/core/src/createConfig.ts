@@ -3,17 +3,44 @@ import { createStore, type StoreApi } from "zustand/vanilla";
 import type { Account, Connector, CreateConnectorFn } from "~/connectors";
 
 export type BitcoinNetwork = {
+	/**
+	 * The id of the network
+	 */
 	id: string;
+	/**
+	 * Bitcoin API used to generate addresses and sign transactions
+	 */
 	network: "bitcoin" | "testnet" | "regtest";
+	/**
+	 * The RPC URL for the network
+	 */
 	rpcUrl: string;
+	/**
+	 * Runes API URL
+	 */
 	runesUrl: string;
+	/**
+	 * The explorer URL for the network
+	 */
 	explorerUrl: string;
+	/**
+	 * The runes UTXO API URL
+	 */
 	runesUTXOUrl: string;
 };
 
 type ConfigParams = {
+	/**
+	 * The bitcoin networks to use
+	 */
 	networks: BitcoinNetwork[];
+	/**
+	 * The connectors to use
+	 */
 	connectors: CreateConnectorFn[];
+	/**
+	 * If true, the config will persist in local storage
+	 */
 	persist?: boolean;
 };
 

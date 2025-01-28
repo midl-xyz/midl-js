@@ -29,8 +29,6 @@ export type GetFeeRateResponse = {
  *
  * @example
  * ```ts
- * import { getFeeRate } from "@midl-xyz/midl-js-core";
- *
  * const feeRate = await getFeeRate(config);
  * console.log(feeRate);
  * ```

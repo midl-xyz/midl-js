@@ -2,11 +2,29 @@ import type { Config } from "~/createConfig";
 import axios from "axios";
 
 export type GetRuneResponse = {
+	/**
+	 * The rune ID
+	 */
 	id: string;
+	/**
+	 * The rune name
+	 */
 	name: string;
+	/**
+	 * The rune spaced name
+	 */
 	spaced_name: string;
+	/**
+	 * The rune number
+	 */
 	number: number;
+	/**
+	 * The rune divisibility
+	 */
 	divisibility: number;
+	/**
+	 * The rune symbol
+	 */
 	symbol: string;
 	turbo: boolean;
 	mint_terms: {
@@ -36,6 +54,19 @@ export type GetRuneResponse = {
 	};
 };
 
+/**
+ * Gets a rune by its ID
+ *
+ * @example
+ * ```ts
+ * const rune = await getRune(config, "1:1");
+ * console.log(rune);
+ * ```
+ *
+ * @param config The configuration object
+ * @param runeId The rune ID
+ * @returns The rune object
+ */
 export const getRune = async (config: Config, runeId: string) => {
 	if (!config.network) {
 		throw new Error("No network found");
