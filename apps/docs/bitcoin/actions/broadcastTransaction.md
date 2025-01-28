@@ -24,7 +24,7 @@ console.log(txHash);
 
 | Name   | Type                                                         | Description              |
 | ------ | ------------------------------------------------------------ | ------------------------ |
-| config | [`Config`](../configuration#creating-a-configuration-object) | The configuration object |
+| config | [`Config`](../configuration/index#creating-a-configuration-object) | The configuration object |
 | txHex  | `string`                                                     | The transaction hex      |
 
 ## Returns

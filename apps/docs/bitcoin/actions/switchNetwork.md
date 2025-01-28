@@ -20,10 +20,10 @@ await switchNetwork(config, mainnet);
 
 ## Parameters
 
-| Name    | Type                                                         | Description              |
-| ------- | ------------------------------------------------------------ | ------------------------ |
-| config  | [`Config`](../configuration#creating-a-configuration-object) | The configuration object |
-| network | `BitcoinNetwork`                                             | The network to switch to |
+| Name    | Type                                                               | Description              |
+| ------- | ------------------------------------------------------------------ | ------------------------ |
+| config  | [`Config`](../configuration/index#creating-a-configuration-object) | The configuration object |
+| network | `BitcoinNetwork`                                                   | The network to switch to |
 
 ## Returns
 

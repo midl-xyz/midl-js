@@ -21,7 +21,7 @@ console.log(utxos);
 
 | Name         | Type                                                         | Description                       |
 | ------------ | ------------------------------------------------------------ | --------------------------------- |
-| config       | [`Config`](../configuration#creating-a-configuration-object) | The configuration object          |
+| config       | [`Config`](../configuration/index#creating-a-configuration-object) | The configuration object          |
 | address      | `string`                                                     | The address to get the UTXOs of   |
 | includeRunes | `boolean` = `false`                                          | If true, include UTXOs with Runes |
 

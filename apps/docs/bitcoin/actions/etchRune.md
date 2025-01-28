@@ -37,7 +37,7 @@ console.log(fundingTxHash, etchingTxHash, revealTxHash);
 
 | Name   | Type                                                         | Description              |
 | ------ | ------------------------------------------------------------ | ------------------------ |
-| config | [`Config`](../configuration#creating-a-configuration-object) | The configuration object |
+| config | [`Config`](../configuration/index#creating-a-configuration-object) | The configuration object |
 | params | [`EtchRuneParams`](#etchruneparams)                          | The etch rune parameters |
 
 ### EtchRuneParams

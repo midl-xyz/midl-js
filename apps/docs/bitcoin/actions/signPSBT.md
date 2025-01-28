@@ -28,7 +28,7 @@ console.log(signedPSBT);
 
 | Name   | Type                                                         | Description                    |
 | ------ | ------------------------------------------------------------ | ------------------------------ |
-| config | [`Config`](../configuration#creating-a-configuration-object) | The configuration object       |
+| config | [`Config`](../configuration/index#creating-a-configuration-object) | The configuration object       |
 | params | [`SignPSBTParams`](#signpsbtparams)                          | The parameters for the request |
 
 ### SignPSBTParams

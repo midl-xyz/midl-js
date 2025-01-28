@@ -24,7 +24,7 @@ console.log(balance);
 
 | Name   | Type                                                         | Description                    |
 | ------ | ------------------------------------------------------------ | ------------------------------ |
-| config | [`Config`](../configuration#creating-a-configuration-object) | The configuration object       |
+| config | [`Config`](../configuration/index#creating-a-configuration-object) | The configuration object       |
 | params | [`GetRuneBalanceParams`](#getrunebalanceparams)              | The parameters for the request |
 
 ### GetRuneBalanceParams
