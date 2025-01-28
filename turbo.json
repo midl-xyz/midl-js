@@ -1,5 +1,8 @@
 {
     "$schema": "https://turbo.build/schema.json",
+    "globalEnv": [
+        "DOCS_OUTPUT_DIR"
+    ],
     "tasks": {
         "dev": {
             "dependsOn": [

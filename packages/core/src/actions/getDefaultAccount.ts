@@ -2,6 +2,17 @@ import type { Account } from "~/connectors";
 import { AddressPurpose } from "~/constants";
 import type { Config } from "~/createConfig";
 
+/**
+ * Gets the default account from the current connection.
+ * If no account is found, an error is thrown.
+ *
+ * If a search function is provided, the first account that matches the search function is returned.
+ * In other cases, the first account with the purpose of `Ordinals` or `Payment` is returned.
+ *
+ * @param config The configuration object
+ * @param search A search function to find the account
+ * @returns The account
+ */
 export const getDefaultAccount = async (
 	config: Config,
 	search?: (account: Account) => boolean,

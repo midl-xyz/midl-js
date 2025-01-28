@@ -22,8 +22,10 @@ import ecc from "@bitcoinerlab/secp256k1";
 initEccLib(ecc);
 
 export type EtchRuneParams = {
+	/**
+	 * The address to etch the rune from
+	 */
 	from?: string;
-
 	/**
 	 * The name of the rune to etch. Should be uppercase and spaced with • (U+2022).
 	 * Example: "RUNE•NAME"
@@ -83,6 +85,35 @@ const ETCHING_SCRIPT_VERSION = 192;
 const RUNE_MAGIC_VALUE = 546;
 const ETCHING_TX_SIZE = 350;
 
+/**
+ * Etches (mints) a rune on Bitcoin. The rune will be etched and revealed in the consecutive transactions.
+ * This function creates the etching, funding, and reveal transactions.
+ * The transactions won't be broadcasted. Once the transactions are created, you can broadcast them using the `broadcastTransaction` function in
+ * the following order: funding, etching, reveal.
+ *
+ * @example
+ * ```ts
+ * import { etchRune } from "@midl-xyz/midl-js-core";
+ * import { broadcastTransaction } from "@midl-xyz/midl-js-core";
+ *
+ * const etching = await etchRune(config, {
+ * 	name: "RUNE•NAME",
+ * 	receiver: "bc1q...",
+ * 	amount: 100,
+ *  ...
+ * });
+ *
+ * const fundingTxHash = await broadcastTransaction(config, etching.fundingTx);
+ * const etchingTxHash = await broadcastTransaction(config, etching.etchingTx);
+ * const revealTxHash = await broadcastTransaction(config, etching.revealTx);
+ *
+ * console.log(fundingTxHash, etchingTxHash, revealTxHash);
+ * ```
+ *
+ * @param config The configuration object
+ * @param params The etch rune parameters
+ * @returns The etching, funding, and reveal hex transactions
+ */
 export const etchRune = async (
 	config: Config,
 	{
