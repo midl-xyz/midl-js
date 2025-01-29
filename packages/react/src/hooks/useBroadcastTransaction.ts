@@ -35,14 +35,11 @@ type UseBroadcastTransactionParams = {
  * await broadcastTransactionAsync({ tx: 'transaction_data' });
  * ```
  *
- * @param {UseBroadcastTransactionParams} [params] - Configuration options for the mutation.
+ * @param params - Configuration options for the mutation.
  *
  * @returns
  * - **broadcastTransaction**: `(variables: UseBroadcastTransactionVariables) => void` – Function to initiate broadcasting a transaction.
  * - **broadcastTransactionAsync**: `(variables: UseBroadcastTransactionVariables) => Promise<UseBroadcastTransactionData>` – Function to asynchronously broadcast a transaction.
- * - **isLoading**: `boolean` – Indicates if the mutation is currently loading.
- * - **error**: `UseBroadcastTransactionError | null` – Contains error information if the mutation failed.
- * - **data**: `UseBroadcastTransactionData | undefined` – The response data from the broadcast operation.
  */
 export const useBroadcastTransaction = ({
 	mutation,
