@@ -1,6 +1,6 @@
 ---
 title: Bitcoin
-order: 1
+order: 3
 ---
 
 # Bitcoin

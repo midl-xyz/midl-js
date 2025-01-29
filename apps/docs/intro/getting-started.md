@@ -40,7 +40,7 @@ export const config = createConfig({
 
 ```tsx [app.tsx]
 import { MidlProvider } from "@midl-xyz/midl-js-react";
-import { QueryClientProvider } from "@talbs/query-client";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./query-client";
 import { config } from "./midl.config";
 

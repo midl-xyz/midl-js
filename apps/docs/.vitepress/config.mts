@@ -25,9 +25,11 @@ export default withSidebar(
 	{
 		useTitleFromFrontmatter: true,
 		excludePattern: ["generated"],
+		folderLinkNotIncludesFileName: true,
 		useFolderTitleFromIndexFile: true,
 		useFolderLinkFromIndexFile: true,
 		sortMenusByFrontmatterOrder: true,
+		collapseDepth: 3,
 		useTitleFromFileHeading: true,
 		collapsed: true,
 	},

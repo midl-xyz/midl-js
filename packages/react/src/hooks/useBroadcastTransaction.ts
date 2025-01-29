@@ -22,17 +22,15 @@ type UseBroadcastTransactionParams = {
 };
 
 /**
- * Custom hook to broadcast a transaction to Bitcoin network.
- *
- * This hook provides functions to broadcast a transaction and handle its asynchronous operation.
- *
+ * Broadcasts a transaction to Bitcoin network.
+ * *
  * @example
  * ```typescript
  * const { broadcastTransaction, broadcastTransactionAsync } = useBroadcastTransaction();
- * 
+ *
  * // To broadcast a transaction
  * broadcastTransaction({ tx: 'transaction_data' });
- * 
+ *
  * // To broadcast a transaction asynchronously
  * await broadcastTransactionAsync({ tx: 'transaction_data' });
  * ```
