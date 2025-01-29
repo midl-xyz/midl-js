@@ -29,13 +29,10 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+          registry-url: https://registry.npmjs.org
 
       - name: Install pnpm
         run: npm install -g pnpm
-
-      - name: Configure npm for GitHub Packages
-        run: |
-          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> ~/.npmrc
 
       - name: Allow publishing on branches
         run: |
@@ -54,7 +51,6 @@ jobs:
         run: pnpm turbo run test --filter="./packages/*"
 
       - name: Publish packages
-        run: pnpm publish -r --filter="./packages/*"
-
-      - name: Clean up .npmrc
-        run: rm ~/.npmrc
+        run: pnpm publish -r --filter="./packages/*" --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
