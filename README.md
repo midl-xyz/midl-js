@@ -25,7 +25,8 @@
 
 ### Documentation
 
-> [!WARNING] Documentation is still a work in progress
+> [!WARNING]
+> Documentation is still a work in progress
 
 For detailed documentation, please visit
 [midl-js-lib.midl.xyz](https://midl-js-lib.midl.xyz).
