@@ -18,26 +18,22 @@ type UseSwitchNetworkParams = {
 };
 
 /**
- * Custom hook to switch the current Bitcoin network.
- *
- * This hook provides functions to switch between different Bitcoin networks as configured.
+ * Switches between different Bitcoin networks as configured.
  *
  * @example
  * ```typescript
- * const { switchNetwork, networks } = useSwitchNetwork();
- * 
+ * const { switchNetwork } = useSwitchNetwork();
+ *
  * // To switch to a specific network
- * switchNetwork(BitcoinNetwork.Mainnet);
+ * switchNetwork(mainnet);
  * ```
  *
- * @param {UseSwitchNetworkParams} [params] - Configuration options for the mutation.
+ * @param params Configuration options for the mutation.
  *
  * @returns
  * - `switchNetwork`: `(variables: SwitchNetworkVariables) => void` – Function to initiate a network switch.
  * - `switchNetworkAsync`: `(variables: SwitchNetworkVariables) => Promise<SwitchNetworkData>` – Function to asynchronously switch networks.
  * - `networks`: `Array<BitcoinNetwork>` – The list of available Bitcoin networks.
- * - `isLoading`: `boolean` – Indicates if the mutation is currently loading.
- * - `error`: `undefined` – Contains error information if the mutation failed.
  */
 export const useSwitchNetwork = ({ mutation }: UseSwitchNetworkParams = {}) => {
 	const config = useConfig();

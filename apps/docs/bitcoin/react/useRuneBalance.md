@@ -12,8 +12,10 @@ import { useRuneBalance } from "@midl-xyz/midl-js-react";
 
 ```tsx
 function RuneBalance() {
-  const { address } = useAddress();
-  const { balance, isLoading, error } = useRuneBalance(address, "1:1");
+  const { balance, isLoading, error } = useRuneBalance({
+    address: "bcrt1qj0...0zq",
+    runeId: "1:1",
+  });
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
