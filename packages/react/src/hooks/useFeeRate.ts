@@ -14,22 +14,17 @@ type UseFeeRateParams = {
 };
 
 /**
- * Custom hook to retrieve the current fee rate.
- *
- * This hook fetches the latest fee rate from the configured network.
+ * Gets the current fee rate.
  *
  * @example
  * ```typescript
  * const { feeRate, isLoading } = useFeeRate();
  * ```
  *
- * @param {UseFeeRateParams} [params] - Configuration options for the query.
+ * @param params Configuration options for the query.
  *
  * @returns
  * - **feeRate**: `GetFeeRateResponse | undefined` – The current fee rate.
- * - **isLoading**: `boolean` – Indicates if the query is currently loading.
- * - **error**: `Error | null` – Contains error information if the query failed.
- * - **isFetching**: `boolean` – Indicates if the query is in the background fetching state.
  */
 export const useFeeRate = ({
 	query: { queryKey, ...query } = {} as QueryOptions,

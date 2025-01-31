@@ -8,10 +8,8 @@ import { useConfig } from "~/hooks/useConfig";
 import { ConnectMutationKey } from "~/hooks/useConnect";
 
 /**
- * Custom hook to manage user accounts.
- *
- * This hook fetches and provides access to the user's accounts, including ordinals and payment accounts.
- *
+ * Provides access to the connected user's accounts.
+ * *
  * @example
  * ```typescript
  * const { accounts, ordinalsAccount, paymentAccount, status } = useAccounts();
@@ -19,17 +17,16 @@ import { ConnectMutationKey } from "~/hooks/useConnect";
  *
  * @returns
  * - **accounts**: `Array<Account> | null` – The list of user accounts.
- * - **ordinalsAccount**: `Account | undefined` – The ordinals account.
- * - **paymentAccount**: `Account | undefined` – The payment account.
+ * - **ordinalsAccount**: `Account | undefined` – The ordinals account (p2tr)
+ * - **paymentAccount**: `Account | undefined` – The payment account (p2wpkh)
  * - **connector**: `Connector | undefined` – The current connection.
  * - **isConnecting**: `boolean` – Indicates if a connection is in progress.
  * - **isConnected**: `boolean` – Indicates if the connection has been established.
  * - **status**: `string` – The current connection status.
- * - **network**: `Network | undefined` – The connected network.
+ * - **network**: `BitcoinNetwork | undefined` – The connected network.
  * - **...rest**: `any` – Additional query state provided by `useQuery`.
  */
 export const useAccounts = () => {
-
 	const { currentConnection, network } = useConfig();
 
 	const { data, status, ...rest } = useQuery({

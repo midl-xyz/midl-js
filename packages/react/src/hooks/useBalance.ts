@@ -11,6 +11,9 @@ type UseBalanceParams = {
 	query?: QueryOptions;
 };
 
+/**
+ * Fetches the balance of a given address.
+ */
 export const useBalance = ({ address, query = {} }: UseBalanceParams) => {
 	const config = useConfig();
 
