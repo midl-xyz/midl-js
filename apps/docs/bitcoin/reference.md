@@ -27,3 +27,15 @@ order: 4
 | ---------- | ---------- |
 | `Ordinals` | "Ordinals" |
 | `Payment`  | "Payment"  |
+
+## Config
+
+| Name              | Type                                                                     | Description                          |
+| ----------------- | ------------------------------------------------------------------------ | ------------------------------------ |
+| networks          | `BitcoinNetwork[]`                                                       | The available Bitcoin networks       |
+| connectors        | `Connector[]`                                                            | The available connectors             |
+| currentConnection | `Connector \| undefined`                                                 | The current connection               |
+| network           | `BitcoinNetwork`                                                         | The current Bitcoin network          |
+| setState          | `(state: Partial<ConfigState>) => void`                                  | Sets the configuration state         |
+| getState          | `() => ConfigState`                                                      | Gets the current configuration state |
+| subscribe         | `(callback: (newState: ConfigState \| undefined) => void) => () => void` | Subscribes to configuration changes  |

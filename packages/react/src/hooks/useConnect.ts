@@ -28,30 +28,21 @@ type UseConnectParams = ConnectParams & {
 export const ConnectMutationKey = "connect";
 
 /**
- * Custom hook to manage connection to a connector.
- *
- * This hook provides functions to connect to a specified connector and manages the connection state.
+ * Connects to a wallet using the specified connector.
  *
  * @example
  * ```typescript
- * const { connect, connectAsync, connectors, status } = useConnect({ id: 'connector-id' });
- * 
- * // To initiate a connection
+ * const { connect } = useConnect();
+ *
  * connect({ id: 'connector-id' });
- * 
- * // To initiate a connection asynchronously
- * await connectAsync({ id: 'connector-id' });
  * ```
  *
- * @param {UseConnectParams} params - Parameters for establishing the connection.
+ * @param params Configuration for useConnect.
  *
  * @returns
  * - **connect**: `(variables: ConnectVariables) => void` – Function to initiate connection.
  * - **connectAsync**: `(variables: ConnectVariables) => Promise<ConnectData>` – Function to asynchronously connect.
  * - **connectors**: `Array<Connector>` – The list of available connectors.
- * - **isLoading**: `boolean` – Indicates if the mutation is currently loading.
- * - **error**: `ConnectError | null` – Contains error information if the mutation failed.
- * - **data**: `ConnectData | undefined` – The response data from the connection.
  */
 export const useConnect = ({
 	mutation: { onSuccess, ...mutationOptions } = {},

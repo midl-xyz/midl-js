@@ -1,9 +1,7 @@
 import { useMidlContext } from "~/context";
 
 /**
- * Custom hook to access the configuration context.
- *
- * This hook retrieves the current configuration from the Midl context, providing access to connectors, networks, and connections.
+ * Retrieves the current configuration
  *
  * @example
  * ```typescript
