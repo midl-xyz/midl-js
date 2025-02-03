@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 0.0.76
+
+### Patch Changes
+
+- docs: update docs
+
 ## 0.0.38
 
 ### Patch Changes
