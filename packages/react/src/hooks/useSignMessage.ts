@@ -39,7 +39,7 @@ type UseSignMessageParams = {
  */
 export const useSignMessage = ({ mutation }: UseSignMessageParams = {}) => {
 	const config = useConfig();
-	const { paymentAccount } = useAccounts();
+	const { paymentAccount, ordinalsAccount } = useAccounts();
 
 	const { mutate, mutateAsync, ...rest } = useMutation<
 		SignMessageData,
@@ -58,11 +58,11 @@ export const useSignMessage = ({ mutation }: UseSignMessageParams = {}) => {
 					throw new Error("No connection");
 				}
 
-				if (!paymentAccount) {
-					throw new Error("No payment account");
+				if (!paymentAccount || !ordinalsAccount) {
+					throw new Error("No accounts");
 				}
 
-				signingAddress = paymentAccount.address;
+				signingAddress = paymentAccount.address ?? ordinalsAccount?.address;
 			}
 
 			return signMessage(config, {

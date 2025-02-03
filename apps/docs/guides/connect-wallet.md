@@ -8,6 +8,8 @@ You can find the example in [apps/docs/examples](https://github.com/midl-xyz/mid
 
 ### 1. Create a Configuration Object
 
+In the example below we are using the `leather` connector and the `regtest` network. You can use any connector and network you want.
+
 ::: code-group
 
 ```ts [midlConfig.ts]
@@ -111,12 +113,19 @@ export function ConnectedAccounts() {
 ```tsx
 import { ConnectWallet } from "./ConnectWallet";
 import { ConnectedAccounts } from "./ConnectedAccounts";
+import { useAccounts } from "@midl-xyz/midl-js-react";
 
 export function YourApp() {
+  const { isConnected } = useAccounts();
+
   return (
     <div>
-      <ConnectWallet />
-      <ConnectedAccounts />
+      {!isConnected && <ConnectWallet />}
+      {isConnected && (
+        <>
+          <ConnectedAccounts />
+        </>
+      )}
     </div>
   );
 }
