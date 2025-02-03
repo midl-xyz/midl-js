@@ -26,13 +26,13 @@ console.log(intention);
 
 ## Parameters
 
-| Name       | Type                                                                           | Description                                                     |
-| ---------- | ------------------------------------------------------------------------------ | --------------------------------------------------------------- |
-| config     | [`Config`](../../bitcoin//configuration/index#creating-a-configuration-object) | The configuration object                                        |
-| store      | `Store`                                                                        | The store object                                                |
-| intention  | [`PartialIntention`](#partialintention)                                        | The intention to add                                            |
-| reset?     | `boolean`                                                                      | If true, the intentions array will be reset. Default is `false` |
-| publicKey? | `string`                                                                       | Public key to use to sign the transaction                       |
+| Name       | Type                                                                       | Description                                                     |
+| ---------- | -------------------------------------------------------------------------- | --------------------------------------------------------------- |
+| config     | [`Config`](../../bitcoin/configuration.md#creating-a-configuration-object) | The configuration object                                        |
+| store      | `Store`                                                                    | The store object                                                |
+| intention  | [`PartialIntention`](#partialintention)                                    | The intention to add                                            |
+| reset?     | `boolean`                                                                  | If true, the intentions array will be reset. Default is `false` |
+| publicKey? | `string`                                                                   | Public key to use to sign the transaction                       |
 
 ### PartialIntention
 

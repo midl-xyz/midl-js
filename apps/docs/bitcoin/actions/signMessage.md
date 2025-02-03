@@ -24,10 +24,10 @@ console.log(signature);
 
 ## Parameters
 
-| Name   | Type                                                         | Description                    |
-| ------ | ------------------------------------------------------------ | ------------------------------ |
-| config | [`Config`](../configuration/index#creating-a-configuration-object) | The configuration object       |
-| params | [`SignMessageParams`](#signmessageparams)                    | The parameters for the request |
+| Name   | Type                                                            | Description                    |
+| ------ | --------------------------------------------------------------- | ------------------------------ |
+| config | [`Config`](../configuration.md#creating-a-configuration-object) | The configuration object       |
+| params | [`SignMessageParams`](#signmessageparams)                       | The parameters for the request |
 
 ### SignMessageParams
 

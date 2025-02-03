@@ -19,10 +19,10 @@ console.log(balance);
 
 ## Parameters
 
-| Name    | Type                                                         | Description                       |
-| ------- | ------------------------------------------------------------ | --------------------------------- |
-| config  | [`Config`](../configuration/index#creating-a-configuration-object) | The configuration object          |
-| address | `string`                                                     | The address to get the balance of |
+| Name    | Type                                                            | Description                       |
+| ------- | --------------------------------------------------------------- | --------------------------------- |
+| config  | [`Config`](../configuration.md#creating-a-configuration-object) | The configuration object          |
+| address | `string`                                                        | The address to get the balance of |
 
 ## Returns
 

@@ -22,10 +22,10 @@ console.log(balance);
 
 ## Parameters
 
-| Name   | Type                                                         | Description                    |
-| ------ | ------------------------------------------------------------ | ------------------------------ |
-| config | [`Config`](../configuration/index#creating-a-configuration-object) | The configuration object       |
-| params | [`GetRuneBalanceParams`](#getrunebalanceparams)              | The parameters for the request |
+| Name   | Type                                                            | Description                    |
+| ------ | --------------------------------------------------------------- | ------------------------------ |
+| config | [`Config`](../configuration.md#creating-a-configuration-object) | The configuration object       |
+| params | [`GetRuneBalanceParams`](#getrunebalanceparams)                 | The parameters for the request |
 
 ### GetRuneBalanceParams
 

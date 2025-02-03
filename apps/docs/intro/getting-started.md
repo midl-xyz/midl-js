@@ -71,7 +71,14 @@ function Page() {
   return (
     <div>
       {connectors.map(connector => (
-        <button key={connector.name} onClick={() => connect(connector.name)}>
+        <button
+          key={connector.name}
+          onClick={() =>
+            connect({
+              id: connector.id,
+            })
+          }
+        >
           {connector.name}
         </button>
       ))}
@@ -89,25 +96,4 @@ function Page() {
     </div>
   );
 }
-```
-
-## Common Issues
-
-### Buffer is not defined
-
-::: warning
-
-This project uses `Buffer` and `BigInt` which are not available in all the environments. You may need to polyfill them. e.g. for Vite bundler, you can polyfill them by adding the following in your `index.html`:
-
-:::
-
-```html
-<script type="module">
-  import { Buffer } from "buffer";
-  window.Buffer = Buffer;
-  window.global = window;
-  BigInt.prototype.toJSON = function () {
-    return this.toString();
-  };
-</script>
 ```

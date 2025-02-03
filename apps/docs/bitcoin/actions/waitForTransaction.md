@@ -19,12 +19,12 @@ console.log(confirmations);
 
 ## Parameters
 
-| Name          | Type                                                               | Description                             |
-| ------------- | ------------------------------------------------------------------ | --------------------------------------- |
-| config        | [`Config`](../configuration/index#creating-a-configuration-object) | The configuration object                |
-| txId          | `string`                                                           | The transaction ID                      |
-| confirmations | `number`                                                           | The number of confirmations to wait for |
-| params        | [`WaitForTransactionParams`](#waitfortransactionparams)            | The parameters for the request          |
+| Name          | Type                                                            | Description                             |
+| ------------- | --------------------------------------------------------------- | --------------------------------------- |
+| config        | [`Config`](../configuration.md#creating-a-configuration-object) | The configuration object                |
+| txId          | `string`                                                        | The transaction ID                      |
+| confirmations | `number`                                                        | The number of confirmations to wait for |
+| params        | [`WaitForTransactionParams`](#waitfortransactionparams)         | The parameters for the request          |
 
 ### WaitForTransactionParams
 

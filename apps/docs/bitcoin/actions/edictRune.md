@@ -30,10 +30,10 @@ edictRune(config, {
 
 ## Parameters
 
-| Name   | Type                                                         | Description              |
-| ------ | ------------------------------------------------------------ | ------------------------ |
-| config | [`Config`](../configuration/index#creating-a-configuration-object) | The configuration object |
-| params | [`EdictRuneParams`](#edictruneparams)                        | Edict rune parameters    |
+| Name   | Type                                                            | Description              |
+| ------ | --------------------------------------------------------------- | ------------------------ |
+| config | [`Config`](../configuration.md#creating-a-configuration-object) | The configuration object |
+| params | [`EdictRuneParams`](#edictruneparams)                           | Edict rune parameters    |
 
 ### EdictRuneParams
 

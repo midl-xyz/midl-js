@@ -27,10 +27,10 @@ console.log(tx);
 
 ## Parameters
 
-| Name   | Type                                                               | Description                     |
-| ------ | ------------------------------------------------------------------ | ------------------------------- |
-| config | [`Config`](../configuration/index#creating-a-configuration-object) | The configuration object        |
-| params | [`TransferBTCParams`](#transferbtcparams)                          | The parameters for the transfer |
+| Name   | Type                                                            | Description                     |
+| ------ | --------------------------------------------------------------- | ------------------------------- |
+| config | [`Config`](../configuration.md#creating-a-configuration-object) | The configuration object        |
+| params | [`TransferBTCParams`](#transferbtcparams)                       | The parameters for the transfer |
 
 ### TransferBTCParams
 

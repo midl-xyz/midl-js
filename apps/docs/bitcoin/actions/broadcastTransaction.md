@@ -22,10 +22,10 @@ console.log(txHash);
 
 ## Parameters
 
-| Name   | Type                                                         | Description              |
-| ------ | ------------------------------------------------------------ | ------------------------ |
-| config | [`Config`](../configuration/index#creating-a-configuration-object) | The configuration object |
-| txHex  | `string`                                                     | The transaction hex      |
+| Name   | Type                                                            | Description              |
+| ------ | --------------------------------------------------------------- | ------------------------ |
+| config | [`Config`](../configuration.md#creating-a-configuration-object) | The configuration object |
+| txHex  | `string`                                                        | The transaction hex      |
 
 ## Returns
 

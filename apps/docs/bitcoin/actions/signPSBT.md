@@ -26,10 +26,10 @@ console.log(signedPSBT);
 
 ## Parameters
 
-| Name   | Type                                                         | Description                    |
-| ------ | ------------------------------------------------------------ | ------------------------------ |
-| config | [`Config`](../configuration/index#creating-a-configuration-object) | The configuration object       |
-| params | [`SignPSBTParams`](#signpsbtparams)                          | The parameters for the request |
+| Name   | Type                                                            | Description                    |
+| ------ | --------------------------------------------------------------- | ------------------------------ |
+| config | [`Config`](../configuration.md#creating-a-configuration-object) | The configuration object       |
+| params | [`SignPSBTParams`](#signpsbtparams)                             | The parameters for the request |
 
 ### SignPSBTParams
 

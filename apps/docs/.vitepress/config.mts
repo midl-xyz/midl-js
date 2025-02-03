@@ -5,9 +5,15 @@ import { withSidebar } from "vitepress-sidebar";
 export default withSidebar(
 	defineConfig({
 		title: "MIDL.js",
+
 		description:
 			"A JavaScript library that makes it easy to interact with the Bitcoin and MIDL Protocol",
 		themeConfig: {
+			siteTitle: "",
+			logo: {
+				light: "/assets/logo.svg",
+				dark: "/assets/logo-dark.svg",
+			},
 			search: {
 				provider: "local",
 			},
@@ -20,6 +26,11 @@ export default withSidebar(
 			socialLinks: [
 				{ icon: "github", link: "https://github.com/midl-xyz/midl-js" },
 			],
+			editLink: {
+				pattern:
+					"https://github.com/midl-xyz/midl-js/edit/main/apps/docs/:path",
+				text: "Edit this page on GitHub",
+			},
 		},
 		cleanUrls: true,
 	}),
@@ -28,10 +39,10 @@ export default withSidebar(
 		excludePattern: ["generated", "examples"],
 		folderLinkNotIncludesFileName: true,
 		useFolderTitleFromIndexFile: true,
-		useFolderLinkFromIndexFile: true,
 		sortMenusByFrontmatterOrder: true,
 		collapseDepth: 2,
 		useTitleFromFileHeading: true,
 		collapsed: true,
+		includeFolderIndexFile: false,
 	},
 );

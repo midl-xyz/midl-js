@@ -25,13 +25,13 @@ console.log(signedIntention);
 
 ## Parameters
 
-| Name      | Type                                                                          | Description                |
-| --------- | ----------------------------------------------------------------------------- | -------------------------- |
-| config    | [`Config`](../../bitcoin/configuration/index#creating-a-configuration-object) | The configuration object   |
-| store     | `Store`                                                                       | The store object           |
-| client    | `Client` \| 'Provider'                                                        | The EVM client or provider |
-| intention | `Intention`                                                                   | The intention to sign      |
-| options   | [`SignIntentionOptions`](#signintentionoptions)                               | The options for signing    |
+| Name      | Type                                                                       | Description                |
+| --------- | -------------------------------------------------------------------------- | -------------------------- |
+| config    | [`Config`](../../bitcoin/configuration.md#creating-a-configuration-object) | The configuration object   |
+| store     | `Store`                                                                    | The store object           |
+| client    | `Client` \| 'Provider'                                                     | The EVM client or provider |
+| intention | `Intention`                                                                | The intention to sign      |
+| options   | [`SignIntentionOptions`](#signintentionoptions)                            | The options for signing    |
 
 ### SignIntentionOptions
 

@@ -19,9 +19,9 @@ console.log(blockNumber);
 
 ## Parameters
 
-| Name   | Type                                                         | Description              |
-| ------ | ------------------------------------------------------------ | ------------------------ |
-| config | [`Config`](../configuration/index#creating-a-configuration-object) | The configuration object |
+| Name   | Type                                                            | Description              |
+| ------ | --------------------------------------------------------------- | ------------------------ |
+| config | [`Config`](../configuration.md#creating-a-configuration-object) | The configuration object |
 
 ## Returns
 
