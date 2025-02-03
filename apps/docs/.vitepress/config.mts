@@ -11,8 +11,8 @@ export default withSidebar(
 		themeConfig: {
 			siteTitle: "",
 			logo: {
-				light: "/assets/logo.svg",
-				dark: "/assets/logo-dark.svg",
+				light: "/logo.svg",
+				dark: "/logo-dark.svg",
 			},
 			search: {
 				provider: "local",
@@ -36,7 +36,7 @@ export default withSidebar(
 	}),
 	{
 		useTitleFromFrontmatter: true,
-		excludePattern: ["generated", "examples"],
+		excludePattern: ["generated", "examples", "public"],
 		folderLinkNotIncludesFileName: true,
 		useFolderTitleFromIndexFile: true,
 		sortMenusByFrontmatterOrder: true,
