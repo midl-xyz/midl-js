@@ -24,7 +24,7 @@ export default withSidebar(
 	}),
 	{
 		useTitleFromFrontmatter: true,
-		excludePattern: ["generated"],
+		excludePattern: ["generated", "examples"],
 		folderLinkNotIncludesFileName: true,
 		useFolderTitleFromIndexFile: true,
 		useFolderLinkFromIndexFile: true,
