@@ -29,7 +29,7 @@ console.log(intention);
 | Name       | Type                                                                           | Description                                                     |
 | ---------- | ------------------------------------------------------------------------------ | --------------------------------------------------------------- |
 | config     | [`Config`](../../bitcoin//configuration/index#creating-a-configuration-object) | The configuration object                                        |
-| store      | [`Store`](../store/index#creating-a-store-object)                              | The store object                                                |
+| store      | `Store`                                                                        | The store object                                                |
 | intention  | [`PartialIntention`](#partialintention)                                        | The intention to add                                            |
 | reset?     | `boolean`                                                                      | If true, the intentions array will be reset. Default is `false` |
 | publicKey? | `string`                                                                       | Public key to use to sign the transaction                       |

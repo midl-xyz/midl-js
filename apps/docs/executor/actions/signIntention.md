@@ -28,8 +28,8 @@ console.log(signedIntention);
 | Name      | Type                                                                          | Description                |
 | --------- | ----------------------------------------------------------------------------- | -------------------------- |
 | config    | [`Config`](../../bitcoin/configuration/index#creating-a-configuration-object) | The configuration object   |
-| store     | [`Store`](../store/index#creating-a-store-object)                             | The store object           |
-| client    | `EVMClient`                                                                   | The EVM client or provider |
+| store     | `Store`                                                                       | The store object           |
+| client    | `Client` \| 'Provider'                                                        | The EVM client or provider |
 | intention | `Intention`                                                                   | The intention to sign      |
 | options   | [`SignIntentionOptions`](#signintentionoptions)                               | The options for signing    |
 

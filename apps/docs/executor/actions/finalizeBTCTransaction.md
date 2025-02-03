@@ -33,7 +33,7 @@ const tx = await finalizeBTCTransaction(config, store, client, {
 | Name    | Type                                                                          | Description                 |
 | ------- | ----------------------------------------------------------------------------- | --------------------------- |
 | config  | [`Config`](../../bitcoin/configuration/index#creating-a-configuration-object) | The configuration object    |
-| store   | [`Store`](../store/index#creating-a-store-object)                             | The store object            |
+| store   | `Store`                                                                       | The store object            |
 | client  | `object`                                                                      | EVM client or provider      |
 | options | [`FinalizeBTCTransactionOptions`](#finalizebtctransactionoptions)             | The options for the request |
 

@@ -18,9 +18,9 @@ clearTxIntentions(store);
 
 ## Parameters
 
-| Name  | Type                                              | Description      |
-| ----- | ------------------------------------------------- | ---------------- |
-| store | [`Store`](../store/index#creating-a-store-object) | The store object |
+| Name  | Type    | Description      |
+| ----- | ------- | ---------------- |
+| store | `Store` | The store object |
 
 ## Returns
 
