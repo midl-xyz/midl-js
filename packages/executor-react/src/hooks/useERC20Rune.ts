@@ -10,22 +10,19 @@ type UseERC20Params = {
 };
 
 /**
- * Custom hook to retrieve the ERC20 address associated with a specific Rune.
- *
- * This hook fetches the ERC20 contract address for the given `runeId` using the executor contract.
+ * Retrieve the ERC20 address associated with a Rune.
  *
  * @example
  * ```typescript
- * const { erc20Address, rune, isLoading } = useERC20Rune('rune-123');
+ * const { erc20Address, rune } = useERC20Rune('rune-123');
  *
  * if (erc20Address) {
  *   console.log(`ERC20 Address: ${erc20Address}`);
  * }
  * ```
  *
- * @param {string} runeId - The ID of the Rune for which to retrieve the ERC20 address.
- * @param {UseERC20Params} [options] - Optional parameters for the contract call.
- * @param {boolean} [options.query.enabled] - Whether the query is enabled.
+ * @param runeId - The ID of the Rune for which to retrieve the ERC20 address.
+ * @param options Optional parameters to customize the query.
  *
  * @returns
  * - **state**: `UseRuneReturn` – The state returned by the `useRune` hook.

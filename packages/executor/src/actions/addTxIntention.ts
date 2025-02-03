@@ -6,12 +6,25 @@ import { getPublicKeyForAccount } from "~/actions/getPublicKeyForAccount";
 import type { TransactionIntention } from "~/types/intention";
 import { getEVMAddress, getEVMFromBitcoinNetwork } from "~/utils";
 
-export type PartialIntention = Omit<TransactionIntention, "evmTransaction"> & {
+export type PartialIntention = Omit<
+	TransactionIntention,
+	"evmTransaction" | "signedEvmTransaction"
+> & {
 	evmTransaction?: Omit<TransactionIntention["evmTransaction"], "chainId"> & {
 		chainId?: TransactionSerializableBTC["chainId"];
 	};
 };
 
+/**
+ * Add a transaction intention to the store
+ *
+ * @param config The configuration object
+ * @param store The store object
+ * @param intention The intention to add
+ * @param reset If true, the intentions array will be reset
+ * @param publicKey Public key to use to sign the transaction
+ * @returns The added intention
+ */
 export const addTxIntention = async (
 	config: Config,
 	store: StoreApi<MidlContextState>,

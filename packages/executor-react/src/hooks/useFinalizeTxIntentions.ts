@@ -43,22 +43,8 @@ type UseFinalizeTxIntentionsParams = {
 };
 
 /**
- * Custom hook to finalize transaction intentions for BTC transactions.
- *
- * This hook processes all pending transaction intentions by calculating their total cost,
- * preparing the necessary BTC transfers, and executing the `edictRune` action.
- * It also allows signing individual transaction intentions.
- *
- * @example
- * ```typescript
- * const { finalizeBTCTransaction, signIntention, isLoading } = useFinalizeTxIntentions({ stateOverride });
- *
- * // To finalize all BTC transactions
- * finalizeBTCTransaction();
- *
- * // To sign a specific transaction intention
- * signIntention(transactionIntention);
- * ```
+ * Prepares BTC transaction for the intentions. Finalizes the transaction and signs the intentions.
+ * Calculates gas limits for EVM transactions, total fees and transfers.
  *
  * @returns
  * - **finalizeBTCTransaction**: `() => void` – Function to initiate finalizing BTC transactions.

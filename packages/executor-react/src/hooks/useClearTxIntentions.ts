@@ -2,9 +2,7 @@ import { useMidlContext } from "@midl-xyz/midl-js-react";
 import { clearTxIntentions } from "@midl-xyz/midl-js-executor";
 
 /**
- * Custom hook to clear all transaction intentions.
- *
- * This hook provides a function to reset the transaction intentions in the store.
+ * Clear all transaction intentions from the store
  *
  * @example
  * ```typescript
@@ -13,8 +11,7 @@ import { clearTxIntentions } from "@midl-xyz/midl-js-executor";
  * clearIntentions();
  * ```
  *
- * @returns
- * - **clearIntentions**: `() => void` – Function to clear all transaction intentions.
+ * @returns Function to clear all transaction intentions.
  */
 export const useClearTxIntentions = () => {
 	const { store } = useMidlContext();

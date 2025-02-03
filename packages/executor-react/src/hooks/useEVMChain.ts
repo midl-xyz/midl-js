@@ -2,9 +2,7 @@ import { useConfig } from "@midl-xyz/midl-js-react";
 import { getEVMFromBitcoinNetwork } from "@midl-xyz/midl-js-executor";
 
 /**
- * Custom hook to retrieve the EVM chain associated with the current Bitcoin network.
- *
- * This hook maps the current Bitcoin network to its corresponding Ethereum Virtual Machine (EVM) chain configuration.
+ * Gets the EVM chain associated with the current Bitcoin network.
  *
  * @example
  * ```typescript
@@ -14,7 +12,7 @@ import { getEVMFromBitcoinNetwork } from "@midl-xyz/midl-js-executor";
  * }
  * ```
  *
- * @returns {EVMChain | null} – The EVM chain configuration if available, otherwise `null`.
+ * @returns The EVM chain configuration if available, otherwise `null`.
  */
 export const useEVMChain = () => {
 	const { network } = useConfig();

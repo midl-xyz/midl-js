@@ -29,7 +29,7 @@ export default withSidebar(
 		useFolderTitleFromIndexFile: true,
 		useFolderLinkFromIndexFile: true,
 		sortMenusByFrontmatterOrder: true,
-		collapseDepth: 3,
+		collapseDepth: 2,
 		useTitleFromFileHeading: true,
 		collapsed: true,
 	},

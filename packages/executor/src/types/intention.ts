@@ -9,8 +9,7 @@ export interface TransactionIntention {
 	};
 
 	/**
-	 * EVM transaction to execute
-	 * This is a serialized version of the transaction
+	 * Serialized signed EVM transaction
 	 */
 	signedEvmTransaction?: `0x${string}`;
 
@@ -25,9 +24,20 @@ export interface TransactionIntention {
 		id: string;
 		value: bigint;
 	};
-
+	/**
+	 * If true, the intention contains runes to withdraw
+	 */
 	hasRunesWithdraw?: boolean;
+	/**
+	 * If true, the intention contains Bitcoin to withdraw
+	 */
 	hasWithdraw?: boolean;
+	/**
+	 * If true, the intention contains a Bitcoin deposit
+	 */
 	hasDeposit?: boolean;
+	/**
+	 * If true, the intention contains a Rune deposit
+	 */
 	hasRunesDeposit?: boolean;
 }

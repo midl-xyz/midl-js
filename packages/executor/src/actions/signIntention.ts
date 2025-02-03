@@ -10,21 +10,40 @@ import type { TransactionIntention } from "~/types/intention";
 import { getEVMAddress } from "~/utils";
 
 type SignIntentionOptions = {
+	/**
+	 * Public key of the account to use for signing
+	 */
 	publicKey?: string;
 	/**
 	 * Next nonce of registered in EVM network, nonce is incremented by 1 for each transaction intention
 	 */
 	nonce?: number;
 
+	/**
+	 * Gas price for EVM transactions
+	 */
 	gasPrice?: bigint;
 
 	/**
 	 * Transaction hash of the BTC transaction
 	 */
 	txId: string;
+	/**
+	 * Protocol for signing the message
+	 */
 	protocol?: SignMessageProtocol;
 };
 
+/**
+ * Signs the intention with the given options. The intentions is signed as generic Bitcoin message.
+ *
+ * @param config The configuration object
+ * @param store The store object
+ * @param client EVM client or provider
+ * @param intention The intention to sign
+ * @param options The options for signing
+ * @returns
+ */
 export const signIntention = async (
 	config: Config,
 	store: StoreApi<MidlContextState>,
