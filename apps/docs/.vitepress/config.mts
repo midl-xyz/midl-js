@@ -18,9 +18,10 @@ export default withSidebar(
 			],
 
 			socialLinks: [
-				{ icon: "github", link: "https://github.com/vuejs/vitepress" },
+				{ icon: "github", link: "https://github.com/midl-xyz/midl-js" },
 			],
 		},
+		cleanUrls: true,
 	}),
 	{
 		useTitleFromFrontmatter: true,

@@ -11,7 +11,7 @@ hero:
       link: /intro/getting-started
     - theme: alt
       text: View on GitHub
-      link: https://github.com/midl-xyz/midl.js
+      link: https://github.com/midl-xyz/midl-js
 
 features:
   - title: Simple API
