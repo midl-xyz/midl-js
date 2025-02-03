@@ -27,6 +27,13 @@ const getBTCFeeRateViem = (config: Config, client: Client) => {
 	});
 };
 
+/**
+ * Gets the BTC Fee rate defined in the executor contract
+ *
+ * @param config The configuration object
+ * @param client EVM client or provider
+ * @returns The BTC fee rate
+ */
 export const getBTCFeeRate = async (
 	config: Config,
 	client: Client | JsonRpcProvider,

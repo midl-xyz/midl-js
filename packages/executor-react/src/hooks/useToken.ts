@@ -12,14 +12,11 @@ type UseERC20Params = {
 };
 
 /**
- * Custom hook to retrieve and convert the Rune ID associated with a specific EVM address.
- *
- * This hook fetches the bytes32 representation of a Rune ID for a given EVM address,
- * converts it to a standard Rune ID, and retrieves the corresponding Rune data.
+ * Get Rune by it's EVM address.
  *
  * @example
  * ```typescript
- * const { rune, isLoading } = useToken('0xabc123...');
+ * const { rune } = useToken('0xabc123...');
  *
  * if (rune) {
  *   console.log(`Rune Name: ${rune.name}`);

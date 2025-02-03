@@ -33,19 +33,46 @@ import {
 } from "~/utils";
 
 type FinalizeBTCTransactionOptions = {
+	/**
+	 * State override for EVM transactions
+	 */
 	stateOverride?: StateOverride;
+	/**
+	 * Public key of the account to use for signing
+	 */
 	publicKey?: string;
+	/**
+	 * Gas price for EVM transactions
+	 */
 	gasPrice?: bigint;
 	/**
 	 * If true, send complete transaction
 	 */
 	shouldComplete?: boolean;
 
+	/**
+	 * Fee rate multiplier for the transaction
+	 */
 	feeRateMultiplier?: number;
 
+	/**
+	 * Array of ERC20 assets to withdraw
+	 */
 	assetsToWithdraw?: [Address] | [Address, Address];
 };
 
+/**
+ * Prepares BTC transaction for the intentions.
+ * Calculates gas limits for EVM transactions, total fees and transfers.
+ *
+ * If `options.shouldComplete` is true, adds a complete transaction to the intentions.
+ *
+ * @param config The configuration object
+ * @param store The store object
+ * @param client EVM client or provider (viem or ethers)
+ * @param options Configuration options
+ * @returns BTC transaction response
+ */
 export const finalizeBTCTransaction = async (
 	config: Config,
 	store: StoreApi<MidlContextState>,

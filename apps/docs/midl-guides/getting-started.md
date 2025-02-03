@@ -1,0 +1,88 @@
+# Getting Started
+
+Install Midl.js executor packages via your package manager of choice.
+
+::: code-group
+
+```bash [pnpm]
+pnpm add @midl-xyz/midl-js-executor @midl-xyz/midl-js-executor-react
+```
+
+```bash [npm]
+npm install @midl-xyz/midl-js-executor @midl-xyz/midl-js-executor-react
+```
+
+```bash [yarn]
+yarn add @midl-xyz/midl-js-executor @midl-xyz/midl-js-executor-react
+```
+
+:::
+
+## Integration
+
+MIDL executor packages work alongside [Wagmi](https://wagmi.sh) to provide a seamless experience for developers.
+
+Add `WagmiMidlProvider` to provide the necessary context for the executor to work.
+
+::: code-group
+
+```tsx{2,16} [app.tsx]
+import { MidlProvider } from '@midl-xyz/midl-js-react';
+import { WagmiMidlProvider } from "@wagmi/midl-js-executor-react";
+import { WagmiProvider } from 'wagmi';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+import midlConfig from './midlConfig';
+import wagmiConfig from './wagmiConfig';
+
+const queryClient = new QueryClient();
+
+function App({ children }: { children: React.ReactNode }) {
+    return (
+      <WagmiProvider config={wagmiConfig}>
+        <MidlProvider config={midlConfig}>
+          <QueryClientProvider client={queryClient}>
+            <WagmiMidlProvider />
+            {children}
+          </QueryClientProvider>
+        </MidlProvider>
+      </WagmiProvider>
+    );
+}
+
+
+```
+
+```ts [midlConfig.ts]
+import { createConfig, regtest, leather } from "@midl-xyz/midl-js-core";
+
+export const midlConfig = createConfig({
+  networks: [regtest],
+  connectors: [leather()],
+  persist: true,
+});
+```
+
+```ts [wagmiConfig.ts]
+import { midlRegtest } from "@midl-xyz/midl-js-executor";
+import type { Chain } from "viem";
+import { createConfig, http } from "wagmi";
+
+export const wagmiConfig = createConfig({
+  chains: [
+    {
+      ...midlRegtest,
+      rpcUrls: {
+        default: {
+          http: [midlRegtest.rpcUrls.default.http[0]],
+        },
+      },
+    } as Chain,
+  ],
+  transports: {
+    [midlRegtest.id]: http(midlRegtest.rpcUrls.default.http[0]),
+  },
+});
+```
+
+:::
