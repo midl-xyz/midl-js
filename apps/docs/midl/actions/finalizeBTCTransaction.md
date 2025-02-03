@@ -1,6 +1,6 @@
 # finalizeBTCTransaction
 
-> **finalizeBTCTransaction**(`config`, `store`, `client`, `options`): `Promise`\<[`EdictRuneResponse`](../../bitcoin/actions//edictRune.md#edictruneresponse) \| [`TransferBTCResponse`](../../bitcoin/actions/transferBTC.md#transferbtcresponse) \>
+> **finalizeBTCTransaction**(`config`, `store`, `client`, `options`): `Promise`\<[`EdictRuneResponse`](../../root/actions/edictRune.md#edictruneresponse) \| [`TransferBTCResponse`](../../root/actions/transferBTC.md#transferbtcresponse) \>
 
 Prepares BTC transaction for the intentions.
 Calculates gas limits for EVM transactions, total fees and transfers.
@@ -30,12 +30,12 @@ const tx = await finalizeBTCTransaction(config, store, client, {
 
 ## Parameters
 
-| Name    | Type                                                                       | Description                 |
-| ------- | -------------------------------------------------------------------------- | --------------------------- |
-| config  | [`Config`](../../bitcoin/configuration.md#creating-a-configuration-object) | The configuration object    |
-| store   | `Store`                                                                    | The store object            |
-| client  | `object`                                                                   | EVM client or provider      |
-| options | [`FinalizeBTCTransactionOptions`](#finalizebtctransactionoptions)          | The options for the request |
+| Name    | Type                                                                    | Description                 |
+| ------- | ----------------------------------------------------------------------- | --------------------------- |
+| config  | [`Config`](../../root/configuration.md#creating-a-configuration-object) | The configuration object    |
+| store   | `Store`                                                                 | The store object            |
+| client  | `object`                                                                | EVM client or provider      |
+| options | [`FinalizeBTCTransactionOptions`](#finalizebtctransactionoptions)       | The options for the request |
 
 ### FinalizeBTCTransactionOptions
 
@@ -50,6 +50,6 @@ const tx = await finalizeBTCTransaction(config, store, client, {
 
 ## Returns
 
-`Promise`\<[`EdictRuneResponse`](../../bitcoin/actions//edictRune.md#edictruneresponse) \| [`TransferBTCResponse`](../../bitcoin/actions/transferBTC.md#transferbtcresponse) \>
+`Promise`\<[`EdictRuneResponse`](../../root/actions/edictRune.md#edictruneresponse) \| [`TransferBTCResponse`](../../root/actions/transferBTC.md#transferbtcresponse) \>
 
 BTC transaction response

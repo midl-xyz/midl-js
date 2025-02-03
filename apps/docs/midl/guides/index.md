@@ -1,4 +1,4 @@
 ---
+title: Guides
 order: 2
-title: Actions
 ---

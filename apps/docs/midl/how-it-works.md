@@ -1,6 +1,6 @@
 ---
 title: How it works
-order: -1
+order: 1
 ---
 
 # How it works

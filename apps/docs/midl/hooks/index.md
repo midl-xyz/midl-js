@@ -1,4 +1,4 @@
 ---
-title: Bitcoin
+title: Hooks
 order: 3
 ---

@@ -20,7 +20,8 @@ export default withSidebar(
 			// https://vitepress.dev/reference/default-theme-config
 			nav: [
 				{ text: "Home", link: "/" },
-				{ text: "Docs", link: "/intro" },
+				{ text: "Docs", link: "/docs" },
+				{ text: "MIDL", link: "/midl/docs" },
 			],
 
 			socialLinks: [
@@ -33,16 +34,32 @@ export default withSidebar(
 			},
 		},
 		cleanUrls: true,
+		rewrites: {
+			"root/:slug*": ":slug*",
+		},
 	}),
-	{
-		useTitleFromFrontmatter: true,
-		excludePattern: ["generated", "examples", "public"],
-		folderLinkNotIncludesFileName: true,
-		useFolderTitleFromIndexFile: true,
-		sortMenusByFrontmatterOrder: true,
-		collapseDepth: 2,
-		useTitleFromFileHeading: true,
-		collapsed: true,
-		includeFolderIndexFile: false,
-	},
+	[
+		{
+			useTitleFromFrontmatter: true,
+			useFolderTitleFromIndexFile: true,
+			sortMenusByFrontmatterOrder: true,
+			collapseDepth: 3,
+			useTitleFromFileHeading: true,
+			useFolderLinkFromIndexFile: false,
+			scanStartPath: "root",
+			basePath: "/",
+			resolvePath: "/",
+		},
+		{
+			useTitleFromFrontmatter: true,
+			folderLinkNotIncludesFileName: true,
+			useFolderTitleFromIndexFile: true,
+			sortMenusByFrontmatterOrder: true,
+			collapseDepth: 2,
+			useTitleFromFileHeading: true,
+			scanStartPath: "midl",
+			basePath: "/midl/",
+			resolvePath: "/midl/",
+		},
+	],
 );
