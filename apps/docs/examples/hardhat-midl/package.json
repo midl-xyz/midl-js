@@ -1,0 +1,18 @@
+{
+  "name": "hardhat-midl",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@midl-xyz/hardhat-deploy": "^0.0.6",
+    "@midl-xyz/midl-js-executor": "^0.0.76",
+    "hardhat": "^2.22.17",
+    "hardhat-deploy": "^0.14.0"
+  }
+}
