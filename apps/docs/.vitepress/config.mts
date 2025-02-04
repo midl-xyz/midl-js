@@ -21,7 +21,7 @@ export default withSidebar(
 			nav: [
 				{ text: "Home", link: "/" },
 				{ text: "Docs", link: "/docs" },
-				{ text: "MIDL", link: "/midl/docs" },
+				{ text: "MIDL", link: "/midl/getting-started" },
 			],
 
 			socialLinks: [

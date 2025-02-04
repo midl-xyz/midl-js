@@ -8,7 +8,7 @@ hero:
   actions:
     - theme: brand
       text: Get Started
-      link: /intro/getting-started
+      link: /docs
     - theme: alt
       text: View on GitHub
       link: https://github.com/midl-xyz/midl-js
