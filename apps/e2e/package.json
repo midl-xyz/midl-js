@@ -8,7 +8,6 @@
     "dev": "vite ./app",
     "build": "vite build ./app",
     "preview": "vite preview ./app",
-    "postinstall": "./scripts/prepare.sh",
     "test": "playwright test"
   },
   "keywords": [],
@@ -36,6 +35,7 @@
     "@midl-xyz/midl-js-core": "workspace:^",
     "@midl-xyz/midl-js-executor": "workspace:^",
     "@midl-xyz/midl-js-react": "workspace:^",
+    "@midl-xyz/playwright-btc-wallets": "workspace:^",
     "@tanstack/react-query": "*",
     "@wagmi/connectors": "^5.1.11",
     "buffer": "^6.0.3",

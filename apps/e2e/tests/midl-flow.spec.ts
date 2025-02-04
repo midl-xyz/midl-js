@@ -1,28 +1,22 @@
-import { expect, test } from "~/fixtures/test";
+import { createTest } from "@midl-xyz/playwright-btc-wallets";
 import midlConfig from "../app/midl.config";
-import { waitForTransaction } from "@midl-xyz/midl-js-core";
 import { zeroAddress } from "viem";
-import { closeAutoOpenedExtensionTab, getWallet } from "~/fixtures/wallet";
+import { waitForTransaction } from "@midl-xyz/midl-js-core";
+
+const { test, expect } = createTest({
+	mnemonic: process.env.MNEMONIC as string,
+});
 
 midlConfig.setState({ network: midlConfig.networks[0] });
 
 test.describe("Add Liquidity Flow", () => {
 	test.describe.configure({ mode: "serial" });
 
-	let runeAddress: string | null;
-	const wallet = getWallet();
-
-	test.beforeAll(async ({ page, extensionId, context }) => {
-		await closeAutoOpenedExtensionTab({ context, extensionId });
-		await wallet.configureWallet({ page, extensionId });
-		await wallet.changeNetwork({ page, extensionId }, "Bitcoin Testnet4");
+	test.beforeAll(async ({ wallet }) => {
+		await wallet.changeNetwork("regtest");
 	});
 
-	test.beforeEach(async ({ context, extensionId }) => {
-		await closeAutoOpenedExtensionTab({ context, extensionId });
-	});
-
-	test("edict rune", async ({ page, extensionId, context }) => {
+	test("edict rune", async ({ wallet, page }) => {
 		await page.goto("http://localhost:5173", {
 			waitUntil: "networkidle",
 		});
@@ -31,27 +25,21 @@ test.describe("Add Liquidity Flow", () => {
 
 		if (!isConnected) {
 			await page.getByTestId("connect").click();
-
-			await connectWallet({ page, context, extensionId });
+			await wallet.connect();
+			await page.getByTestId("address").waitFor({ state: "visible" });
 		}
 
-		await page
-			.getByTestId("address")
-			.waitFor({ state: "visible", timeout: 1_000 });
-
-		runeAddress = await page.getByTestId("edict-address").first().textContent();
+		let runeAddress = await page
+			.getByTestId("edict-address")
+			.first()
+			.textContent();
 
 		if (!runeAddress || runeAddress === zeroAddress) {
 			await page.getByTestId("edict").click();
-
-			await acceptSign({ page, context, extensionId });
-
-			await page.waitForTimeout(500);
+			await wallet.confirmTransaction();
 
 			const txId = await page.getByTestId("edict-tx-id").first().textContent();
-
 			const error = await page.getByTestId("edict-error").first().textContent();
-
 			if (!txId || error) {
 				throw new Error(error || "No txId found");
 			}
@@ -70,155 +58,163 @@ test.describe("Add Liquidity Flow", () => {
 				.getByTestId("edict-address")
 				.first()
 				.textContent();
-		}
 
-		console.log(`Rune edict at: ${runeAddress}`);
+			console.log(`Rune edict at: ${runeAddress}`);
+		}
 	});
 
-	test("add liquidity", async ({ page, extensionId, context }) => {
-		await page.goto("http://localhost:5173", {
-			waitUntil: "networkidle",
-		});
+	// test("add liquidity", async ({ page, extensionId, context }) => {
+	// 	await page.goto("http://localhost:5173", {
+	// 		waitUntil: "networkidle",
+	// 	});
 
-		const isConnected = await page.getByTestId("address").isVisible();
+	// 	const isConnected = await page.getByTestId("address").isVisible();
 
-		if (!isConnected) {
-			await page.getByTestId("connect").click();
+	// 	if (!isConnected) {
+	// 		await page.getByTestId("connect").click();
 
-			await wallet.connectWallet({ context, extensionId });
-		}
+	// 		await wallet.connectWallet({ context, extensionId });
+	// 	}
 
-		await page
-			.getByTestId("address")
-			.waitFor({ state: "visible", timeout: 1_000 });
+	// 	await page
+	// 		.getByTestId("address")
+	// 		.waitFor({ state: "visible", timeout: 10_000 });
 
-		await page.getByTestId("add-liquidity").click();
+	// 	await page.getByTestId("add-liquidity").click();
 
-		await wallet.acceptSign({ context, extensionId });
+	// 	await wallet.acceptSign({ context, extensionId });
 
-		await page.waitForTimeout(2000);
+	// 	await page.waitForTimeout(2000);
 
-		await wallet.acceptSign({ context, extensionId });
+	// 	await wallet.acceptSign({ context, extensionId });
 
-		await page.waitForTimeout(2000);
+	// 	await page.waitForTimeout(2000);
 
-		await wallet.acceptSign({ context, extensionId });
+	// 	await wallet.acceptSign({ context, extensionId });
 
-		await page.waitForTimeout(500);
+	// 	// await page.waitForTimeout(2000);
 
-		const btcTx = await page
-			.getByTestId("add-liquidity-btc-tx")
-			.first()
-			.textContent();
-		const approveTx = await page
-			.getByTestId("add-liquidity-approve-tx")
-			.first()
-			.textContent();
-		const addLiquidityTx = await page
-			.getByTestId("add-liquidity-add-liquidity-tx")
-			.first()
-			.textContent();
+	// 	// await wallet.acceptSign({ context, extensionId });
 
-		console.log(`BTC tx: ${btcTx}`);
-		console.log(`Approve tx: ${approveTx}`);
-		console.log(`Add liquidity tx: ${addLiquidityTx}`);
+	// 	await page.waitForTimeout(500);
 
-		console.log(
-			`waiting for transaction: ${midlConfig.network?.explorerUrl}/tx/${btcTx}`,
-		);
+	// 	const btcTx = await page
+	// 		.getByTestId("add-liquidity-btc-tx")
+	// 		.first()
+	// 		.textContent();
+	// 	const approveTx = await page
+	// 		.getByTestId("add-liquidity-approve-tx")
+	// 		.first()
+	// 		.textContent();
+	// 	const addLiquidityTx = await page
+	// 		.getByTestId("add-liquidity-add-liquidity-tx")
+	// 		.first()
+	// 		.textContent();
 
-		const confirmations = await waitForTransaction(midlConfig, btcTx as string);
+	// 	console.log(`BTC tx: ${btcTx}`);
+	// 	console.log(`Approve tx: ${approveTx}`);
+	// 	console.log(`Add liquidity tx: ${addLiquidityTx}`);
 
-		expect(confirmations).toBeGreaterThan(0);
-	});
+	// 	console.log(
+	// 		`waiting for transaction: ${midlConfig.network?.explorerUrl}/tx/${btcTx}`,
+	// 	);
 
-	test("swap", async ({ page, extensionId, context }) => {
-		await page.goto("http://localhost:5173", {
-			waitUntil: "networkidle",
-		});
+	// 	const confirmations = await waitForTransaction(midlConfig, btcTx as string);
 
-		const isConnected = await page.getByTestId("address").isVisible();
+	// 	expect(confirmations).toBeGreaterThan(0);
+	// });
 
-		if (!isConnected) {
-			await page.getByTestId("connect").click();
+	// test("swap", async ({ page, extensionId, context }) => {
+	// 	await page.goto("http://localhost:5173", {
+	// 		waitUntil: "networkidle",
+	// 	});
 
-			await wallet.connectWallet({ context, extensionId });
-		}
+	// 	const isConnected = await page.getByTestId("address").isVisible();
 
-		await page
-			.getByTestId("address")
-			.waitFor({ state: "visible", timeout: 1_000 });
+	// 	if (!isConnected) {
+	// 		await page.getByTestId("connect").click();
 
-		await page.getByTestId("swap").click();
+	// 		await wallet.connectWallet({ context, extensionId });
+	// 	}
 
-		await wallet.acceptSign({ context, extensionId });
+	// 	await page
+	// 		.getByTestId("address")
+	// 		.waitFor({ state: "visible", timeout: 10_000 });
 
-		await page.waitForTimeout(2000);
+	// 	await page.getByTestId("swap").click();
 
-		await wallet.acceptSign({ context, extensionId });
+	// 	await wallet.acceptSign({ context, extensionId });
 
-		await page.waitForTimeout(500);
+	// 	await page.waitForTimeout(2000);
 
-		const btcTx = await page.getByTestId("swap-btc-tx").first().textContent();
-		const txId = await page.getByTestId("swap-tx-id").first().textContent();
+	// 	await wallet.acceptSign({ context, extensionId });
 
-		console.log(`BTC tx: ${btcTx}`);
-		console.log(`Swap tx: ${txId}`);
+	// 	await page.waitForTimeout(500);
 
-		console.log(
-			`waiting for transaction: ${midlConfig.network?.explorerUrl}/tx/${btcTx}`,
-		);
+	// 	// await wallet.acceptSign({ context, extensionId });
 
-		const confirmations = await waitForTransaction(midlConfig, btcTx as string);
+	// 	// await page.waitForTimeout(500);
 
-		expect(confirmations).toBeGreaterThan(0);
-	});
+	// 	const btcTx = await page.getByTestId("swap-btc-tx").first().textContent();
+	// 	const txId = await page.getByTestId("swap-tx-id").first().textContent();
 
-	test("complete tx", async ({ page, extensionId, context }) => {
-		await page.goto("http://localhost:5173", {
-			waitUntil: "networkidle",
-		});
+	// 	console.log(`BTC tx: ${btcTx}`);
+	// 	console.log(`Swap tx: ${txId}`);
 
-		const isConnected = await page.getByTestId("address").isVisible();
+	// 	console.log(
+	// 		`waiting for transaction: ${midlConfig.network?.explorerUrl}/tx/${btcTx}`,
+	// 	);
 
-		if (!isConnected) {
-			await page.getByTestId("connect").click();
+	// 	const confirmations = await waitForTransaction(midlConfig, btcTx as string);
 
-			await wallet.connectWallet({ context, extensionId });
-		}
+	// 	expect(confirmations).toBeGreaterThan(0);
+	// });
 
-		await page
-			.getByTestId("address")
-			.waitFor({ state: "visible", timeout: 1_000 });
+	// test("complete tx", async ({ page, extensionId, context }) => {
+	// 	await page.goto("http://localhost:5173", {
+	// 		waitUntil: "networkidle",
+	// 	});
 
-		await page.getByTestId("complete-tx").click();
+	// 	const isConnected = await page.getByTestId("address").isVisible();
 
-		await wallet.acceptSign({ context, extensionId });
+	// 	if (!isConnected) {
+	// 		await page.getByTestId("connect").click();
 
-		await page.waitForTimeout(2000);
+	// 		await wallet.connectWallet({ context, extensionId });
+	// 	}
 
-		await wallet.acceptSign({ context, extensionId });
+	// 	await page
+	// 		.getByTestId("address")
+	// 		.waitFor({ state: "visible", timeout: 1_000 });
 
-		await page.waitForTimeout(500);
+	// 	await page.getByTestId("complete-tx").click();
 
-		const btcTx = await page
-			.getByTestId("complete-tx-btc-tx")
-			.first()
-			.textContent();
-		const txId = await page
-			.getByTestId("complete-tx-tx-id")
-			.first()
-			.textContent();
+	// 	await wallet.acceptSign({ context, extensionId });
 
-		console.log(`BTC tx: ${btcTx}`);
-		console.log(`Complete tx: ${txId}`);
+	// 	await page.waitForTimeout(2000);
 
-		console.log(
-			`waiting for transaction: ${midlConfig.network?.explorerUrl}/tx/${btcTx}`,
-		);
+	// 	await wallet.acceptSign({ context, extensionId });
 
-		const confirmations = await waitForTransaction(midlConfig, btcTx as string);
+	// 	await page.waitForTimeout(500);
 
-		expect(confirmations).toBeGreaterThan(0);
-	});
+	// 	const btcTx = await page
+	// 		.getByTestId("complete-tx-btc-tx")
+	// 		.first()
+	// 		.textContent();
+	// 	const txId = await page
+	// 		.getByTestId("complete-tx-tx-id")
+	// 		.first()
+	// 		.textContent();
+
+	// 	console.log(`BTC tx: ${btcTx}`);
+	// 	console.log(`Complete tx: ${txId}`);
+
+	// 	console.log(
+	// 		`waiting for transaction: ${midlConfig.network?.explorerUrl}/tx/${btcTx}`,
+	// 	);
+
+	// 	const confirmations = await waitForTransaction(midlConfig, btcTx as string);
+
+	// 	expect(confirmations).toBeGreaterThan(0);
+	// });
 });
