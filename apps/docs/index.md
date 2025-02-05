@@ -10,6 +10,9 @@ hero:
       text: Get Started
       link: /docs
     - theme: alt
+      text: Build DApps
+      link: /midl/getting-started
+    - theme: alt
       text: View on GitHub
       link: https://github.com/midl-xyz/midl-js
 

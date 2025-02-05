@@ -21,7 +21,7 @@ export default withSidebar(
 			nav: [
 				{ text: "Home", link: "/" },
 				{ text: "Docs", link: "/docs" },
-				{ text: "MIDL", link: "/midl/getting-started" },
+				{ text: "Build DApps", link: "/midl/getting-started" },
 			],
 
 			socialLinks: [
@@ -37,6 +37,7 @@ export default withSidebar(
 		rewrites: {
 			"root/:slug*": ":slug*",
 		},
+		srcExclude: ["./examples"],
 	}),
 	[
 		{

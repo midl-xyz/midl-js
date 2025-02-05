@@ -5,6 +5,10 @@ order: 0
 
 # Getting Started
 
+MIDL is a framework for building decentralized applications on Bitcoin. It provides a set of tools and libraries to help developers build, test, and deploy smart contracts on the MIDL Protocol.
+
+## Installation
+
 Install Midl.js executor packages via your package manager of choice.
 
 ::: code-group
@@ -23,9 +27,69 @@ yarn add @midl-xyz/midl-js-executor @midl-xyz/midl-js-executor-react
 
 :::
 
-## Integration
+### Add Wagmi, viem and ethers
 
 MIDL executor packages work alongside [Wagmi](https://wagmi.sh) to provide a seamless experience for developers.
+
+::: code-group
+
+```bash [pnpm]
+pnpm add wagmi
+```
+
+```bash [npm]
+npm install wagmi
+```
+
+```bash [yarn]
+yarn add wagmi
+```
+
+:::
+
+#### Override `ethers` and `viem` versions
+
+::: warning
+This step is required to ensure compatibility with MIDL executor.
+:::
+
+To ensure compatibility with MIDL executor, you need to override the versions of `ethers` and `viem` in your `package.json`.
+Patched versions of `ethers` and `viem` provide additional functionality required by MIDL executor, such as setting the transaction type, fees, adding `estimateGasMulti` method and more.
+
+::: code-group
+
+```json [package.json(pnpm)]
+{
+  "pnpm": {
+    "overrides": {
+      "ethers": "npm:@midl-xyz/ethers",
+      "viem": "npm:@midl-xyz/midl-viem"
+    }
+  }
+}
+```
+
+```json [package.json(npm)]
+{
+  "overrides": {
+    "ethers": "5.4.5",
+    "viem": "0.0.1"
+  }
+}
+```
+
+```json [package.json(yarn)]
+{
+  "resolutions": {
+    "ethers": "5.4.5",
+    "viem": "0.0.1"
+  }
+}
+```
+
+:::
+
+## Integration
 
 Add `WagmiMidlProvider` to provide the necessary context for the executor to work.
 
