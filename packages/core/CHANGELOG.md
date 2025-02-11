@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 0.0.77
+
+### Patch Changes
+
+- fix(executor): remove optional ethers dep
+
 ## 0.0.76
 
 ### Patch Changes

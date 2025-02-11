@@ -1,5 +1,14 @@
 # @midl-xyz/midl-js-executor
 
+## 0.0.77
+
+### Patch Changes
+
+- fix(executor): remove optional ethers dep
+- Updated dependencies
+  - @midl-xyz/midl-js-core@0.0.77
+  - @midl-xyz/midl-js-react@0.0.77
+
 ## 0.0.76
 
 ### Patch Changes

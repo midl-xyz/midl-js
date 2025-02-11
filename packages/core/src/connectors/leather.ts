@@ -1,4 +1,4 @@
-import { address, networks, Psbt } from "bitcoinjs-lib";
+import { Psbt, networks } from "bitcoinjs-lib";
 import {
 	type SignMessageParams,
 	SignMessageProtocol,

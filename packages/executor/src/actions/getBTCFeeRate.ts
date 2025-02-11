@@ -1,5 +1,5 @@
 import type { Config } from "@midl-xyz/midl-js-core";
-import { JsonRpcProvider, ethers } from "ethers";
+import type { JsonRpcProvider } from "ethers";
 import type { Address, Client } from "viem";
 import { readContract } from "viem/actions";
 import { executorAddress } from "~/config";
@@ -7,8 +7,13 @@ import { executorAbi } from "~/contracts/abi";
 
 export type GetBTCFeeRateResponse = ReturnType<typeof getBTCFeeRateViem>;
 
-const getBTCFeeRateEthers = (config: Config, provider: JsonRpcProvider) => {
-	const contract = new ethers.Contract(
+const getBTCFeeRateEthers = async (
+	config: Config,
+	provider: JsonRpcProvider,
+) => {
+	const { Contract } = await import("ethers");
+
+	const contract = new Contract(
 		// biome-ignore lint/style/noNonNullAssertion: <explanation>
 		executorAddress[config.network!.id],
 		executorAbi,
@@ -42,9 +47,13 @@ export const getBTCFeeRate = async (
 		throw new Error("Network not set");
 	}
 
-	if (client instanceof JsonRpcProvider) {
-		return getBTCFeeRateEthers(config, client);
-	}
+	try {
+		const { JsonRpcProvider } = await import("ethers");
 
-	return getBTCFeeRateViem(config, client);
+		if (client instanceof JsonRpcProvider) {
+			return getBTCFeeRateEthers(config, client);
+		}
+	} catch {}
+
+	return getBTCFeeRateViem(config, client as Client);
 };

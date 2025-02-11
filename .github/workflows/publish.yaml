@@ -40,6 +40,13 @@ jobs:
             echo "publish-branch=${{ github.ref_name }}" >> ~/.npmrc
           fi
 
+      - name: Allow publishing on new releases
+        run: |
+          if [ "${{ github.event_name }}" == "release" ]; then
+            echo "Allow publishing on tag ${{ github.ref }}"
+            echo "publish-branch=${{ github.ref }}" >> ~/.npmrc
+          fi
+
       - name: Install dependencies
         run: pnpm install
 
