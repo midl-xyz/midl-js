@@ -53,7 +53,7 @@ yarn add wagmi
 This step is required to ensure compatibility with MIDL executor.
 :::
 
-To ensure compatibility with MIDL executor, you need to override the versions of `ethers` and `viem` in your `package.json`.
+To ensure compatibility with MIDL executor, you need to override the versions of `ethers` (optional) and `viem` in your `package.json`.
 Patched versions of `ethers` and `viem` provide additional functionality required by MIDL executor, such as setting the transaction type, fees, adding `estimateGasMulti` method and more.
 
 ::: code-group
@@ -72,8 +72,8 @@ Patched versions of `ethers` and `viem` provide additional functionality require
 ```json [package.json(npm)]
 {
   "overrides": {
-    "ethers": "5.4.5",
-    "viem": "0.0.1"
+    "ethers": "npm:@midl-xyz/ethers",
+    "viem": "npm:@midl-xyz/midl-viem"
   }
 }
 ```
@@ -81,8 +81,8 @@ Patched versions of `ethers` and `viem` provide additional functionality require
 ```json [package.json(yarn)]
 {
   "resolutions": {
-    "ethers": "5.4.5",
-    "viem": "0.0.1"
+    "ethers": "npm:@midl-xyz/ethers",
+    "viem": "npm:@midl-xyz/midl-viem"
   }
 }
 ```
@@ -97,12 +97,12 @@ Add `WagmiMidlProvider` to provide the necessary context for the executor to wor
 
 ```tsx{2,16} [app.tsx]
 import { MidlProvider } from '@midl-xyz/midl-js-react';
-import { WagmiMidlProvider } from "@wagmi/midl-js-executor-react";
+import { WagmiMidlProvider } from "@midl-xyz/midl-js-executor-react";
 import { WagmiProvider } from 'wagmi';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-import midlConfig from './midlConfig';
-import wagmiConfig from './wagmiConfig';
+import {midlConfig} from './midlConfig';
+import {wagmiConfig} from './wagmiConfig';
 
 const queryClient = new QueryClient();
 

@@ -9,7 +9,7 @@ import {
 	transferBTC,
 } from "@midl-xyz/midl-js-core";
 import type { MidlContextState } from "@midl-xyz/midl-js-react";
-import { JsonRpcProvider } from "ethers";
+import type { JsonRpcProvider } from "ethers";
 import {
 	type Address,
 	type Client,
@@ -96,13 +96,19 @@ export const finalizeBTCTransaction = async (
 
 	let gasLimits: bigint[];
 
-	if (client instanceof JsonRpcProvider) {
+	try {
+		const { JsonRpcProvider } = await import("ethers");
+
+		if (!(client instanceof JsonRpcProvider)) {
+			throw new Error("Not an ethers provider");
+		}
+
 		gasLimits = await client.estimateGasMulti(
 			evmTransactions.map((it) => transformViemToEthersTx(it)),
 			transformViemToEthersStateOverride(options.stateOverride),
 		);
-	} else {
-		gasLimits = await estimateGasMulti(client, {
+	} catch {
+		gasLimits = await estimateGasMulti(client as Client, {
 			transactions: evmTransactions,
 			stateOverride: options.stateOverride,
 			account: evmAddress,

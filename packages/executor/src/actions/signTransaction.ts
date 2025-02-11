@@ -4,7 +4,7 @@ import {
 	getDefaultAccount,
 	signMessage,
 } from "@midl-xyz/midl-js-core";
-import { JsonRpcProvider } from "ethers";
+import type { JsonRpcProvider } from "ethers";
 import {
 	keccak256,
 	type TransactionSerializableBTC,
@@ -54,11 +54,15 @@ export const signTransaction = async (
 	}
 
 	const getNonce = async () => {
-		if (client instanceof JsonRpcProvider) {
-			return client.getTransactionCount(getEVMAddress(publicKey));
-		}
+		try {
+			const { JsonRpcProvider } = await import("ethers");
 
-		return getTransactionCount(client, {
+			if (client instanceof JsonRpcProvider) {
+				return client.getTransactionCount(getEVMAddress(publicKey));
+			}
+		} catch {}
+
+		return getTransactionCount(client as Client, {
 			address: getEVMAddress(publicKey),
 		});
 	};
