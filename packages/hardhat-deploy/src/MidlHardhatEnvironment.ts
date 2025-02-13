@@ -30,6 +30,7 @@ import path from "node:path";
 import {
 	type Address,
 	type Chain,
+	type StateOverride,
 	type TransactionSerializableBTC,
 	type WalletClient,
 	createWalletClient,
@@ -211,7 +212,10 @@ export class MidlHardhatEnvironment {
 		});
 	}
 
-	public async execute() {
+	public async execute({
+		stateOverride,
+		feeRateMultiplier = 4,
+	}: { stateOverride?: StateOverride; feeRateMultiplier?: number } = {}) {
 		const intentions = this.store.getState().intentions;
 
 		if (!intentions || intentions.length === 0) {
@@ -227,7 +231,13 @@ export class MidlHardhatEnvironment {
 			this.store,
 			walletClient,
 			{
-				feeRateMultiplier: 4,
+				stateOverride: stateOverride ?? [
+					{
+						address: await this.getAddress(),
+						balance: intentions.reduce((acc, it) => acc + (it.value ?? 0n), 0n),
+					},
+				],
+				feeRateMultiplier,
 			},
 		);
 

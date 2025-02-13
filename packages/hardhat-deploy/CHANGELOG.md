@@ -1,5 +1,11 @@
 # @midl-xyz/hardhat-deploy
 
+## 0.0.9
+
+### Patch Changes
+
+- fix(hardhat-deploy): add stateoverride
+
 ## 0.0.8
 
 ### Patch Changes
