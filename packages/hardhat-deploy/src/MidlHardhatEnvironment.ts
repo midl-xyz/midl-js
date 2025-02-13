@@ -209,6 +209,7 @@ export class MidlHardhatEnvironment {
 				gasPrice: options.gasPrice,
 				gas: options.gas,
 			},
+			value: options.value,
 		});
 	}
 

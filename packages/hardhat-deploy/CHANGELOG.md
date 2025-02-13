@@ -1,5 +1,11 @@
 # @midl-xyz/hardhat-deploy
 
+## 0.0.10
+
+### Patch Changes
+
+- fix(hardhat-deploy): fix value
+
 ## 0.0.9
 
 ### Patch Changes
