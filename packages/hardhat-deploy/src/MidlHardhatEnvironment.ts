@@ -25,6 +25,8 @@ import * as bip39 from "bip39";
 import * as bitcoin from "bitcoinjs-lib";
 import ECPairFactory from "ecpair";
 import type { HardhatRuntimeEnvironment } from "hardhat/types";
+import fs from "node:fs";
+import path from "node:path";
 import {
 	type Address,
 	type Chain,
@@ -36,11 +38,9 @@ import {
 	getContractAddress,
 	http,
 } from "viem";
+import { waitForTransactionReceipt } from "viem/actions";
 import { type StoreApi, createStore } from "zustand";
 import "~/types/context";
-import fs from "node:fs";
-import { waitForTransactionReceipt } from "viem/actions";
-import path from "node:path";
 
 const bip32 = BIP32Factory(ecc);
 const ECPair = ECPairFactory(ecc);
@@ -197,11 +197,16 @@ export class MidlHardhatEnvironment {
 		});
 
 		await addTxIntention(this.config, this.store, {
+			hasDeposit: Boolean(options.value && options.value > 0n),
 			evmTransaction: {
 				type: "btc",
 				chainId: 777,
 				data,
 				to: address as Address,
+				value: options.value,
+				nonce: options.nonce,
+				gasPrice: options.gasPrice,
+				gas: options.gas,
 			},
 		});
 	}

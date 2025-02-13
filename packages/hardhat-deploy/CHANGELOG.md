@@ -1,5 +1,11 @@
 # @midl-xyz/hardhat-deploy
 
+## 0.0.8
+
+### Patch Changes
+
+- fix(hardhat-deploy): allow passing value
+
 ## 0.0.7
 
 ### Patch Changes
