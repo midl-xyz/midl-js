@@ -36,6 +36,7 @@
     "@midl-xyz/midl-js-core": "workspace:^",
     "@midl-xyz/midl-js-executor": "workspace:^",
     "@midl-xyz/midl-js-react": "workspace:^",
+    "@midl-xyz/midl-js-executor-react": "workspace:^",
     "@tanstack/react-query": "*",
     "@wagmi/connectors": "^5.1.11",
     "buffer": "^6.0.3",

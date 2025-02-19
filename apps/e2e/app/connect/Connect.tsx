@@ -1,5 +1,5 @@
 import { AddressPurpose } from "@midl-xyz/midl-js-core";
-import { usePublicKey } from "@midl-xyz/midl-js-executor";
+import { usePublicKey } from "@midl-xyz/midl-js-executor-react";
 import {
 	useAccounts,
 	useConnect,

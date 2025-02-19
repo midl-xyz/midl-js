@@ -3,7 +3,7 @@
   <a href="https://midl-js-lib.midl.xyz">
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="./.github/logo-dark.svg">
-      <img alt="wagmi logo" src="./.github/logo.svg" width="auto" height="60">
+      <img alt="midl logo" src="./.github/logo.svg" width="auto" height="60">
     </picture>
   </a>
 </div>

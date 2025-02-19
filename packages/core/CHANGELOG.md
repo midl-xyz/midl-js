@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 0.0.78
+
+### Patch Changes
+
+- fix(core): support latest leather api
+
 ## 0.0.77
 
 ### Patch Changes

@@ -159,6 +159,7 @@ class LeatherConnector implements Connector {
 			}).toHex(),
 			signInputs: toSignInputs,
 			network: this.getNetworkName(),
+			broadcast: false,
 		});
 
 		if (!("result" in response)) {
