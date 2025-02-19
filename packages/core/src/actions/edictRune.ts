@@ -152,7 +152,11 @@ export const edictRune = async (
 				throw new Error("No ordinals UTXOs");
 			}
 
-			const selectedUTXOs = runeUTXOSelect(utxos, transfer.amount).filter(
+			const selectedUTXOs = runeUTXOSelect(
+				utxos,
+				transfer.runeId,
+				transfer.amount,
+			).filter(
 				(utxo) => !runeUTXOs.some((runeUTXO) => runeUTXO.txid === utxo.txid),
 			);
 
@@ -259,9 +263,9 @@ export const edictRune = async (
 
 	const mintStone = new Runestone(edicts, none(), none(), some(changeIndex));
 
-	// if (mintStone.edicts.length > 1) {
-	// 	throw new Error("Only one edict per transaction is allowed");
-	// }
+	if (mintStone.edicts.length > 2) {
+		throw new Error("Only two edicts per transaction is allowed");
+	}
 
 	psbt.addOutput({
 		script: mintStone.encipher(),

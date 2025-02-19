@@ -1,6 +1,6 @@
 import * as bitcoin from "bitcoinjs-lib";
-import { Runestone } from "runelib";
-import { beforeAll, describe, expect, it } from "vitest";
+import { beforeAll, describe, expect, it, vi } from "vitest";
+import { makeRuneUTXO } from "~/__tests__/fixtures/utxo";
 import { getKeyPair } from "~/__tests__/keyPair";
 import { makeRandomAddress } from "~/__tests__/makeRandomAddress";
 import { mockServer } from "~/__tests__/mockServer";
@@ -9,6 +9,8 @@ import { keyPair } from "~/connectors/keyPair";
 import { AddressPurpose } from "~/constants";
 import { type Config, createConfig } from "~/createConfig";
 import { regtest } from "~/networks";
+import * as mod from "./getRuneUTXO";
+import { Runestone } from "runelib";
 
 describe("core | actions | edictRune", () => {
 	let config: Config;
@@ -28,8 +30,16 @@ describe("core | actions | edictRune", () => {
 		await config.connectors[0].connect({ purposes: [AddressPurpose.Ordinals] });
 	});
 
-	it.skip("should throw if more than 1 edict", async () => {
-		expect(() =>
+	it("should throw if more than 2 edicts", async () => {
+		const mock = vi
+			.spyOn(mod, "getRuneUTXO")
+			.mockImplementation(async () => [
+				makeRuneUTXO("1:1", 100n, 0),
+				makeRuneUTXO("2:1", 100n, 0),
+				makeRuneUTXO("3:1", 100n, 0),
+			]);
+
+		await expect(() =>
 			edictRune(config, {
 				transfers: [
 					{
@@ -42,16 +52,45 @@ describe("core | actions | edictRune", () => {
 						amount: 100n,
 						receiver: makeRandomAddress(bitcoin.networks.regtest),
 					},
+					{
+						runeId: "3:1",
+						amount: 100n,
+						receiver: makeRandomAddress(bitcoin.networks.regtest),
+					},
 				],
 			}),
-		).rejects.toThrowError("Only one edict per transaction is allowed");
+		).rejects.toThrowError("Only two edicts per transaction is allowed");
+
+		mock.mockRestore();
 	});
 
-	it("has runes", async () => {
-		const rawTx =
-			"02000000000102c587c9eeef77cb7321c91c860c2950b9677e7fd28ef8e3cd4f0e0ae6b1e0d3cc0100000000ffffffffa7c50b5658a0d692b9ff82f1d60de7a81cc77e22f0475774a0d6eabff52076b20300000000ffffffff05e00c00000000000016001484b101912b438978e5e27ed98d31b23143f3e0c7220200000000000016001484b101912b438978e5e27ed98d31b23143f3e0c72202000000000000225120e3a6aedbedea55703355b6ed25c7e8e2ed5864e3fec671e036531e4423420016d778b60600000000225120e3a6aedbedea55703355b6ed25c7e8e2ed5864e3fec671e036531e44234200160000000000000000186a5d15160200e89a040180808096d0a5b2ec84ededee070101400415c0430491912cec3d52b9638a03f47c844fd33ebb7f0c6d0302f1d39b0902fb07c03a1ea336b2ec48e2b7d23bcfcacaef73489a41cebd085d8a388e8c207f01407f358aff863cc803ac9c57df52ce2a0485e920864f80d9b0829273e0c201dbcfa50ce2f4ca23d1d26b6bbc73cab01e1e399cfa9ba37615aa108c79d25b2038a300000000";
-		const stone = Runestone.decipher(rawTx);
+	it("should create correct PSBT", async () => {
+		const mock = vi
+			.spyOn(mod, "getRuneUTXO")
+			.mockImplementation(async () => [
+				makeRuneUTXO("1:1", 100n, 0),
+				makeRuneUTXO("1:1", 100n, 0),
+			]);
 
-		console.log(stone.value()?.edicts);
+		const data = await edictRune(config, {
+			transfers: [
+				{
+					runeId: "1:1",
+					amount: 200n,
+					receiver: makeRandomAddress(bitcoin.networks.regtest),
+				},
+			],
+		});
+
+		const psbt = bitcoin.Psbt.fromBase64(data.psbt, {
+			network: bitcoin.networks.regtest,
+		});
+
+		const stone = Runestone.decipher(psbt.extractTransaction().toHex());
+
+		expect(stone.value()?.edicts.length).toBe(1);
+		expect(stone.value()?.edicts[0].amount).toBe(200n);
+
+		mock.mockRestore();
 	});
 });
