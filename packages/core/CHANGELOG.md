@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 0.0.79
+
+### Patch Changes
+
+- fix(core): rune utxo select
+
 ## 0.0.78
 
 ### Patch Changes

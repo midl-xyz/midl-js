@@ -31,7 +31,7 @@ export type RuneUTXO = {
 	 */
 	runes: {
 		rune: string;
-		runeId: string;
+		runeid: string;
 		spacedRune: string;
 		amount: string;
 		symbol: string;
