@@ -1,5 +1,14 @@
 # @midl-xyz/midl-js-executor
 
+## 0.0.80
+
+### Patch Changes
+
+- feat(core): update sats-connect
+- Updated dependencies
+  - @midl-xyz/midl-js-core@0.0.80
+  - @midl-xyz/midl-js-react@0.0.80
+
 ## 0.0.79
 
 ### Patch Changes

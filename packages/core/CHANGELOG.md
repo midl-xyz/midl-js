@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 0.0.80
+
+### Patch Changes
+
+- feat(core): update sats-connect
+
 ## 0.0.79
 
 ### Patch Changes
