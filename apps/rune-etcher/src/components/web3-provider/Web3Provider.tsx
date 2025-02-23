@@ -9,13 +9,15 @@ import {
 	testnet4,
 	regtest,
 } from "@midl-xyz/midl-js-core";
+import { satsConnect } from "@midl-xyz/midl-js-core/connectors/sats-connect";
+
 import { MidlProvider } from "@midl-xyz/midl-js-react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
 
 const config = createConfig({
 	networks: [testnet, testnet4, mainnet, regtest],
-	connectors: [unisat(), leather()],
+	connectors: [satsConnect(), unisat(), leather()],
 	persist: true,
 });
 

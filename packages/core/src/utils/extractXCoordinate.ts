@@ -4,13 +4,18 @@
  * @returns hexadecimal x coordinate
  */
 export const extractXCoordinate = (publicKey: string) => {
-  const publicKeyBuffer = Buffer.from(publicKey, "hex");
+	const publicKeyBuffer = Buffer.from(publicKey, "hex");
 
-  if (publicKeyBuffer.length !== 33 && publicKeyBuffer.length !== 65) {
-    throw new Error("Invalid public key length");
-  }
+	if (publicKeyBuffer.length === 32) {
+		// Assume it's already the x coordinate
+		return publicKeyBuffer.toString("hex");
+	}
 
-  const xCoordinate = publicKeyBuffer.subarray(1, 33);
+	if (publicKeyBuffer.length !== 33 && publicKeyBuffer.length !== 65) {
+		throw new Error("Invalid public key length");
+	}
 
-  return xCoordinate.toString("hex");
+	const xCoordinate = publicKeyBuffer.subarray(1, 33);
+
+	return xCoordinate.toString("hex");
 };

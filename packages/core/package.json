@@ -1,6 +1,6 @@
 {
   "name": "@midl-xyz/midl-js-core",
-  "version": "0.0.79",
+  "version": "0.0.80",
   "scripts": {
     "build": "pnpm run clean && tspc --project tsconfig.esm.json && tspc --project tsconfig.cjs.json",
     "dev": "concurrently \"tspc --watch --preserveWatchOutput --project tsconfig.esm.json\" \"tspc --watch --preserveWatchOutput --project tsconfig.cjs.json\"",
@@ -45,7 +45,7 @@
     "bitcoinselect": "^1.0.0",
     "ecpair": "^2.1.0",
     "runelib": "^1.0.7",
-    "sats-connect": "^2.6.0",
+    "sats-connect": "^3.2.0",
     "varuint-bitcoin": "1.1.2",
     "viem": "^2.18.6",
     "zustand": "^5.0.1"

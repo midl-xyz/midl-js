@@ -8,10 +8,6 @@ export const getPublicKey = (config: Config, publicKey: string) => {
 		return null;
 	}
 
-	// if (publicKey) {
-	// 	return toHex(Buffer.from(extractXCoordinate(publicKey), "hex"));
-	// }
-
 	initEccLib(ecc);
 
 	const p2tr = payments.p2tr({
