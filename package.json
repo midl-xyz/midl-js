@@ -6,6 +6,7 @@
   "scripts": {
     "ci:publish": "pnpm publish -r",
     "build:packages": "turbo run build --filter='./packages/*'",
+    "dev:packages": "turbo run dev --filter='./packages/*'",
     "prepare": "husky"
   },
   "devDependencies": {

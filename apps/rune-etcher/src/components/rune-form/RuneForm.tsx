@@ -23,22 +23,19 @@ import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMaskito } from "@maskito/react";
-import { SignMessageProtocol } from "@midl-xyz/midl-js-core";
 import {
 	useAccounts,
 	useBroadcastTransaction,
 	useConfig,
 	useEtchRune,
-	useMidlContext,
 	useRune,
-	useSignMessage,
 	useWaitForTransaction,
 } from "@midl-xyz/midl-js-react";
 import { useMutation } from "@tanstack/react-query";
 import { Loader2Icon } from "lucide-react";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { formatUnits, keccak256, serializeTransaction, zeroAddress } from "viem";
+import { formatUnits } from "viem";
 import * as z from "zod";
 
 const formSchema = z.object({
@@ -87,7 +84,7 @@ export const RuneForm = () => {
 
 	const { rune, isFetching } = useRune({ runeId: name });
 
-	const {ordinalsAccount} = useAccounts();
+	const { ordinalsAccount } = useAccounts();
 
 	const { etchRune } = useEtchRune({
 		mutation: {
@@ -232,21 +229,6 @@ export const RuneForm = () => {
 			});
 		},
 	});
-
-	const {signMessageAsync} = useSignMessage();
-
-	const onSignMessage =async ()=> {
-		const simpleTx = serializeTransaction({
-			to: zeroAddress,
-			value: BigInt(100),
-			gasPrice: BigInt(1000)
-		})
-
-		console.log('message', keccak256(simpleTx))
-
-		const signature = await signMessageAsync({message: keccak256(simpleTx), address: ordinalsAccount?.address, protocol: SignMessageProtocol.Bip322 });
-		console.log(signature);
-	}
 
 	return (
 		<div>
@@ -576,10 +558,6 @@ export const RuneForm = () => {
 					</Button>
 				</form>
 			</Form>
-
-			<Button onClick={onSignMessage}>
-				Sign Message
-			</Button>
 		</div>
 	);
 };

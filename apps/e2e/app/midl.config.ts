@@ -1,7 +1,8 @@
-import { createConfig, leather, regtest, unisat } from "@midl-xyz/midl-js-core";
+import { createConfig, regtest, unisat } from "@midl-xyz/midl-js-core";
+import { satsConnect } from "@midl-xyz/midl-js-core/connectors/sats-connect";
 
 export default createConfig({
 	networks: [regtest],
-	connectors: [leather(), unisat()],
+	connectors: [satsConnect(), unisat()],
 	persist: true,
 });
