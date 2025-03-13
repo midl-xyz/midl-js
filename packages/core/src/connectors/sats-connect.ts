@@ -1,4 +1,4 @@
-import Wallet, { MessageSigningProtocols } from "sats-connect";
+import { MessageSigningProtocols, request } from "sats-connect";
 import {
 	type SignMessageParams,
 	SignMessageProtocol,
@@ -15,21 +15,28 @@ import {
 } from "~/connectors/createConnector";
 import { getAddressType, isCorrectAddress } from "~/utils";
 
-class SatsConnectConnector implements Connector {
+export class SatsConnectConnector implements Connector {
 	public readonly id = "sats-connect";
 	public readonly name = "Xverse";
 	public readonly type = ConnectorType.SatsConnect;
 
-	constructor(private config: CreateConnectorConfig) {}
+	constructor(
+		private config: CreateConnectorConfig,
+		private providerId?: string,
+	) {}
 
 	async getNetwork() {
 		return this.config.getState().network;
 	}
 
 	async connect({ purposes }: ConnectParams) {
-		const data = await Wallet.request("wallet_connect", {
-			addresses: purposes,
-		});
+		const data = await request(
+			"wallet_connect",
+			{
+				addresses: purposes,
+			},
+			this.providerId,
+		);
 
 		if (data.status === "error") {
 			throw data.error;
@@ -52,7 +59,7 @@ class SatsConnectConnector implements Connector {
 	}
 
 	async disconnect() {
-		await Wallet.request("wallet_renouncePermissions", undefined);
+		await request("wallet_renouncePermissions", undefined, this.providerId);
 
 		this.config.setState({
 			connection: undefined,
@@ -65,14 +72,18 @@ class SatsConnectConnector implements Connector {
 		message,
 		protocol,
 	}: SignMessageParams): Promise<SignMessageResponse> {
-		const response = await Wallet.request("signMessage", {
-			address,
-			message,
-			protocol:
-				protocol === SignMessageProtocol.Ecdsa
-					? MessageSigningProtocols.ECDSA
-					: MessageSigningProtocols.BIP322,
-		});
+		const response = await request(
+			"signMessage",
+			{
+				address,
+				message,
+				protocol:
+					protocol === SignMessageProtocol.Ecdsa
+						? MessageSigningProtocols.ECDSA
+						: MessageSigningProtocols.BIP322,
+			},
+			this.providerId,
+		);
 
 		if (response.status === "error") {
 			throw response.error;
@@ -108,10 +119,14 @@ class SatsConnectConnector implements Connector {
 		psbt,
 		signInputs,
 	}: SignPSBTParams): Promise<SignPSBTResponse> {
-		const response = await Wallet.request("signPsbt", {
-			psbt: psbt,
-			signInputs,
-		});
+		const response = await request(
+			"signPsbt",
+			{
+				psbt: psbt,
+				signInputs,
+			},
+			this.providerId,
+		);
 
 		if (response.status === "error") {
 			throw response.error;

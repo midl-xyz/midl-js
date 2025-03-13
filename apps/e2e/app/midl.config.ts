@@ -1,8 +1,8 @@
-import { createConfig, regtest, unisat } from "@midl-xyz/midl-js-core";
-import { satsConnect } from "@midl-xyz/midl-js-core/connectors/sats-connect";
+import { createConfig, regtest, unisat, bitget } from "@midl-xyz/midl-js-core";
+import { xverse } from "@midl-xyz/midl-js-core/connectors/xverse";
 
 export default createConfig({
 	networks: [regtest],
-	connectors: [satsConnect(), unisat()],
+	connectors: [xverse(), bitget(), unisat()],
 	persist: true,
 });

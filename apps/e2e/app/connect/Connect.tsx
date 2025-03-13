@@ -12,9 +12,11 @@ export const Connect = () => {
 		AddressPurpose.Ordinals,
 	]);
 
-	const { connect, connectors } = useConnect({
+	const { connect, connectors, error } = useConnect({
 		purposes,
 	});
+
+	console.error(error);
 
 	const { disconnect } = useDisconnect();
 
