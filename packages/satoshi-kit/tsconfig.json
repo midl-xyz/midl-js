@@ -1,0 +1,16 @@
+{
+	"extends": "@midl-xyz/midl-js-config/tsconfig.base.json",
+	"include": ["./src/**/*.ts", "src/**/*.tsx"],
+	"compilerOptions": {
+		"baseUrl": ".",
+		"moduleResolution": "Bundler",
+		"jsx": "react-jsx",
+		"paths": {
+			"~/*": ["./src/*"]
+		},
+		"plugins": [
+			{ "transform": "typescript-transform-paths" },
+			{ "transform": "typescript-transform-paths", "afterDeclarations": true }
+		]
+	}
+}

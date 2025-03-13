@@ -39,7 +39,7 @@
         "ethers": "npm:@midl-xyz/ethers@^6.13.0-0",
         "happy-dom": "^15.11.7",
         "react": "^18.3.1",
-        "viem": "npm:@midl-xyz/midl-viem@2.21.36",
+        "viem": "npm:@midl-xyz/midl-viem",
         "wagmi": "^2.*",
         "zustand": "^5.0.1"
     },
@@ -55,8 +55,8 @@
         "bitcoinjs-lib": "7.0.0-rc.0",
         "ethers": "npm:@midl-xyz/ethers@^6.13.0-0",
         "react": "^18.*",
-        "viem": "npm:@midl-xyz/midl-viem@2.*",
-        "wagmi": "^2.*",
+        "viem": "npm:@midl-xyz/midl-viem",
+        "wagmi": "^2.21.36",
         "zustand": "^5.0.1"
     }
 }

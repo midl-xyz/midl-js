@@ -41,7 +41,7 @@
         "@midl-xyz/midl-js-core": "workspace:^",
         "@midl-xyz/midl-js-react": "workspace:^",
         "@midl-xyz/midl-js-executor": "workspace:^",
-        "viem": "npm:@midl-xyz/midl-viem@2.21.36",
+        "viem": "npm:@midl-xyz/midl-viem",
         "ethers": "npm:@midl-xyz/ethers@^6.13.0-0"
     }
 }

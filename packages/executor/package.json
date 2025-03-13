@@ -33,7 +33,7 @@
     "@wagmi/cli": "^2.1.15",
     "bitcoinjs-lib": "7.0.0-rc.0",
     "ethers": "npm:@midl-xyz/ethers@^6.13.0-0",
-    "viem": "npm:@midl-xyz/midl-viem@2.21.36"
+    "viem": "npm:@midl-xyz/midl-viem"
   },
   "dependencies": {
     "@bitcoinerlab/secp256k1": "^1.2.0",
@@ -45,6 +45,6 @@
   "peerDependencies": {
     "bitcoinjs-lib": "7.0.0-rc.0",
     "ethers": "npm:@midl-xyz/ethers@^6.13.0-0",
-    "viem": "npm:@midl-xyz/midl-viem@2.*"
+    "viem": "npm:@midl-xyz/midl-viem"
   }
 }

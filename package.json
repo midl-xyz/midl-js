@@ -37,7 +37,7 @@
   },
   "pnpm": {
     "overrides": {
-      "viem": "npm:@midl-xyz/midl-viem@2.21.36",
+      "viem": "npm:@midl-xyz/midl-viem",
       "@bitcoinerlab/secp256k1": "^1.2.0",
       "@noble/secp256k1": "1.7.1"
     }
