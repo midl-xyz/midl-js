@@ -6,19 +6,19 @@ import { getKeyPair } from "~/__tests__/keyPair";
 
 const queryClient = new QueryClient();
 
-const config = createConfig({
-	networks: [regtest],
-	connectors: [
-		keyPair({
-			keyPair: getKeyPair(),
-		}),
-	],
+export const config = createConfig({
+  networks: [regtest],
+  connectors: [
+    keyPair({
+      keyPair: getKeyPair(),
+    }),
+  ],
 });
 
 export const wrapper = ({ children }: { children: ReactNode }) => {
-	return (
-		<MidlProvider config={config}>
-			<QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-		</MidlProvider>
-	);
+  return (
+    <MidlProvider config={config}>
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    </MidlProvider>
+  );
 };
