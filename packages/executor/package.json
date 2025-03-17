@@ -1,50 +1,48 @@
 {
-  "name": "@midl-xyz/midl-js-executor",
-  "version": "0.0.81",
-  "scripts": {
-    "build": "pnpm run clean && tspc --project tsconfig.esm.json && tspc --project tsconfig.cjs.json",
-    "dev": "concurrently \"tspc --watch --preserveWatchOutput --project tsconfig.esm.json\" \"tspc --watch --preserveWatchOutput --project tsconfig.cjs.json\"",
-    "clean": "rm -rf dist",
-    "test": "vitest",
-    "generate": "wagmi generate"
-  },
-  "main": "./dist/cjs/index.js",
-  "module": "./dist/esm/index.js",
-  "types": "./dist/types/index.d.ts",
-  "exports": {
-    "./package.json": "./package.json",
-    ".": {
-      "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js",
-      "types": "./dist/types/index.d.ts"
-    },
-    "./*": {
-      "import": "./dist/esm/*.js",
-      "require": "./dist/cjs/*.js",
-      "types": "./dist/types/*.d.ts"
-    }
-  },
-  "files": [
-    "dist"
-  ],
-  "devDependencies": {
-    "@midl-xyz/midl-js-config": "workspace:^",
-    "@types/node": "^22.8.7",
-    "@wagmi/cli": "^2.1.15",
-    "bitcoinjs-lib": "7.0.0-rc.0",
-    "ethers": "npm:@midl-xyz/ethers@^6.13.0-0",
-    "viem": "npm:@midl-xyz/midl-viem@2.21.36"
-  },
-  "dependencies": {
-    "@bitcoinerlab/secp256k1": "^1.2.0",
-    "@midl-xyz/contracts": "^0.0.6-alpha",
-    "@midl-xyz/midl-js-core": "workspace:^",
-    "@midl-xyz/midl-js-react": "workspace:^",
-    "zustand": "^5.0.1"
-  },
-  "peerDependencies": {
-    "bitcoinjs-lib": "7.0.0-rc.0",
-    "ethers": "npm:@midl-xyz/ethers@^6.13.0-0",
-    "viem": "npm:@midl-xyz/midl-viem@2.*"
-  }
+	"name": "@midl-xyz/midl-js-executor",
+	"version": "0.0.81",
+	"scripts": {
+		"build": "pnpm run clean && tspc --project tsconfig.esm.json && tspc --project tsconfig.cjs.json",
+		"dev": "concurrently \"tspc --watch --preserveWatchOutput --project tsconfig.esm.json\" \"tspc --watch --preserveWatchOutput --project tsconfig.cjs.json\"",
+		"clean": "rm -rf dist",
+		"test": "vitest",
+		"generate": "wagmi generate"
+	},
+	"main": "./dist/cjs/index.js",
+	"module": "./dist/esm/index.js",
+	"types": "./dist/types/index.d.ts",
+	"exports": {
+		"./package.json": "./package.json",
+		".": {
+			"import": "./dist/esm/index.js",
+			"require": "./dist/cjs/index.js",
+			"types": "./dist/types/index.d.ts"
+		},
+		"./*": {
+			"import": "./dist/esm/*.js",
+			"require": "./dist/cjs/*.js",
+			"types": "./dist/types/*.d.ts"
+		}
+	},
+	"files": ["dist"],
+	"devDependencies": {
+		"@midl-xyz/midl-js-config": "workspace:^",
+		"@types/node": "^22.8.7",
+		"@wagmi/cli": "^2.1.15",
+		"bitcoinjs-lib": "7.0.0-rc.0",
+		"ethers": "npm:@midl-xyz/ethers@^6.13.0-0",
+		"viem": "npm:@midl-xyz/midl-viem"
+	},
+	"dependencies": {
+		"@bitcoinerlab/secp256k1": "^1.2.0",
+		"@midl-xyz/contracts": "^0.0.6-alpha",
+		"@midl-xyz/midl-js-core": "workspace:^",
+		"@midl-xyz/midl-js-react": "workspace:^",
+		"zustand": "^5.0.1"
+	},
+	"peerDependencies": {
+		"bitcoinjs-lib": "7.0.0-rc.0",
+		"ethers": "npm:@midl-xyz/ethers@^6.13.0-0",
+		"viem": "npm:@midl-xyz/midl-viem"
+	}
 }
