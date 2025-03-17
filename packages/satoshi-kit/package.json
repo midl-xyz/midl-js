@@ -2,12 +2,15 @@
 	"name": "@midl-xyz/satoshi-kit",
 	"version": "0.0.0",
 	"scripts": {
-		"build": "pnpm run clean && tspc --project tsconfig.esm.json && tspc --project tsconfig.cjs.json",
-		"dev": "concurrently \"tspc --watch --preserveWatchOutput --project tsconfig.esm.json\" \"tspc --watch --preserveWatchOutput --project tsconfig.cjs.json\"",
+		"build": "pnpm run build:lib && pnpm run build:styles",
+		"dev": "concurrently \"pnpm run dev:lib\" \"pnpm run dev:styles\"",
+		"build:lib": "pnpm run clean && tspc --project tsconfig.esm.json && tspc --project tsconfig.cjs.json",
+		"dev:lib": "concurrently \"tspc --watch --preserveWatchOutput --project tsconfig.esm.json\" \"tspc --watch --preserveWatchOutput --project tsconfig.cjs.json\"",
 		"clean": "rm -rf dist",
 		"test": "vitest",
-		"storybook": "storybook dev -p 6006",
-		"build-storybook": "storybook build"
+		"prepare": "panda codegen",
+		"build:styles": "panda cssgen --outfile dist/styles.css",
+		"dev:styles": "panda cssgen --watch --outfile dist/styles.css"
 	},
 	"main": "./dist/cjs/index.js",
 	"module": "./dist/esm/index.js",
@@ -23,30 +26,31 @@
 			"types": "./dist/types/*.d.ts",
 			"import": "./dist/esm/*.js",
 			"require": "./dist/cjs/*.js"
-		}
+		},
+		"./styles.css": "./dist/styles.css"
 	},
-	"files": ["dist"],
+	"files": [
+		"dist"
+	],
 	"devDependencies": {
-		"@chromatic-com/storybook": "^3.2.5",
-		"@midl-xyz/midl-js-config": "workspace:^",
-		"@storybook/addon-essentials": "^8.6.0",
-		"@storybook/addon-interactions": "^8.6.0",
-		"@storybook/addon-onboarding": "^8.6.0",
-		"@storybook/blocks": "^8.6.0",
-		"@storybook/react": "^8.6.0",
-		"@storybook/react-vite": "^8.6.0",
-		"@storybook/test": "^8.6.0",
-		"@types/react": "^18.3.11",
-		"react": "^18.3.1",
-		"react-dom": "^18.3.1",
-		"storybook": "^8.6.0"
-	},
-	"dependencies": {
-		"@midl-xyz/midl-js-core": "workspace:^"
-	},
-	"peerDependencies": {
+		"@midl-xyz/midl-js-core": "workspace:^",
+		"@midl-xyz/midl-js-react": "workspace:^",
+		"@pandacss/dev": "^0.53.1",
+		"@park-ui/panda-preset": "^0.43.1",
 		"@types/react": "^18.3.11",
 		"react": "^18.3.1",
 		"react-dom": "^18.3.1"
+	},
+	"peerDependencies": {
+		"@midl-xyz/midl-js-core": "workspace:^",
+		"@midl-xyz/midl-js-react": "workspace:^",
+		"@types/react": "^18.3.11",
+		"react": "^18.3.1",
+		"react-dom": "^18.3.1"
+	},
+	"dependencies": {
+		"@appbak3r/sushi-identicon": "^2.0.0",
+		"@ark-ui/react": "^5.0.1",
+		"lucide-react": "^0.453.0"
 	}
 }

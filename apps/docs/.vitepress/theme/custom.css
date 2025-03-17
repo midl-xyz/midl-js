@@ -1,8 +1,8 @@
 :root {
-    /*
+  /*
         TODO: Add custom CSS variables here
         @see https://vitepress.dev/guide/extending-default-theme
     */
 
-    --vp-c-brand-1: var(var(--vp-c-brand-1));
-}   
+  --vp-c-brand-1: var(var(--vp-c-brand-1));
+}

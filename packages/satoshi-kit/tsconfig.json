@@ -6,7 +6,8 @@
 		"moduleResolution": "Bundler",
 		"jsx": "react-jsx",
 		"paths": {
-			"~/*": ["./src/*"]
+			"~/*": ["./src/*"],
+			"styled-system/*": ["./styled-system/*"]
 		},
 		"plugins": [
 			{ "transform": "typescript-transform-paths" },

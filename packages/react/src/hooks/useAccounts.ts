@@ -52,7 +52,7 @@ export const useAccounts = () => {
 			return "connecting";
 		}
 
-		if (mutationState?.status === "success") {
+		if (mutationState?.status === "success" || typeof data !== "undefined") {
 			return "connected";
 		}
 
@@ -72,7 +72,7 @@ export const useAccounts = () => {
 		paymentAccount,
 		connector: currentConnection,
 		isConnecting: isMutating,
-		isConnected: mutationState?.status === "success",
+		isConnected: typeof data !== "undefined",
 		status: getStatus(),
 		network,
 		...rest,
