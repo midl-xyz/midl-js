@@ -362,8 +362,8 @@ importers:
         specifier: ^1.2.0
         version: 1.2.0
       '@midl-xyz/contracts':
-        specifier: ^0.0.6-alpha
-        version: 0.0.6-alpha
+        specifier: ^0.0.9
+        version: 0.0.9
       '@midl-xyz/midl-js-core':
         specifier: workspace:^
         version: link:../core
@@ -396,8 +396,8 @@ importers:
   packages/executor-react:
     dependencies:
       '@midl-xyz/contracts':
-        specifier: ^0.0.6-alpha
-        version: 0.0.6-alpha
+        specifier: ^0.0.9
+        version: 0.0.9
       '@midl-xyz/midl-js-core':
         specifier: workspace:^
         version: link:../core
@@ -2006,8 +2006,8 @@ packages:
   '@microsoft/tsdoc@0.15.1':
     resolution: {integrity: sha512-4aErSrCR/On/e5G2hDP0wjooqDdauzEbIq8hIkIe5pXV0rtWJZvdCEKL0ykZxex+IxIwBp0eGeV48hQN07dXtw==}
 
-  '@midl-xyz/contracts@0.0.6-alpha':
-    resolution: {integrity: sha512-nykadWWdRmhrEqpmRzZ4IwbQha/vzckNShaClgKqADYz9VRINFvNHYUD4t5zcN/QOTAa9fYHi0D3kZ/Tg6vyqg==}
+  '@midl-xyz/contracts@0.0.9':
+    resolution: {integrity: sha512-QYX3UIi+w/wmCfw1d1qsHcbh7pwEShDzykpXBUMcwp1XVqVUevgreXEyqUfF88q7gXuPn2meWut7JBdT4HYDhQ==}
 
   '@midl-xyz/ethers@6.13.0-4':
     resolution: {integrity: sha512-l3HPZF5gdjhiybg0oA8V20Wrc0Wd0k23r+7HNQTBY/FBbbbmNqthIQoWT8RFGecwod5BuvARY7PdJRc3oZr9kQ==}
@@ -9894,7 +9894,7 @@ snapshots:
 
   '@microsoft/tsdoc@0.15.1': {}
 
-  '@midl-xyz/contracts@0.0.6-alpha': {}
+  '@midl-xyz/contracts@0.0.9': {}
 
   '@midl-xyz/ethers@6.13.0-4(bufferutil@4.0.9)(utf-8-validate@5.0.10)':
     dependencies:

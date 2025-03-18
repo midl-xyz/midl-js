@@ -7,7 +7,10 @@ import { bytes32toRuneId } from "@midl-xyz/midl-js-executor";
 
 type UseERC20Params = {
 	query?: NonNullable<
-		UseReadContractParameters<typeof executorAbi, "cMidlBtcAddresses">["query"]
+		UseReadContractParameters<
+			typeof executorAbi,
+			"cMidlBtcSynthAddresses"
+		>["query"]
 	>;
 };
 
@@ -36,7 +39,7 @@ type UseERC20Params = {
 export const useToken = (address: Address, { query }: UseERC20Params = {}) => {
 	const { data: bytes32RuneId, ...bytes32State } = useReadContract({
 		abi: executorAbi,
-		functionName: "cMidlBtcAddresses",
+		functionName: "cMidlBtcSynthAddresses",
 		// TODO: address depends on the network
 		address: deployment.address as `0x${string}`,
 		contractType: 1,
