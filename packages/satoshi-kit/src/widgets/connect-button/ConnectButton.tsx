@@ -1,22 +1,15 @@
-import { AddressPurpose } from "@midl-xyz/midl-js-core";
-import {
-	useAccounts,
-	useConnect,
-	useDisconnect,
-} from "@midl-xyz/midl-js-react";
+import { useAccounts } from "@midl-xyz/midl-js-react";
+import { useState } from "react";
 import { Button } from "~/shared/ui/button";
 import { AccountButton } from "~/widgets/account-button";
+import { ConnectDialog } from "~/widgets/connect-dialog";
 
 export const ConnectButton = () => {
-	const { isConnected } = useAccounts();
-	const { connect, connectors } = useConnect({
-		purposes: [AddressPurpose.Ordinals, AddressPurpose.Payment],
-	});
+	const { isConnected, isConnecting } = useAccounts();
+	const [isDialogOpen, setDialogOpen] = useState(false);
 
 	const onConnect = () => {
-		connect({
-			id: connectors[0].id,
-		});
+		setDialogOpen(true);
 	};
 
 	if (isConnected) {
@@ -24,8 +17,16 @@ export const ConnectButton = () => {
 	}
 
 	return (
-		<Button onClick={onConnect} variant="subtle">
-			Connect Wallet
-		</Button>
+		<>
+			<ConnectDialog open={isDialogOpen} onClose={() => setDialogOpen(false)} />
+			<Button
+				onClick={onConnect}
+				variant="subtle"
+				disabled={isConnecting}
+				loading={isConnecting}
+			>
+				Connect Wallet
+			</Button>
+		</>
 	);
 };

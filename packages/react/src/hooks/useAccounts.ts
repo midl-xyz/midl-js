@@ -24,7 +24,6 @@ import { ConnectMutationKey } from "~/hooks/useConnect";
  */
 export const useAccounts = () => {
 	const { accounts, connection, network } = useConfig();
-
 	const { data, status, ...rest } = useQuery({
 		queryKey: ["accounts", connection],
 		queryFn: async () => {
@@ -39,7 +38,7 @@ export const useAccounts = () => {
 	});
 
 	const getStatus = () => {
-		if (!data && (isMutating || status === "pending")) {
+		if (isMutating) {
 			return "pending";
 		}
 

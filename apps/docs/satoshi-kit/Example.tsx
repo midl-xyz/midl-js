@@ -1,15 +1,14 @@
-import {
-	createConfig,
-	LeatherConnector,
-	regtest,
-} from "@midl-xyz/midl-js-core";
+import { regtest } from "@midl-xyz/midl-js-core";
 import { MidlProvider } from "@midl-xyz/midl-js-react";
-import { ConnectButton, SatoshiKitProvider } from "@midl-xyz/satoshi-kit";
+import {
+	ConnectButton,
+	SatoshiKitProvider,
+	createMidlConfig,
+} from "@midl-xyz/satoshi-kit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React from "react";
 
-const config = createConfig({
-	connectors: [new LeatherConnector()],
+const config = createMidlConfig({
 	networks: [regtest],
 	persist: true,
 });

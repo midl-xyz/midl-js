@@ -69,14 +69,14 @@ export const createConfig = (params: ConfigParams) => {
 				storage: createJSONStorage(() => localStorage, {
 					reviver(key, value) {
 						if (key === "connection") {
-							return (value as ConfigState["connection"])?.id;
+							return params.connectors.find((it) => it.id === value);
 						}
 
 						return value;
 					},
 					replacer(key, value) {
 						if (key === "connection") {
-							return params.connectors.find((it) => it.id === value);
+							return (value as ConfigState["connection"])?.id;
 						}
 
 						return value;

@@ -1,7 +1,9 @@
 import { AddressPurpose } from "@midl-xyz/midl-js-core";
 import { useAccounts, useDisconnect } from "@midl-xyz/midl-js-react";
 import { ClipboardIcon, LogOutIcon, XIcon } from "lucide-react";
+import { css } from "styled-system/css";
 import { Stack } from "styled-system/jsx";
+import { useClipboard } from "~/feature/clipboard";
 import { shortenAddress } from "~/shared";
 import { Button } from "~/shared/ui/button";
 import { Dialog } from "~/shared/ui/dialog";
@@ -22,6 +24,8 @@ export const AccountDialog = ({ open, onClose }: AccountDialogProps) => {
 			onSuccess: onClose,
 		},
 	});
+
+	const [, copyToClipboard] = useClipboard();
 
 	const onDisconnect = () => {
 		disconnect();
@@ -50,21 +54,38 @@ export const AccountDialog = ({ open, onClose }: AccountDialogProps) => {
 						<Stack gap={6} direction="column" width="full" alignItems="center">
 							<IdentIcon hash={primaryAccount.address} size={14} />
 
-							<Stack gap="1" width="full" direction="column">
+							<Stack gap={6} width="full" direction="column">
 								{accounts?.map((it) => (
 									<Stack
 										key={it.address}
-										gap="1"
+										gap={4}
 										direction="row"
 										alignItems="center"
 										width="full"
 									>
 										<PurposeIcon purpose={it.purpose} />
-										<Stack gap="1" width="full" direction="column">
-											<span>{getPurpose(it.purpose)}</span>
-											<span>{shortenAddress(it.address)}</span>
-										</Stack>
-										<IconButton variant="ghost">
+
+										<div className={css({ flex: 1 })}>
+											<div
+												className={css({
+													fontSize: "xs",
+													color: "fg.subtle",
+												})}
+											>
+												{getPurpose(it.purpose)}
+											</div>
+											<div
+												className={css({
+													mt: "-0.25em",
+												})}
+											>
+												{shortenAddress(it.address)}
+											</div>
+										</div>
+										<IconButton
+											variant="ghost"
+											onClick={() => copyToClipboard(it.address)}
+										>
 											<ClipboardIcon />
 										</IconButton>
 									</Stack>

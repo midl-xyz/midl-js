@@ -4,6 +4,7 @@ import { css } from "styled-system/css";
 import { formatBTC, shortenAddress } from "~/shared";
 import { Button } from "~/shared/ui/button";
 import { IdentIcon } from "~/shared/ui/ident-icon";
+import { Spinner } from "~/shared/ui/spinner";
 import { AccountDialog } from "~/widgets/account-dialog";
 
 type AccountButtonProps = {
@@ -42,7 +43,19 @@ export const AccountButton = ({ hideBalance = false }: AccountButtonProps) => {
 				onClick={() => setOpen(true)}
 			>
 				{!hideBalance && (
-					<span>{balance ? `${formatBTC(balance)} BTC` : "Loading..."}</span>
+					<span>
+						{balance ? (
+							`${formatBTC(balance)} BTC`
+						) : (
+							<Spinner
+								width="1.1em"
+								height="1.1em"
+								borderWidth="1.5px"
+								borderTopColor="fg.disabled"
+								borderRightColor="fg.disabled"
+							/>
+						)}
+					</span>
 				)}
 				<IdentIcon hash={primaryAccount.address} />
 				{shortenAddress(primaryAccount.address)}
