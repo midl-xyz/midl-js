@@ -1,9 +1,10 @@
 import { SatsConnectConnector } from "~/connectors/sats-connect";
 
 export const createXverseConnector = () => {
-	const providerId = window.btc_providers?.find((it) =>
-		it.name.includes("Xverse"),
-	)?.id;
+	const providerId =
+		typeof window !== "undefined"
+			? window.btc_providers?.find((it) => it.name.includes("Xverse"))?.id
+			: undefined;
 
 	return new SatsConnectConnector(providerId, "XVerse Wallet");
 };
