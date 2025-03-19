@@ -20,6 +20,7 @@ export const ConnectDialog = ({ open, onClose }: ConnectDialogProps) => {
 	const { connect, connectors, isPending } = useConnect({
 		purposes,
 		mutation: {
+			onSuccess: onClose,
 			onError: (error) => {
 				console.error(error);
 			},
