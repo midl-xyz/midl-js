@@ -1,8 +1,9 @@
 import { defineConfig } from "@wagmi/cli";
-import Executor from "@midl-xyz/contracts/deployments/0.0.9/Executor.json" with {
+
+import Executor from "@midl-xyz/contracts/deployments/0.0.10/Executor.json" with {
 	type: "json",
 };
-import ExecutorL2 from "@midl-xyz/contracts/deployments/0.0.9/ExecutorL2.json" with {
+import ExecutorL2 from "@midl-xyz/contracts/deployments/0.0.10/ExecutorL2.json" with {
 	type: "json",
 };
 import type { Abi } from "viem";

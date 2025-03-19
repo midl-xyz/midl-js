@@ -26,13 +26,7 @@ export const executorAbi = [
   { type: 'error', inputs: [], name: 'WrongLength' },
   {
     type: 'error',
-    inputs: [
-      {
-        name: 'asset',
-        internalType: 'contract IERC20Extended',
-        type: 'address',
-      },
-    ],
+    inputs: [{ name: 'asset', internalType: 'address', type: 'address' }],
     name: 'ZeroRunesBalance',
   },
   {
@@ -298,11 +292,7 @@ export const executorAbi = [
   {
     type: 'function',
     inputs: [
-      {
-        name: 'cMidlAddress',
-        internalType: 'contract IERC20Extended',
-        type: 'address',
-      },
+      { name: 'cMidlAddress', internalType: 'address', type: 'address' },
       { name: 'btcAddress', internalType: 'bytes32', type: 'bytes32' },
       {
         name: 'assetType',
@@ -318,16 +308,14 @@ export const executorAbi = [
     type: 'function',
     inputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
     name: 'btcCMidlAddresses',
-    outputs: [
-      { name: '', internalType: 'contract IERC20Extended', type: 'address' },
-    ],
+    outputs: [{ name: '', internalType: 'address', type: 'address' }],
     stateMutability: 'view',
   },
   {
     type: 'function',
     inputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
     name: 'btcCMidlSynthAddresses',
-    outputs: [{ name: '', internalType: 'contract IERC20', type: 'address' }],
+    outputs: [{ name: '', internalType: 'address', type: 'address' }],
     stateMutability: 'view',
   },
   {
@@ -377,19 +365,14 @@ export const executorAbi = [
   },
   {
     type: 'function',
-    inputs: [
-      { name: '', internalType: 'contract IERC20Extended', type: 'address' },
-    ],
+    inputs: [{ name: '', internalType: 'address', type: 'address' }],
     name: 'cMidlBtcAddresses',
     outputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
     stateMutability: 'view',
   },
   {
     type: 'function',
-    inputs: [
-      { name: '', internalType: 'contract IERC20', type: 'address' },
-      { name: '', internalType: 'uint256', type: 'uint256' },
-    ],
+    inputs: [{ name: '', internalType: 'address', type: 'address' }],
     name: 'cMidlBtcSynthAddresses',
     outputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
     stateMutability: 'view',
@@ -420,11 +403,7 @@ export const executorAbi = [
       { name: 'txHash', internalType: 'bytes32', type: 'bytes32' },
       { name: 'receiver', internalType: 'bytes32', type: 'bytes32' },
       { name: 'receiverBTC', internalType: 'bytes32', type: 'bytes32' },
-      {
-        name: 'assets',
-        internalType: 'contract IERC20Extended[]',
-        type: 'address[]',
-      },
+      { name: 'assets', internalType: 'address[]', type: 'address[]' },
       { name: 'amounts', internalType: 'uint256[]', type: 'uint256[]' },
     ],
     name: 'completeTx',
@@ -436,6 +415,24 @@ export const executorAbi = [
     inputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
     name: 'completeTxRefunded',
     outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: '_runeId', internalType: 'bytes32', type: 'bytes32' }],
+    name: 'getAssetAddressByRuneId',
+    outputs: [
+      { name: 'assetAddress', internalType: 'address', type: 'address' },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: '_assetAddress', internalType: 'address', type: 'address' },
+    ],
+    name: 'getRuneIdByAssetAddress',
+    outputs: [{ name: 'runesId', internalType: 'bytes32', type: 'bytes32' }],
     stateMutability: 'view',
   },
   {
@@ -490,11 +487,7 @@ export const executorAbi = [
   {
     type: 'function',
     inputs: [
-      {
-        name: 'cMidlAddress',
-        internalType: 'contract IERC20Extended',
-        type: 'address',
-      },
+      { name: 'cMidlAddress', internalType: 'address', type: 'address' },
       { name: 'btcAddress', internalType: 'bytes32', type: 'bytes32' },
       {
         name: 'assetType',

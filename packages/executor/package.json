@@ -35,7 +35,7 @@
 	},
 	"dependencies": {
 		"@bitcoinerlab/secp256k1": "^1.2.0",
-		"@midl-xyz/contracts": "^0.0.9",
+		"@midl-xyz/contracts": "^0.0.10",
 		"@midl-xyz/midl-js-core": "workspace:^",
 		"@midl-xyz/midl-js-react": "workspace:^",
 		"zustand": "^5.0.1"

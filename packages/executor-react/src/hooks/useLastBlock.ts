@@ -1,10 +1,13 @@
-import deployment from "@midl-xyz/contracts/deployments/0.0.6-alpha/Executor.json";
+import deployment from "@midl-xyz/contracts/deployments/0.0.10/Executor.json";
 import { type UseReadContractParameters, useReadContract } from "wagmi";
 import { executorAbi } from "@midl-xyz/midl-js-executor";
 
 type UseLastBlockParams = {
 	query?: NonNullable<
-		UseReadContractParameters<typeof executorAbi, "lastBlockNum">["query"]
+		UseReadContractParameters<
+			typeof executorAbi,
+			"lastCommittedMidlBlock"
+		>["query"]
 	>;
 };
 
@@ -27,7 +30,7 @@ type UseLastBlockParams = {
 export const useLastBlock = ({ query }: UseLastBlockParams = {}) => {
 	const { data: lastBlock, ...rest } = useReadContract({
 		abi: executorAbi,
-		functionName: "lastBlockNum",
+		functionName: "lastCommittedMidlBlock",
 		contractType: 1,
 		// TODO: address depends on the network
 		address: deployment.address as `0x${string}`,
