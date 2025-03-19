@@ -1,6 +1,6 @@
 {
 	"name": "@midl-xyz/midl-js-executor-react",
-	"version": "0.0.81",
+	"version": "0.0.82",
 	"scripts": {
 		"build": "pnpm run clean && tspc --project tsconfig.esm.json && tspc --project tsconfig.cjs.json",
 		"dev": "concurrently \"tspc --watch --preserveWatchOutput --project tsconfig.esm.json\" \"tspc --watch --preserveWatchOutput --project tsconfig.cjs.json\"",
@@ -23,7 +23,9 @@
 			"types": "./dist/types/*.d.ts"
 		}
 	},
-	"files": ["dist"],
+	"files": [
+		"dist"
+	],
 	"devDependencies": {
 		"@bitcoinerlab/secp256k1": "^1.2.0",
 		"@midl-xyz/midl-js-config": "workspace:^",
@@ -42,7 +44,7 @@
 		"zustand": "^5.0.1"
 	},
 	"dependencies": {
-		"@midl-xyz/contracts": "^0.0.6-alpha",
+		"@midl-xyz/contracts": "^0.0.10",
 		"@midl-xyz/midl-js-core": "workspace:^",
 		"@midl-xyz/midl-js-executor": "workspace:^"
 	},

@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor
 
+## 0.0.82
+
+### Patch Changes
+
+- feat: upgrade executor contracts
+
 ## 0.0.81
 
 ### Patch Changes
