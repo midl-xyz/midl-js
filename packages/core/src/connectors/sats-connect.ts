@@ -1,4 +1,4 @@
-import Wallet, { MessageSigningProtocols } from "sats-connect";
+import { MessageSigningProtocols, request } from "sats-connect";
 import {
 	type SignMessageParams,
 	SignMessageProtocol,
@@ -14,14 +14,24 @@ import {
 import { getAddressType } from "~/utils";
 
 export class SatsConnectConnector implements Connector {
-	public readonly id = "sats-connect";
-	public readonly name = "Xverse";
+	public readonly id: string;
 	public readonly type = ConnectorType.SatsConnect;
 
+	constructor(
+		public readonly providerId?: string,
+		public readonly name = "SatsConnect",
+	) {
+		this.id = `sats-connect-${providerId ?? "default"}`;
+	}
+
 	async connect({ purposes }: ConnectorConnectParams) {
-		const data = await Wallet.request("wallet_connect", {
-			addresses: purposes,
-		});
+		const data = await request(
+			"wallet_connect",
+			{
+				addresses: purposes,
+			},
+			this.providerId,
+		);
 
 		if (data.status === "error") {
 			throw data.error;
@@ -38,7 +48,7 @@ export class SatsConnectConnector implements Connector {
 	}
 
 	async beforeDisconnect() {
-		await Wallet.request("wallet_renouncePermissions", undefined);
+		await request("wallet_renouncePermissions", undefined, this.providerId);
 	}
 
 	async signMessage({
@@ -46,14 +56,18 @@ export class SatsConnectConnector implements Connector {
 		message,
 		protocol,
 	}: SignMessageParams): Promise<SignMessageResponse> {
-		const response = await Wallet.request("signMessage", {
-			address,
-			message,
-			protocol:
-				protocol === SignMessageProtocol.Ecdsa
-					? MessageSigningProtocols.ECDSA
-					: MessageSigningProtocols.BIP322,
-		});
+		const response = await request(
+			"signMessage",
+			{
+				address,
+				message,
+				protocol:
+					protocol === SignMessageProtocol.Ecdsa
+						? MessageSigningProtocols.ECDSA
+						: MessageSigningProtocols.BIP322,
+			},
+			this.providerId,
+		);
 
 		if (response.status === "error") {
 			throw response.error;
@@ -69,10 +83,14 @@ export class SatsConnectConnector implements Connector {
 		psbt,
 		signInputs,
 	}: SignPSBTParams): Promise<SignPSBTResponse> {
-		const response = await Wallet.request("signPsbt", {
-			psbt: psbt,
-			signInputs,
-		});
+		const response = await request(
+			"signPsbt",
+			{
+				psbt: psbt,
+				signInputs,
+			},
+			this.providerId,
+		);
 
 		if (response.status === "error") {
 			throw response.error;

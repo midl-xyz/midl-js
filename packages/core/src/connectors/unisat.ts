@@ -10,21 +10,22 @@ import {
 	type Connector,
 	ConnectorType,
 } from "~/connectors/createConnector";
-import { getAddressType } from "~/utils";
+import type { Unisat } from "~/types/unisat";
+import { get, getAddressType } from "~/utils";
 import { getAddressPurpose } from "~/utils/getAddressPurpose";
 
 export class UnisatConnector implements Connector {
-	public readonly id = "unisat";
-	public readonly name = "Unisat";
 	public readonly type = ConnectorType.Unisat;
 
-	async connect(params: ConnectorConnectParams): Promise<Account[]> {
-		if (typeof window.unisat === "undefined") {
-			throw new Error("Unisat not found");
-		}
+	constructor(
+		public readonly id: string = "unisat",
+		public readonly name: string = "Unisat",
+	) {}
 
-		const requestedAccounts = await window.unisat.requestAccounts();
-		const publicKey = await window.unisat.getPublicKey();
+	async connect(params: ConnectorConnectParams): Promise<Account[]> {
+		const provider = this.getProvider();
+		const requestedAccounts = await provider.requestAccounts();
+		const publicKey = await provider.getPublicKey();
 
 		if (!publicKey) {
 			throw new Error("Public key not found");
@@ -43,9 +44,7 @@ export class UnisatConnector implements Connector {
 	}
 
 	async signMessage(params: SignMessageParams): Promise<SignMessageResponse> {
-		if (typeof window.unisat === "undefined") {
-			throw new Error("Unisat not found");
-		}
+		const provider = this.getProvider();
 
 		let type: "ecdsa" | "bip322-simple" = "ecdsa";
 
@@ -61,7 +60,7 @@ export class UnisatConnector implements Connector {
 				break;
 		}
 
-		const signature = await window.unisat.signMessage(params.message, type);
+		const signature = await provider.signMessage(params.message, type);
 
 		return {
 			signature,
@@ -74,9 +73,7 @@ export class UnisatConnector implements Connector {
 		signInputs,
 		disableTweakSigner,
 	}: SignPSBTParams): Promise<SignPSBTResponse> {
-		if (typeof window.unisat === "undefined") {
-			throw new Error("Unisat not found");
-		}
+		const provider = this.getProvider();
 
 		const toSignInputs = Object.keys(signInputs).flatMap((address) =>
 			signInputs[address].map((index) => ({
@@ -86,7 +83,7 @@ export class UnisatConnector implements Connector {
 			})),
 		);
 
-		const signature = await window.unisat.signPsbt(psbt, {
+		const signature = await provider.signPsbt(psbt, {
 			autoFinalized: false,
 			toSignInputs,
 		});
@@ -96,5 +93,15 @@ export class UnisatConnector implements Connector {
 		return {
 			psbt: base64Psbt,
 		};
+	}
+
+	private getProvider() {
+		const provider = get(window, this.id);
+
+		if (typeof provider === "undefined") {
+			throw new Error("Unisat not found");
+		}
+
+		return provider as Unisat;
 	}
 }

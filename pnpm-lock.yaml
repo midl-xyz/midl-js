@@ -217,7 +217,7 @@ importers:
         specifier: workspace:^
         version: link:../../packages/react
       '@radix-ui/react-dialog':
-        specifier: ^1.1.2
+        specifier: ^1.1.5
         version: 1.1.5(@types/react-dom@18.3.5(@types/react@18.3.18))(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-dropdown-menu':
         specifier: ^2.1.2

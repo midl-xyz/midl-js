@@ -1,62 +1,60 @@
 {
-    "name": "@midl-xyz/midl-js-executor-react",
-    "version": "0.0.80",
-    "scripts": {
-        "build": "pnpm run clean && tspc --project tsconfig.esm.json && tspc --project tsconfig.cjs.json",
-        "dev": "concurrently \"tspc --watch --preserveWatchOutput --project tsconfig.esm.json\" \"tspc --watch --preserveWatchOutput --project tsconfig.cjs.json\"",
-        "clean": "rm -rf dist",
-        "test": "vitest"
-    },
-    "main": "./dist/cjs/index.js",
-    "module": "./dist/esm/index.js",
-    "types": "./dist/types/index.d.ts",
-    "exports": {
-        "./package.json": "./package.json",
-        ".": {
-            "import": "./dist/esm/index.js",
-            "require": "./dist/cjs/index.js",
-            "types": "./dist/types/index.d.ts"
-        },
-        "./*": {
-            "import": "./dist/esm/*.js",
-            "require": "./dist/cjs/*.js",
-            "types": "./dist/types/*.d.ts"
-        }
-    },
-    "files": [
-        "dist"
-    ],
-    "devDependencies": {
-        "@bitcoinerlab/secp256k1": "^1.2.0",
-        "@midl-xyz/midl-js-config": "workspace:^",
-        "@midl-xyz/midl-js-react": "workspace:^",
-        "@tanstack/react-query": "^5.59.9",
-        "@types/node": "^22.8.7",
-        "@types/react": "^18",
-        "@wagmi/cli": "^2.1.15",
-        "@wagmi/connectors": "^5.1.11",
-        "bitcoinjs-lib": "7.0.0-rc.0",
-        "ethers": "npm:@midl-xyz/ethers@^6.13.0-0",
-        "happy-dom": "^15.11.7",
-        "react": "^18.3.1",
-        "viem": "npm:@midl-xyz/midl-viem",
-        "wagmi": "^2.*",
-        "zustand": "^5.0.1"
-    },
-    "dependencies": {
-        "@midl-xyz/contracts": "^0.0.6-alpha",
-        "@midl-xyz/midl-js-core": "workspace:^",
-        "@midl-xyz/midl-js-executor": "workspace:^"
-    },
-    "peerDependencies": {
-        "@midl-xyz/midl-js-react": "workspace:^",
-        "@tanstack/react-query": "^5.59.9",
-        "@types/react": "^18",
-        "bitcoinjs-lib": "7.0.0-rc.0",
-        "ethers": "npm:@midl-xyz/ethers@^6.13.0-0",
-        "react": "^18.*",
-        "viem": "npm:@midl-xyz/midl-viem",
-        "wagmi": "^2.21.36",
-        "zustand": "^5.0.1"
-    }
+	"name": "@midl-xyz/midl-js-executor-react",
+	"version": "0.0.81",
+	"scripts": {
+		"build": "pnpm run clean && tspc --project tsconfig.esm.json && tspc --project tsconfig.cjs.json",
+		"dev": "concurrently \"tspc --watch --preserveWatchOutput --project tsconfig.esm.json\" \"tspc --watch --preserveWatchOutput --project tsconfig.cjs.json\"",
+		"clean": "rm -rf dist",
+		"test": "vitest"
+	},
+	"main": "./dist/cjs/index.js",
+	"module": "./dist/esm/index.js",
+	"types": "./dist/types/index.d.ts",
+	"exports": {
+		"./package.json": "./package.json",
+		".": {
+			"import": "./dist/esm/index.js",
+			"require": "./dist/cjs/index.js",
+			"types": "./dist/types/index.d.ts"
+		},
+		"./*": {
+			"import": "./dist/esm/*.js",
+			"require": "./dist/cjs/*.js",
+			"types": "./dist/types/*.d.ts"
+		}
+	},
+	"files": ["dist"],
+	"devDependencies": {
+		"@bitcoinerlab/secp256k1": "^1.2.0",
+		"@midl-xyz/midl-js-config": "workspace:^",
+		"@midl-xyz/midl-js-react": "workspace:^",
+		"@tanstack/react-query": "^5.59.9",
+		"@types/node": "^22.8.7",
+		"@types/react": "^18",
+		"@wagmi/cli": "^2.1.15",
+		"@wagmi/connectors": "^5.1.11",
+		"bitcoinjs-lib": "7.0.0-rc.0",
+		"ethers": "npm:@midl-xyz/ethers@^6.13.0-0",
+		"happy-dom": "^15.11.7",
+		"react": "^18.3.1",
+		"viem": "npm:@midl-xyz/midl-viem",
+		"wagmi": "^2.*",
+		"zustand": "^5.0.1"
+	},
+	"dependencies": {
+		"@midl-xyz/contracts": "^0.0.6-alpha",
+		"@midl-xyz/midl-js-core": "workspace:^",
+		"@midl-xyz/midl-js-executor": "workspace:^"
+	},
+	"peerDependencies": {
+		"@midl-xyz/midl-js-react": "workspace:^",
+		"@tanstack/react-query": "^5.59.9",
+		"@types/react": "^18",
+		"bitcoinjs-lib": "7.0.0-rc.0",
+		"ethers": "npm:@midl-xyz/ethers@^6.13.0-0",
+		"react": "^18.*",
+		"viem": "npm:@midl-xyz/midl-viem",
+		"wagmi": "^2.*",
+		"zustand": "^5.0.1"
+	}
 }
