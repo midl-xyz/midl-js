@@ -51,7 +51,9 @@ export const signIntention = async (
 	intention: TransactionIntention,
 	options: SignIntentionOptions,
 ) => {
-	if (!config.network) {
+	const { network } = config.getState();
+
+	if (!network) {
 		throw new Error("No network set");
 	}
 

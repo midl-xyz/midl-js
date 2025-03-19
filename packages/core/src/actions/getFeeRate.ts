@@ -39,12 +39,14 @@ export type GetFeeRateResponse = {
 export const getFeeRate = async (
 	config: Config,
 ): Promise<GetFeeRateResponse> => {
-	if (!config.network) {
+	const { network } = config.getState();
+
+	if (!network) {
 		throw new Error("No network");
 	}
 
 	const response = await axios.get<GetFeeRateResponse>(
-		`${config.network.rpcUrl}/v1/fees/recommended`,
+		`${network.rpcUrl}/v1/fees/recommended`,
 	);
 
 	return response.data;

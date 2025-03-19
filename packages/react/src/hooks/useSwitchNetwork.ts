@@ -1,5 +1,6 @@
 import { type BitcoinNetwork, switchNetwork } from "@midl-xyz/midl-js-core";
 import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
+import { useMidlContext } from "~/context";
 import { useConfig } from "~/hooks/useConfig";
 
 type SwitchNetworkError = undefined;
@@ -36,7 +37,8 @@ type UseSwitchNetworkParams = {
  * - `networks`: `Array<BitcoinNetwork>` – The list of available Bitcoin networks.
  */
 export const useSwitchNetwork = ({ mutation }: UseSwitchNetworkParams = {}) => {
-	const config = useConfig();
+	const { config } = useMidlContext();
+	const { networks } = useConfig();
 
 	const { mutate, mutateAsync, ...rest } = useMutation<
 		SwitchNetworkData,
@@ -52,7 +54,7 @@ export const useSwitchNetwork = ({ mutation }: UseSwitchNetworkParams = {}) => {
 	return {
 		switchNetwork: mutate,
 		switchNetworkAsync: mutateAsync,
-		networks: config.networks,
+		networks,
 		...rest,
 	};
 };

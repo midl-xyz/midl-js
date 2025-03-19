@@ -9,34 +9,29 @@ import {
 	type SignMessageResponse,
 	type SignPSBTParams,
 } from "~/actions";
-import {
-	type Account,
-	type ConnectParams,
-	type Connector,
-	type CreateConnectorConfig,
-	createConnector,
+import type {
+	Account,
+	ConnectorConnectParams,
+	Connector,
 } from "~/connectors/createConnector";
 import { AddressPurpose, AddressType } from "~/constants";
 import type { BitcoinNetwork } from "~/createConfig";
-import { extractXCoordinate, getAddressType, isCorrectAddress } from "~/utils";
+import { extractXCoordinate, getAddressType } from "~/utils";
 import { signBIP322Simple } from "~/utils/signBIP322Simple";
 
 bitcoin.initEccLib(ecc);
 
-type KeyPairConnectorParams = {
-	keyPair: ECPairInterface;
-};
-
-class KeyPairConnector implements Connector {
+export class KeyPairConnector implements Connector {
 	public readonly id = "keyPair";
 	public readonly name = "KeyPair";
 
-	constructor(
-		private config: CreateConnectorConfig,
-		private keyPair: ECPairInterface,
-	) {}
-	async connect({ purposes }: ConnectParams): Promise<Account[]> {
-		const bitcoinNetwork = bitcoin.networks[this.config.network.network];
+	constructor(private keyPair: ECPairInterface) {}
+
+	async connect({
+		purposes,
+		network,
+	}: ConnectorConnectParams): Promise<Account[]> {
+		const bitcoinNetwork = bitcoin.networks[network.network];
 		const accounts: Account[] = [];
 
 		if (purposes.includes(AddressPurpose.Ordinals)) {
@@ -75,56 +70,26 @@ class KeyPairConnector implements Connector {
 			});
 		}
 
-		this.config.setState({
-			connection: this.id,
-			publicKey: this.keyPair.publicKey.toString("hex"),
-			accounts,
-		});
-
 		return accounts;
 	}
-	async disconnect() {
-		this.config.setState({
-			connection: undefined,
-			publicKey: undefined,
-		});
-	}
-	async getAccounts(): Promise<Account[]> {
-		const { connection, accounts, network } = this.config.getState();
 
-		if (!connection) {
-			throw new Error("Not connected");
-		}
-
-		if (!accounts) {
-			throw new Error("No accounts");
-		}
-
-		for (const account of accounts as Account[]) {
-			if (!isCorrectAddress(account.address, network)) {
-				throw new Error("Invalid address network");
-			}
-		}
-
-		return accounts as Account[];
-	}
-	async getNetwork(): Promise<BitcoinNetwork> {
-		return this.config.getState().network;
-	}
-	async signMessage(params: SignMessageParams): Promise<SignMessageResponse> {
+	async signMessage(
+		params: SignMessageParams,
+		network: BitcoinNetwork,
+	): Promise<SignMessageResponse> {
 		if (!this.keyPair.privateKey) {
 			throw new Error("No private key");
 		}
 
 		switch (params.protocol) {
 			case SignMessageProtocol.Bip322: {
-				const network = bitcoin.networks[(await this.getNetwork()).network];
+				const bitcoinNetwork = bitcoin.networks[network.network];
 
 				const signature = signBIP322Simple(
 					params.message,
 					this.keyPair.toWIF(),
 					params.address,
-					network,
+					bitcoinNetwork,
 				);
 
 				return {
@@ -151,15 +116,18 @@ class KeyPairConnector implements Connector {
 				throw new Error("Unsupported protocol");
 		}
 	}
-	async signPSBT({
-		psbt: psbtData,
-		signInputs,
-		disableTweakSigner,
-	}: Omit<SignPSBTParams, "publish">) {
-		const network = bitcoin.networks[(await this.getNetwork()).network];
+	async signPSBT(
+		{
+			psbt: psbtData,
+			signInputs,
+			disableTweakSigner,
+		}: Omit<SignPSBTParams, "publish">,
+		network: BitcoinNetwork,
+	) {
+		const bitcoinNetwork = bitcoin.networks[network.network];
 
 		const psbt = Psbt.fromBase64(psbtData, {
-			network,
+			network: bitcoinNetwork,
 		});
 
 		for (const [address, inputs] of Object.entries(signInputs)) {
@@ -199,8 +167,3 @@ class KeyPairConnector implements Connector {
 		};
 	}
 }
-
-export const keyPair = ({ keyPair }: KeyPairConnectorParams) =>
-	createConnector((config) => {
-		return new KeyPairConnector(config, keyPair);
-	});

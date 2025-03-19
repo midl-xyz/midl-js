@@ -43,12 +43,14 @@ export const getRuneBalance = async (
 	config: Config,
 	{ address, runeId }: GetRuneBalanceParams,
 ) => {
-	if (!config.network) {
+	const { network } = config.getState();
+
+	if (!network) {
 		throw new Error("No network found");
 	}
 
 	const response = await axios.get<GetRuneBalanceResponse>(
-		`${config.network.runesUrl}/runes/v1/etchings/${runeId}/holders/${address}`,
+		`${network.runesUrl}/runes/v1/etchings/${runeId}/holders/${address}`,
 	);
 
 	return response.data;

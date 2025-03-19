@@ -55,17 +55,17 @@ export const signPSBT = async (
 	config: Config,
 	params: SignPSBTParams,
 ): Promise<SignPSBTResponse> => {
-	const { currentConnection } = config;
+	const { connection, network } = config.getState();
 
-	if (!currentConnection) {
+	if (!connection) {
 		throw new Error("No provider found");
 	}
 
-	const signedPSBT = await currentConnection.signPSBT(params);
+	const signedPSBT = await connection.signPSBT(params, network);
 
 	if (params.publish) {
-		const network = networks[(await currentConnection.getNetwork()).network];
-		const psbt = Psbt.fromBase64(signedPSBT.psbt, { network });
+		const bitcoinNetwork = networks[network.network];
+		const psbt = Psbt.fromBase64(signedPSBT.psbt, { network: bitcoinNetwork });
 
 		psbt.finalizeAllInputs();
 

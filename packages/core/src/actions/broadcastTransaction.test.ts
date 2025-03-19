@@ -8,7 +8,7 @@ import {
 	vi,
 } from "vitest";
 import { broadcastTransaction } from "~/actions/broadcastTransaction";
-import { satsConnect } from "~/connectors/sats-connect";
+import { SatsConnectConnector } from "~/connectors/sats-connect";
 import { createConfig } from "~/createConfig";
 import { regtest } from "~/networks";
 
@@ -25,7 +25,7 @@ describe("core | actions | broadcastTransaction", () => {
 	it.skip("should broadcast a transaction", async () => {
 		const config = createConfig({
 			networks: [regtest],
-			connectors: [satsConnect()],
+			connectors: [new SatsConnectConnector()],
 		});
 
 		(global.fetch as Mock).mockResolvedValue({

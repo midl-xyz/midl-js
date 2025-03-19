@@ -16,7 +16,7 @@ export const AccountButton = ({ hideBalance = false }: AccountButtonProps) => {
 	const { balance } = useBalance({
 		address: primaryAccount.address,
 		query: {
-			enabled: primaryAccount && !hideBalance,
+			enabled: Boolean(primaryAccount.address) && !hideBalance,
 		},
 	});
 

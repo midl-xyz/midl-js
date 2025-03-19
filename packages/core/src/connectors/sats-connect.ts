@@ -7,26 +7,18 @@ import {
 import type { SignPSBTParams, SignPSBTResponse } from "~/actions/signPSBT";
 import {
 	type Account,
-	type ConnectParams,
+	type ConnectorConnectParams,
 	type Connector,
 	ConnectorType,
-	type CreateConnectorConfig,
-	createConnector,
 } from "~/connectors/createConnector";
-import { getAddressType, isCorrectAddress } from "~/utils";
+import { getAddressType } from "~/utils";
 
-class SatsConnectConnector implements Connector {
+export class SatsConnectConnector implements Connector {
 	public readonly id = "sats-connect";
 	public readonly name = "Xverse";
 	public readonly type = ConnectorType.SatsConnect;
 
-	constructor(private config: CreateConnectorConfig) {}
-
-	async getNetwork() {
-		return this.config.getState().network;
-	}
-
-	async connect({ purposes }: ConnectParams) {
+	async connect({ purposes }: ConnectorConnectParams) {
 		const data = await Wallet.request("wallet_connect", {
 			addresses: purposes,
 		});
@@ -42,22 +34,11 @@ class SatsConnectConnector implements Connector {
 			};
 		}) as Account[];
 
-		this.config.setState({
-			connection: this.id,
-			publicKey: data.result.addresses[0].publicKey,
-			accounts,
-		});
-
 		return accounts;
 	}
 
-	async disconnect() {
+	async beforeDisconnect() {
 		await Wallet.request("wallet_renouncePermissions", undefined);
-
-		this.config.setState({
-			connection: undefined,
-			publicKey: undefined,
-		});
 	}
 
 	async signMessage({
@@ -84,26 +65,6 @@ class SatsConnectConnector implements Connector {
 		};
 	}
 
-	async getAccounts(): Promise<Account[]> {
-		const { connection, accounts, network } = this.config.getState();
-
-		if (!connection) {
-			throw new Error("Not connected");
-		}
-
-		if (!accounts) {
-			throw new Error("No accounts");
-		}
-
-		for (const account of accounts as Account[]) {
-			if (!isCorrectAddress(account.address, network)) {
-				throw new Error("Invalid address network");
-			}
-		}
-
-		return accounts as Account[];
-	}
-
 	async signPSBT({
 		psbt,
 		signInputs,
@@ -122,9 +83,3 @@ class SatsConnectConnector implements Connector {
 		};
 	}
 }
-
-export const satsConnect = () => {
-	return createConnector((config) => {
-		return new SatsConnectConnector(config);
-	});
-};

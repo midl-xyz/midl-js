@@ -1,4 +1,4 @@
-import { AddressPurpose } from "@midl-xyz/midl-js-core";
+import { AddressPurpose, connect } from "@midl-xyz/midl-js-core";
 import { MidlProvider } from "@midl-xyz/midl-js-react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { type ReactNode, useLayoutEffect } from "react";
@@ -17,7 +17,7 @@ const queryClient = new QueryClient({
 
 export const wrapper = ({ children }: { children: ReactNode }) => {
 	useLayoutEffect(() => {
-		midlConfig.connectors[0].connect({
+		connect(midlConfig, {
 			purposes: [AddressPurpose.Ordinals],
 		});
 	}, []);

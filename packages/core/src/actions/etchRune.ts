@@ -136,16 +136,17 @@ export const etchRune = async (
 	const inscription = new EtchInscription();
 	const runeName = formatRuneName(name);
 	const feeRate = customFeeRate || (await getFeeRate(config)).hourFee;
+	const { connection, network: currentNetwork } = config.getState();
 
-	if (!config.currentConnection) {
+	if (!connection) {
 		throw new Error("No connection");
 	}
 
-	if (!config.network) {
+	if (!currentNetwork) {
 		throw new Error("No network");
 	}
 
-	const network = networks[config.network.network];
+	const network = networks[currentNetwork.network];
 	const { accounts } = config.getState();
 
 	const account = from

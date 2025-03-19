@@ -1,5 +1,5 @@
-import { useAccounts, useConfig } from "@midl-xyz/midl-js-react";
 import { getPublicKey } from "@midl-xyz/midl-js-executor";
+import { useAccounts, useMidlContext } from "@midl-xyz/midl-js-react";
 
 type UsePublicKeyParams = {
 	/**
@@ -21,7 +21,7 @@ type UsePublicKeyParams = {
  */
 export const usePublicKey = ({ publicKey }: UsePublicKeyParams = {}) => {
 	const { ordinalsAccount, paymentAccount } = useAccounts();
-	const config = useConfig();
+	const { config } = useMidlContext();
 
 	try {
 		const pk =

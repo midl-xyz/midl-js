@@ -1,8 +1,9 @@
 import {
 	AddressPurpose,
+	connect,
 	createConfig,
+	KeyPairConnector,
 	regtest,
-	keyPair,
 } from "@midl-xyz/midl-js-core";
 import type { MidlContextState } from "@midl-xyz/midl-js-react";
 import * as bitcoin from "bitcoinjs-lib";
@@ -17,7 +18,7 @@ import type { TransactionIntention } from "~/types/intention";
 describe("addTxIntention", () => {
 	const config = createConfig({
 		networks: [regtest],
-		connectors: [keyPair({ keyPair: getKeyPair(bitcoin.networks.regtest) })],
+		connectors: [new KeyPairConnector(getKeyPair(bitcoin.networks.regtest))],
 	});
 
 	const store = createStore<MidlContextState>()(() => ({
@@ -25,8 +26,8 @@ describe("addTxIntention", () => {
 		wallet: {},
 	}));
 
-	beforeAll(() => {
-		config.connectors[0].connect({ purposes: [AddressPurpose.Payment] });
+	beforeAll(async () => {
+		await connect(config, { purposes: [AddressPurpose.Payment] });
 	});
 
 	it("adds a transaction intention", async () => {

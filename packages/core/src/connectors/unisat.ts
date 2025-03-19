@@ -6,27 +6,19 @@ import {
 import type { SignPSBTParams, SignPSBTResponse } from "~/actions/signPSBT";
 import {
 	type Account,
-	type ConnectParams,
+	type ConnectorConnectParams,
 	type Connector,
 	ConnectorType,
-	type CreateConnectorConfig,
-	createConnector,
 } from "~/connectors/createConnector";
-import { getAddressType, isCorrectAddress } from "~/utils";
+import { getAddressType } from "~/utils";
 import { getAddressPurpose } from "~/utils/getAddressPurpose";
 
-class UnisatConnector implements Connector {
+export class UnisatConnector implements Connector {
 	public readonly id = "unisat";
 	public readonly name = "Unisat";
 	public readonly type = ConnectorType.Unisat;
 
-	constructor(private config: CreateConnectorConfig) {}
-
-	async getNetwork() {
-		return this.config.getState().network;
-	}
-
-	async connect(_params: ConnectParams): Promise<Account[]> {
+	async connect(params: ConnectorConnectParams): Promise<Account[]> {
 		if (typeof window.unisat === "undefined") {
 			throw new Error("Unisat not found");
 		}
@@ -42,43 +34,12 @@ class UnisatConnector implements Connector {
 			return {
 				address: it,
 				publicKey: publicKey,
-				purpose: getAddressPurpose(it, this.config.getState().network),
+				purpose: getAddressPurpose(it, params.network),
 				addressType: getAddressType(it),
 			};
 		});
 
-		this.config.setState({
-			connection: this.id,
-			publicKey: publicKey,
-			accounts,
-		});
-
 		return accounts;
-	}
-
-	async disconnect() {
-		this.config.setState({
-			connection: undefined,
-			publicKey: undefined,
-		});
-	}
-
-	async getAccounts() {
-		if (!this.config.getState().connection) {
-			throw new Error("Not connected");
-		}
-
-		if (!this.config.getState().accounts) {
-			throw new Error("No accounts");
-		}
-
-		for (const account of this.config.getState().accounts as Account[]) {
-			if (!isCorrectAddress(account.address, this.config.getState().network)) {
-				throw new Error("Invalid address network");
-			}
-		}
-
-		return this.config.getState().accounts as Account[];
 	}
 
 	async signMessage(params: SignMessageParams): Promise<SignMessageResponse> {
@@ -137,9 +98,3 @@ class UnisatConnector implements Connector {
 		};
 	}
 }
-
-export const unisat = () => {
-	return createConnector((config) => {
-		return new UnisatConnector(config);
-	});
-};

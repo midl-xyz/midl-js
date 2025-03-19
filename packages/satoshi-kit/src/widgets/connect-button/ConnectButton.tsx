@@ -1,6 +1,9 @@
 import { AddressPurpose } from "@midl-xyz/midl-js-core";
-import { useAccounts, useConnect } from "@midl-xyz/midl-js-react";
-import { css } from "styled-system/css";
+import {
+	useAccounts,
+	useConnect,
+	useDisconnect,
+} from "@midl-xyz/midl-js-react";
 import { Button } from "~/shared/ui/button";
 import { AccountButton } from "~/widgets/account-button";
 

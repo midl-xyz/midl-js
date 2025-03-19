@@ -4,6 +4,7 @@ import {
 	transferBTC,
 } from "@midl-xyz/midl-js-core";
 import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
+import { useMidlContext } from "~/context";
 import { useConfig } from "~/hooks/useConfig";
 
 type TransferBTCVariables = TransferBTCParams;
@@ -37,7 +38,7 @@ type UseTransferBTCParams = {
  */
 
 export const useTransferBTC = ({ mutation }: UseTransferBTCParams = {}) => {
-	const config = useConfig();
+	const { config } = useMidlContext();
 
 	const { mutationKey = [], ...mutationParams } = mutation ?? {};
 

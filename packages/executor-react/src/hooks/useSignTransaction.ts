@@ -1,9 +1,9 @@
 import { SignMessageProtocol } from "@midl-xyz/midl-js-core";
-import { useConfig } from "@midl-xyz/midl-js-react";
+import { signTransaction } from "@midl-xyz/midl-js-executor";
+import { useMidlContext } from "@midl-xyz/midl-js-react";
 import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
 import type { TransactionSerializableBTC } from "viem";
 import { useWalletClient } from "wagmi";
-import { signTransaction } from "@midl-xyz/midl-js-executor";
 
 type SignTransactionParams = {
 	tx: TransactionSerializableBTC;
@@ -74,7 +74,7 @@ export const useSignTransaction = (
 	}
 
 	const { data: client } = useWalletClient();
-	const config = useConfig();
+	const { config } = useMidlContext();
 
 	const { mutate, mutateAsync, ...rest } = useMutation<
 		SignTransactionResult,

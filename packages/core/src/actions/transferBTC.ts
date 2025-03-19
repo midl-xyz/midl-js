@@ -82,11 +82,13 @@ export const transferBTC = async (
 	config: Config,
 	{ transfers, feeRate: customFeeRate, publish, from }: TransferBTCParams,
 ): Promise<TransferBTCResponse> => {
-	if (!config.currentConnection) {
+	const { connection, network: currentNetwork } = config.getState();
+
+	if (!connection) {
 		throw new Error("No connection");
 	}
 
-	if (!config.network) {
+	if (!currentNetwork) {
 		throw new Error("No network");
 	}
 
@@ -100,7 +102,7 @@ export const transferBTC = async (
 		throw new Error("No account found");
 	}
 
-	const network = networks[config.network.network];
+	const network = networks[currentNetwork.network];
 	const feeRate = customFeeRate || (await getFeeRate(config)).hourFee;
 	const utxos = await getUTXOs(config, account.address);
 	const outputs: Target[] = [];
@@ -141,12 +143,15 @@ export const transferBTC = async (
 
 	const psbtData = psbt.toBase64();
 
-	const data = await config.currentConnection.signPSBT({
-		psbt: psbtData,
-		signInputs: {
-			[account.address]: selectedUTXOs.inputs.map((_input, index) => index),
+	const data = await connection.signPSBT(
+		{
+			psbt: psbtData,
+			signInputs: {
+				[account.address]: selectedUTXOs.inputs.map((_input, index) => index),
+			},
 		},
-	});
+		currentNetwork,
+	);
 
 	const signedPSBT = Psbt.fromBase64(data.psbt, {
 		network,

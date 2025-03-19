@@ -1,3 +1,4 @@
+import { useStore } from "zustand";
 import { useMidlContext } from "~/context";
 
 /**
@@ -13,5 +14,6 @@ import { useMidlContext } from "~/context";
  */
 export const useConfig = () => {
 	const { config } = useMidlContext();
-	return config;
+
+	return useStore(config);
 };

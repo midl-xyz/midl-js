@@ -1,9 +1,9 @@
-import { useConfig, useMidlContext, useStore } from "@midl-xyz/midl-js-react";
-import { useMutation } from "@tanstack/react-query";
 import {
 	type PartialIntention,
 	addTxIntention,
 } from "@midl-xyz/midl-js-executor";
+import { useMidlContext, useStore } from "@midl-xyz/midl-js-react";
+import { useMutation } from "@tanstack/react-query";
 
 type AddTxIntentionVariables = {
 	intention: PartialIntention;
@@ -37,7 +37,7 @@ type AddTxIntentionVariables = {
 export const useAddTxIntention = () => {
 	const { store } = useMidlContext();
 	const { intentions = [] } = useStore();
-	const config = useConfig();
+	const { config } = useMidlContext();
 
 	const { mutate, mutateAsync, ...rest } = useMutation({
 		mutationFn: ({ reset, publicKey, intention }: AddTxIntentionVariables) => {

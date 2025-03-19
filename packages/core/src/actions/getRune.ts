@@ -68,12 +68,14 @@ export type GetRuneResponse = {
  * @returns The rune object
  */
 export const getRune = async (config: Config, runeId: string) => {
-	if (!config.network) {
+	const { network } = config.getState();
+
+	if (!network) {
 		throw new Error("No network found");
 	}
 
 	const response = await axios.get<GetRuneResponse>(
-		`${config.network.runesUrl}/runes/v1/etchings/${runeId}`,
+		`${network.runesUrl}/runes/v1/etchings/${runeId}`,
 	);
 
 	return response.data;

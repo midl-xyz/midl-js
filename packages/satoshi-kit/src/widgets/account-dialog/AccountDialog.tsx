@@ -17,10 +17,13 @@ type AccountDialogProps = {
 export const AccountDialog = ({ open, onClose }: AccountDialogProps) => {
 	const { accounts } = useAccounts();
 	const [primaryAccount] = accounts ?? [];
-	const { disconnect } = useDisconnect();
+	const { disconnect } = useDisconnect({
+		mutation: {
+			onSuccess: onClose,
+		},
+	});
 
 	const onDisconnect = () => {
-		onClose();
 		disconnect();
 	};
 
@@ -36,7 +39,7 @@ export const AccountDialog = ({ open, onClose }: AccountDialogProps) => {
 	};
 
 	return (
-		<Dialog.Root open={open} onOpenChange={onClose} lazyMount>
+		<Dialog.Root open={open} onOpenChange={onClose} unmountOnExit lazyMount>
 			<Dialog.Backdrop />
 			<Dialog.Positioner>
 				<Dialog.Content>

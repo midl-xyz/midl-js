@@ -1,5 +1,6 @@
 import { getUTXOs } from "@midl-xyz/midl-js-core";
 import { useQuery } from "@tanstack/react-query";
+import { useMidlContext } from "~/context";
 import { useConfig } from "~/hooks/useConfig";
 
 /**
@@ -19,9 +20,10 @@ import { useConfig } from "~/hooks/useConfig";
  * - `isFetching`: `boolean` – Indicates if the query is in the background fetching state.
  */
 export const useUTXOs = (address?: string) => {
-	const config = useConfig();
+	const { network, connection } = useConfig();
+	const { config } = useMidlContext();
 
-	const skipQuery = !config.network || !config.currentConnection || !address;
+	const skipQuery = !network || !connection || !address;
 
 	const { data, ...rest } = useQuery({
 		queryKey: ["utxos", address],

@@ -75,12 +75,14 @@ export const getRunes = async (
 	config: Config,
 	{ address, limit = 20, offset = 0 }: GetRunesParams,
 ) => {
-	if (!config.network) {
+	const { network } = config.getState();
+
+	if (!network) {
 		throw new Error("No network found");
 	}
 
 	const response = await axios.get<GetRunesResponse>(
-		`${config.network.runesUrl}/runes/v1/addresses/${address}/balances`,
+		`${network.runesUrl}/runes/v1/addresses/${address}/balances`,
 		{
 			params: {
 				limit,

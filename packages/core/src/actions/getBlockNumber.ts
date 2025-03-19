@@ -14,12 +14,14 @@ import axios from "axios";
  * @returns The current block number
  * */
 export const getBlockNumber = async (config: Config) => {
-	if (!config.network) {
+	const { network } = config.getState();
+
+	if (!network) {
 		throw new Error("No network");
 	}
 
 	const response = await axios.get<string>(
-		`${config.network.rpcUrl}/blocks/tip/height`,
+		`${network.rpcUrl}/blocks/tip/height`,
 	);
 
 	return Number.parseInt(response.data, 10);

@@ -1,9 +1,5 @@
 import { AddressPurpose } from "@midl-xyz/midl-js-core";
-import {
-	useIsMutating,
-	useMutationState,
-	useQuery,
-} from "@tanstack/react-query";
+import { useIsMutating, useQuery } from "@tanstack/react-query";
 import { useConfig } from "~/hooks/useConfig";
 import { ConnectMutationKey } from "~/hooks/useConnect";
 
@@ -27,20 +23,15 @@ import { ConnectMutationKey } from "~/hooks/useConnect";
  * - **...rest**: `any` – Additional query state provided by `useQuery`.
  */
 export const useAccounts = () => {
-	const { currentConnection, network } = useConfig();
+	const { accounts, connection, network } = useConfig();
 
 	const { data, status, ...rest } = useQuery({
-		queryKey: ["accounts", currentConnection],
+		queryKey: ["accounts", connection],
 		queryFn: async () => {
-			const data = await currentConnection?.getAccounts();
-			return data ?? null;
+			return accounts;
 		},
-		enabled: !!currentConnection,
+		enabled: !!connection,
 		retry: false,
-	});
-
-	const [mutationState] = useMutationState({
-		filters: { mutationKey: [ConnectMutationKey] },
 	});
 
 	const isMutating = useIsMutating({
@@ -48,12 +39,13 @@ export const useAccounts = () => {
 	});
 
 	const getStatus = () => {
-		if (isMutating) {
-			return "connecting";
+		if (!data && (isMutating || status === "pending")) {
+			return "pending";
 		}
 
-		if (mutationState?.status === "success" || typeof data !== "undefined") {
-			return "connected";
+		// biome-ignore lint/style/noNonNullAssertion: This is a valid check
+		if (Boolean(data) && data!.length > 0) {
+			return "success";
 		}
 
 		return "disconnected";
@@ -66,13 +58,15 @@ export const useAccounts = () => {
 		(it) => it.purpose === AddressPurpose.Payment,
 	);
 
+	const currentStatus = getStatus();
+
 	return {
 		accounts: data,
 		ordinalsAccount,
 		paymentAccount,
-		connector: currentConnection,
-		isConnecting: isMutating,
-		isConnected: typeof data !== "undefined",
+		connector: connection,
+		isConnecting: currentStatus === "pending",
+		isConnected: currentStatus === "success",
 		status: getStatus(),
 		network,
 		...rest,

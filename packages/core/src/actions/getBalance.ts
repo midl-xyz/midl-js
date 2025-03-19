@@ -15,7 +15,9 @@ import type { Config } from "~/createConfig";
  * @returns The balance in satoshis
  */
 export const getBalance = async (config: Config, address: string) => {
-	if (!config.network) {
+	const { network } = config.getState();
+
+	if (!network) {
 		throw new Error("No network");
 	}
 

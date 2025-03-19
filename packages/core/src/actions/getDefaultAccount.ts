@@ -17,11 +17,11 @@ export const getDefaultAccount = async (
 	config: Config,
 	search?: (account: Account) => boolean,
 ) => {
-	if (!config.currentConnection) {
+	const { connection, accounts } = config.getState();
+
+	if (!connection) {
 		throw new Error("No current connection");
 	}
-
-	const accounts = await config.currentConnection.getAccounts();
 
 	if (!accounts) {
 		throw new Error("No accounts found");

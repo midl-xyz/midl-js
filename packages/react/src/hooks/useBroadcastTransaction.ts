@@ -1,6 +1,6 @@
 import { broadcastTransaction } from "@midl-xyz/midl-js-core";
 import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
-import { useConfig } from "~/hooks/useConfig";
+import { useMidlContext } from "~/context";
 
 type UseBroadcastTransactionVariables = {
 	tx: string;
@@ -44,7 +44,7 @@ type UseBroadcastTransactionParams = {
 export const useBroadcastTransaction = ({
 	mutation,
 }: UseBroadcastTransactionParams = {}) => {
-	const config = useConfig();
+	const { config } = useMidlContext();
 
 	const { mutate, mutateAsync, ...rest } = useMutation<
 		UseBroadcastTransactionData,

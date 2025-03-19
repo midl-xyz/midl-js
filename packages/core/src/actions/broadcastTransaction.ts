@@ -19,14 +19,13 @@ export const broadcastTransaction = async (
 	config: Config,
 	txHex: string,
 ): Promise<string> => {
-	if (!config.network) {
+	const { network } = config.getState();
+
+	if (!network) {
 		throw new Error("No network");
 	}
 
-	const { data } = await axios.post<string>(
-		`${config.network.rpcUrl}/tx`,
-		txHex,
-	);
+	const { data } = await axios.post<string>(`${network.rpcUrl}/tx`, txHex);
 
 	return data;
 };

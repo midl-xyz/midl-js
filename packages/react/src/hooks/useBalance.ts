@@ -1,6 +1,6 @@
 import { getBalance } from "@midl-xyz/midl-js-core";
-import { useQuery, type UseQueryOptions } from "@tanstack/react-query";
-import { useConfig } from "~/hooks/useConfig";
+import { type UseQueryOptions, useQuery } from "@tanstack/react-query";
+import { useMidlContext } from "~/context";
 
 type QueryOptions = Omit<UseQueryOptions<number>, "queryFn" | "queryKey"> & {
 	queryKey?: ReadonlyArray<unknown>;
@@ -15,7 +15,7 @@ type UseBalanceParams = {
  * Fetches the balance of a given address.
  */
 export const useBalance = ({ address, query = {} }: UseBalanceParams) => {
-	const config = useConfig();
+	const { config } = useMidlContext();
 
 	const { data, ...rest } = useQuery({
 		queryKey: ["balance", address, ...(query.queryKey ?? [])],

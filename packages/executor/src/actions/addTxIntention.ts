@@ -32,12 +32,14 @@ export const addTxIntention = async (
 	reset = false,
 	publicKey?: string,
 ): Promise<TransactionIntention> => {
-	if (!config.network) {
+	const { network } = config.getState();
+
+	if (!network) {
 		throw new Error("No network found");
 	}
 
 	const pk = await getPublicKeyForAccount(config, publicKey);
-	const chain = getEVMFromBitcoinNetwork(config.network);
+	const chain = getEVMFromBitcoinNetwork(network);
 	const evmAddress = getEVMAddress(pk);
 	const { intentions = [] } = store.getState();
 
