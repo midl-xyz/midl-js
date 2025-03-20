@@ -1,5 +1,11 @@
 # @midl-xyz/satoshi-kit
 
+## 1.0.1
+
+### Patch Changes
+
+- fix: add styled system to npm
+
 ## 1.0.0
 
 ### Patch Changes
