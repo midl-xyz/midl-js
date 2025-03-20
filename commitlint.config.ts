@@ -14,6 +14,7 @@ const Configuration: UserConfig = {
 				"executor",
 				"executor-react",
 				"react",
+				"satoshi-kit",
 			],
 		],
 	},
