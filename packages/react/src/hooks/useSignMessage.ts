@@ -5,6 +5,7 @@ import {
 	signMessage,
 } from "@midl-xyz/midl-js-core";
 import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
+import { useMidlContext } from "~/context";
 import { useAccounts } from "~/hooks/useAccounts";
 import { useConfig } from "~/hooks/useConfig";
 
@@ -38,7 +39,8 @@ type UseSignMessageParams = {
  * - `signMessageAsync`: `(variables: SignMessageVariables) => Promise<SignMessageData>` – Function to asynchronously sign the message.
  */
 export const useSignMessage = ({ mutation }: UseSignMessageParams = {}) => {
-	const config = useConfig();
+	const { connection } = useConfig();
+	const { config } = useMidlContext();
 	const { paymentAccount, ordinalsAccount } = useAccounts();
 
 	const { mutate, mutateAsync, ...rest } = useMutation<
@@ -54,7 +56,7 @@ export const useSignMessage = ({ mutation }: UseSignMessageParams = {}) => {
 			let signingAddress = address;
 
 			if (!signingAddress) {
-				if (!config.currentConnection) {
+				if (!connection) {
 					throw new Error("No connection");
 				}
 

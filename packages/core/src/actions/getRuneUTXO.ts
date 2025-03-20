@@ -59,12 +59,14 @@ export const getRuneUTXO = async (
 	address: string,
 	runeId: string,
 ) => {
-	if (!config.network) {
+	const { network } = config.getState();
+
+	if (!network) {
 		throw new Error("No network");
 	}
 
 	const response = await axios.get<RuneUTXO[]>(
-		`${config.network.runesUTXOUrl}/utxos/${address}/`,
+		`${network.runesUTXOUrl}/utxos/${address}/`,
 		{
 			params: {
 				runeId,

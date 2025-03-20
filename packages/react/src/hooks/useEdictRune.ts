@@ -4,7 +4,7 @@ import {
 	edictRune,
 } from "@midl-xyz/midl-js-core";
 import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
-import { useConfig } from "~/hooks/useConfig";
+import { useMidlContext } from "~/context";
 
 type EdictRuneVariables = EdictRuneParams;
 
@@ -36,7 +36,7 @@ type UseEdictRuneParams = {
  * - **edictRuneAsync**: `(variables: EdictRuneVariables) => Promise<EdictRuneData>` – Function to asynchronously execute the Edict Rune action.
  **/
 export const useEdictRune = ({ mutation }: UseEdictRuneParams = {}) => {
-	const config = useConfig();
+	const { config } = useMidlContext();
 	const { mutationKey = [], ...mutationParams } = mutation ?? {};
 
 	const { mutate, mutateAsync, ...rest } = useMutation<

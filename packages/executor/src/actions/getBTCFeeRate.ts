@@ -11,11 +11,13 @@ const getBTCFeeRateEthers = async (
 	config: Config,
 	provider: JsonRpcProvider,
 ) => {
+	const { network } = config.getState();
+
 	const { Contract } = await import("ethers");
 
 	const contract = new Contract(
 		// biome-ignore lint/style/noNonNullAssertion: <explanation>
-		executorAddress[config.network!.id],
+		executorAddress[network!.id],
 		executorAbi,
 		provider,
 	);
@@ -24,9 +26,11 @@ const getBTCFeeRateEthers = async (
 };
 
 const getBTCFeeRateViem = (config: Config, client: Client) => {
+	const { network } = config.getState();
+
 	return readContract(client, {
 		// biome-ignore lint/style/noNonNullAssertion: executorAddress is defined
-		address: executorAddress[config.network!.id] as Address,
+		address: executorAddress[network!.id] as Address,
 		abi: executorAbi,
 		functionName: "btcFeeRate",
 	});
@@ -43,7 +47,9 @@ export const getBTCFeeRate = async (
 	config: Config,
 	client: Client | JsonRpcProvider,
 ) => {
-	if (!config.network) {
+	const { network } = config.getState();
+
+	if (!network) {
 		throw new Error("Network not set");
 	}
 

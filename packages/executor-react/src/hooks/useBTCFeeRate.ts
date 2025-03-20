@@ -1,10 +1,10 @@
-import { useConfig } from "@midl-xyz/midl-js-react";
-import { type UseQueryOptions, useQuery } from "@tanstack/react-query";
-import { usePublicClient } from "wagmi";
 import {
 	type GetBTCFeeRateResponse,
 	getBTCFeeRate,
 } from "@midl-xyz/midl-js-executor";
+import { useConfig, useMidlContext } from "@midl-xyz/midl-js-react";
+import { type UseQueryOptions, useQuery } from "@tanstack/react-query";
+import { usePublicClient } from "wagmi";
 
 type QueryOptions = Omit<
 	UseQueryOptions<GetBTCFeeRateResponse>,
@@ -18,7 +18,8 @@ type UseBTCFeeRateParams = {
 };
 
 export const useBTCFeeRate = ({ query }: UseBTCFeeRateParams = {}) => {
-	const config = useConfig();
+	const { config } = useMidlContext();
+	const { network } = useConfig();
 	const client = usePublicClient();
 
 	return useQuery({
@@ -28,9 +29,7 @@ export const useBTCFeeRate = ({ query }: UseBTCFeeRateParams = {}) => {
 			return getBTCFeeRate(config, client!);
 		},
 		enabled:
-			typeof query?.enabled === "boolean"
-				? query.enabled
-				: Boolean(config.network),
+			typeof query?.enabled === "boolean" ? query.enabled : Boolean(network),
 		...query,
 	});
 };

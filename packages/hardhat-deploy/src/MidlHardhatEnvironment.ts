@@ -2,10 +2,11 @@ import * as ecc from "@bitcoinerlab/secp256k1";
 import {
 	AddressPurpose,
 	type Config,
+	KeyPairConnector,
 	SignMessageProtocol,
 	broadcastTransaction,
+	connect,
 	createConfig,
-	keyPair,
 	regtest,
 	waitForTransaction,
 } from "@midl-xyz/midl-js-core";
@@ -64,7 +65,7 @@ export class MidlHardhatEnvironment {
 
 		this.config = createConfig({
 			networks: [regtest],
-			connectors: [keyPair({ keyPair: keys })],
+			connectors: [new KeyPairConnector(keys)],
 		});
 
 		this.deploymentsPath = path.join(this.hre.config.paths.root, "deployments");
@@ -79,7 +80,7 @@ export class MidlHardhatEnvironment {
 	}
 
 	public async initialize() {
-		await this.config.connectors[0].connect({
+		await connect(this.config, {
 			purposes: [AddressPurpose.Ordinals],
 		});
 
@@ -87,11 +88,13 @@ export class MidlHardhatEnvironment {
 	}
 
 	public async getAddress() {
-		if (!this.config.currentConnection) {
+		const { connection, accounts } = this.config.getState();
+
+		if (!connection || !accounts) {
 			throw new Error("connection is not defined");
 		}
 
-		const [account] = await this.config.currentConnection.getAccounts();
+		const [account] = accounts;
 		const publicKey = getPublicKey(this.config, account.publicKey);
 
 		if (!publicKey) {

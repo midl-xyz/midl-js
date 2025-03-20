@@ -4,8 +4,8 @@ import { Psbt } from "bitcoinjs-lib";
 import bitcoinMessage from "bitcoinjs-message";
 import { afterEach, describe, expect, it } from "vitest";
 import { getKeyPair } from "~/__tests__/keyPair";
-import { SignMessageProtocol } from "~/actions";
-import { keyPair as keyPairConnector } from "~/connectors/keyPair";
+import { connect, disconnect, SignMessageProtocol } from "~/actions";
+import { KeyPairConnector } from "~/connectors/keyPair";
 import { AddressPurpose } from "~/constants";
 import { createConfig } from "~/createConfig";
 import { regtest } from "~/networks";
@@ -16,19 +16,15 @@ const key = getKeyPair();
 describe("core | connectors | keyPair", () => {
 	const midlConfig = createConfig({
 		networks: [regtest],
-		connectors: [
-			keyPairConnector({
-				keyPair: key,
-			}),
-		],
+		connectors: [new KeyPairConnector(key)],
 	});
 
 	afterEach(async () => {
-		await midlConfig.currentConnection?.disconnect?.();
+		await disconnect(midlConfig);
 	});
 
 	it("should connect", async () => {
-		const accounts = await midlConfig.connectors[0].connect({
+		const accounts = await connect(midlConfig, {
 			purposes: [AddressPurpose.Ordinals, AddressPurpose.Payment],
 		});
 
@@ -36,7 +32,7 @@ describe("core | connectors | keyPair", () => {
 	});
 
 	it("should connect with only one purpose", async () => {
-		const accounts = await midlConfig.connectors[0].connect({
+		const accounts = await connect(midlConfig, {
 			purposes: [AddressPurpose.Ordinals],
 		});
 
@@ -44,46 +40,51 @@ describe("core | connectors | keyPair", () => {
 	});
 
 	it("should return correct network", async () => {
-		await midlConfig.connectors[0].connect({
+		await connect(midlConfig, {
 			purposes: [AddressPurpose.Ordinals],
 		});
 
-		expect(await midlConfig.currentConnection?.getNetwork()).toBe(regtest);
+		expect(await midlConfig.getState().network).toBe(regtest);
 	});
 
 	it("should disconnect", async () => {
-		await midlConfig.connectors[0].connect({
+		await connect(midlConfig, {
 			purposes: [AddressPurpose.Ordinals],
 		});
 
-		await midlConfig.currentConnection?.disconnect?.();
+		await disconnect(midlConfig);
 
 		expect(midlConfig.getState().connection).toBeUndefined();
 	});
 
 	it("should get accounts", async () => {
-		await midlConfig.connectors[0].connect({
+		await connect(midlConfig, {
 			purposes: [AddressPurpose.Ordinals],
 		});
 
-		const accounts = await midlConfig.currentConnection?.getAccounts();
+		const { accounts } = midlConfig.getState();
 
 		expect(accounts?.length).toBe(1);
 	});
 
 	it("should sign message bip322", async () => {
-		const [account] = await midlConfig.connectors[0].connect({
+		const [account] = await connect(midlConfig, {
 			purposes: [AddressPurpose.Ordinals],
 		});
 
 		const message =
 			"0xb02f644ad56fa52256c134bbf763955d57da14c25effe3e0371e582f131ddb55";
 
-		const signature = await midlConfig.currentConnection?.signMessage({
-			message,
-			address: account.address,
-			protocol: SignMessageProtocol.Bip322,
-		});
+		const { connection, network } = midlConfig.getState();
+
+		const signature = await connection?.signMessage(
+			{
+				message,
+				address: account.address,
+				protocol: SignMessageProtocol.Bip322,
+			},
+			network,
+		);
 
 		const valid = Verifier.verifySignature(
 			account.address,
@@ -96,15 +97,20 @@ describe("core | connectors | keyPair", () => {
 	});
 
 	it("should sign message ecdsa", async () => {
-		const [account] = await midlConfig.connectors[0].connect({
+		const [account] = await connect(midlConfig, {
 			purposes: [AddressPurpose.Payment],
 		});
 
-		const signature = await midlConfig.currentConnection?.signMessage({
-			message: "test message",
-			address: account.address,
-			protocol: SignMessageProtocol.Ecdsa,
-		});
+		const { connection, network } = midlConfig.getState();
+
+		const signature = await connection?.signMessage(
+			{
+				message: "test message",
+				address: account.address,
+				protocol: SignMessageProtocol.Ecdsa,
+			},
+			network,
+		);
 
 		const valid = bitcoinMessage.verify(
 			"test message",
@@ -117,7 +123,7 @@ describe("core | connectors | keyPair", () => {
 	});
 
 	it.skip("should sign psbt payment", async () => {
-		const [account] = await midlConfig.connectors[0].connect({
+		const [account] = await connect(midlConfig, {
 			purposes: [AddressPurpose.Payment],
 		});
 
@@ -150,12 +156,17 @@ describe("core | connectors | keyPair", () => {
 
 		const psbtData = psbt.toBase64();
 
-		const signedPsbt = await midlConfig.currentConnection?.signPSBT({
-			psbt: psbtData,
-			signInputs: {
-				[account.address]: [0],
+		const { connection, network } = midlConfig.getState();
+
+		const signedPsbt = await connection?.signPSBT(
+			{
+				psbt: psbtData,
+				signInputs: {
+					[account.address]: [0],
+				},
 			},
-		});
+			network,
+		);
 
 		if (!signedPsbt) {
 			throw new Error("Invalid response");
@@ -167,7 +178,7 @@ describe("core | connectors | keyPair", () => {
 	});
 
 	it.skip("should sign psbt ordinals", async () => {
-		const [account] = await midlConfig.connectors[0].connect({
+		const [account] = await connect(midlConfig, {
 			purposes: [AddressPurpose.Ordinals],
 		});
 
@@ -201,12 +212,17 @@ describe("core | connectors | keyPair", () => {
 
 		const psbtData = psbt.toBase64();
 
-		const signedPsbt = await midlConfig.currentConnection?.signPSBT({
-			psbt: psbtData,
-			signInputs: {
-				[account.address]: [0],
+		const { connection, network } = midlConfig.getState();
+
+		const signedPsbt = await connection?.signPSBT(
+			{
+				psbt: psbtData,
+				signInputs: {
+					[account.address]: [0],
+				},
 			},
-		});
+			network,
+		);
 
 		if (!signedPsbt) {
 			throw new Error("Invalid response");

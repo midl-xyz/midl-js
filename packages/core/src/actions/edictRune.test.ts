@@ -5,12 +5,13 @@ import { getKeyPair } from "~/__tests__/keyPair";
 import { makeRandomAddress } from "~/__tests__/makeRandomAddress";
 import { mockServer } from "~/__tests__/mockServer";
 import { edictRune } from "~/actions/edictRune";
-import { keyPair } from "~/connectors/keyPair";
 import { AddressPurpose } from "~/constants";
 import { type Config, createConfig } from "~/createConfig";
 import { regtest } from "~/networks";
 import * as mod from "./getRuneUTXO";
 import { Runestone } from "runelib";
+import { KeyPairConnector } from "~/connectors";
+import { connect } from "~/actions/connect";
 
 describe("core | actions | edictRune", () => {
 	let config: Config;
@@ -20,14 +21,10 @@ describe("core | actions | edictRune", () => {
 
 		config = createConfig({
 			networks: [regtest],
-			connectors: [
-				keyPair({
-					keyPair: getKeyPair(),
-				}),
-			],
+			connectors: [new KeyPairConnector(getKeyPair())],
 		});
 
-		await config.connectors[0].connect({ purposes: [AddressPurpose.Ordinals] });
+		await connect(config, { purposes: [AddressPurpose.Ordinals] });
 	});
 
 	it("should throw if more than 2 edicts", async () => {

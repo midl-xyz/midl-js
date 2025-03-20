@@ -4,7 +4,9 @@ import { initEccLib, networks, payments } from "bitcoinjs-lib";
 import { toHex } from "viem";
 
 export const getPublicKey = (config: Config, publicKey: string) => {
-	if (!publicKey || !config.network) {
+	const { network } = config.getState();
+
+	if (!publicKey || !network) {
 		return null;
 	}
 
@@ -12,7 +14,7 @@ export const getPublicKey = (config: Config, publicKey: string) => {
 
 	const p2tr = payments.p2tr({
 		internalPubkey: Buffer.from(extractXCoordinate(publicKey), "hex"),
-		network: networks[config.network.network],
+		network: networks[network.network],
 	});
 
 	// biome-ignore lint/style/noNonNullAssertion: Output is guaranteed to be defined

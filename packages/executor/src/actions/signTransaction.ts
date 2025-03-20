@@ -6,10 +6,10 @@ import {
 } from "@midl-xyz/midl-js-core";
 import type { JsonRpcProvider } from "ethers";
 import {
-	keccak256,
-	type TransactionSerializableBTC,
-	serializeTransaction,
 	type Client,
+	type TransactionSerializableBTC,
+	keccak256,
+	serializeTransaction,
 } from "viem";
 import { getTransactionCount } from "viem/actions";
 import { getPublicKey } from "~/actions/getPublicKey";
@@ -32,7 +32,9 @@ export const signTransaction = async (
 	client: Client | JsonRpcProvider,
 	{ publicKey: customPublicKey, protocol, nonce }: SignTransactionOptions = {},
 ) => {
-	if (!config.network) {
+	const { network } = config.getState();
+
+	if (!network) {
 		throw new Error("No network set");
 	}
 
@@ -45,7 +47,7 @@ export const signTransaction = async (
 
 	tx.btcAddressByte = btcAddressByte;
 
-	const chainIdToUse = chainId || getEVMFromBitcoinNetwork(config.network).id;
+	const chainIdToUse = chainId || getEVMFromBitcoinNetwork(network).id;
 
 	const publicKey = getPublicKey(config, account.publicKey);
 

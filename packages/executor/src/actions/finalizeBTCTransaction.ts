@@ -79,7 +79,9 @@ export const finalizeBTCTransaction = async (
 	client: Client | JsonRpcProvider,
 	options: FinalizeBTCTransactionOptions,
 ) => {
-	if (!config.network) {
+	const { network } = config.getState();
+
+	if (!network) {
 		throw new Error("No network set");
 	}
 
@@ -158,7 +160,7 @@ export const finalizeBTCTransaction = async (
 
 	const transfers: EdictRuneParams["transfers"] = [
 		{
-			receiver: multisigAddress[config.network.id],
+			receiver: multisigAddress[network.id],
 			amount: ensureMoreThanDust(Math.ceil(Number(totalCost) + btcTransfer)),
 		},
 	];
@@ -202,7 +204,7 @@ export const finalizeBTCTransaction = async (
 
 	for (const rune of runes) {
 		transfers.push({
-			receiver: multisigAddress[config.network.id],
+			receiver: multisigAddress[network.id],
 			amount: rune.value,
 			runeId: rune.id,
 		});
@@ -228,7 +230,7 @@ export const finalizeBTCTransaction = async (
 			hasRunesWithdraw,
 
 			evmTransaction: {
-				to: executorAddress[config.network.id] as Address,
+				to: executorAddress[network.id] as Address,
 				gas: 300_000n,
 				data: encodeFunctionData({
 					abi: executorAbi,
@@ -241,7 +243,7 @@ export const finalizeBTCTransaction = async (
 						new Array(options.assetsToWithdraw?.length ?? 0).fill(0n),
 					],
 				}),
-				chainId: getEVMFromBitcoinNetwork(config.network).id,
+				chainId: getEVMFromBitcoinNetwork(network).id,
 			},
 		});
 	}

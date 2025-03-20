@@ -1,5 +1,16 @@
 # @midl-xyz/midl-js-react
 
+## 1.0.0
+
+### Minor Changes
+
+- feat: intrudoce satoshikit, update config api
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-core@1.0.0
+
 ## 0.0.81
 
 ### Patch Changes

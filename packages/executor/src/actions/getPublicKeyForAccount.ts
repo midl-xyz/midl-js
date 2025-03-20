@@ -5,7 +5,7 @@ export const getPublicKeyForAccount = async (
 	config: Config,
 	publicKey?: string,
 ) => {
-	const accounts = await config.currentConnection?.getAccounts();
+	const { accounts } = config.getState();
 
 	const ordinalsAccount = accounts?.find(
 		(it) => it.purpose === AddressPurpose.Ordinals,

@@ -1,6 +1,6 @@
 import { type EtchRuneParams, etchRune } from "@midl-xyz/midl-js-core";
 import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
-import { useConfig } from "~/hooks/useConfig";
+import { useMidlContext } from "~/context";
 
 type EtchRuneData = Awaited<ReturnType<typeof etchRune>>;
 type EtchRuneError = Error;
@@ -30,7 +30,7 @@ type UseEtchRuneParams = {
  * - **etchRuneAsync**: `(variables: EtchRuneVariables) => Promise<EtchRuneData>` – Function to asynchronously execute the Etch Rune action.
  */
 export const useEtchRune = (params: UseEtchRuneParams) => {
-	const config = useConfig();
+	const { config } = useMidlContext();
 
 	const mutation = useMutation<EtchRuneData, EtchRuneError, EtchRuneVariables>({
 		mutationFn: (params) => {

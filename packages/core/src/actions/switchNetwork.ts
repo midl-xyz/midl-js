@@ -17,8 +17,8 @@ export const switchNetwork = async (
 	config: Config,
 	network: BitcoinNetwork,
 ) => {
-	const supportedNetworks = config.networks;
-	if (!supportedNetworks.includes(network)) {
+	const { networks } = config.getState();
+	if (!networks.includes(network)) {
 		throw new Error(`Network ${network} is not supported`);
 	}
 

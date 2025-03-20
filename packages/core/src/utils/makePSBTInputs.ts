@@ -20,11 +20,13 @@ export const makePSBTInputs = async (
 	account: Account,
 	utxos: UTXO[],
 ): Promise<PSBTInput[]> => {
-	if (!config.network) {
+	const { network: currentNetwork } = config.getState();
+
+	if (!currentNetwork) {
 		throw new Error("No network");
 	}
 
-	const network = networks[config.network.network];
+	const network = networks[currentNetwork.network];
 	const inputs: PSBTInput[] = [];
 
 	switch (account.addressType) {
@@ -39,7 +41,7 @@ export const makePSBTInputs = async (
 
 			for (const utxo of utxos) {
 				const { data: hex } = await axios.get(
-					`${config.network.rpcUrl}/tx/${utxo.txid}/hex`,
+					`${currentNetwork.rpcUrl}/tx/${utxo.txid}/hex`,
 				);
 
 				inputs.push({

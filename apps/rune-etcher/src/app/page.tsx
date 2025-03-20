@@ -1,4 +1,3 @@
-import { MainMenu } from "@/components/main-menu";
 import { RuneForm } from "@/components/rune-form/RuneForm";
 
 export default function Home() {

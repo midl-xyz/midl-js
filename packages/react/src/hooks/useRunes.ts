@@ -1,20 +1,20 @@
 import {
-  type GetRunesParams,
-  type GetRunesResponse,
-  getRunes,
+	type GetRunesParams,
+	type GetRunesResponse,
+	getRunes,
 } from "@midl-xyz/midl-js-core";
 import { type UseQueryOptions, useQuery } from "@tanstack/react-query";
-import { useConfig } from "~/hooks/useConfig";
+import { useMidlContext } from "~/context";
 
 type QueryOptions = Omit<
-  UseQueryOptions<GetRunesResponse>,
-  "queryFn" | "queryKey"
+	UseQueryOptions<GetRunesResponse>,
+	"queryFn" | "queryKey"
 > & {
-  queryKey?: ReadonlyArray<unknown>;
+	queryKey?: ReadonlyArray<unknown>;
 };
 
 type UseRunesParams = GetRunesParams & {
-  query?: QueryOptions;
+	query?: QueryOptions;
 };
 
 /**
@@ -32,23 +32,23 @@ type UseRunesParams = GetRunesParams & {
  * - `runes`: `Array<Rune> | undefined` – The list of fetched Runes.
  */
 export const useRunes = ({
-  address,
-  limit,
-  offset,
-  query: { queryKey, ...query } = {} as QueryOptions,
+	address,
+	limit,
+	offset,
+	query: { queryKey, ...query } = {} as QueryOptions,
 }: UseRunesParams) => {
-  const config = useConfig();
+	const { config } = useMidlContext();
 
-  const { data: runes, ...rest } = useQuery<GetRunesResponse>({
-    queryKey: ["runes", address, limit, offset, ...(queryKey ?? [])],
-    queryFn: () => {
-      return getRunes(config, { address, limit, offset });
-    },
-    ...query,
-  });
+	const { data: runes, ...rest } = useQuery<GetRunesResponse>({
+		queryKey: ["runes", address, limit, offset, ...(queryKey ?? [])],
+		queryFn: () => {
+			return getRunes(config, { address, limit, offset });
+		},
+		...query,
+	});
 
-  return {
-    runes,
-    ...rest,
-  };
+	return {
+		runes,
+		...rest,
+	};
 };

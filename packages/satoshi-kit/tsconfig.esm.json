@@ -1,0 +1,18 @@
+{
+	"extends": "./tsconfig.json",
+	"include": ["./src/**/*.ts", "./src/**/*.tsx"],
+	"exclude": [
+		"./src/**/*.test.ts",
+		"./src/**/*.test.tsx",
+		"./src/**/__tests__",
+		"./src/stories/**/*"
+	],
+	"compilerOptions": {
+		"target": "esnext",
+		"module": "esnext",
+		"sourceMap": true,
+		"declaration": true,
+		"declarationDir": "./dist/types",
+		"outDir": "./dist/esm"
+	}
+}

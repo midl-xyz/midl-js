@@ -1,12 +1,10 @@
-import { createConnector } from "~/connectors";
 import { SatsConnectConnector } from "~/connectors/sats-connect";
 
-export const xverse = () => {
-	return createConnector((config) => {
-		const providerId = window.btc_providers?.find((it) =>
-			it.name.includes("Xverse"),
-		)?.id;
+export const createXverseConnector = () => {
+	const providerId =
+		typeof window !== "undefined"
+			? window.btc_providers?.find((it) => it.name.includes("Xverse"))?.id
+			: undefined;
 
-		return new SatsConnectConnector(config, providerId);
-	});
+	return new SatsConnectConnector(providerId, "XVerse");
 };

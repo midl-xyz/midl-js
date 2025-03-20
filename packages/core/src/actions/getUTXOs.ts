@@ -58,12 +58,14 @@ export const getUTXOs = async (
 	address: string,
 	includeRunes = false,
 ): Promise<UTXO[]> => {
-	if (!config.network) {
+	const { network } = config.getState();
+
+	if (!network) {
 		throw new Error("No network");
 	}
 
 	const { data: utxos } = await axios.get<UTXO[]>(
-		`${config.network.rpcUrl}/address/${address}/utxo`,
+		`${network.rpcUrl}/address/${address}/utxo`,
 	);
 
 	if (!includeRunes) {

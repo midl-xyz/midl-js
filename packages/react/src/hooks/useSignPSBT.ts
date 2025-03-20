@@ -4,7 +4,7 @@ import {
 	signPSBT,
 } from "@midl-xyz/midl-js-core";
 import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
-import { useConfig } from "~/hooks/useConfig";
+import { useMidlContext } from "~/context";
 
 type SignPSBTVariables = SignPSBTParams;
 
@@ -38,7 +38,7 @@ type UseSignPSBTParams = {
  * - `signPSBTAsync`: `(variables: SignPSBTVariables) => Promise<SignPSBTData>` – Function to asynchronously sign PSBT.
  */
 export const useSignPSBT = ({ mutation }: UseSignPSBTParams = {}) => {
-	const config = useConfig();
+	const { config } = useMidlContext();
 
 	const { mutate, mutateAsync, ...rest } = useMutation<
 		SignPSBTData,

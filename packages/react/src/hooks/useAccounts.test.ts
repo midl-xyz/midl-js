@@ -1,7 +1,7 @@
-import { AddressPurpose } from "@midl-xyz/midl-js-core";
-import { act, renderHook } from "@testing-library/react";
+import { AddressPurpose, connect, disconnect } from "@midl-xyz/midl-js-core";
+import { renderHook, waitFor, act } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { config, wrapper } from "~/__tests__/wrapper";
+import { midlConfig, wrapper } from "~/__tests__/wrapper";
 import { useAccounts } from "~/hooks/useAccounts";
 
 describe("useAccounts", () => {
@@ -18,10 +18,38 @@ describe("useAccounts", () => {
 		expect("status" in result.current).toBeTruthy();
 	});
 
+	it("should show connected", async () => {
+		const { result } = renderHook(() => useAccounts(), {
+			wrapper,
+		});
+
+		await connect(midlConfig, {
+			purposes: [AddressPurpose.Ordinals],
+		});
+
+		waitFor(() => {
+			expect(result.current.isConnected).toBe(true);
+		});
+	});
+
+	it("should show disconnected", async () => {
+		const { result } = renderHook(() => useAccounts(), {
+			wrapper,
+		});
+
+		await connect(midlConfig, {
+			purposes: [AddressPurpose.Ordinals],
+		});
+
+		await disconnect(midlConfig);
+
+		expect(result.current.isConnected).toBe(false);
+	});
+
 	it.skip("should set correctly isConnected", async () => {
 		const { result, rerender } = renderHook(() => useAccounts(), { wrapper });
 
-		await config.connectors[0].connect({
+		await connect(midlConfig, {
 			purposes: [AddressPurpose.Ordinals],
 		});
 

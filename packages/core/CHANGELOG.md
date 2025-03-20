@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 1.0.0
+
+### Minor Changes
+
+- feat: intrudoce satoshikit, update config api
+
 ## 0.0.81
 
 ### Patch Changes

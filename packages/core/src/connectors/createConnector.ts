@@ -1,7 +1,7 @@
 import type { SignMessageParams, SignMessageResponse } from "~/actions";
 import type { SignPSBTParams, SignPSBTResponse } from "~/actions/signPSBT";
 import type { AddressPurpose, AddressType } from "~/constants";
-import type { BitcoinNetwork, ConfigState } from "~/createConfig";
+import type { BitcoinNetwork } from "~/createConfig";
 
 export type Account = {
 	readonly address: string;
@@ -17,31 +17,23 @@ export enum ConnectorType {
 	Leather = "leather",
 }
 
-export type ConnectParams = {
+export type ConnectorConnectParams = {
 	purposes: AddressPurpose[];
+	network: BitcoinNetwork;
 };
 
 export interface Connector {
 	readonly id: string;
 	readonly name: string;
-	connect(params: ConnectParams): Promise<Account[]>;
-	disconnect(): Promise<void>;
-	getAccounts(): Promise<Account[]>;
-	getNetwork(): Promise<BitcoinNetwork>;
-	signMessage(params: SignMessageParams): Promise<SignMessageResponse>;
+	connect(params: ConnectorConnectParams): Promise<Account[]>;
+	signMessage(
+		params: SignMessageParams,
+		network: BitcoinNetwork,
+	): Promise<SignMessageResponse>;
 	signPSBT(
 		params: Omit<SignPSBTParams, "publish">,
+		network: BitcoinNetwork,
 	): Promise<Omit<SignPSBTResponse, "txId">>;
+
+	beforeDisconnect?(): Promise<void>;
 }
-
-export type CreateConnectorConfig = {
-	network: BitcoinNetwork;
-	setState: (state: Partial<ConfigState>) => void;
-	getState: () => ConfigState;
-};
-
-export type CreateConnectorFn = (config: CreateConnectorConfig) => Connector;
-
-export const createConnector = (createConnectorFn: CreateConnectorFn) => {
-	return createConnectorFn;
-};

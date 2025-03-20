@@ -1,4 +1,4 @@
-import type { Config } from "~/createConfig";
+import type { BitcoinNetwork, Config } from "~/createConfig";
 
 export enum SignMessageProtocol {
 	Ecdsa = "ECDSA",
@@ -74,15 +74,18 @@ export const signMessage = (
 		protocol = SignMessageProtocol.Bip322,
 	}: SignMessageParams,
 ) => {
-	const { currentConnection } = config;
+	const { connection, network } = config.getState();
 
-	if (!currentConnection) {
+	if (!connection) {
 		throw new Error("No provider found");
 	}
 
-	return currentConnection.signMessage({
-		address,
-		message,
-		protocol,
-	});
+	return connection.signMessage(
+		{
+			address,
+			message,
+			protocol,
+		},
+		network,
+	);
 };
