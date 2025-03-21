@@ -1,4 +1,8 @@
-import { MessageSigningProtocols, request } from "sats-connect";
+import {
+	BitcoinNetworkType,
+	MessageSigningProtocols,
+	request,
+} from "sats-connect";
 import {
 	type SignMessageParams,
 	SignMessageProtocol,
@@ -11,7 +15,9 @@ import {
 	type Connector,
 	ConnectorType,
 } from "~/connectors/createConnector";
-import { getAddressType } from "~/utils";
+import type { BitcoinNetwork } from "~/createConfig";
+import { mainnet, regtest, testnet, testnet4 } from "~/networks";
+import { getAddressPurpose, getAddressType } from "~/utils";
 
 export class SatsConnectConnector implements Connector {
 	public readonly id: string;
@@ -24,7 +30,7 @@ export class SatsConnectConnector implements Connector {
 		this.id = `sats-connect-${providerId ?? "default"}`;
 	}
 
-	async connect({ purposes }: ConnectorConnectParams) {
+	async connect({ purposes, network }: ConnectorConnectParams) {
 		const data = await request(
 			"wallet_connect",
 			{
@@ -40,6 +46,7 @@ export class SatsConnectConnector implements Connector {
 		const accounts = data.result.addresses.map(({ walletType, ...account }) => {
 			return {
 				...account,
+				purpose: getAddressPurpose(account.address, network),
 				addressType: getAddressType(account.address),
 			};
 		}) as Account[];
@@ -99,5 +106,71 @@ export class SatsConnectConnector implements Connector {
 		return {
 			psbt: response.result.psbt,
 		};
+	}
+
+	async switchNetwork(network: BitcoinNetwork) {
+		let networkName: BitcoinNetworkType;
+
+		switch (network) {
+			case mainnet: {
+				networkName = BitcoinNetworkType.Mainnet;
+				break;
+			}
+
+			case testnet4: {
+				networkName = BitcoinNetworkType.Testnet4;
+				break;
+			}
+
+			case testnet: {
+				networkName = BitcoinNetworkType.Testnet;
+				break;
+			}
+
+			case regtest: {
+				networkName = BitcoinNetworkType.Regtest;
+				break;
+			}
+
+			default: {
+				throw new Error(`Network ${network} is not supported`);
+			}
+		}
+
+		const data = await request(
+			"wallet_changeNetwork",
+			{
+				name: networkName,
+			},
+			this.providerId,
+		);
+
+		if (data.status === "error") {
+			throw data.error;
+		}
+
+		return this.getAccounts({ network });
+	}
+
+	async getAccounts({
+		network,
+	}: {
+		network: BitcoinNetwork;
+	}) {
+		const data = await request("wallet_getAccount", null, this.providerId);
+
+		if (data.status === "error") {
+			throw data.error;
+		}
+
+		const accounts = data.result.addresses.map(({ walletType, ...account }) => {
+			return {
+				...account,
+				purpose: getAddressPurpose(account.address, network),
+				addressType: getAddressType(account.address),
+			};
+		}) as Account[];
+
+		return accounts;
 	}
 }

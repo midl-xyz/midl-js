@@ -7,27 +7,15 @@ import {
 	DialogDescription,
 	DialogHeader,
 	DialogTitle,
-	DialogTrigger,
 } from "@/components/ui/dialog";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
-	DropdownMenuLabel,
 	DropdownMenuItem,
+	DropdownMenuLabel,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useToast } from "@/hooks/use-toast";
-import { AddressPurpose } from "@midl-xyz/midl-js-core";
-import {
-	useAccounts,
-	useConfig,
-	useConnect,
-	useDisconnect,
-	useMidlContext,
-	useSwitchNetwork,
-} from "@midl-xyz/midl-js-react";
-import { useState } from "react";
 import {
 	Select,
 	SelectContent,
@@ -35,6 +23,18 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
+import { useToast } from "@/hooks/use-toast";
+import { AddressPurpose } from "@midl-xyz/midl-js-core";
+import {
+	useAccounts,
+	useConfig,
+	useConnect,
+	useDisconnect,
+	useHydrated,
+	useSwitchNetwork,
+} from "@midl-xyz/midl-js-react";
+import { useEffect, useState } from "react";
+import { useController, useForm } from "react-hook-form";
 
 const shorten = (address: string) =>
 	`${address.slice(0, 6)}...${address.slice(-4)}`;
@@ -43,10 +43,8 @@ export const Header = () => {
 	const { paymentAccount, ordinalsAccount } = useAccounts();
 	const [isConnectDialogOpen, setIsConnectDialogOpen] = useState(false);
 	const { disconnect } = useDisconnect();
-	const { switchNetwork } = useSwitchNetwork();
-	const { network, networks, connectors } = useConfig();
+	const { connectors } = useConfig();
 	const { toast } = useToast();
-
 	const { connect } = useConnect({
 		purposes: [AddressPurpose.Payment, AddressPurpose.Ordinals],
 		mutation: {
@@ -64,31 +62,12 @@ export const Header = () => {
 		},
 	});
 
+	const hydrated = useHydrated();
+
 	return (
 		<>
 			<div className="flex justify-end p-4 px-8 gap-4">
-				<Select
-					defaultValue={network?.id}
-					onValueChange={(it) => {
-						const network = networks.find((network) => network.id === it);
-						if (!network) {
-							return;
-						}
-
-						switchNetwork(network);
-					}}
-				>
-					<SelectTrigger className="w-[180px]">
-						<SelectValue placeholder="Network" />
-					</SelectTrigger>
-					<SelectContent>
-						{networks.map((network) => (
-							<SelectItem key={network.id} value={network.id}>
-								{network.id.toLocaleUpperCase()}
-							</SelectItem>
-						))}
-					</SelectContent>
-				</Select>
+				{hydrated && <HeaderNetworkSwitch />}
 
 				{paymentAccount || ordinalsAccount ? (
 					<DropdownMenu>
@@ -169,5 +148,54 @@ export const Header = () => {
 				</DialogContent>
 			</Dialog>
 		</>
+	);
+};
+
+const HeaderNetworkSwitch = () => {
+	const { switchNetwork } = useSwitchNetwork();
+	const { network, networks } = useConfig();
+	const { watch, control } = useForm<{ network: string }>();
+
+	const selectedNetwork = watch("network");
+	const { field } = useController({
+		name: "network",
+		control,
+		defaultValue: network?.id ?? "",
+	});
+
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+	useEffect(() => {
+		if (selectedNetwork) {
+			const network = networks.find(
+				(network) => network.id === selectedNetwork,
+			);
+			if (!network) {
+				return;
+			}
+
+			switchNetwork(network);
+		}
+	}, [selectedNetwork]);
+
+	return (
+		<form>
+			<Select
+				{...field}
+				onValueChange={(value) => {
+					field.onChange(value);
+				}}
+			>
+				<SelectTrigger className="w-[180px]">
+					<SelectValue placeholder="Network" />
+				</SelectTrigger>
+				<SelectContent>
+					{networks.map((network) => (
+						<SelectItem key={network.id} value={network.id}>
+							{network.id.toLocaleUpperCase()}
+						</SelectItem>
+					))}
+				</SelectContent>
+			</Select>
+		</form>
 	);
 };
