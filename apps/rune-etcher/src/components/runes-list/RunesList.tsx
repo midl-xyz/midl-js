@@ -28,6 +28,7 @@ import { useToast } from "@/hooks/use-toast";
 type FormValues = {
 	address: string;
 	amount: string;
+	btcAmount: string;
 };
 
 export const RunesList = () => {
@@ -71,27 +72,31 @@ export const RunesList = () => {
 
 	const { toast } = useToast();
 
-	const onSubmit = ({ address, amount }: FormValues) => {
+	const onSubmit = ({ address, amount, btcAmount }: FormValues) => {
 		if (!runeData) {
 			return;
 		}
 
-		console.log([
+		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+		const transfers: any = [
 			{
 				receiver: address,
 				runeId: runeData.id,
 				amount: parseUnits(amount, runeData.divisibility),
 			},
-		]);
+		];
+
+		const parseBTCAmount = Number.parseInt(parseUnits(btcAmount, 8).toString());
+
+		if (parseBTCAmount > 0) {
+			transfers.push({
+				receiver: address,
+				amount: btcAmount,
+			});
+		}
 
 		edictRune({
-			transfers: [
-				{
-					receiver: address,
-					runeId: runeData.id,
-					amount: parseUnits(amount, runeData.divisibility),
-				},
-			],
+			transfers: transfers,
 			publish: true,
 		});
 	};
@@ -161,6 +166,18 @@ export const RunesList = () => {
 								className="col-span-3"
 								placeholder="902.123"
 								{...register("amount")}
+							/>
+						</div>
+						<div className="grid grid-cols-4 items-center gap-4">
+							<Label htmlFor="btcAmount" className="text-right">
+								BTC Amount
+							</Label>
+							<Input
+								id="btcAmount"
+								className="col-span-3"
+								placeholder="902.123"
+								defaultValue="0"
+								{...register("btcAmount")}
 							/>
 						</div>
 					</div>

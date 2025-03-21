@@ -15,6 +15,7 @@ const Configuration: UserConfig = {
 				"executor-react",
 				"react",
 				"satoshi-kit",
+				"rune-etcher",
 			],
 		],
 	},
