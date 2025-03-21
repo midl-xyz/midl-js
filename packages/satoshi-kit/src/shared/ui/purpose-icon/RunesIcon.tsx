@@ -1,21 +1,11 @@
 import type { SVGProps } from "react";
 const SvgComponent = (props: SVGProps<SVGSVGElement>) => (
-	<svg
-		viewBox="0 0 25 24"
-		fill="none"
-		xmlns="http://www.w3.org/2000/svg"
-		{...props}
-	>
-		<title>{"Runes Symbol"}</title>
-		<rect x={5.5} y={5} width={14} height={14} fill="white" />
-		<rect
-			x={1.46}
-			y={0.96}
-			width={22.08}
-			height={22.08}
-			stroke="white"
-			strokeWidth={1.92}
-		/>
+	// biome-ignore lint/a11y/noSvgWithoutTitle: <explanation>
+	<svg xmlns="http://www.w3.org/2000/svg" fill="none" {...props}>
+		<path fill="#000" d="M0 0h25v25H0z" />
+		<path fill="#fff" d="M1 1h23v23H1z" />
+		<path fill="#000" d="M3 3h19v19H3z" />
+		<path fill="#fff" d="M7 7h11v11H7z" />
 	</svg>
 );
 export default SvgComponent;

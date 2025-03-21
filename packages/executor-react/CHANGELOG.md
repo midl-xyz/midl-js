@@ -1,5 +1,14 @@
 # @midl-xyz/midl-js-executor-react
 
+## 1.0.1
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-react@1.0.1
+  - @midl-xyz/midl-js-core@1.0.1
+  - @midl-xyz/midl-js-executor@1.0.1
+
 ## 1.0.0
 
 ### Minor Changes

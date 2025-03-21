@@ -1,5 +1,13 @@
 # @midl-xyz/midl-js-react
 
+## 1.0.1
+
+### Patch Changes
+
+- fix: satoshi kit export
+- Updated dependencies
+  - @midl-xyz/midl-js-core@1.0.1
+
 ## 1.0.0
 
 ### Minor Changes

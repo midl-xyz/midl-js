@@ -18,3 +18,4 @@ export * from "./useSwitchNetwork";
 export * from "./useTransferBTC";
 export * from "./useUTXOs";
 export * from "./useWaitForTransaction";
+export * from "./useHydrated";

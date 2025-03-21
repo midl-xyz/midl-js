@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 1.0.1
+
+### Patch Changes
+
+- fix: satoshi kit export
+
 ## 1.0.0
 
 ### Minor Changes

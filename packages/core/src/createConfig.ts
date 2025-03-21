@@ -50,9 +50,12 @@ export type ConfigState = {
 	readonly connection?: Connector;
 	readonly accounts?: Account[];
 	readonly connectors: Connector[];
+
+	// hasHydrated: boolean;
+	// setHasHydrated: (state: boolean) => void;
 };
 
-export type Config = StoreApi<ConfigState>;
+export type Config = ReturnType<typeof createConfig>;
 
 export const createConfig = (params: ConfigParams) => {
 	const [network] = params.networks;
@@ -60,9 +63,9 @@ export const createConfig = (params: ConfigParams) => {
 	const configStore = createStore<ConfigState>()(
 		persist(
 			() => ({
-				network,
 				networks: params.networks,
 				connectors: params.connectors,
+				network,
 			}),
 			{
 				name: "midl-js",
@@ -72,11 +75,22 @@ export const createConfig = (params: ConfigParams) => {
 							return params.connectors.find((it) => it.id === value);
 						}
 
+						if (key === "network") {
+							return (
+								params.networks.find((it) => it.id === value) ??
+								params.networks[0]
+							);
+						}
+
 						return value;
 					},
 					replacer(key, value) {
 						if (key === "connection") {
 							return (value as ConfigState["connection"])?.id;
+						}
+
+						if (key === "network") {
+							return (value as ConfigState["network"])?.id;
 						}
 
 						return value;
@@ -94,17 +108,6 @@ export const createConfig = (params: ConfigParams) => {
 			},
 		),
 	);
-
-	const state = configStore.getState();
-
-	const networkToUse =
-		params.networks.find((n) => n.id === state?.network?.id) ||
-		params.networks[0];
-
-	configStore.setState({
-		...state,
-		network: networkToUse,
-	});
 
 	return configStore;
 };

@@ -1,4 +1,5 @@
 import type { BitcoinNetwork, Config } from "~/createConfig";
+import { isCorrectAddress } from "~/utils";
 
 /**
  * Switches the network to the given network

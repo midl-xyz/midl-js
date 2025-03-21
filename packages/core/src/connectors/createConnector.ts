@@ -36,4 +36,5 @@ export interface Connector {
 	): Promise<Omit<SignPSBTResponse, "txId">>;
 
 	beforeDisconnect?(): Promise<void>;
+	switchNetwork?(network: BitcoinNetwork): Promise<Account[]>;
 }

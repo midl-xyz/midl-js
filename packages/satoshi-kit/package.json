@@ -1,6 +1,6 @@
 {
 	"name": "@midl-xyz/satoshi-kit",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"type": "module",
 	"scripts": {
 		"build": "pnpm run build:lib && pnpm run build:styles",
@@ -26,7 +26,8 @@
 			"types": "./dist/types/*.d.ts",
 			"import": "./dist/esm/*.js"
 		},
-		"./styles.css": "./dist/styles.css"
+		"./styles.css": "./dist/styles.css",
+		"./styled-system/*": "./styled-system/*"
 	},
 	"files": [
 		"dist",
