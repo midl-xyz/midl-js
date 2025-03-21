@@ -91,9 +91,11 @@ export const RunesList = () => {
 		if (parseBTCAmount > 0) {
 			transfers.push({
 				receiver: address,
-				amount: btcAmount,
+				amount: parseBTCAmount,
 			});
 		}
+
+		console.log(transfers);
 
 		edictRune({
 			transfers: transfers,
