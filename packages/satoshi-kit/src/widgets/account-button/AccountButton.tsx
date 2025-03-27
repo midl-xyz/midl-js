@@ -9,9 +9,15 @@ import { AccountDialog } from "~/widgets/account-dialog";
 
 type AccountButtonProps = {
 	hideBalance?: boolean;
+	hideAvatar?: boolean;
+	hideAddress?: boolean;
 };
 
-export const AccountButton = ({ hideBalance = false }: AccountButtonProps) => {
+export const AccountButton = ({
+	hideBalance = false,
+	hideAddress = false,
+	hideAvatar = false,
+}: AccountButtonProps) => {
 	const { accounts } = useAccounts();
 	const [primaryAccount] = accounts ?? [];
 	const { balance } = useBalance({
@@ -57,8 +63,9 @@ export const AccountButton = ({ hideBalance = false }: AccountButtonProps) => {
 						)}
 					</span>
 				)}
-				<IdentIcon hash={primaryAccount.address} />
-				{shortenAddress(primaryAccount.address)}
+				{!hideAvatar && <IdentIcon hash={primaryAccount.address} />}
+
+				{!hideAddress && shortenAddress(primaryAccount.address)}
 			</Button>
 
 			<AccountDialog open={open} onClose={() => setOpen(false)} />

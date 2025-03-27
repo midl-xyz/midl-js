@@ -35,7 +35,9 @@ export const WalletIcon = ({
 			Icon = BitgetIcon;
 			break;
 		default:
-			console.warn(`Unknown connectorId: ${connectorId}`);
+			if (process.env.NODE_ENV === "development") {
+				console.warn(`Unknown connectorId: ${connectorId}`);
+			}
 			Icon = null;
 	}
 
