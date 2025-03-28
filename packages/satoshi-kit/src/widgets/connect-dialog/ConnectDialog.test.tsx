@@ -7,7 +7,8 @@ import {
 	waitForElementToBeRemoved,
 } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-import { wrapper } from "~/__tests__/wrapper";
+import { Wrapper } from "~/__tests__/wrapper";
+import { createAuthenticationAdapter } from "~/feature/auth";
 import { ConnectDialog } from "~/widgets/connect-dialog/ConnectDialog";
 
 describe("widgets | ConnectDialog", () => {
@@ -15,7 +16,7 @@ describe("widgets | ConnectDialog", () => {
 
 	it("should render available wallets", () => {
 		render(<ConnectDialog open={true} onClose={onClose} />, {
-			wrapper,
+			wrapper: Wrapper,
 		});
 
 		expect(screen.getByText("KeyPair")).toBeDefined();
@@ -33,7 +34,7 @@ describe("widgets | ConnectDialog", () => {
 			});
 
 		render(<ConnectDialog open={true} onClose={onClose} />, {
-			wrapper,
+			wrapper: Wrapper,
 		});
 
 		fireEvent(
@@ -49,12 +50,11 @@ describe("widgets | ConnectDialog", () => {
 		expect(screen.getByText("Waiting for wallet connection...")).toBeDefined();
 
 		spy.mockRestore();
-		vi.useRealTimers();
 	});
 
 	it("should render success", async () => {
 		render(<ConnectDialog open={true} onClose={onClose} />, {
-			wrapper,
+			wrapper: Wrapper,
 		});
 
 		fireEvent(
@@ -70,5 +70,35 @@ describe("widgets | ConnectDialog", () => {
 		});
 	});
 
-	// Test for the authentication adapter
+	it("should sign in", async () => {
+		const signOut = vi.fn();
+		const verify = vi.fn().mockResolvedValue(true);
+		const createMessage = vi.fn().mockResolvedValue("message");
+
+		const authAdapter = createAuthenticationAdapter({
+			signOut,
+			verify,
+			createMessage,
+		});
+
+		render(<ConnectDialog open={true} onClose={onClose} />, {
+			wrapper: (props) => <Wrapper {...props} adapter={authAdapter} />,
+		});
+
+		fireEvent(
+			screen.getByText("KeyPair"),
+			new MouseEvent("click", {
+				bubbles: true,
+				cancelable: true,
+			}),
+		);
+
+		await waitForElementToBeRemoved(() => screen.queryByText("KeyPair"));
+
+		expect(verify).toBeCalledTimes(1);
+
+		await waitFor(() => {
+			expect(onClose).toBeCalled();
+		});
+	});
 });

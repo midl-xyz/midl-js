@@ -5,11 +5,10 @@ import {
 } from "@midl-xyz/midl-js-core";
 import { MidlProvider } from "@midl-xyz/midl-js-react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { waitFor } from "@testing-library/react";
 import type { ReactNode } from "react";
-import { vi } from "vitest";
 import { getKeyPair } from "~/__tests__/keyPair";
 import { SatoshiKitProvider } from "~/app";
+import type { AuthenticationAdapter } from "~/feature/auth";
 
 const queryClient = new QueryClient({
 	defaultOptions: {
@@ -24,10 +23,13 @@ const midlConfig = createConfig({
 	networks: [regtest],
 });
 
-export const wrapper = ({ children }: { children: ReactNode }) => {
+export const Wrapper = ({
+	children,
+	adapter,
+}: { children: ReactNode; adapter?: AuthenticationAdapter }) => {
 	return (
 		<MidlProvider config={midlConfig}>
-			<SatoshiKitProvider>
+			<SatoshiKitProvider authenticationAdapter={adapter}>
 				<QueryClientProvider client={queryClient}>
 					{children}
 				</QueryClientProvider>

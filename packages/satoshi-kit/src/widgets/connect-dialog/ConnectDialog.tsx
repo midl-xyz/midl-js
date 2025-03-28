@@ -1,8 +1,4 @@
-import {
-	useConnect,
-	useDisconnect,
-	useSignMessage,
-} from "@midl-xyz/midl-js-react";
+import { useConnect, useDisconnect } from "@midl-xyz/midl-js-react";
 import { ArrowRightIcon, XIcon } from "lucide-react";
 import { css } from "styled-system/css";
 import { Stack } from "styled-system/jsx";
@@ -32,7 +28,7 @@ export const ConnectDialog = ({ open, onClose }: ConnectDialogProps) => {
 		},
 	});
 
-	const { connect, connectors, isPending, isSuccess, error } = useConnect({
+	const { connect, connectors, isPending, isSuccess } = useConnect({
 		purposes,
 		mutation: {
 			onSuccess: async (accounts) => {
@@ -50,12 +46,14 @@ export const ConnectDialog = ({ open, onClose }: ConnectDialogProps) => {
 		},
 	});
 
+	const isAuthenticating = (isSuccess && adapter) || signInState.isPending;
+
 	return (
 		<Dialog.Root open={open} onOpenChange={onClose} unmountOnExit lazyMount>
 			<Dialog.Backdrop />
 			<Dialog.Positioner>
 				<Dialog.Content>
-					{adapter && isSuccess && signInState.isSuccess && (
+					{isAuthenticating && (
 						<Stack
 							gap={8}
 							p={6}
@@ -97,7 +95,7 @@ export const ConnectDialog = ({ open, onClose }: ConnectDialogProps) => {
 						</Stack>
 					)}
 
-					{!isPending && (
+					{!isPending && !isAuthenticating && (
 						<Stack gap="8" p="6">
 							<Stack gap="1">
 								<Dialog.Title>Connect Wallet</Dialog.Title>
