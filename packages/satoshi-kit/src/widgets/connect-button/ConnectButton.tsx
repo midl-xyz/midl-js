@@ -32,9 +32,9 @@ type ConnectButtonProps = {
 };
 
 export const ConnectButton = ({
-	hideAddress = true,
-	hideBalance = true,
-	hideAvatar = true,
+	hideAddress = false,
+	hideBalance = false,
+	hideAvatar = false,
 	children,
 }: ConnectButtonProps) => {
 	const { isConnected, isConnecting } = useAccounts();
