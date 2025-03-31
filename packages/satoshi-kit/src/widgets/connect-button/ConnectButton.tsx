@@ -22,12 +22,20 @@ type ConnectButtonProps = {
 	 * @default false
 	 */
 	hideAddress?: boolean;
+	children?: ({
+		openDialog,
+		isDialogOpen,
+	}: {
+		openDialog: () => void;
+		isDialogOpen: boolean;
+	}) => React.ReactNode;
 };
 
 export const ConnectButton = ({
 	hideAddress = true,
 	hideBalance = true,
 	hideAvatar = true,
+	children,
 }: ConnectButtonProps) => {
 	const { isConnected, isConnecting } = useAccounts();
 	const [isDialogOpen, setDialogOpen] = useState(false);
@@ -49,14 +57,23 @@ export const ConnectButton = ({
 	return (
 		<>
 			<ConnectDialog open={isDialogOpen} onClose={() => setDialogOpen(false)} />
-			<Button
-				onClick={onConnect}
-				variant="subtle"
-				disabled={isConnecting}
-				loading={isConnecting}
-			>
-				Connect Wallet
-			</Button>
+			{!children && (
+				<Button
+					onClick={onConnect}
+					variant="subtle"
+					disabled={isConnecting}
+					loading={isConnecting}
+				>
+					Connect Wallet
+				</Button>
+			)}
+
+			{children?.({
+				openDialog: () => {
+					setDialogOpen(true);
+				},
+				isDialogOpen,
+			})}
 		</>
 	);
 };
