@@ -1,5 +1,11 @@
 # @midl-xyz/satoshi-kit
 
+## 1.0.3
+
+### Patch Changes
+
+- feat(satoshi-kit): add authentication adapter
+
 ## 1.0.2
 
 ### Patch Changes

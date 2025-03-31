@@ -1,8 +1,9 @@
-import { useConnect } from "@midl-xyz/midl-js-react";
+import { useConnect, useDisconnect } from "@midl-xyz/midl-js-react";
 import { ArrowRightIcon, XIcon } from "lucide-react";
 import { css } from "styled-system/css";
 import { Stack } from "styled-system/jsx";
 import { useSatoshiKit } from "~/app";
+import { useAuthentication } from "~/feature/auth/api";
 import { Button } from "~/shared/ui/button";
 import { Dialog } from "~/shared/ui/dialog";
 import { IconButton } from "~/shared/ui/icon-button";
@@ -16,22 +17,63 @@ type ConnectDialogProps = {
 
 export const ConnectDialog = ({ open, onClose }: ConnectDialogProps) => {
 	const { purposes } = useSatoshiKit();
+	const { disconnect } = useDisconnect();
 
-	const { connect, connectors, isPending } = useConnect({
+	const { adapter, signIn, signInState } = useAuthentication({
+		signInMutation: {
+			onSuccess: onClose,
+			onError: () => {
+				disconnect();
+			},
+		},
+	});
+
+	const { connect, connectors, isPending, isSuccess } = useConnect({
 		purposes,
 		mutation: {
-			onSuccess: onClose,
+			onSuccess: async (accounts) => {
+				if (!adapter) {
+					return onClose();
+				}
+
+				const [account] = accounts;
+
+				signIn(account.address);
+			},
 			onError: (error) => {
 				console.error(error);
 			},
 		},
 	});
 
+	const isAuthenticating = (isSuccess && adapter) || signInState.isPending;
+
 	return (
 		<Dialog.Root open={open} onOpenChange={onClose} unmountOnExit lazyMount>
 			<Dialog.Backdrop />
 			<Dialog.Positioner>
 				<Dialog.Content>
+					{isAuthenticating && (
+						<Stack
+							gap={8}
+							p={6}
+							direction="column"
+							width="full"
+							alignItems="center"
+							pt={12}
+						>
+							<Spinner
+								width="12"
+								height="12"
+								borderWidth="1.5px"
+								borderTopColor="fg.disabled"
+								borderRightColor="fg.disabled"
+							/>
+
+							<p>Waiting for authentication...</p>
+						</Stack>
+					)}
+
 					{isPending && (
 						<Stack
 							gap={8}
@@ -53,7 +95,7 @@ export const ConnectDialog = ({ open, onClose }: ConnectDialogProps) => {
 						</Stack>
 					)}
 
-					{!isPending && (
+					{!isPending && !isAuthenticating && (
 						<Stack gap="8" p="6">
 							<Stack gap="1">
 								<Dialog.Title>Connect Wallet</Dialog.Title>
