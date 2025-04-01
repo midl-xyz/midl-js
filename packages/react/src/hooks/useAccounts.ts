@@ -38,13 +38,13 @@ export const useAccounts = () => {
 	});
 
 	const getStatus = () => {
-		if (isMutating) {
-			return "pending";
-		}
-
 		// biome-ignore lint/style/noNonNullAssertion: This is a valid check
 		if (Boolean(data) && data!.length > 0) {
 			return "success";
+		}
+
+		if (isMutating) {
+			return "pending";
 		}
 
 		return "disconnected";

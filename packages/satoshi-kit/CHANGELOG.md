@@ -1,5 +1,13 @@
 # @midl-xyz/satoshi-kit
 
+## 1.0.4
+
+### Patch Changes
+
+- feat(satoshi-kit): add customizations
+- Updated dependencies
+  - @midl-xyz/midl-js-react@1.0.2
+
 ## 1.0.3
 
 ### Patch Changes

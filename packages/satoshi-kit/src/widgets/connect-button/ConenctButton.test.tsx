@@ -15,8 +15,8 @@ describe("widgets | ConnectButton", () => {
 	it("should render custom button", () => {
 		render(
 			<ConnectButton>
-				{({ openDialog }) => (
-					<button onClick={openDialog} type="button">
+				{({ openConnectDialog }) => (
+					<button onClick={openConnectDialog} type="button">
 						Custom Button
 					</button>
 				)}
