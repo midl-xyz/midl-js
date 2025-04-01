@@ -5,6 +5,7 @@ const toaster = createToaster({
 	gap: 24,
 });
 
-export const useToaster = () => {
+// Return type is necessary to avoid Typescript type inference issues
+export const useToaster = (): ReturnType<typeof createToaster> => {
 	return toaster;
 };
