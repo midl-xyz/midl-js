@@ -62,27 +62,28 @@ export const ConnectButton = ({
 				/>
 			)}
 
-			{!children && isConnected ? (
-				<AccountButton
-					hideAddress={hideAddress}
-					hideAvatar={hideAvatar}
-					hideBalance={hideBalance}
-					onClick={() => {
-						toggleAccountDialog(true);
-					}}
-				/>
-			) : (
-				<Button
-					onClick={() => {
-						toggleConnectDialog(true);
-					}}
-					variant="subtle"
-					disabled={isConnecting}
-					loading={isConnecting}
-				>
-					Connect Wallet
-				</Button>
-			)}
+			{!children &&
+				(isConnected ? (
+					<AccountButton
+						hideAddress={hideAddress}
+						hideAvatar={hideAvatar}
+						hideBalance={hideBalance}
+						onClick={() => {
+							toggleAccountDialog(true);
+						}}
+					/>
+				) : (
+					<Button
+						onClick={() => {
+							toggleConnectDialog(true);
+						}}
+						variant="subtle"
+						disabled={isConnecting}
+						loading={isConnecting}
+					>
+						Connect Wallet
+					</Button>
+				))}
 
 			{children && (
 				<>
