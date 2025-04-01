@@ -4,7 +4,7 @@ import { ClipboardIcon, LogOutIcon, XIcon } from "lucide-react";
 import { css } from "styled-system/css";
 import { Stack } from "styled-system/jsx";
 import { useClipboard } from "~/feature/clipboard";
-import { shortenAddress } from "~/shared";
+import { shortenAddress, useToaster } from "~/shared";
 import { Button } from "~/shared/ui/button";
 import { Dialog } from "~/shared/ui/dialog";
 import { IconButton } from "~/shared/ui/icon-button";
@@ -25,7 +25,18 @@ export const AccountDialog = ({ open, onClose }: AccountDialogProps) => {
 		},
 	});
 
+	const toaster = useToaster();
+
 	const [, copyToClipboard] = useClipboard();
+
+	const onCopyToClipboard = (address: string) => {
+		copyToClipboard(address);
+		toaster.info({
+			title: "Copied to clipboard",
+			description: "Address copied to clipboard",
+			closable: true,
+		});
+	};
 
 	const onDisconnect = () => {
 		disconnect();
@@ -43,7 +54,7 @@ export const AccountDialog = ({ open, onClose }: AccountDialogProps) => {
 	};
 
 	return (
-		<Dialog.Root open={open} onOpenChange={onClose} unmountOnExit lazyMount>
+		<Dialog.Root open={open} onOpenChange={onClose} unmountOnExit>
 			<Dialog.Backdrop />
 			<Dialog.Positioner>
 				<Dialog.Content>
@@ -82,9 +93,10 @@ export const AccountDialog = ({ open, onClose }: AccountDialogProps) => {
 												{shortenAddress(it.address)}
 											</div>
 										</div>
+
 										<IconButton
 											variant="ghost"
-											onClick={() => copyToClipboard(it.address)}
+											onClick={() => onCopyToClipboard(it.address)}
 										>
 											<ClipboardIcon />
 										</IconButton>

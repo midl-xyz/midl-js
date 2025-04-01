@@ -1,7 +1,8 @@
 import { useAccounts } from "@midl-xyz/midl-js-react";
-import { useState } from "react";
+import { useToggle } from "~/shared/api";
 import { Button } from "~/shared/ui/button";
 import { AccountButton } from "~/widgets/account-button";
+import { AccountDialog } from "~/widgets/account-dialog";
 import { ConnectDialog } from "~/widgets/connect-dialog";
 
 type ConnectButtonProps = {
@@ -23,11 +24,15 @@ type ConnectButtonProps = {
 	 */
 	hideAddress?: boolean;
 	children?: ({
-		openDialog,
-		isDialogOpen,
+		openConnectDialog,
+		openAccountDialog,
+		isConnected,
+		isConnecting,
 	}: {
-		openDialog: () => void;
-		isDialogOpen: boolean;
+		openConnectDialog: () => void;
+		openAccountDialog: () => void;
+		isConnected: boolean;
+		isConnecting: boolean;
 	}) => React.ReactNode;
 };
 
@@ -37,29 +42,40 @@ export const ConnectButton = ({
 	hideAvatar = false,
 	children,
 }: ConnectButtonProps) => {
-	const { isConnected, isConnecting } = useAccounts();
-	const [isDialogOpen, setDialogOpen] = useState(false);
-
-	const onConnect = () => {
-		setDialogOpen(true);
-	};
-
-	if (isConnected) {
-		return (
-			<AccountButton
-				hideAddress={hideAddress}
-				hideAvatar={hideAvatar}
-				hideBalance={hideBalance}
-			/>
-		);
-	}
+	const { isConnected, isConnecting, status, accounts } = useAccounts();
+	const [isConnectDialogOpen, toggleConnectDialog] = useToggle(false);
+	const [isAccountDialogOpen, toggleAccountDialog] = useToggle(false);
 
 	return (
 		<>
-			<ConnectDialog open={isDialogOpen} onClose={() => setDialogOpen(false)} />
-			{!children && (
+			{!isConnected && (
+				<ConnectDialog
+					open={isConnectDialogOpen}
+					onClose={() => toggleConnectDialog(false)}
+				/>
+			)}
+
+			{isConnected && (
+				<AccountDialog
+					open={isAccountDialogOpen}
+					onClose={() => toggleAccountDialog(false)}
+				/>
+			)}
+
+			{!children && isConnected ? (
+				<AccountButton
+					hideAddress={hideAddress}
+					hideAvatar={hideAvatar}
+					hideBalance={hideBalance}
+					onClick={() => {
+						toggleAccountDialog(true);
+					}}
+				/>
+			) : (
 				<Button
-					onClick={onConnect}
+					onClick={() => {
+						toggleConnectDialog(true);
+					}}
 					variant="subtle"
 					disabled={isConnecting}
 					loading={isConnecting}
@@ -68,12 +84,20 @@ export const ConnectButton = ({
 				</Button>
 			)}
 
-			{children?.({
-				openDialog: () => {
-					setDialogOpen(true);
-				},
-				isDialogOpen,
-			})}
+			{children && (
+				<>
+					{children({
+						openConnectDialog: () => {
+							toggleConnectDialog(true);
+						},
+						openAccountDialog: () => {
+							toggleAccountDialog(true);
+						},
+						isConnected,
+						isConnecting,
+					})}
+				</>
+			)}
 		</>
 	);
 };
