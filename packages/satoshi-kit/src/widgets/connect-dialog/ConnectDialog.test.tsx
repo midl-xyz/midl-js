@@ -73,7 +73,9 @@ describe("widgets | ConnectDialog", () => {
 	it("should sign in", async () => {
 		const signOut = vi.fn();
 		const verify = vi.fn().mockResolvedValue(true);
-		const createMessage = vi.fn().mockResolvedValue("message");
+		const createMessage = vi.fn().mockResolvedValue({
+			message: "message",
+		});
 
 		const authAdapter = createAuthenticationAdapter({
 			signOut,
