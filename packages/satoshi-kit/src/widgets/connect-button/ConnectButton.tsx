@@ -42,18 +42,16 @@ export const ConnectButton = ({
 	hideAvatar = false,
 	children,
 }: ConnectButtonProps) => {
-	const { isConnected, isConnecting, status, accounts } = useAccounts();
+	const { isConnected, isConnecting } = useAccounts();
 	const [isConnectDialogOpen, toggleConnectDialog] = useToggle(false);
 	const [isAccountDialogOpen, toggleAccountDialog] = useToggle(false);
 
 	return (
 		<>
-			{!isConnected && (
-				<ConnectDialog
-					open={isConnectDialogOpen}
-					onClose={() => toggleConnectDialog(false)}
-				/>
-			)}
+			<ConnectDialog
+				open={isConnectDialogOpen}
+				onClose={() => toggleConnectDialog(false)}
+			/>
 
 			{isConnected && (
 				<AccountDialog

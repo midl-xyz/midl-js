@@ -3,7 +3,7 @@ import { useAccounts, useDisconnect } from "@midl-xyz/midl-js-react";
 import { ClipboardIcon, LogOutIcon, XIcon } from "lucide-react";
 import { css } from "styled-system/css";
 import { Stack } from "styled-system/jsx";
-import { useClipboard } from "~/feature/clipboard";
+import { useClipboard } from "~/features/clipboard";
 import { shortenAddress, useToaster } from "~/shared";
 import { Button } from "~/shared/ui/button";
 import { Dialog } from "~/shared/ui/dialog";

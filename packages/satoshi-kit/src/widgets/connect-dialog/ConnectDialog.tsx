@@ -3,7 +3,8 @@ import { ArrowRightIcon, XIcon } from "lucide-react";
 import { css } from "styled-system/css";
 import { Stack } from "styled-system/jsx";
 import { useSatoshiKit } from "~/app";
-import { useAuthentication } from "~/feature/auth/api";
+import { useAuthentication } from "~/features/auth/api";
+import { useToaster } from "~/shared";
 import { Button } from "~/shared/ui/button";
 import { Dialog } from "~/shared/ui/dialog";
 import { IconButton } from "~/shared/ui/icon-button";
@@ -18,17 +19,27 @@ type ConnectDialogProps = {
 export const ConnectDialog = ({ open, onClose }: ConnectDialogProps) => {
 	const { purposes } = useSatoshiKit();
 	const { disconnect } = useDisconnect();
+	const toaster = useToaster();
 
-	const { adapter, signIn, signInState } = useAuthentication({
-		signInMutation: {
-			onSuccess: onClose,
-			onError: () => {
-				disconnect();
+	const { adapter, signInAsync, signInState, signOutState } = useAuthentication(
+		{
+			signInMutation: {
+				onSuccess: onClose,
+				onError: (error) => {
+					toaster.error({
+						title: "Authentication failed",
+						description: error.message,
+					});
+					console.error(error);
+
+					disconnect();
+					onClose();
+				},
 			},
 		},
-	});
+	);
 
-	const { connect, connectors, isPending, isSuccess } = useConnect({
+	const { connect, connectors, isPending, isSuccess, reset } = useConnect({
 		purposes,
 		mutation: {
 			onSuccess: async (accounts) => {
@@ -38,7 +49,7 @@ export const ConnectDialog = ({ open, onClose }: ConnectDialogProps) => {
 
 				const [account] = accounts;
 
-				signIn(account.address);
+				await signInAsync(account.address);
 			},
 			onError: (error) => {
 				console.error(error);
@@ -49,7 +60,17 @@ export const ConnectDialog = ({ open, onClose }: ConnectDialogProps) => {
 	const isAuthenticating = (isSuccess && adapter) || signInState.isPending;
 
 	return (
-		<Dialog.Root open={open} onOpenChange={onClose} unmountOnExit lazyMount>
+		<Dialog.Root
+			open={open}
+			onOpenChange={onClose}
+			unmountOnExit
+			lazyMount
+			onExitComplete={() => {
+				reset();
+				signInState.reset();
+				signOutState.reset();
+			}}
+		>
 			<Dialog.Backdrop />
 			<Dialog.Positioner>
 				<Dialog.Content>

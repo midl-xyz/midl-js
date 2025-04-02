@@ -1,5 +1,11 @@
 # @midl-xyz/satoshi-kit
 
+## 1.0.5
+
+### Patch Changes
+
+- fix(satoshi-kit): Add sign message protocol
+
 ## 1.0.4
 
 ### Patch Changes

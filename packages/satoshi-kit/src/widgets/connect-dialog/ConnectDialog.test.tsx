@@ -8,7 +8,7 @@ import {
 } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { Wrapper } from "~/__tests__/wrapper";
-import { createAuthenticationAdapter } from "~/feature/auth";
+import { createAuthenticationAdapter } from "~/features/auth";
 import { ConnectDialog } from "~/widgets/connect-dialog/ConnectDialog";
 
 describe("widgets | ConnectDialog", () => {
@@ -73,7 +73,9 @@ describe("widgets | ConnectDialog", () => {
 	it("should sign in", async () => {
 		const signOut = vi.fn();
 		const verify = vi.fn().mockResolvedValue(true);
-		const createMessage = vi.fn().mockResolvedValue("message");
+		const createMessage = vi.fn().mockResolvedValue({
+			message: "message",
+		});
 
 		const authAdapter = createAuthenticationAdapter({
 			signOut,
