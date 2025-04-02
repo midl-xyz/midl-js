@@ -8,7 +8,7 @@ import {
 } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { Wrapper } from "~/__tests__/wrapper";
-import { createAuthenticationAdapter } from "~/feature/auth";
+import { createAuthenticationAdapter } from "~/features/auth";
 import { ConnectDialog } from "~/widgets/connect-dialog/ConnectDialog";
 
 describe("widgets | ConnectDialog", () => {

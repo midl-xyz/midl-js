@@ -8,7 +8,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { ReactNode } from "react";
 import { getKeyPair } from "~/__tests__/keyPair";
 import { SatoshiKitProvider } from "~/app";
-import type { AuthenticationAdapter } from "~/feature/auth";
+import type { AuthenticationAdapter } from "~/features/auth";
 
 const queryClient = new QueryClient({
 	defaultOptions: {

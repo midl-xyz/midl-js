@@ -3,7 +3,7 @@ import { AddressPurpose } from "@midl-xyz/midl-js-core";
 import { useConfig } from "@midl-xyz/midl-js-react";
 import { XIcon } from "lucide-react";
 import { createContext, useContext, useEffect, type ReactNode } from "react";
-import type { AuthenticationAdapter } from "~/feature/auth";
+import type { AuthenticationAdapter } from "~/features/auth";
 import { useToaster } from "~/shared";
 import { IconButton } from "~/shared/ui/icon-button";
 import { Toast } from "~/shared/ui/toast";
@@ -40,6 +40,8 @@ export const SatoshiKitProvider = ({
 			return;
 		}
 
+		// TODO: Check if user is authenticated,
+		// however it's better add hook for disconnect in react library
 		if (!accounts || accounts.length === 0) {
 			authenticationAdapter.signOut();
 		}
