@@ -43,6 +43,10 @@ import {
 import { waitForTransactionReceipt } from "viem/actions";
 import { type StoreApi, createStore } from "zustand";
 import "~/types/context";
+import {
+	type Libraries,
+	resolveBytecodeWithLinkedLibraries,
+} from "@nomicfoundation/hardhat-viem/internal/bytecode";
 
 const bip32 = BIP32Factory(ecc);
 const ECPair = ECPairFactory(ecc);
@@ -110,7 +114,7 @@ export class MidlHardhatEnvironment {
 			TransactionSerializableBTC,
 			"to" | "value" | "gasPrice" | "gas" | "nonce"
 			// biome-ignore lint/suspicious/noExplicitAny: Allow any args
-		> & { args?: any },
+		> & { args?: any; libraries?: Libraries<Address> },
 		intentionOptions: Pick<
 			TransactionIntention,
 			| "value"
@@ -129,11 +133,16 @@ export class MidlHardhatEnvironment {
 			return deployment;
 		}
 
-		const data = await this.hre.artifacts.readArtifact(name);
+		const artifact = await this.hre.artifacts.readArtifact(name);
+		const bytecode = await resolveBytecodeWithLinkedLibraries(
+			artifact,
+			options?.libraries ?? {},
+		);
+
 		const deployData = encodeDeployData({
-			abi: data.abi,
+			abi: artifact.abi,
 			args: options?.args,
-			bytecode: data.bytecode as `0x${string}`,
+			bytecode: bytecode as `0x${string}`,
 		});
 
 		await addTxIntention(this.config, this.store, {
@@ -166,7 +175,7 @@ export class MidlHardhatEnvironment {
 
 		return JSON.parse(data) as {
 			txId: string;
-			address: string;
+			address: Address;
 			abi: typeof abi;
 		};
 	}
@@ -308,7 +317,7 @@ export class MidlHardhatEnvironment {
 		return ECPair.fromWIF(child.toWIF()!, bitcoin.networks.regtest);
 	}
 
-	private async getWalletClient(): Promise<WalletClient> {
+	public async getWalletClient(): Promise<WalletClient> {
 		if (!this.walletClient) {
 			this.walletClient = createWalletClient({
 				chain: midlRegtest as Chain,

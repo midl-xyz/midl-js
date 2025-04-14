@@ -12,6 +12,7 @@
 		"outDir": "./dist/esm",
 		"sourceMap": true,
 		"declaration": true,
-		"declarationDir": "./dist/types"
+		"declarationDir": "./dist/types",
+		"skipLibCheck": true
 	}
 }
