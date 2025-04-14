@@ -4,11 +4,11 @@ import { useEnvironment } from "../tests/useEnvironment";
 describe("MidlHardhatEnvironment", () => {
 	useEnvironment();
 
-	it.skip("works", async () => {
+	it("works", async () => {
 		const { hre } = globalThis;
 
 		await hre.midl.initialize();
-		const deployer = await hre.midl.getAddress();
+		const deployer = hre.midl.wallet.getEVMAddress();
 
 		await hre.midl.deploy("UniswapV2Factory", {
 			args: [deployer, "0x677ebf28ab1Ca164F5d86313359EEcbEe54fF22b"],
@@ -17,7 +17,7 @@ describe("MidlHardhatEnvironment", () => {
 		await hre.midl.execute();
 	});
 
-	it.skip("creates deployContract intention", async () => {
+	it("creates deployContract intention", async () => {
 		const { hre } = globalThis;
 
 		await hre.midl.initialize();
@@ -27,11 +27,11 @@ describe("MidlHardhatEnvironment", () => {
 		await hre.midl.execute();
 	});
 
-	it.skip("creates callContract intention", async () => {
+	it("creates callContract intention", async () => {
 		const { hre } = globalThis;
 
 		await hre.midl.initialize();
-		const deployer = await hre.midl.getAddress();
+		const deployer = hre.midl.wallet.getEVMAddress();
 
 		await hre.midl.callContract("UniswapV2Factory", "createPair", {
 			args: [deployer, "0x677ebf28ab1Ca164F5d86313359EEcbEe54fF22b"],

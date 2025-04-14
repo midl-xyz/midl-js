@@ -1,3 +1,4 @@
+import type { BitcoinNetwork } from "@midl-xyz/midl-js-core";
 import "hardhat/types/config";
 import "hardhat/types/runtime";
 import type { MidlHardhatEnvironment } from "~/MidlHardhatEnvironment";
@@ -9,6 +10,7 @@ declare module "hardhat/types/config" {
 			path: string;
 			confirmationsRequired?: number;
 			btcConfirmationsRequired?: number;
+			network?: string | BitcoinNetwork;
 		};
 	}
 }
