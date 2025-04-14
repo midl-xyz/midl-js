@@ -1,5 +1,11 @@
 # @midl-xyz/hardhat-deploy
 
+## 0.1.3
+
+### Patch Changes
+
+- feat: enable linked libraries"
+
 ## 0.1.2
 
 ### Patch Changes
