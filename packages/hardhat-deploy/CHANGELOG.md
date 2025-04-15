@@ -1,5 +1,13 @@
 # @midl-xyz/hardhat-deploy
 
+## 0.1.5
+
+### Patch Changes
+
+- feat(executor): allow skip estimate gas"
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@1.0.3
+
 ## 0.1.4
 
 ### Patch Changes
