@@ -150,6 +150,11 @@ export class MidlHardhatEnvironment {
 				type: "btc",
 				chainId: 777,
 				data: deployData,
+				gas: options?.gas,
+				gasPrice: options?.gasPrice,
+				to: options?.to,
+				value: options?.value,
+				nonce: options?.nonce,
 			},
 			meta: {
 				contractName: name,
