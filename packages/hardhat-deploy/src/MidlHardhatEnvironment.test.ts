@@ -85,4 +85,31 @@ describe("MidlHardhatEnvironment", () => {
 			}),
 		);
 	});
+
+	it.skip("works with struct", async () => {
+		const {
+			hre: { midl },
+		} = globalThis;
+		await midl.initialize();
+
+		await midl.deploy("StructFunctionParam", { args: [] });
+		await midl.execute();
+
+		const deployer = await midl.getAddress();
+
+		await midl.initialize();
+		await midl.callContract("StructFunctionParam", "foo", {
+			args: [
+				[
+					{
+						first: "hello",
+						second: 2,
+						third: deployer,
+					},
+				],
+			],
+		});
+
+		await midl.execute();
+	});
 });
