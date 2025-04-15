@@ -59,6 +59,11 @@ type FinalizeBTCTransactionOptions = {
 	 * Array of ERC20 assets to withdraw
 	 */
 	assetsToWithdraw?: [Address] | [Address, Address];
+
+	/**
+	 * If true skips estimate gas for EVM transactions
+	 */
+	skipEstimateGasMulti?: boolean;
 };
 
 /**
@@ -96,31 +101,33 @@ export const finalizeBTCTransaction = async (
 	const evmIntentions = intentions.filter((it) => Boolean(it.evmTransaction));
 	const evmTransactions = evmIntentions.map((it) => it.evmTransaction);
 
-	let gasLimits: bigint[];
+	if (!options.skipEstimateGasMulti) {
+		let gasLimits: bigint[];
 
-	try {
-		const { JsonRpcProvider } = await import("ethers");
+		try {
+			const { JsonRpcProvider } = await import("ethers");
 
-		if (!(client instanceof JsonRpcProvider)) {
-			throw new Error("Not an ethers provider");
+			if (!(client instanceof JsonRpcProvider)) {
+				throw new Error("Not an ethers provider");
+			}
+
+			gasLimits = await client.estimateGasMulti(
+				evmTransactions.map((it) => transformViemToEthersTx(it)),
+				transformViemToEthersStateOverride(options.stateOverride),
+			);
+		} catch {
+			gasLimits = await estimateGasMulti(client as Client, {
+				transactions: evmTransactions,
+				stateOverride: options.stateOverride,
+				account: evmAddress,
+			});
 		}
 
-		gasLimits = await client.estimateGasMulti(
-			evmTransactions.map((it) => transformViemToEthersTx(it)),
-			transformViemToEthersStateOverride(options.stateOverride),
-		);
-	} catch {
-		gasLimits = await estimateGasMulti(client as Client, {
-			transactions: evmTransactions,
-			stateOverride: options.stateOverride,
-			account: evmAddress,
-		});
-	}
-
-	for (const [i, intention] of evmIntentions.entries()) {
-		intention.evmTransaction.gas = BigInt(
-			Math.ceil(Number(gasLimits[i]) * 1.2),
-		);
+		for (const [i, intention] of evmIntentions.entries()) {
+			intention.evmTransaction.gas = BigInt(
+				Math.ceil(Number(gasLimits[i]) * 1.2),
+			);
+		}
 	}
 
 	const hasWithdraw =

@@ -112,4 +112,45 @@ describe("MidlHardhatEnvironment", () => {
 
 		await midl.execute();
 	});
+
+	it.skip("deploys Foo", async () => {
+		const {
+			hre: { midl },
+		} = globalThis;
+		await midl.initialize();
+
+		await midl.deploy("Foo", { args: [] });
+		await midl.execute();
+
+		await midl.initialize();
+
+		await midl.callContract("Foo", "initReserves", {
+			args: [
+				[
+					{
+						aTokenImpl: "0xB4295B02798b636D284dF45ef47fa464eB372734",
+						stableDebtTokenImpl: "0xc3e77541944d2fF9918C969D83d4D3d13aaF3A45",
+						variableDebtTokenImpl: "0x5C6A9f1F6A3669B878581f515A1F9aC1a1248149",
+						underlyingAssetDecimals: 18,
+						interestRateStrategyAddress:
+							"0x6680b51829BD0a0481bb77c4A3c673c2192bAf01",
+						underlyingAsset: "0xcD2bcB2517F05d427692F0084ae2a4751822DfEe",
+						treasury: "0x83868F040274Cbb6a1256cBE26CdB7316252d690",
+						incentivesController: "0x41335c8E920dc62f2469dbaB285e040D0cd8940F",
+						aTokenName: "Helios Htoken WETH",
+						aTokenSymbol: "hHWETH",
+						variableDebtTokenName: "Helios Variable WETH",
+						variableDebtTokenSymbol: "vdHWETH",
+						stableDebtTokenName: "Helios Stable WETH",
+						stableDebtTokenSymbol: "sdHWETH",
+						params: "0x10",
+					},
+				],
+			],
+			gas: BigInt(10000000),
+			to: "0xff2BdE9960f3C2904F6A0085D669DA866f4EDDEC",
+		});
+
+		await midl.execute({ skipEstimateGasMulti: true });
+	});
 });

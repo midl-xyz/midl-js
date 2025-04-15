@@ -220,7 +220,7 @@ export class MidlHardhatEnvironment {
 				type: "btc",
 				chainId: 777,
 				data,
-				to: address as Address,
+				to: options.to ?? (address as Address),
 				value: options.value,
 				nonce: options.nonce,
 				gasPrice: options.gasPrice,
@@ -233,7 +233,12 @@ export class MidlHardhatEnvironment {
 	public async execute({
 		stateOverride,
 		feeRateMultiplier = 4,
-	}: { stateOverride?: StateOverride; feeRateMultiplier?: number } = {}) {
+		skipEstimateGasMulti = false,
+	}: {
+		stateOverride?: StateOverride;
+		feeRateMultiplier?: number;
+		skipEstimateGasMulti?: boolean;
+	} = {}) {
 		const intentions = this.store.getState().intentions;
 
 		if (!intentions || intentions.length === 0) {
@@ -256,6 +261,7 @@ export class MidlHardhatEnvironment {
 					},
 				],
 				feeRateMultiplier,
+				skipEstimateGasMulti,
 			},
 		);
 
