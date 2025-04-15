@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { useEnvironment } from "../tests/useEnvironment";
-import { readContract } from "viem/actions";
+import { getBalance, readContract } from "viem/actions";
+import { encodeFunctionData, erc20Abi } from "viem";
 
 describe("MidlHardhatEnvironment", () => {
 	useEnvironment();
@@ -131,7 +132,7 @@ describe("MidlHardhatEnvironment", () => {
 						aTokenImpl: "0xB4295B02798b636D284dF45ef47fa464eB372734",
 						stableDebtTokenImpl: "0xc3e77541944d2fF9918C969D83d4D3d13aaF3A45",
 						variableDebtTokenImpl: "0x5C6A9f1F6A3669B878581f515A1F9aC1a1248149",
-						underlyingAssetDecimals: 18,
+						underlyingAssetDecimals: 18n,
 						interestRateStrategyAddress:
 							"0x6680b51829BD0a0481bb77c4A3c673c2192bAf01",
 						underlyingAsset: "0xcD2bcB2517F05d427692F0084ae2a4751822DfEe",
@@ -152,5 +153,90 @@ describe("MidlHardhatEnvironment", () => {
 		});
 
 		await midl.execute({ skipEstimateGasMulti: true });
+	});
+
+	it("deploys proxy", async () => {
+		const {
+			hre: { midl },
+		} = globalThis;
+		await midl.initialize();
+
+		await midl.deploy("VDelegateMidl", { args: [] });
+		await midl.execute();
+
+		await midl.initialize();
+
+		const deployer = await midl.getAddress();
+
+		await midl.deploy("ProxyAdmin", { args: [deployer] });
+		await midl.execute();
+
+		const { abi } = await hre.artifacts.readArtifact("VDelegateMidl");
+
+		const initializedData = encodeFunctionData({
+			abi: abi as any,
+			functionName: "initialize",
+			args: [],
+		});
+
+		await midl.initialize();
+
+		const contract = await midl.getDeployment("VDelegateMidl");
+
+		if (!contract) {
+			throw new Error("Contract not found");
+		}
+
+		await midl.deploy("TransparentUpgradeableProxy", {
+			args: [contract.address, deployer, initializedData],
+		});
+		await midl.execute();
+
+		const proxy = await midl.getDeployment("TransparentUpgradeableProxy");
+
+		if (!proxy) {
+			throw new Error("Contract not found");
+		}
+
+		// await midl.callContract("VDelegateMidl", "claimReward", {
+		// 	args: [],
+		// 	to: proxy.address,
+		// });
+
+		// await midl.execute();
+
+		const balance = await readContract(await midl.getWalletClient(), {
+			abi: contract.abi,
+			functionName: "balanceOf",
+			address: "0x6D21d661DEeAd7Db086e53e1fC2584e9724Db9F5",
+			args: [deployer],
+		});
+
+		expect(balance).toBe(0n);
+
+		// const isPausedBefore = await readContract(await midl.getWalletClient(), {
+		// 	abi: contract.abi,
+		// 	address: proxy.address,
+		// 	functionName: "paused",
+		// 	args: [],
+		// });
+
+		// expect(isPausedBefore).toBe(false);
+
+		// await midl.callContract("VDelegateMidl", "pause", {
+		// 	args: [],
+		// 	to: proxy.address,
+		// });
+
+		// await midl.execute();
+
+		// const isPausedAfter = await readContract(await midl.getWalletClient(), {
+		// 	abi: contract.abi,
+		// 	address: proxy.address,
+		// 	functionName: "paused",
+		// 	args: [],
+		// });
+
+		// expect(isPausedAfter).toBe(true);
 	});
 });
