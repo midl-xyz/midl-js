@@ -11,11 +11,15 @@ MIDL.js shares a common configuration object across all actions and hooks. This 
 To create a configuration object, use the `createConfig` function:
 
 ```ts
-import { createConfig, regtest, leather } from "@midl-xyz/midl-js-core";
+import {
+  createConfig,
+  regtest,
+  LeatherConnector,
+} from "@midl-xyz/midl-js-core";
 
 export const config = createConfig({
   networks: [regtest],
-  connectors: [leather()],
+  connectors: [new LeatherConnector()],
   persist: true,
 });
 ```
