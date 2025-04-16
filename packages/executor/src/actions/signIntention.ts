@@ -1,6 +1,5 @@
 import type { Config, SignMessageProtocol } from "@midl-xyz/midl-js-core";
 import type { MidlContextState } from "@midl-xyz/midl-js-react";
-import type { JsonRpcProvider } from "ethers";
 import { isHex, type Client } from "viem";
 import { getTransactionCount } from "viem/actions";
 import type { StoreApi } from "zustand";
@@ -47,7 +46,7 @@ type SignIntentionOptions = {
 export const signIntention = async (
 	config: Config,
 	store: StoreApi<MidlContextState>,
-	client: Client | JsonRpcProvider,
+	client: Client,
 	intention: TransactionIntention,
 	options: SignIntentionOptions,
 ) => {
@@ -65,21 +64,11 @@ export const signIntention = async (
 
 	const evmAddress = getEVMAddress(publicKey);
 
-	const getNonce = async () => {
-		try {
-			const { JsonRpcProvider } = await import("ethers");
-
-			if (client instanceof JsonRpcProvider) {
-				return client.getTransactionCount(evmAddress);
-			}
-		} catch {}
-
-		return getTransactionCount(client as Client, {
+	const nonce =
+		options.nonce ??
+		(await getTransactionCount(client, {
 			address: evmAddress,
-		});
-	};
-
-	const nonce = options.nonce ?? (await getNonce());
+		}));
 
 	const intentions = store.getState().intentions;
 

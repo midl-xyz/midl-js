@@ -4,7 +4,6 @@ import {
 	getDefaultAccount,
 	signMessage,
 } from "@midl-xyz/midl-js-core";
-import type { JsonRpcProvider } from "ethers";
 import {
 	type Client,
 	type TransactionSerializableBTC,
@@ -29,7 +28,7 @@ type SignTransactionOptions = {
 export const signTransaction = async (
 	config: Config,
 	{ chainId, ...tx }: TransactionSerializableBTC,
-	client: Client | JsonRpcProvider,
+	client: Client,
 	{ publicKey: customPublicKey, protocol, nonce }: SignTransactionOptions = {},
 ) => {
 	const { network } = config.getState();
@@ -55,21 +54,11 @@ export const signTransaction = async (
 		throw new Error("No public key found");
 	}
 
-	const getNonce = async () => {
-		try {
-			const { JsonRpcProvider } = await import("ethers");
-
-			if (client instanceof JsonRpcProvider) {
-				return client.getTransactionCount(getEVMAddress(publicKey));
-			}
-		} catch {}
-
-		return getTransactionCount(client as Client, {
+	const lastNonce =
+		nonce ??
+		(await getTransactionCount(client, {
 			address: getEVMAddress(publicKey),
-		});
-	};
-
-	const lastNonce = nonce ?? (await getNonce());
+		}));
 
 	const serialized = serializeTransaction({
 		nonce: lastNonce,

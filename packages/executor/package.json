@@ -24,15 +24,12 @@
 			"types": "./dist/types/*.d.ts"
 		}
 	},
-	"files": [
-		"dist"
-	],
+	"files": ["dist"],
 	"devDependencies": {
 		"@midl-xyz/midl-js-config": "workspace:^",
 		"@types/node": "^22.8.7",
 		"@wagmi/cli": "^2.1.15",
 		"bitcoinjs-lib": "7.0.0-rc.0",
-		"ethers": "npm:@midl-xyz/ethers@^6.13.0-0",
 		"viem": "npm:@midl-xyz/midl-viem"
 	},
 	"dependencies": {
@@ -44,7 +41,6 @@
 	},
 	"peerDependencies": {
 		"bitcoinjs-lib": "7.0.0-rc.0",
-		"ethers": "npm:@midl-xyz/ethers@^6.13.0-0",
 		"viem": "npm:@midl-xyz/midl-viem"
 	}
 }

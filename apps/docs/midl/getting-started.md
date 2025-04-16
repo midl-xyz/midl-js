@@ -27,7 +27,7 @@ yarn add @midl-xyz/midl-js-executor @midl-xyz/midl-js-executor-react
 
 :::
 
-### Add Wagmi, viem and ethers
+### Add Wagmi and viem
 
 MIDL executor packages work alongside [Wagmi](https://wagmi.sh) to provide a seamless experience for developers.
 
@@ -47,14 +47,14 @@ yarn add wagmi
 
 :::
 
-#### Override `ethers` and `viem` versions
+#### Override `viem` versions
 
 ::: warning
 This step is required to ensure compatibility with MIDL executor.
 :::
 
-To ensure compatibility with MIDL executor, you need to override the versions of `ethers` (optional) and `viem` in your `package.json`.
-Patched versions of `ethers` and `viem` provide additional functionality required by MIDL executor, such as setting the transaction type, fees, adding `estimateGasMulti` method and more.
+To ensure compatibility with MIDL executor, you need to override the version of `viem` in your `package.json`.
+Patched version of `viem` provide additional functionality required by MIDL executor, such as setting the transaction type, fees, adding `estimateGasMulti` method and more.
 
 ::: code-group
 
@@ -62,7 +62,6 @@ Patched versions of `ethers` and `viem` provide additional functionality require
 {
   "pnpm": {
     "overrides": {
-      "ethers": "npm:@midl-xyz/ethers",
       "viem": "npm:@midl-xyz/midl-viem"
     }
   }
@@ -72,7 +71,6 @@ Patched versions of `ethers` and `viem` provide additional functionality require
 ```json [package.json(npm)]
 {
   "overrides": {
-    "ethers": "npm:@midl-xyz/ethers",
     "viem": "npm:@midl-xyz/midl-viem"
   }
 }
@@ -81,7 +79,6 @@ Patched versions of `ethers` and `viem` provide additional functionality require
 ```json [package.json(yarn)]
 {
   "resolutions": {
-    "ethers": "npm:@midl-xyz/ethers",
     "viem": "npm:@midl-xyz/midl-viem"
   }
 }
