@@ -72,7 +72,10 @@ export class MidlHardhatEnvironment {
 		this.bitcoinNetwork = regtest;
 		this.initializeNetwork();
 
-		this.deploymentsPath = path.join(this.hre.config.paths.root, "deployments");
+		this.deploymentsPath = path.join(
+			this.hre.config.paths.root,
+			this.hre.userConfig.midl.path ?? "deployments",
+		);
 		this.confirmationsRequired =
 			this.hre.userConfig.midl.confirmationsRequired ?? 5;
 		this.btcConfirmationsRequired =
