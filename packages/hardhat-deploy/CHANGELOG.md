@@ -1,5 +1,13 @@
 # @midl-xyz/hardhat-deploy
 
+## 0.1.8
+
+### Patch Changes
+
+- a1066f9: fix: remove ethers as a dependency
+- Updated dependencies [a1066f9]
+  - @midl-xyz/midl-js-executor@1.0.5
+
 ## 0.1.7
 
 ### Patch Changes

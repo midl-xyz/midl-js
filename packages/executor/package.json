@@ -1,6 +1,6 @@
 {
 	"name": "@midl-xyz/midl-js-executor",
-	"version": "1.0.3",
+	"version": "1.0.5",
 	"scripts": {
 		"build": "pnpm run clean && tspc --project tsconfig.esm.json && tspc --project tsconfig.cjs.json",
 		"dev": "concurrently \"tspc --watch --preserveWatchOutput --project tsconfig.esm.json\" \"tspc --watch --preserveWatchOutput --project tsconfig.cjs.json\"",
@@ -24,7 +24,9 @@
 			"types": "./dist/types/*.d.ts"
 		}
 	},
-	"files": ["dist"],
+	"files": [
+		"dist"
+	],
 	"devDependencies": {
 		"@midl-xyz/midl-js-config": "workspace:^",
 		"@types/node": "^22.8.7",

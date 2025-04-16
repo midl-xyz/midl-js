@@ -1,5 +1,13 @@
 # @midl-xyz/midl-js-executor-react
 
+## 1.0.5
+
+### Patch Changes
+
+- a1066f9: fix: remove ethers as a dependency
+- Updated dependencies [a1066f9]
+  - @midl-xyz/midl-js-executor@1.0.5
+
 ## 1.0.4
 
 ### Patch Changes
