@@ -9,7 +9,6 @@ import {
 	transferBTC,
 } from "@midl-xyz/midl-js-core";
 import type { MidlContextState } from "@midl-xyz/midl-js-react";
-import type { JsonRpcProvider } from "ethers";
 import {
 	type Address,
 	type Client,
@@ -28,8 +27,6 @@ import {
 	convertETHtoBTC,
 	getEVMAddress,
 	getEVMFromBitcoinNetwork,
-	transformViemToEthersStateOverride,
-	transformViemToEthersTx,
 } from "~/utils";
 
 type FinalizeBTCTransactionOptions = {
@@ -74,14 +71,14 @@ type FinalizeBTCTransactionOptions = {
  *
  * @param config The configuration object
  * @param store The store object
- * @param client EVM client or provider (viem or ethers)
+ * @param client EVM client or provider (viem)
  * @param options Configuration options
  * @returns BTC transaction response
  */
 export const finalizeBTCTransaction = async (
 	config: Config,
 	store: StoreApi<MidlContextState>,
-	client: Client | JsonRpcProvider,
+	client: Client,
 	options: FinalizeBTCTransactionOptions,
 ) => {
 	const { network } = config.getState();
@@ -104,24 +101,11 @@ export const finalizeBTCTransaction = async (
 	if (!options.skipEstimateGasMulti) {
 		let gasLimits: bigint[];
 
-		try {
-			const { JsonRpcProvider } = await import("ethers");
-
-			if (!(client instanceof JsonRpcProvider)) {
-				throw new Error("Not an ethers provider");
-			}
-
-			gasLimits = await client.estimateGasMulti(
-				evmTransactions.map((it) => transformViemToEthersTx(it)),
-				transformViemToEthersStateOverride(options.stateOverride),
-			);
-		} catch {
-			gasLimits = await estimateGasMulti(client as Client, {
-				transactions: evmTransactions,
-				stateOverride: options.stateOverride,
-				account: evmAddress,
-			});
-		}
+		gasLimits = await estimateGasMulti(client as Client, {
+			transactions: evmTransactions,
+			stateOverride: options.stateOverride,
+			account: evmAddress,
+		});
 
 		for (const [i, intention] of evmIntentions.entries()) {
 			intention.evmTransaction.gas = BigInt(
