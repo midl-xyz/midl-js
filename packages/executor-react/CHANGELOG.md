@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor-react
 
+## 1.0.4
+
+### Patch Changes
+
+- feat: add skipEstimateGasMulti option
+
 ## 1.0.3
 
 ### Patch Changes
