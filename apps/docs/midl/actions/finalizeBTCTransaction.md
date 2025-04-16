@@ -39,14 +39,15 @@ const tx = await finalizeBTCTransaction(config, store, client, {
 
 ### FinalizeBTCTransactionOptions
 
-| Name               | Type                              | Description                                  |
-| ------------------ | --------------------------------- | -------------------------------------------- |
-| stateOverride?     | `StateOverride`                   | State override for EVM transactions          |
-| publicKey?         | `string`                          | Public key of the account to use for signing |
-| gasPrice?          | `bigint`                          | Gas price for EVM transactions               |
-| shouldComplete?    | `boolean`                         | If true, send complete transaction           |
-| feeRateMultiplier? | `number`                          | Fee rate multiplier for the transaction      |
-| assetsToWithdraw?  | `[Address] \| [Address, Address]` | Array of ERC20 assets to withdraw            |
+| Name                  | Type                              | Description                                    |
+| --------------------- | --------------------------------- | ---------------------------------------------- |
+| stateOverride?        | `StateOverride`                   | State override for EVM transactions            |
+| publicKey?            | `string`                          | Public key of the account to use for signing   |
+| gasPrice?             | `bigint`                          | Gas price for EVM transactions                 |
+| shouldComplete?       | `boolean`                         | If true, send complete transaction             |
+| feeRateMultiplier?    | `number`                          | Fee rate multiplier for the transaction        |
+| assetsToWithdraw?     | `[Address] \| [Address, Address]` | Array of ERC20 assets to withdraw              |
+| skipEstimateGasMulti? | `boolean`                         | If true, skip estimating gas multi for EVM txs |
 
 ## Returns
 
