@@ -13,7 +13,13 @@ import { SimpleStorage } from "./SimpleStorage";
 export function WriteContract() {
 	const { addTxIntention, txIntentions } = useAddTxIntention();
 	const { finalizeBTCTransaction, btcTransaction, signIntentionAsync } =
-		useFinalizeTxIntentions();
+		useFinalizeTxIntentions({
+			mutation: {
+				onError(error) {
+					console.error(error);
+				},
+			},
+		});
 
 	const { broadcastTransaction } = useBroadcastTransaction();
 	const { data: walletClient } = useWalletClient();

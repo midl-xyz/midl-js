@@ -8,16 +8,20 @@ You can find the example in [apps/docs/examples](https://github.com/midl-xyz/mid
 
 ### 1. Create a Configuration Object
 
-In the example below we are using the `leather` connector and the `regtest` network. You can use any connector and network you want.
+In the example below we are using the `LeatherConnector` connector and the `regtest` network. You can use any connector and network you want.
 
 ::: code-group
 
 ```ts [midlConfig.ts]
-import { createConfig, leather, regtest } from "@midl-xyz/midl-js-core";
+import {
+  createConfig,
+  LeatherConnector,
+  regtest,
+} from "@midl-xyz/midl-js-core";
 
 export const midlConfig = createConfig({
   networks: [regtest],
-  connectors: [leather()],
+  connectors: [new LeatherConnector()],
 });
 ```
 
@@ -136,17 +140,11 @@ export function YourApp() {
 You can create your own connector by implementing the `Connector` interface.
 
 ```ts
-import { Connector, createConnector } from "@midl-xyz/midl-js-core";
+import { Connector } from "@midl-xyz/midl-js-core";
 
-class MyConnector implements Connector {
-  // Implement the Connector interface
+export class CustomConnector implements Connector {
+  // Your implementation here
 }
-
-export const myConnector = (options: MyConnectorOptions) => {
-  return createConnector(config => {
-    return new MyConnector(config, MyConnectorOptions);
-  });
-};
 ```
 
 ### Connector Interface
@@ -157,13 +155,16 @@ Defined in [core/src/connectors/createConnector.ts](https://github.com/midl-xyz/
 export interface Connector {
   readonly id: string;
   readonly name: string;
-  connect(params: ConnectParams): Promise<Account[]>;
-  disconnect(): Promise<void>;
-  getAccounts(): Promise<Account[]>;
-  getNetwork(): Promise<BitcoinNetwork>;
-  signMessage(params: SignMessageParams): Promise<SignMessageResponse>;
+  connect(params: ConnectorConnectParams): Promise<Account[]>;
+  signMessage(
+    params: SignMessageParams,
+    network: BitcoinNetwork
+  ): Promise<SignMessageResponse>;
   signPSBT(
-    params: Omit<SignPSBTParams, "publish">
+    params: Omit<SignPSBTParams, "publish">,
+    network: BitcoinNetwork
   ): Promise<Omit<SignPSBTResponse, "txId">>;
+  beforeDisconnect?(): Promise<void>;
+  switchNetwork?(network: BitcoinNetwork): Promise<Account[]>;
 }
 ```

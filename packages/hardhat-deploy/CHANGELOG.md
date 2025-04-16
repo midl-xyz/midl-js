@@ -1,5 +1,25 @@
 # @midl-xyz/hardhat-deploy
 
+## 0.1.5
+
+### Patch Changes
+
+- feat(executor): allow skip estimate gas"
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@1.0.3
+
+## 0.1.4
+
+### Patch Changes
+
+- feat(hardhat-deploy): allow override gas, gasPrice, to, nonce and value on deploy"
+
+## 0.1.3
+
+### Patch Changes
+
+- feat: enable linked libraries"
+
 ## 0.1.2
 
 ### Patch Changes

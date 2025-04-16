@@ -27,6 +27,11 @@ type FinalizeMutationVariables = {
 	assetsToWithdraw?: [Address] | [Address, Address];
 
 	feeRateMultiplier?: number;
+
+	/**
+	 * If true, skip the gas estimation for EVM transactions
+	 */
+	skipEstimateGasMulti?: boolean;
 };
 
 type UseFinalizeTxIntentionsResponse = EdictRuneResponse | TransferBTCResponse;
@@ -75,6 +80,7 @@ export const useFinalizeTxIntentions = ({
 			shouldComplete,
 			assetsToWithdraw,
 			feeRateMultiplier,
+			skipEstimateGasMulti,
 		} = {}) => {
 			if (!publicClient) {
 				throw new Error("No public client set");
@@ -85,6 +91,7 @@ export const useFinalizeTxIntentions = ({
 				shouldComplete,
 				assetsToWithdraw,
 				feeRateMultiplier,
+				skipEstimateGasMulti,
 			});
 		},
 		...mutation,
