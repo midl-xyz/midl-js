@@ -1,5 +1,11 @@
 # @midl-xyz/hardhat-deploy
 
+## 0.1.7
+
+### Patch Changes
+
+- 5f2efc8: fix: allow change of deployments path
+
 ## 0.1.6
 
 ### Patch Changes
