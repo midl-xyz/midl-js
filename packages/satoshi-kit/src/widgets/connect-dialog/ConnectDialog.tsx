@@ -1,3 +1,5 @@
+"use client";
+
 import { useConnect, useDisconnect } from "@midl-xyz/midl-js-react";
 import { ArrowRightIcon, XIcon } from "lucide-react";
 import { css } from "styled-system/css";

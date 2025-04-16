@@ -1,3 +1,5 @@
+"use client";
+
 import { AddressPurpose } from "@midl-xyz/midl-js-core";
 import { useAccounts, useDisconnect } from "@midl-xyz/midl-js-react";
 import { ClipboardIcon, LogOutIcon, XIcon } from "lucide-react";

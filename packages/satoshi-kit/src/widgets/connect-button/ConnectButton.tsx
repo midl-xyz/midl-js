@@ -1,3 +1,5 @@
+"use client";
+
 import { useAccounts } from "@midl-xyz/midl-js-react";
 import { useToggle } from "~/shared/api";
 import { Button } from "~/shared/ui/button";

@@ -1,3 +1,5 @@
+"use client";
+
 import { useAccounts, useBalance } from "@midl-xyz/midl-js-react";
 import { css } from "styled-system/css";
 import { formatBTC, shortenAddress } from "~/shared";
