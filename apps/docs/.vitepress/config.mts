@@ -38,6 +38,11 @@ export default withSidebar(
 			"root/:slug*": ":slug*",
 		},
 		srcExclude: ["./examples"],
+		vite: {
+			esbuild: {
+				target: "esnext",
+			},
+		},
 	}),
 	[
 		{

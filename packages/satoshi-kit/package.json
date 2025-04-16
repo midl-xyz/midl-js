@@ -1,6 +1,6 @@
 {
 	"name": "@midl-xyz/satoshi-kit",
-	"version": "1.0.5",
+	"version": "1.0.6",
 	"type": "module",
 	"scripts": {
 		"build": "pnpm run build:lib && pnpm run build:styles",
@@ -52,7 +52,7 @@
 		"react-dom": "^18.3.1"
 	},
 	"dependencies": {
-		"@appbak3r/sushi-identicon": "^2.0.0",
+		"@appbak3r/sushi-identicon": "^3.0.0",
 		"@ark-ui/react": "^5.0.1",
 		"lucide-react": "^0.453.0"
 	}

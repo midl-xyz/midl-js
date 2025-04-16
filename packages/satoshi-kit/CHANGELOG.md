@@ -1,5 +1,12 @@
 # @midl-xyz/satoshi-kit
 
+## 1.0.6
+
+### Patch Changes
+
+- feat: use esm identicon
+- 3eda6ed: fix: support nextjs satoshi kit
+
 ## 1.0.5
 
 ### Patch Changes
