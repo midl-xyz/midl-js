@@ -10,10 +10,4 @@ module.exports = {
 		confirmationsRequired: 1,
 		btcConfirmationsRequired: 1,
 	},
-	networks: {
-		default: {
-			url: "https://evm-rpc.regtest.midl.xyz",
-			chainId: 777,
-		},
-	},
 };

@@ -1,13 +1,16 @@
-import * as ecc from "@bitcoinerlab/secp256k1";
 import {
 	AddressPurpose,
+	type BitcoinNetwork,
 	type Config,
 	KeyPairConnector,
 	SignMessageProtocol,
 	broadcastTransaction,
 	connect,
 	createConfig,
+	mainnet,
 	regtest,
+	testnet,
+	testnet4,
 	waitForTransaction,
 } from "@midl-xyz/midl-js-core";
 import type { TransactionIntention } from "@midl-xyz/midl-js-executor";
@@ -16,15 +19,16 @@ import {
 	clearTxIntentions,
 	finalizeBTCTransaction,
 	getEVMAddress,
-	getPublicKey,
-	midlRegtest,
+	getEVMFromBitcoinNetwork,
+	getPublicKeyForAccount,
 	signIntention,
 } from "@midl-xyz/midl-js-executor";
 import type { MidlContextState } from "@midl-xyz/midl-js-react";
-import BIP32Factory from "bip32";
-import * as bip39 from "bip39";
-import * as bitcoin from "bitcoinjs-lib";
-import ECPairFactory from "ecpair";
+
+import {
+	type Libraries,
+	resolveBytecodeWithLinkedLibraries,
+} from "@nomicfoundation/hardhat-viem/internal/bytecode";
 import type { HardhatRuntimeEnvironment } from "hardhat/types";
 import fs from "node:fs";
 import path from "node:path";
@@ -43,16 +47,9 @@ import {
 import { waitForTransactionReceipt } from "viem/actions";
 import { type StoreApi, createStore } from "zustand";
 import "~/types/context";
-import {
-	type Libraries,
-	resolveBytecodeWithLinkedLibraries,
-} from "@nomicfoundation/hardhat-viem/internal/bytecode";
-
-const bip32 = BIP32Factory(ecc);
-const ECPair = ECPairFactory(ecc);
+import { Wallet } from "~/Wallet";
 
 export class MidlHardhatEnvironment {
-	private readonly config: Config;
 	private readonly store: StoreApi<MidlContextState> =
 		createStore<MidlContextState>()(() => ({
 			intentions: [],
@@ -62,15 +59,18 @@ export class MidlHardhatEnvironment {
 	private readonly confirmationsRequired;
 	private readonly btcConfirmationsRequired;
 
+	private accountIndex = 0;
+
 	private walletClient: WalletClient | undefined;
 
-	constructor(private readonly hre: HardhatRuntimeEnvironment) {
-		const keys = this.getKeyPair();
+	public wallet: Wallet;
+	private bitcoinNetwork: BitcoinNetwork;
 
-		this.config = createConfig({
-			networks: [regtest],
-			connectors: [new KeyPairConnector(keys)],
-		});
+	private config: Config | null = null;
+
+	constructor(private readonly hre: HardhatRuntimeEnvironment) {
+		this.bitcoinNetwork = regtest;
+		this.initializeNetwork();
 
 		this.deploymentsPath = path.join(this.hre.config.paths.root, "deployments");
 		this.confirmationsRequired =
@@ -81,31 +81,43 @@ export class MidlHardhatEnvironment {
 		if (!fs.existsSync(this.deploymentsPath)) {
 			fs.mkdirSync(this.deploymentsPath);
 		}
+
+		this.wallet = new Wallet(this.hre.userConfig.midl.mnemonic, regtest);
 	}
 
-	public async initialize() {
+	private initializeNetwork() {
+		const networks = { regtest, mainnet, testnet4, testnet } as const;
+		const network = this.hre.userConfig.midl.network;
+
+		if (!network) {
+			return;
+		}
+
+		if (typeof network === "string") {
+			if (!(network in networks)) {
+				throw new Error(`Network ${network} is not supported`);
+			}
+
+			this.bitcoinNetwork = networks[network as keyof typeof networks];
+		} else {
+			this.bitcoinNetwork = network;
+		}
+	}
+
+	public async initialize(accountIndex = 0) {
+		this.accountIndex = accountIndex;
+		this.config = createConfig({
+			networks: [this.bitcoinNetwork],
+			connectors: [
+				new KeyPairConnector(this.wallet.getAccount(this.accountIndex)),
+			],
+		});
+
 		await connect(this.config, {
 			purposes: [AddressPurpose.Ordinals],
 		});
 
 		clearTxIntentions(this.store);
-	}
-
-	public async getAddress() {
-		const { connection, accounts } = this.config.getState();
-
-		if (!connection || !accounts) {
-			throw new Error("connection is not defined");
-		}
-
-		const [account] = accounts;
-		const publicKey = getPublicKey(this.config, account.publicKey);
-
-		if (!publicKey) {
-			throw new Error("public key is not defined");
-		}
-
-		return getEVMAddress(publicKey);
 	}
 
 	public async deploy(
@@ -125,6 +137,10 @@ export class MidlHardhatEnvironment {
 			| "rune"
 		> = {},
 	) {
+		if (!this.config) {
+			throw new Error("MidlHardhatEnvironment not initialized");
+		}
+
 		const deployment = await this.getDeployment(name);
 
 		if (deployment) {
@@ -194,6 +210,10 @@ export class MidlHardhatEnvironment {
 			// biome-ignore lint/suspicious/noExplicitAny: Allow any args
 		> & { args: any },
 	) {
+		if (!this.config) {
+			throw new Error("MidlHardhatEnvironment not initialized");
+		}
+
 		const deployment = await this.getDeployment(name);
 
 		if (!deployment) {
@@ -239,6 +259,10 @@ export class MidlHardhatEnvironment {
 		feeRateMultiplier?: number;
 		skipEstimateGasMulti?: boolean;
 	} = {}) {
+		if (!this.config) {
+			throw new Error("MidlHardhatEnvironment not initialized");
+		}
+
 		const intentions = this.store.getState().intentions;
 
 		if (!intentions || intentions.length === 0) {
@@ -248,6 +272,7 @@ export class MidlHardhatEnvironment {
 		}
 
 		const walletClient = await this.getWalletClient();
+		const publicKey = await getPublicKeyForAccount(this.config);
 
 		const tx = await finalizeBTCTransaction(
 			this.config,
@@ -256,7 +281,7 @@ export class MidlHardhatEnvironment {
 			{
 				stateOverride: stateOverride ?? [
 					{
-						address: await this.getAddress(),
+						address: getEVMAddress(publicKey),
 						balance: intentions.reduce((acc, it) => acc + (it.value ?? 0n), 0n),
 					},
 				],
@@ -285,13 +310,20 @@ export class MidlHardhatEnvironment {
 			});
 
 			if (intention.meta?.contractName) {
+				const contractAddress = getContractAddress({
+					from: getEVMAddress(publicKey),
+					nonce: BigInt(intention.evmTransaction.nonce ?? 0),
+				});
+
 				this.saveDeployment(intention.meta.contractName, {
 					txId,
-					address: getContractAddress({
-						from: await this.getAddress(),
-						nonce: BigInt(intention.evmTransaction.nonce ?? 0),
-					}),
+					address: contractAddress,
 				});
+
+				console.log(
+					`Contract ${intention.meta.contractName} will be deployed at`,
+					contractAddress,
+				);
 			}
 
 			confirmationPromises.push(
@@ -308,36 +340,45 @@ export class MidlHardhatEnvironment {
 		await waitForTransaction(this.config, txId, this.btcConfirmationsRequired);
 		await Promise.all(confirmationPromises);
 
+		console.log("Transaction confirmed", txId);
+
 		clearTxIntentions(this.store);
-	}
-
-	private getKeyPair() {
-		const {
-			midl: { mnemonic },
-		} = this.hre.userConfig;
-
-		if (!bip39.validateMnemonic(mnemonic)) {
-			throw new Error("mnemonic is invalid");
-		}
-
-		const seed = bip39.mnemonicToSeedSync(mnemonic);
-		const root = bip32.fromSeed(seed, bitcoin.networks.regtest);
-		const child = root.derivePath("m/86'/1'/0'/0/0");
-
-		// biome-ignore lint/style/noNonNullAssertion: Private key is always defined
-		return ECPair.fromWIF(child.toWIF()!, bitcoin.networks.regtest);
 	}
 
 	public async getWalletClient(): Promise<WalletClient> {
 		if (!this.walletClient) {
+			const chain = getEVMFromBitcoinNetwork(this.bitcoinNetwork);
+
 			this.walletClient = createWalletClient({
-				chain: midlRegtest as Chain,
-				// account: await this.getAddress(),
-				transport: http(midlRegtest.rpcUrls.default.http[0]),
+				chain: chain as Chain,
+				transport: http(chain.rpcUrls.default.http[0]),
 			});
 		}
 
 		return this.walletClient;
+	}
+
+	public async save(
+		name: string,
+		{
+			abi,
+			txId,
+			address,
+		}: {
+			// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+			abi: any[];
+			address: Address;
+			txId?: string;
+		},
+	) {
+		fs.writeFileSync(
+			`${this.deploymentsPath}/${name}.json`,
+			JSON.stringify({
+				txId: txId ?? "",
+				address,
+				abi: abi,
+			}),
+		);
 	}
 
 	private async saveDeployment(
@@ -347,18 +388,30 @@ export class MidlHardhatEnvironment {
 			address,
 		}: {
 			txId: string;
-			address: string;
+			address: Address;
 		},
 	) {
 		const artifact = await this.hre.artifacts.readArtifact(name);
 
-		fs.writeFileSync(
-			`${this.deploymentsPath}/${name}.json`,
-			JSON.stringify({
-				txId,
-				address,
-				abi: artifact.abi,
-			}),
+		this.save(name, {
+			txId,
+			address,
+			abi: artifact.abi,
+		});
+	}
+
+	/**
+	 * @deprecated Use `wallet.getEVMAddress()` instead
+	 */
+	public getAddress() {
+		console.warn(
+			"getAddress is deprecated. Use wallet.getEVMAddress() instead",
 		);
+
+		return this.wallet.getEVMAddress(this.accountIndex);
+	}
+
+	public getConfig() {
+		return this.config;
 	}
 }

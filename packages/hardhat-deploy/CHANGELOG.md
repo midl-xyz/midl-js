@@ -1,5 +1,11 @@
 # @midl-xyz/hardhat-deploy
 
+## 0.1.6
+
+### Patch Changes
+
+- feat: add multiple deployers"
+
 ## 0.1.5
 
 ### Patch Changes

@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { useEnvironment } from "../tests/useEnvironment";
 import { readContract } from "viem/actions";
+import { getEVMAddress } from "@midl-xyz/midl-js-executor";
+import { type Address, zeroAddress } from "viem";
 
 describe("MidlHardhatEnvironment", () => {
 	useEnvironment();
@@ -95,7 +97,7 @@ describe("MidlHardhatEnvironment", () => {
 		await midl.deploy("StructFunctionParam", { args: [] });
 		await midl.execute();
 
-		const deployer = await midl.getAddress();
+		const deployer = midl.wallet.getEVMAddress();
 
 		await midl.initialize();
 		await midl.callContract("StructFunctionParam", "foo", {
@@ -152,5 +154,33 @@ describe("MidlHardhatEnvironment", () => {
 		});
 
 		await midl.execute({ skipEstimateGasMulti: true });
+	});
+
+	it("changes account", async () => {
+		const {
+			hre: { midl },
+		} = globalThis;
+
+		await midl.initialize();
+
+		const prevConfig = midl.getConfig();
+
+		await midl.initialize(1);
+
+		const newConfig = midl.getConfig();
+
+		expect(newConfig).not.toEqual(prevConfig);
+
+		expect(
+			getEVMAddress(
+				(prevConfig?.getState().accounts?.[0].publicKey as Address) ??
+					zeroAddress,
+			),
+		).not.toEqual(
+			getEVMAddress(
+				(newConfig?.getState().accounts?.[0].publicKey as Address) ??
+					zeroAddress,
+			),
+		);
 	});
 });
