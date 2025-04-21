@@ -4,10 +4,7 @@ import {
 	usePublicKey,
 	useSignTransaction,
 } from "@midl-xyz/midl-js-executor-react";
-import {
-	useBroadcastTransaction,
-	useTransferBTC,
-} from "@midl-xyz/midl-js-react";
+import { useTransferBTC } from "@midl-xyz/midl-js-react";
 import { useState } from "react";
 import { type Address, encodeFunctionData, parseUnits } from "viem";
 import { useChainId, useTransactionCount, useWalletClient } from "wagmi";
@@ -28,71 +25,71 @@ export const Swap = () => {
 	} | null>(null);
 	const evmAddress = useEVMAddress();
 	const publicKey = usePublicKey();
-	const { data: nonce = 0 } = useTransactionCount({ address: evmAddress });
+	const { data: nonce = 0, refetch } = useTransactionCount({
+		address: evmAddress,
+	});
 	const chainId = useChainId();
 	const { data: walletClient } = useWalletClient();
-	const { broadcastTransactionAsync } = useBroadcastTransaction();
 	const { log, logData } = useLogData();
 
 	const bitcoinAmount = 0.000001;
 
 	const onClick = async () => {
-		const btcTx = await transferBTCAsync({
-			transfers: [
-				{
-					receiver: multisigAddress,
-					amount: 500_000 + Number(parseUnits(bitcoinAmount.toString(), 8)),
-				},
-			],
-			publish: false,
-		});
+		try {
+			await refetch();
+			const btcTx = await transferBTCAsync({
+				transfers: [
+					{
+						receiver: multisigAddress,
+						amount: 500_000 + Number(parseUnits(bitcoinAmount.toString(), 8)),
+					},
+				],
+				publish: false,
+			});
 
-		const swapTx = await signTransactionAsync(
-			logData({
-				tx: {
-					to: uniswapRouterAddress,
-					data: encodeFunctionData({
-						abi: uniswapV2Router02Abi,
-						functionName: "swapExactETHForTokens",
-						args: [
-							0n,
-							[WETH, erc20Address as Address],
-							evmAddress,
+			if (!btcTx?.tx?.id) {
+				throw new Error("BTC transaction signing failed");
+			}
 
-							BigInt(
-								Number.parseInt(
-									((new Date().getTime() + 1000 * 60 * 15) / 1000).toString(),
+			const swapTx = await signTransactionAsync(
+				logData({
+					tx: {
+						to: uniswapRouterAddress,
+						data: encodeFunctionData({
+							abi: uniswapV2Router02Abi,
+							functionName: "swapExactETHForTokens",
+							args: [
+								0n,
+								[WETH, erc20Address as Address],
+								evmAddress,
+
+								BigInt(
+									Number.parseInt(
+										((new Date().getTime() + 1000 * 60 * 15) / 1000).toString(),
+									),
 								),
-							),
-						],
-					}),
-					btcTxHash: `0x${btcTx.tx.id}`,
-					publicKey: publicKey as `0x${string}`,
-					chainId,
-					gas: 500_000n,
-					gasPrice: 1000n,
-					nonce: nonce,
-					value: parseUnits(bitcoinAmount.toString(), 18),
-				},
-			}),
-		);
+							],
+						}),
+						btcTxHash: `0x${btcTx.tx.id}`,
+						publicKey: publicKey as `0x${string}`,
+						chainId,
+						gas: 500_000n,
+						gasPrice: 1000n,
+						nonce: nonce,
+						value: parseUnits(bitcoinAmount.toString(), 18),
+					},
+				}),
+			);
 
-		const txId = await walletClient?.sendRawTransaction({
-			serializedTransaction: swapTx,
-		});
-
-		if (!txId) {
-			throw new Error("Failed to send transaction");
+			const txHashes = await walletClient?.sendMidlTransactionsPack({
+				serializedTransactions: [swapTx],
+				btcTransaction: btcTx.tx.hex,
+			});
+			setData({ btcTx: btcTx.tx.id, txId: txHashes?.[0] ?? "" });
+			await refetch();
+		} catch (err) {
+			alert(`Transaction failed: ${err}`);
 		}
-
-		setData({
-			btcTx: btcTx.tx.id,
-			txId: txId as string,
-		});
-
-		await broadcastTransactionAsync({
-			tx: btcTx.tx.hex,
-		});
 	};
 
 	return (

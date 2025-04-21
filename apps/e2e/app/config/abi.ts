@@ -357,550 +357,1057 @@ export const uniswapV2Router02Abi = [
 
 export const executorAbi = [
 	{
+		inputs: [],
+		stateMutability: "nonpayable",
 		type: "constructor",
+	},
+	{
+		inputs: [],
+		name: "AlreadyAcknowledged",
+		type: "error",
+	},
+	{
+		inputs: [],
+		name: "AlreadyCommitted",
+		type: "error",
+	},
+	{
+		inputs: [],
+		name: "AlreadyKnown",
+		type: "error",
+	},
+	{
+		inputs: [],
+		name: "AlreadyRefunded",
+		type: "error",
+	},
+	{
+		inputs: [],
+		name: "ExceedsMaxAssets",
+		type: "error",
+	},
+	{
+		inputs: [],
+		name: "FailedTransfer",
+		type: "error",
+	},
+	{
+		inputs: [],
+		name: "InvalidTxsNumber",
+		type: "error",
+	},
+	{
 		inputs: [
 			{
-				name: "validatorsWallet_",
-				internalType: "address payable",
+				internalType: "uint256",
+				name: "btcBalance",
+				type: "uint256",
+			},
+			{
+				internalType: "uint256",
+				name: "btcFee",
+				type: "uint256",
+			},
+		],
+		name: "NotEnoughBalance",
+		type: "error",
+	},
+	{
+		inputs: [],
+		name: "NotPending",
+		type: "error",
+	},
+	{
+		inputs: [],
+		name: "TooEarly",
+		type: "error",
+	},
+	{
+		inputs: [],
+		name: "UnsupportedAsset",
+		type: "error",
+	},
+	{
+		inputs: [],
+		name: "WrongAccess",
+		type: "error",
+	},
+	{
+		inputs: [],
+		name: "WrongLength",
+		type: "error",
+	},
+	{
+		inputs: [
+			{
+				internalType: "address",
+				name: "asset",
 				type: "address",
 			},
 		],
-		stateMutability: "nonpayable",
+		name: "ZeroRunesBalance",
+		type: "error",
 	},
-	{ type: "error", inputs: [], name: "AlreadyAcknowleged" },
-	{ type: "error", inputs: [], name: "AlreadyCommitted" },
-	{ type: "error", inputs: [], name: "AlreadyKnown" },
-	{ type: "error", inputs: [], name: "ExceedsMaxAssets" },
-	{ type: "error", inputs: [], name: "FailedTransfer" },
-	{ type: "error", inputs: [], name: "HasTransaction" },
-	{ type: "error", inputs: [], name: "InvalidAcknowledgement" },
-	{ type: "error", inputs: [], name: "InvalidBlockNumber" },
-	{ type: "error", inputs: [], name: "InvalidInput" },
-	{ type: "error", inputs: [], name: "InvalidTx" },
-	{ type: "error", inputs: [], name: "InvalidTxsNumber" },
-	{ type: "error", inputs: [], name: "NoBlock" },
-	{ type: "error", inputs: [], name: "NotPending" },
-	{ type: "error", inputs: [], name: "TooEarly" },
-	{ type: "error", inputs: [], name: "UnsupportedAsset" },
-	{ type: "error", inputs: [], name: "WrongAccess" },
-	{ type: "error", inputs: [], name: "WrongLength" },
 	{
-		type: "event",
 		anonymous: false,
 		inputs: [
 			{
-				name: "txHash",
+				indexed: true,
 				internalType: "bytes32",
+				name: "txHash",
 				type: "bytes32",
-				indexed: false,
 			},
 			{
-				name: "from",
+				indexed: true,
 				internalType: "address",
+				name: "from",
 				type: "address",
-				indexed: false,
 			},
 			{
-				name: "btcAmount",
-				internalType: "uint256",
-				type: "uint256",
 				indexed: false,
+				internalType: "uint256",
+				name: "btcAmount",
+				type: "uint256",
 			},
 		],
 		name: "Acknowledged",
+		type: "event",
 	},
 	{
-		type: "event",
 		anonymous: false,
 		inputs: [
 			{
-				name: "validator",
-				internalType: "address",
-				type: "address",
 				indexed: false,
+				internalType: "contract IERC20Extended",
+				name: "cMidlAddress",
+				type: "address",
+			},
+			{
+				indexed: false,
+				internalType: "bytes32",
+				name: "btcAddress",
+				type: "bytes32",
 			},
 		],
-		name: "AddedValidator",
+		name: "AddedAsset",
+		type: "event",
 	},
 	{
-		type: "event",
 		anonymous: false,
 		inputs: [
 			{
-				name: "blockNum",
-				internalType: "uint256",
-				type: "uint256",
 				indexed: false,
+				internalType: "uint256",
+				name: "blockNum",
+				type: "uint256",
 			},
 			{
-				name: "lastCommittedBlock",
-				internalType: "uint256",
-				type: "uint256",
 				indexed: false,
+				internalType: "uint256",
+				name: "lastCommittedBlock",
+				type: "uint256",
 			},
 		],
 		name: "CommitedBlocksToBTC",
+		type: "event",
 	},
 	{
-		type: "event",
 		anonymous: false,
 		inputs: [
 			{
-				name: "blockNum",
-				internalType: "uint256",
-				type: "uint256",
-				indexed: false,
-			},
-			{
+				indexed: true,
+				internalType: "bytes32",
 				name: "txHash",
-				internalType: "bytes32",
 				type: "bytes32",
-				indexed: false,
 			},
 			{
+				indexed: false,
+				internalType: "bytes32",
 				name: "sentTxsBatchHash",
-				internalType: "bytes32",
 				type: "bytes32",
-				indexed: false,
 			},
 			{
-				name: "receiver",
-				internalType: "bytes32",
-				type: "bytes32",
 				indexed: false,
+				internalType: "bytes32",
+				name: "receiver",
+				type: "bytes32",
 			},
 		],
 		name: "CommittedSentTx",
+		type: "event",
 	},
 	{
-		type: "event",
 		anonymous: false,
 		inputs: [
 			{
-				name: "blockNum",
-				internalType: "uint256",
-				type: "uint256",
-				indexed: false,
-			},
-			{
+				indexed: true,
+				internalType: "bytes32",
 				name: "txHash",
-				internalType: "bytes32",
 				type: "bytes32",
-				indexed: false,
 			},
 			{
-				name: "sender",
+				indexed: true,
 				internalType: "address",
+				name: "sender",
 				type: "address",
-				indexed: false,
 			},
 			{
-				name: "receiver",
+				indexed: false,
 				internalType: "bytes32",
+				name: "receiver",
 				type: "bytes32",
-				indexed: false,
 			},
 			{
-				name: "btcAmount",
+				indexed: false,
+				internalType: "bytes32",
+				name: "receiverBTC",
+				type: "bytes32",
+			},
+			{
+				indexed: false,
 				internalType: "uint256",
+				name: "btcAmount",
 				type: "uint256",
-				indexed: false,
 			},
 			{
-				name: "assets",
+				indexed: false,
 				internalType: "bytes32[]",
+				name: "assets",
 				type: "bytes32[]",
-				indexed: false,
 			},
 			{
-				name: "amounts",
-				internalType: "uint256[]",
-				type: "uint256[]",
 				indexed: false,
+				internalType: "uint256[]",
+				name: "amounts",
+				type: "uint256[]",
 			},
 		],
 		name: "Completed",
+		type: "event",
 	},
 	{
-		type: "event",
 		anonymous: false,
 		inputs: [
 			{
-				name: "receiver",
+				indexed: false,
 				internalType: "address",
+				name: "from",
 				type: "address",
-				indexed: false,
 			},
 			{
-				name: "amount",
-				internalType: "uint256",
-				type: "uint256",
 				indexed: false,
-			},
-		],
-		name: "EmergencyBTCWithdrawal",
-	},
-	{
-		type: "event",
-		anonymous: false,
-		inputs: [
-			{
-				name: "blockNum",
-				internalType: "uint256",
-				type: "uint256",
-				indexed: false,
-			},
-		],
-		name: "Finalized",
-	},
-	{
-		type: "event",
-		anonymous: false,
-		inputs: [
-			{
-				name: "blockNum",
-				internalType: "uint256",
-				type: "uint256",
-				indexed: false,
-			},
-			{
-				name: "blockHash",
 				internalType: "bytes32",
+				name: "txHash",
 				type: "bytes32",
-				indexed: false,
 			},
 			{
-				name: "txsNum",
+				indexed: false,
 				internalType: "uint256",
+				name: "btcAmount",
 				type: "uint256",
-				indexed: false,
-			},
-			{
-				name: "txsMerkleRoot",
-				internalType: "bytes32",
-				type: "bytes32",
-				indexed: false,
-			},
-			{
-				name: "receivedBTC",
-				internalType: "uint256",
-				type: "uint256",
-				indexed: false,
 			},
 		],
-		name: "NewBlock",
+		name: "RefundedCompleteTx",
+		type: "event",
 	},
 	{
-		type: "event",
 		anonymous: false,
 		inputs: [
 			{
-				name: "validator",
-				internalType: "address",
+				indexed: false,
+				internalType: "contract IERC20Extended",
+				name: "cMidlAddress",
 				type: "address",
+			},
+			{
 				indexed: false,
+				internalType: "bytes32",
+				name: "btcAddress",
+				type: "bytes32",
 			},
 		],
-		name: "RemovedValidator",
+		name: "RemovedAsset",
+		type: "event",
 	},
 	{
-		type: "event",
 		anonymous: false,
 		inputs: [
 			{
-				name: "blockNum",
-				internalType: "uint256",
-				type: "uint256",
 				indexed: false,
+				internalType: "uint256",
+				name: "lastFeeUpdatedIndex",
+				type: "uint256",
 			},
 			{
-				name: "blockHash",
-				internalType: "bytes32",
-				type: "bytes32",
 				indexed: false,
+				internalType: "uint256",
+				name: "feeRate",
+				type: "uint256",
 			},
 		],
-		name: "ResetBlock",
+		name: "UpdatedBTCFeeRate",
+		type: "event",
 	},
 	{
+		inputs: [],
+		name: "COMPLETE_TX_COST",
+		outputs: [
+			{
+				internalType: "uint256",
+				name: "",
+				type: "uint256",
+			},
+		],
+		stateMutability: "view",
 		type: "function",
+	},
+	{
+		inputs: [],
+		name: "GAS_PRICE",
+		outputs: [
+			{
+				internalType: "uint256",
+				name: "",
+				type: "uint256",
+			},
+		],
+		stateMutability: "view",
+		type: "function",
+	},
+	{
 		inputs: [],
 		name: "MAX_ASSETS",
-		outputs: [{ name: "", internalType: "uint8", type: "uint8" }],
+		outputs: [
+			{
+				internalType: "uint8",
+				name: "",
+				type: "uint8",
+			},
+		],
 		stateMutability: "view",
+		type: "function",
 	},
 	{
-		type: "function",
 		inputs: [],
 		name: "MAX_MIDL_TXS",
-		outputs: [{ name: "", internalType: "uint8", type: "uint8" }],
+		outputs: [
+			{
+				internalType: "uint8",
+				name: "",
+				type: "uint8",
+			},
+		],
 		stateMutability: "view",
+		type: "function",
 	},
 	{
+		inputs: [],
+		name: "RUNES_MAGIC_VALUE",
+		outputs: [
+			{
+				internalType: "uint256",
+				name: "",
+				type: "uint256",
+			},
+		],
+		stateMutability: "view",
 		type: "function",
+	},
+	{
+		inputs: [],
+		name: "SCALE_BTC",
+		outputs: [
+			{
+				internalType: "uint256",
+				name: "",
+				type: "uint256",
+			},
+		],
+		stateMutability: "view",
+		type: "function",
+	},
+	{
 		inputs: [
-			{ name: "txHash", internalType: "bytes32", type: "bytes32" },
-			{ name: "from", internalType: "address", type: "address" },
-			{ name: "midlTxs", internalType: "bytes32[]", type: "bytes32[]" },
-			{ name: "btcAmount", internalType: "uint256", type: "uint256" },
-			{ name: "assets", internalType: "bytes32[]", type: "bytes32[]" },
-			{ name: "amounts", internalType: "uint256[]", type: "uint256[]" },
-			{ name: "proof", internalType: "bytes32[]", type: "bytes32[]" },
+			{
+				components: [
+					{
+						internalType: "bytes32",
+						name: "txHash",
+						type: "bytes32",
+					},
+					{
+						internalType: "address",
+						name: "from",
+						type: "address",
+					},
+					{
+						internalType: "uint256",
+						name: "btcAmount",
+						type: "uint256",
+					},
+					{
+						internalType: "bytes32[]",
+						name: "midlTxs",
+						type: "bytes32[]",
+					},
+					{
+						internalType: "bytes32[]",
+						name: "assets",
+						type: "bytes32[]",
+					},
+					{
+						internalType: "uint256[]",
+						name: "amounts",
+						type: "uint256[]",
+					},
+					{
+						internalType: "bytes32[]",
+						name: "metadata",
+						type: "bytes32[]",
+					},
+					{
+						internalType: "bytes",
+						name: "btcTx",
+						type: "bytes",
+					},
+				],
+				internalType: "struct Executor.AcknowledgeTxData",
+				name: "txData",
+				type: "tuple",
+			},
 		],
 		name: "acknowledgeTx",
 		outputs: [],
 		stateMutability: "nonpayable",
+		type: "function",
 	},
 	{
-		type: "function",
 		inputs: [
 			{
+				internalType: "address",
 				name: "cMidlAddress",
-				internalType: "contract IERC20Extended",
 				type: "address",
 			},
-			{ name: "btcAddress", internalType: "bytes32", type: "bytes32" },
+			{
+				internalType: "bytes32",
+				name: "btcAddress",
+				type: "bytes32",
+			},
+			{
+				internalType: "enum Executor.AssetType",
+				name: "assetType",
+				type: "uint8",
+			},
 		],
 		name: "addAsset",
 		outputs: [],
 		stateMutability: "nonpayable",
+		type: "function",
 	},
 	{
-		type: "function",
-		inputs: [{ name: "validator_", internalType: "address", type: "address" }],
-		name: "addValidator",
-		outputs: [],
-		stateMutability: "nonpayable",
-	},
-	{
-		type: "function",
-		inputs: [{ name: "", internalType: "uint256", type: "uint256" }],
-		name: "blockReceivedBTC",
-		outputs: [{ name: "", internalType: "uint256", type: "uint256" }],
-		stateMutability: "view",
-	},
-	{
-		type: "function",
-		inputs: [{ name: "", internalType: "uint256", type: "uint256" }],
-		name: "blockTxsNum",
-		outputs: [{ name: "", internalType: "uint256", type: "uint256" }],
-		stateMutability: "view",
-	},
-	{
-		type: "function",
-		inputs: [{ name: "", internalType: "uint256", type: "uint256" }],
-		name: "btcBlocksHashes",
-		outputs: [{ name: "", internalType: "bytes32", type: "bytes32" }],
-		stateMutability: "view",
-	},
-	{
-		type: "function",
-		inputs: [{ name: "", internalType: "bytes32", type: "bytes32" }],
+		inputs: [
+			{
+				internalType: "bytes32",
+				name: "",
+				type: "bytes32",
+			},
+		],
 		name: "btcCMidlAddresses",
 		outputs: [
-			{ name: "", internalType: "contract IERC20Extended", type: "address" },
+			{
+				internalType: "address",
+				name: "",
+				type: "address",
+			},
 		],
 		stateMutability: "view",
+		type: "function",
 	},
 	{
-		type: "function",
-		inputs: [{ name: "", internalType: "bytes32", type: "bytes32" }],
-		name: "btcMidlTxs",
-		outputs: [{ name: "", internalType: "bytes32", type: "bytes32" }],
-		stateMutability: "view",
-	},
-	{
-		type: "function",
-		inputs: [{ name: "", internalType: "bytes32", type: "bytes32" }],
-		name: "btcTxSentHash",
-		outputs: [{ name: "", internalType: "bytes32", type: "bytes32" }],
-		stateMutability: "view",
-	},
-	{
-		type: "function",
 		inputs: [
-			{ name: "", internalType: "contract IERC20Extended", type: "address" },
+			{
+				internalType: "bytes32",
+				name: "",
+				type: "bytes32",
+			},
+		],
+		name: "btcCMidlSynthAddresses",
+		outputs: [
+			{
+				internalType: "address",
+				name: "",
+				type: "address",
+			},
+		],
+		stateMutability: "view",
+		type: "function",
+	},
+	{
+		inputs: [],
+		name: "btcFeeRate",
+		outputs: [
+			{
+				internalType: "uint256",
+				name: "",
+				type: "uint256",
+			},
+		],
+		stateMutability: "view",
+		type: "function",
+	},
+	{
+		inputs: [
+			{
+				internalType: "bytes32",
+				name: "",
+				type: "bytes32",
+			},
+		],
+		name: "btcMidlTxs",
+		outputs: [
+			{
+				internalType: "bytes32",
+				name: "",
+				type: "bytes32",
+			},
+		],
+		stateMutability: "view",
+		type: "function",
+	},
+	{
+		inputs: [
+			{
+				internalType: "bytes32",
+				name: "",
+				type: "bytes32",
+			},
+			{
+				internalType: "uint256",
+				name: "",
+				type: "uint256",
+			},
+		],
+		name: "btcMidlTxsList",
+		outputs: [
+			{
+				internalType: "bytes32",
+				name: "",
+				type: "bytes32",
+			},
+		],
+		stateMutability: "view",
+		type: "function",
+	},
+	{
+		inputs: [
+			{
+				internalType: "bytes32",
+				name: "",
+				type: "bytes32",
+			},
+		],
+		name: "btcMidlTxsListSize",
+		outputs: [
+			{
+				internalType: "uint256",
+				name: "",
+				type: "uint256",
+			},
+		],
+		stateMutability: "view",
+		type: "function",
+	},
+	{
+		inputs: [
+			{
+				internalType: "bytes32",
+				name: "",
+				type: "bytes32",
+			},
+		],
+		name: "btcTxSentHash",
+		outputs: [
+			{
+				internalType: "bytes32",
+				name: "",
+				type: "bytes32",
+			},
+		],
+		stateMutability: "view",
+		type: "function",
+	},
+	{
+		inputs: [
+			{
+				internalType: "bytes32",
+				name: "",
+				type: "bytes32",
+			},
+		],
+		name: "btcTxs",
+		outputs: [
+			{
+				internalType: "bytes",
+				name: "",
+				type: "bytes",
+			},
+		],
+		stateMutability: "view",
+		type: "function",
+	},
+	{
+		inputs: [
+			{
+				internalType: "address",
+				name: "",
+				type: "address",
+			},
 		],
 		name: "cMidlBtcAddresses",
-		outputs: [{ name: "", internalType: "bytes32", type: "bytes32" }],
+		outputs: [
+			{
+				internalType: "bytes32",
+				name: "",
+				type: "bytes32",
+			},
+		],
 		stateMutability: "view",
+		type: "function",
 	},
 	{
-		type: "function",
 		inputs: [
-			{ name: "lastCommittedBlock", internalType: "uint256", type: "uint256" },
+			{
+				internalType: "address",
+				name: "",
+				type: "address",
+			},
+		],
+		name: "cMidlBtcSynthAddresses",
+		outputs: [
+			{
+				internalType: "bytes32",
+				name: "",
+				type: "bytes32",
+			},
+		],
+		stateMutability: "view",
+		type: "function",
+	},
+	{
+		inputs: [
+			{
+				internalType: "uint256",
+				name: "blockNum",
+				type: "uint256",
+			},
+			{
+				internalType: "uint256",
+				name: "lastCommittedBlock",
+				type: "uint256",
+			},
 		],
 		name: "commitBlocksToBTC",
 		outputs: [],
 		stateMutability: "nonpayable",
+		type: "function",
 	},
 	{
-		type: "function",
 		inputs: [
-			{ name: "blockNum", internalType: "uint256", type: "uint256" },
-			{ name: "blockHash", internalType: "bytes32", type: "bytes32" },
-			{ name: "txsNum", internalType: "uint256", type: "uint256" },
-			{ name: "txsMerkleRoot", internalType: "bytes32", type: "bytes32" },
-			{ name: "receivedBTC", internalType: "uint256", type: "uint256" },
-		],
-		name: "commitNewBlock",
-		outputs: [],
-		stateMutability: "nonpayable",
-	},
-	{
-		type: "function",
-		inputs: [
-			{ name: "txHash", internalType: "bytes32", type: "bytes32" },
-			{ name: "btcTxSent", internalType: "bytes32", type: "bytes32" },
+			{
+				internalType: "bytes32",
+				name: "txHash",
+				type: "bytes32",
+			},
+			{
+				internalType: "bytes32",
+				name: "btcTxSent",
+				type: "bytes32",
+			},
 		],
 		name: "commitSentTx",
 		outputs: [],
 		stateMutability: "nonpayable",
+		type: "function",
 	},
 	{
-		type: "function",
 		inputs: [
-			{ name: "txHash", internalType: "bytes32", type: "bytes32" },
-			{ name: "receiver", internalType: "bytes32", type: "bytes32" },
 			{
+				internalType: "bytes32",
+				name: "txHash",
+				type: "bytes32",
+			},
+			{
+				internalType: "bytes32",
+				name: "receiver",
+				type: "bytes32",
+			},
+			{
+				internalType: "bytes32",
+				name: "receiverBTC",
+				type: "bytes32",
+			},
+			{
+				internalType: "address[]",
 				name: "assets",
-				internalType: "contract IERC20Extended[]",
 				type: "address[]",
 			},
-			{ name: "amounts", internalType: "uint256[]", type: "uint256[]" },
+			{
+				internalType: "uint256[]",
+				name: "amounts",
+				type: "uint256[]",
+			},
 		],
 		name: "completeTx",
 		outputs: [],
 		stateMutability: "payable",
+		type: "function",
 	},
 	{
-		type: "function",
-		inputs: [],
-		name: "emergencyBTCWithdrawal",
-		outputs: [],
-		stateMutability: "nonpayable",
-	},
-	{
-		type: "function",
-		inputs: [],
-		name: "lastBlockNum",
-		outputs: [{ name: "", internalType: "uint256", type: "uint256" }],
-		stateMutability: "view",
-	},
-	{
-		type: "function",
-		inputs: [{ name: "", internalType: "uint256", type: "uint256" }],
-		name: "lastCommittedMidlBlock",
-		outputs: [{ name: "", internalType: "uint256", type: "uint256" }],
-		stateMutability: "view",
-	},
-	{
-		type: "function",
-		inputs: [{ name: "", internalType: "bytes32", type: "bytes32" }],
-		name: "pendingBTCTxReceiver",
-		outputs: [{ name: "", internalType: "bytes32", type: "bytes32" }],
-		stateMutability: "view",
-	},
-	{
-		type: "function",
-		inputs: [
-			{ name: "valueForQuorum", internalType: "bytes32", type: "bytes32" },
-		],
-		name: "reachedQuorum",
-		outputs: [{ name: "", internalType: "bool", type: "bool" }],
-		stateMutability: "view",
-	},
-	{
-		type: "function",
 		inputs: [
 			{
-				name: "cMidlAddress",
-				internalType: "contract IERC20Extended",
+				internalType: "bytes32",
+				name: "",
+				type: "bytes32",
+			},
+		],
+		name: "completeTxRefunded",
+		outputs: [
+			{
+				internalType: "bool",
+				name: "",
+				type: "bool",
+			},
+		],
+		stateMutability: "view",
+		type: "function",
+	},
+	{
+		inputs: [
+			{
+				internalType: "bytes32",
+				name: "_runeId",
+				type: "bytes32",
+			},
+		],
+		name: "getAssetAddressByRuneId",
+		outputs: [
+			{
+				internalType: "address",
+				name: "assetAddress",
 				type: "address",
 			},
-			{ name: "btcAddress", internalType: "bytes32", type: "bytes32" },
+		],
+		stateMutability: "view",
+		type: "function",
+	},
+	{
+		inputs: [
+			{
+				internalType: "address",
+				name: "_assetAddress",
+				type: "address",
+			},
+		],
+		name: "getRuneIdByAssetAddress",
+		outputs: [
+			{
+				internalType: "bytes32",
+				name: "runesId",
+				type: "bytes32",
+			},
+		],
+		stateMutability: "view",
+		type: "function",
+	},
+	{
+		inputs: [],
+		name: "lastAssetRequest",
+		outputs: [
+			{
+				internalType: "uint256",
+				name: "",
+				type: "uint256",
+			},
+		],
+		stateMutability: "view",
+		type: "function",
+	},
+	{
+		inputs: [
+			{
+				internalType: "uint256",
+				name: "",
+				type: "uint256",
+			},
+		],
+		name: "lastCommittedMidlBlock",
+		outputs: [
+			{
+				internalType: "uint256",
+				name: "",
+				type: "uint256",
+			},
+		],
+		stateMutability: "view",
+		type: "function",
+	},
+	{
+		inputs: [],
+		name: "lastFeeUpdate",
+		outputs: [
+			{
+				internalType: "uint256",
+				name: "",
+				type: "uint256",
+			},
+		],
+		stateMutability: "view",
+		type: "function",
+	},
+	{
+		inputs: [
+			{
+				internalType: "bytes32",
+				name: "",
+				type: "bytes32",
+			},
+		],
+		name: "pendingBTCTxReceiver",
+		outputs: [
+			{
+				internalType: "bytes32",
+				name: "",
+				type: "bytes32",
+			},
+		],
+		stateMutability: "view",
+		type: "function",
+	},
+	{
+		inputs: [
+			{
+				internalType: "bytes32",
+				name: "valueForQuorum",
+				type: "bytes32",
+			},
+		],
+		name: "reachedQuorum",
+		outputs: [
+			{
+				internalType: "bool",
+				name: "",
+				type: "bool",
+			},
+		],
+		stateMutability: "view",
+		type: "function",
+	},
+	{
+		inputs: [
+			{
+				internalType: "bytes32",
+				name: "txHash",
+				type: "bytes32",
+			},
+			{
+				internalType: "uint256",
+				name: "btcAmount",
+				type: "uint256",
+			},
+			{
+				internalType: "bytes32[]",
+				name: "assets",
+				type: "bytes32[]",
+			},
+			{
+				internalType: "uint256[]",
+				name: "amounts",
+				type: "uint256[]",
+			},
+		],
+		name: "refundCompleteTx",
+		outputs: [],
+		stateMutability: "nonpayable",
+		type: "function",
+	},
+	{
+		inputs: [
+			{
+				internalType: "address",
+				name: "cMidlAddress",
+				type: "address",
+			},
+			{
+				internalType: "bytes32",
+				name: "btcAddress",
+				type: "bytes32",
+			},
+			{
+				internalType: "enum Executor.AssetType",
+				name: "assetType",
+				type: "uint8",
+			},
 		],
 		name: "removeAsset",
 		outputs: [],
 		stateMutability: "nonpayable",
+		type: "function",
 	},
 	{
-		type: "function",
-		inputs: [{ name: "validator_", internalType: "address", type: "address" }],
-		name: "removeValidator",
-		outputs: [],
-		stateMutability: "nonpayable",
-	},
-	{
-		type: "function",
 		inputs: [
-			{ name: "blockNum", internalType: "uint256", type: "uint256" },
-			{ name: "blockHash", internalType: "bytes32", type: "bytes32" },
-		],
-		name: "resetBlock",
-		outputs: [],
-		stateMutability: "nonpayable",
-	},
-	{
-		type: "function",
-		inputs: [
-			{ name: "", internalType: "uint256", type: "uint256" },
-			{ name: "", internalType: "uint256", type: "uint256" },
+			{
+				internalType: "uint256",
+				name: "",
+				type: "uint256",
+			},
+			{
+				internalType: "uint256",
+				name: "",
+				type: "uint256",
+			},
 		],
 		name: "sentTxsBatches",
-		outputs: [{ name: "", internalType: "bytes32", type: "bytes32" }],
+		outputs: [
+			{
+				internalType: "bytes32",
+				name: "",
+				type: "bytes32",
+			},
+		],
 		stateMutability: "view",
+		type: "function",
 	},
 	{
+		inputs: [
+			{
+				internalType: "contract ISynthReservoir",
+				name: "_synthReservoir",
+				type: "address",
+			},
+		],
+		name: "setReservoir",
+		outputs: [],
+		stateMutability: "nonpayable",
 		type: "function",
-		inputs: [{ name: "", internalType: "uint256", type: "uint256" }],
-		name: "txsMerkleRoots",
-		outputs: [{ name: "", internalType: "bytes32", type: "bytes32" }],
-		stateMutability: "view",
 	},
 	{
+		inputs: [],
+		name: "synthReservoir",
+		outputs: [
+			{
+				internalType: "contract ISynthReservoir",
+				name: "",
+				type: "address",
+			},
+		],
+		stateMutability: "view",
 		type: "function",
-		inputs: [{ name: "", internalType: "bytes32", type: "bytes32" }],
+	},
+	{
+		inputs: [
+			{
+				internalType: "bytes32",
+				name: "",
+				type: "bytes32",
+			},
+		],
 		name: "txsOrigins",
-		outputs: [{ name: "", internalType: "address", type: "address" }],
+		outputs: [
+			{
+				internalType: "address",
+				name: "",
+				type: "address",
+			},
+		],
 		stateMutability: "view",
+		type: "function",
 	},
 	{
+		inputs: [
+			{
+				internalType: "uint256",
+				name: "feeRate",
+				type: "uint256",
+			},
+		],
+		name: "updateFeeRate",
+		outputs: [],
+		stateMutability: "nonpayable",
 		type: "function",
-		inputs: [{ name: "", internalType: "address", type: "address" }],
+	},
+	{
+		inputs: [
+			{
+				internalType: "address",
+				name: "",
+				type: "address",
+			},
+		],
 		name: "validators",
-		outputs: [{ name: "", internalType: "bool", type: "bool" }],
+		outputs: [
+			{
+				internalType: "bool",
+				name: "",
+				type: "bool",
+			},
+		],
 		stateMutability: "view",
+		type: "function",
 	},
 	{
-		type: "function",
 		inputs: [],
 		name: "validatorsNum",
-		outputs: [{ name: "", internalType: "uint256", type: "uint256" }],
+		outputs: [
+			{
+				internalType: "uint256",
+				name: "",
+				type: "uint256",
+			},
+		],
 		stateMutability: "view",
+		type: "function",
 	},
 	{
-		type: "function",
-		inputs: [],
-		name: "validatorsWallet",
-		outputs: [{ name: "", internalType: "address payable", type: "address" }],
-		stateMutability: "view",
-	},
-	{
-		type: "function",
-		inputs: [{ name: "", internalType: "bytes32", type: "bytes32" }],
-		name: "valueQuorum",
-		outputs: [{ name: "", internalType: "uint256", type: "uint256" }],
-		stateMutability: "view",
-	},
-	{
-		type: "function",
 		inputs: [
-			{ name: "", internalType: "bytes32", type: "bytes32" },
-			{ name: "", internalType: "address", type: "address" },
+			{
+				internalType: "bytes32",
+				name: "",
+				type: "bytes32",
+			},
+		],
+		name: "valueQuorum",
+		outputs: [
+			{
+				internalType: "uint256",
+				name: "",
+				type: "uint256",
+			},
+		],
+		stateMutability: "view",
+		type: "function",
+	},
+	{
+		inputs: [
+			{
+				internalType: "bytes32",
+				name: "",
+				type: "bytes32",
+			},
+			{
+				internalType: "address",
+				name: "",
+				type: "address",
+			},
 		],
 		name: "valueQuorumVoted",
-		outputs: [{ name: "", internalType: "bool", type: "bool" }],
+		outputs: [
+			{
+				internalType: "bool",
+				name: "",
+				type: "bool",
+			},
+		],
 		stateMutability: "view",
+		type: "function",
 	},
 ] as const;
