@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 1.0.6
+
+### Patch Changes
+
+- fix: satoshi-kit portal, xverse icon, tailwind
+
 ## 1.0.1
 
 ### Patch Changes

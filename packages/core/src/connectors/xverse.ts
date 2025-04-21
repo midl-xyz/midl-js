@@ -4,7 +4,7 @@ export const createXverseConnector = () => {
 	const providerId =
 		typeof window !== "undefined"
 			? window.btc_providers?.find((it) => it.name.includes("Xverse"))?.id
-			: undefined;
+			: "XverseProviders.BitcoinProvider";
 
 	return new SatsConnectConnector(providerId, "Xverse");
 };
