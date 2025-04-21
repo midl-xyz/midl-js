@@ -1,26 +1,13 @@
 "use client";
 
-import {
-	createConfig,
-	testnet,
-	LeatherConnector,
-	UnisatConnector,
-	mainnet,
-	testnet4,
-	regtest,
-} from "@midl-xyz/midl-js-core";
-import { createXverseConnector } from "@midl-xyz/midl-js-core/connectors/xverse";
+import { mainnet, regtest, testnet, testnet4 } from "@midl-xyz/midl-js-core";
 import { MidlProvider } from "@midl-xyz/midl-js-react";
+import { SatoshiKitProvider, createMidlConfig } from "@midl-xyz/satoshi-kit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
 
-const config = createConfig({
+const config = createMidlConfig({
 	networks: [testnet, testnet4, mainnet, regtest],
-	connectors: [
-		createXverseConnector(),
-		new UnisatConnector(),
-		new LeatherConnector(),
-	],
 	persist: true,
 });
 
@@ -29,7 +16,9 @@ export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
 
 	return (
 		<MidlProvider config={config}>
-			<QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+			<QueryClientProvider client={queryClient}>
+				<SatoshiKitProvider>{children}</SatoshiKitProvider>
+			</QueryClientProvider>
 		</MidlProvider>
 	);
 };

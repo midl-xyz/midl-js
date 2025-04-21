@@ -1,5 +1,6 @@
 "use client";
 
+import { Portal } from "@ark-ui/react";
 import { AddressPurpose } from "@midl-xyz/midl-js-core";
 import { useAccounts, useDisconnect } from "@midl-xyz/midl-js-react";
 import { ClipboardIcon, LogOutIcon, XIcon } from "lucide-react";
@@ -58,67 +59,74 @@ export const AccountDialog = ({ open, onClose }: AccountDialogProps) => {
 	return (
 		<Dialog.Root open={open} onOpenChange={onClose} unmountOnExit>
 			<Dialog.Backdrop />
-			<Dialog.Positioner>
-				<Dialog.Content>
-					<Stack gap="8" p="6">
-						<Stack gap="1">
-							<Dialog.Title>Connected</Dialog.Title>
-						</Stack>
-						<Stack gap={6} direction="column" width="full" alignItems="center">
-							<IdentIcon hash={primaryAccount.address} size={14} />
-
-							<Stack gap={6} width="full" direction="column">
-								{accounts?.map((it) => (
-									<Stack
-										key={it.address}
-										gap={4}
-										direction="row"
-										alignItems="center"
-										width="full"
-									>
-										<PurposeIcon purpose={it.purpose} />
-
-										<div className={css({ flex: 1 })}>
-											<div
-												className={css({
-													fontSize: "xs",
-													color: "fg.subtle",
-												})}
-											>
-												{getPurpose(it.purpose)}
-											</div>
-											<div
-												className={css({
-													mt: "-0.25em",
-												})}
-											>
-												{shortenAddress(it.address)}
-											</div>
-										</div>
-
-										<IconButton
-											variant="ghost"
-											onClick={() => onCopyToClipboard(it.address)}
-										>
-											<ClipboardIcon />
-										</IconButton>
-									</Stack>
-								))}
+			<Portal>
+				<Dialog.Positioner>
+					<Dialog.Content>
+						<Stack gap="8" p="6">
+							<Stack gap="1">
+								<Dialog.Title>Connected</Dialog.Title>
 							</Stack>
+							<Stack
+								gap={6}
+								direction="column"
+								width="full"
+								alignItems="center"
+							>
+								<IdentIcon hash={primaryAccount.address} size={14} />
 
-							<Button variant="outline" width="full" onClick={onDisconnect}>
-								<LogOutIcon />
-								Disconnect
-							</Button>
+								<Stack gap={6} width="full" direction="column">
+									{accounts?.map((it) => (
+										<Stack
+											key={it.address}
+											gap={4}
+											direction="row"
+											alignItems="center"
+											width="full"
+										>
+											<PurposeIcon purpose={it.purpose} />
+
+											<div className={css({ flex: 1 })}>
+												<div
+													className={css({
+														fontSize: "xs",
+														color: "fg.subtle",
+													})}
+												>
+													{getPurpose(it.purpose)}
+												</div>
+												<div
+													className={css({
+														mt: "-0.25em",
+													})}
+												>
+													{shortenAddress(it.address)}
+												</div>
+											</div>
+
+											<IconButton
+												variant="ghost"
+												onClick={() => onCopyToClipboard(it.address)}
+											>
+												<ClipboardIcon />
+											</IconButton>
+										</Stack>
+									))}
+								</Stack>
+
+								<Button variant="outline" width="full" onClick={onDisconnect}>
+									<LogOutIcon />
+									Disconnect
+								</Button>
+							</Stack>
 						</Stack>
-					</Stack>
-					<Dialog.CloseTrigger asChild position="absolute" top="2" right="2">
-						<IconButton aria-label="Close Dialog" variant="ghost" size="sm">
-							<XIcon />
-						</IconButton>
-					</Dialog.CloseTrigger>
-				</Dialog.Content>
-			</Dialog.Positioner>
+						<Dialog.CloseTrigger asChild position="absolute" top="2" right="2">
+							<IconButton aria-label="Close Dialog" variant="ghost" size="sm">
+								<XIcon />
+							</IconButton>
+						</Dialog.CloseTrigger>
+					</Dialog.Content>
+				</Dialog.Positioner>
+			</Portal>
 		</Dialog.Root>
 	);
 };

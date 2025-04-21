@@ -10,8 +10,8 @@
 		"clean": "rm -rf dist",
 		"test": "vitest",
 		"prepare": "panda codegen",
-		"build:styles": "panda cssgen --outfile dist/styles.css",
-		"dev:styles": "panda cssgen --watch --outfile dist/styles.css"
+		"build:styles": "panda cssgen --outfile dist/styles.css --polyfill",
+		"dev:styles": "panda cssgen --watch --outfile dist/styles.css --polyfill"
 	},
 	"main": "./dist/esm/index.js",
 	"module": "./dist/esm/index.js",
