@@ -1,13 +1,19 @@
 import * as ecc from "@bitcoinerlab/secp256k1";
-import type { BitcoinNetwork } from "@midl-xyz/midl-js-core";
+import {
+	type BitcoinNetwork,
+	extractXCoordinate,
+} from "@midl-xyz/midl-js-core";
 import { getEVMAddress } from "@midl-xyz/midl-js-executor";
 import BIP32Factory, { type BIP32Interface } from "bip32";
 import * as bip39 from "bip39";
 import * as bitcoin from "bitcoinjs-lib";
 import ECPairFactory from "ecpair";
+import { toHex } from "viem";
 
 const bip32 = BIP32Factory(ecc);
 const ECPair = ECPairFactory(ecc);
+
+bitcoin.initEccLib(ecc);
 
 export class Wallet {
 	private readonly network: bitcoin.Network;
@@ -36,6 +42,15 @@ export class Wallet {
 	getEVMAddress(index = 0) {
 		const account = this.getAccount(index);
 
-		return getEVMAddress(`0x${account.publicKey.toString("hex")}`);
+		const p2tr = bitcoin.payments.p2tr({
+			internalPubkey: Buffer.from(
+				extractXCoordinate(account.publicKey.toString("hex")),
+				"hex",
+			),
+			network: this.network,
+		});
+
+		// biome-ignore lint/style/noNonNullAssertion: Output is guaranteed to be defined
+		return getEVMAddress(toHex(p2tr.output!.slice(2)));
 	}
 }

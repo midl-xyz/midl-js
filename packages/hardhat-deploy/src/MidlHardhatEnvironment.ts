@@ -198,7 +198,7 @@ export class MidlHardhatEnvironment {
 		const { abi } = await this.hre.artifacts.readArtifact(name);
 
 		return JSON.parse(data) as {
-			txId: string;
+			txId: `0x${string}`;
 			address: Address;
 			abi: typeof abi;
 		};

@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { useEnvironment } from "../tests/useEnvironment";
-import { readContract } from "viem/actions";
+import { getTransactionReceipt, readContract } from "viem/actions";
 import { getEVMAddress } from "@midl-xyz/midl-js-executor";
-import { type Address, zeroAddress } from "viem";
+import { type Address, getAddress, zeroAddress } from "viem";
 
 describe("MidlHardhatEnvironment", () => {
 	useEnvironment();
@@ -182,5 +182,30 @@ describe("MidlHardhatEnvironment", () => {
 					zeroAddress,
 			),
 		);
+	});
+
+	it.skip("return correct evm address", async () => {
+		const {
+			hre: { midl },
+		} = globalThis;
+
+		await midl.initialize();
+
+		const evmAddress = midl.wallet.getEVMAddress();
+
+		await midl.deploy("StructFunctionParam", { args: [] });
+		await midl.execute();
+
+		const deployment = await midl.getDeployment("StructFunctionParam");
+
+		if (!deployment) {
+			throw new Error("StructFunctionParam not found");
+		}
+
+		const receipt = await getTransactionReceipt(await midl.getWalletClient(), {
+			hash: deployment.txId,
+		});
+
+		expect(getAddress(receipt.from)).toEqual(evmAddress);
 	});
 });
