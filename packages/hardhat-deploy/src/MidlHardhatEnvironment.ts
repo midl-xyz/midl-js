@@ -257,11 +257,22 @@ export class MidlHardhatEnvironment {
 		stateOverride,
 		feeRateMultiplier = 4,
 		skipEstimateGasMulti = false,
+		shouldComplete = false,
+		assetsToWithdraw,
 	}: {
 		stateOverride?: StateOverride;
 		feeRateMultiplier?: number;
 		skipEstimateGasMulti?: boolean;
-	} = {}) {
+	} & (
+		| {
+				shouldComplete?: false;
+				assetsToWithdraw?: never;
+		  }
+		| {
+				shouldComplete: true;
+				assetsToWithdraw: [Address] | [Address, Address];
+		  }
+	) = {}) {
 		if (!this.config) {
 			throw new Error("MidlHardhatEnvironment not initialized");
 		}
@@ -288,8 +299,10 @@ export class MidlHardhatEnvironment {
 						balance: intentions.reduce((acc, it) => acc + (it.value ?? 0n), 0n),
 					},
 				],
+				shouldComplete,
 				feeRateMultiplier,
 				skipEstimateGasMulti,
+				assetsToWithdraw,
 			},
 		);
 
