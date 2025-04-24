@@ -75,7 +75,7 @@ describe("extractEVMSignature", () => {
 			address: account.address,
 		});
 
-		const { r, s } = extractEVMSignature(
+		const { r, s, v } = extractEVMSignature(
 			signature,
 			protocol,
 			account.addressType,
@@ -83,13 +83,20 @@ describe("extractEVMSignature", () => {
 
 		const pk = await getPublicKeyForAccount(midlConfig);
 
-		const valid = await schnorr.verify(
-			new schnorr.Signature(hexToBigInt(r), hexToBigInt(s)).toHex(),
-			getBIP322HashP2Tr(message, pk.substring(2)),
-			Buffer.from(pk.substring(2), "hex"),
-		);
+		const recovered = await recoverPublicKey({
+			hash: getBIP322HashP2WPKH(message, account.publicKey),
+			signature: {
+				r,
+				s,
+				v,
+			},
+		});
 
-		expect(valid).toBeTruthy();
+		expect(
+			Buffer.from(
+				publicKeyConvert(Buffer.from(recovered.slice(2), "hex"), true),
+			).toString("hex"),
+		).toEqual(pk.substring(2));
 	});
 
 	it("extracts evm signature using p2wpkh address and ecdsa", async () => {

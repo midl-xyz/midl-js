@@ -9,6 +9,7 @@ import {
 import { encodeFunctionData } from "viem";
 import { useReadContract, useWalletClient } from "wagmi";
 import { SimpleStorage } from "./SimpleStorage";
+import { SignMessageProtocol } from "@midl-xyz/midl-js-core";
 
 export function WriteContract() {
 	const { addTxIntention, txIntentions } = useAddTxIntention();
@@ -18,6 +19,9 @@ export function WriteContract() {
 				onError(error) {
 					console.error(error);
 				},
+			},
+			options: {
+				signMessageProtocol: SignMessageProtocol.Bip322,
 			},
 		});
 

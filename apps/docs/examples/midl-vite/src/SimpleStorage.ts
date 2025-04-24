@@ -1,5 +1,5 @@
 export const SimpleStorage = {
-	address: "0x25eC7B5d14178Ebc53E46bcef186e76B3607a7ba",
+	address: "0x13fc46e36222aACbaa34B573cDf2A658869abE6b",
 	abi: [
 		{
 			inputs: [

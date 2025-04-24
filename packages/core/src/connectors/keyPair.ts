@@ -1,4 +1,6 @@
 import ecc from "@bitcoinerlab/secp256k1";
+import { signBip322MessageSimple } from "@leather.io/bitcoin";
+import bip322 from "bip322-js";
 import * as bitcoin from "bitcoinjs-lib";
 import { Psbt } from "bitcoinjs-lib";
 import bitcoinMessage from "bitcoinjs-message";
@@ -11,13 +13,13 @@ import {
 } from "~/actions";
 import type {
 	Account,
-	ConnectorConnectParams,
 	Connector,
+	ConnectorConnectParams,
 } from "~/connectors/createConnector";
 import { AddressPurpose, AddressType } from "~/constants";
 import type { BitcoinNetwork } from "~/createConfig";
-import { extractXCoordinate, getAddressType } from "~/utils";
-import { signBIP322Simple } from "~/utils/signBIP322Simple";
+import { extractXCoordinate, getAddressType, signBIP322Simple } from "~/utils";
+import * as btc from "@scure/btc-signer";
 
 bitcoin.initEccLib(ecc);
 
@@ -101,15 +103,15 @@ export class KeyPairConnector implements Connector {
 			throw new Error("No private key");
 		}
 
+		const addressType = getAddressType(params.address);
+
 		switch (params.protocol) {
 			case SignMessageProtocol.Bip322: {
-				const bitcoinNetwork = bitcoin.networks[network.network];
-
 				const signature = signBIP322Simple(
 					params.message,
 					this.keyPair.toWIF(),
 					params.address,
-					bitcoinNetwork,
+					bitcoin.networks[network.network],
 				);
 
 				return {
@@ -124,7 +126,10 @@ export class KeyPairConnector implements Connector {
 					params.message,
 					this.keyPair.privateKey,
 					this.keyPair.compressed,
-					{ segwitType: "p2sh(p2wpkh)" },
+					{
+						segwitType:
+							addressType === AddressType.P2SH ? "p2sh(p2wpkh)" : "p2wpkh",
+					},
 				);
 
 				return {

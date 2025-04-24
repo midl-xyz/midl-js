@@ -42,6 +42,7 @@ export const signBIP322Simple = (
 	txToSpend.addOutput(outputScript, 0n);
 
 	const psbtToSign = new bitcoin.Psbt();
+
 	psbtToSign.setVersion(0);
 	psbtToSign.addInput({
 		hash: txToSpend.getHash(),
@@ -52,6 +53,7 @@ export const signBIP322Simple = (
 			value: 0n,
 		},
 	});
+
 	psbtToSign.addOutput({ script: Buffer.from("6a", "hex"), value: 0n });
 
 	switch (getAddressType(address)) {
@@ -71,6 +73,11 @@ export const signBIP322Simple = (
 
 			psbtToSign.signInput(0, signer);
 
+			break;
+		}
+
+		case AddressType.P2WPKH: {
+			psbtToSign.signInput(0, keyPair);
 			break;
 		}
 
