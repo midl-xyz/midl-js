@@ -277,7 +277,7 @@ export class MidlHardhatEnvironment {
 			throw new Error("MidlHardhatEnvironment not initialized");
 		}
 
-		const intentions = this.store.getState().intentions;
+		let intentions = this.store.getState().intentions;
 
 		if (!intentions || intentions.length === 0) {
 			console.warn("No intentions to execute");
@@ -307,6 +307,9 @@ export class MidlHardhatEnvironment {
 		);
 
 		const confirmationPromises: Promise<unknown>[] = [];
+
+		// biome-ignore lint/style/noNonNullAssertion: reload intentions in case of shouldComplete equal true
+		intentions = this.store.getState().intentions!;
 
 		for (const intention of intentions) {
 			const signed = await signIntention(
