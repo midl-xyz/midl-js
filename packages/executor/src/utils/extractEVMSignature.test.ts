@@ -200,7 +200,7 @@ describe("extractEVMSignature", () => {
 
 		const valid = await schnorr.verify(
 			new schnorr.Signature(hexToBigInt(r), hexToBigInt(s)).toHex(),
-			getBIP322HashP2Tr(message, pk.substring(2)),
+			getBIP322HashP2TR(message, pk.substring(2)),
 			Buffer.from(pk.substring(2), "hex"),
 		);
 
@@ -208,7 +208,7 @@ describe("extractEVMSignature", () => {
 	});
 });
 
-function getBIP322HashP2Tr(message: string, publicKey: string) {
+function getBIP322HashP2TR(message: string, publicKey: string) {
 	const scriptPubKey = new Uint8Array(34);
 	const publicKeyBuffer = Buffer.from(publicKey, "hex");
 

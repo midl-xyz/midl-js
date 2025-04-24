@@ -4,7 +4,7 @@ import {
 	getAddressType,
 } from "@midl-xyz/midl-js-core";
 
-export const getBTCAddressByte = (account: Account) => {
+export const getBTCAddressByte = (account: Account): bigint => {
 	const addressType = getAddressType(account.address);
 
 	switch (addressType) {
