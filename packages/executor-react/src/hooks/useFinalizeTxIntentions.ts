@@ -1,4 +1,5 @@
 import type {
+	SignMessageProtocol,
 	EdictRuneResponse,
 	TransferBTCResponse,
 } from "@midl-xyz/midl-js-core";
@@ -45,6 +46,10 @@ type UseFinalizeTxIntentionsParams = {
 		>,
 		"mutationFn"
 	>;
+
+	options?: {
+		signMessageProtocol?: SignMessageProtocol;
+	};
 };
 
 /**
@@ -63,6 +68,7 @@ type UseFinalizeTxIntentionsParams = {
  */
 export const useFinalizeTxIntentions = ({
 	mutation,
+	options = {},
 }: UseFinalizeTxIntentionsParams = {}) => {
 	const { store, config } = useMidlContext();
 	const { intentions = [] } = useStore(store);
@@ -117,6 +123,7 @@ export const useFinalizeTxIntentions = ({
 				txId,
 				gasPrice,
 				nonce,
+				protocol: options.signMessageProtocol,
 			});
 		},
 	});

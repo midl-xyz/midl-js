@@ -95,6 +95,7 @@ export class KeyPairConnector implements Connector {
 				return {
 					signature: signature as string,
 					address: params.address,
+					protocol: SignMessageProtocol.Bip322,
 				};
 			}
 
@@ -109,6 +110,7 @@ export class KeyPairConnector implements Connector {
 				return {
 					signature: signature.toString("base64"),
 					address: params.address,
+					protocol: SignMessageProtocol.Ecdsa,
 				};
 			}
 

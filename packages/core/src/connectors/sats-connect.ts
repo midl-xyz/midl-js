@@ -61,7 +61,7 @@ export class SatsConnectConnector implements Connector {
 	async signMessage({
 		address,
 		message,
-		protocol,
+		protocol = SignMessageProtocol.Bip322,
 	}: SignMessageParams): Promise<SignMessageResponse> {
 		const response = await request(
 			"signMessage",
@@ -83,6 +83,7 @@ export class SatsConnectConnector implements Connector {
 		return {
 			signature: response.result.signature,
 			address: response.result.address,
+			protocol,
 		};
 	}
 

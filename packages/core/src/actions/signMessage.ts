@@ -20,7 +20,7 @@ export type SignMessageParams = {
 	protocol?: SignMessageProtocol;
 };
 
-export type SignMessageResponse =
+export type SignMessageResponse = (
 	| {
 			/**
 			 * Base64 encoded signature
@@ -40,15 +40,15 @@ export type SignMessageResponse =
 			 * The address that signed the message
 			 */
 			address: string;
-			/**
-			 * The protocol used to sign the message
-			 */
-			protocol: string;
+
 			/**
 			 * The message hash
 			 */
 			messageHash: string;
-	  };
+	  }
+) & {
+	protocol: SignMessageProtocol;
+};
 
 /**
  * Signs a message with the given address and message.
