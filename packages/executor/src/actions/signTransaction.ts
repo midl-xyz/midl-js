@@ -68,7 +68,11 @@ export const signTransaction = async (
 		protocol,
 	});
 
-	const { r, s, v } = extractEVMSignature(data.signature, data.protocol);
+	const { r, s, v } = extractEVMSignature(
+		data.signature,
+		data.protocol,
+		account.addressType,
+	);
 	const signedSerializedTransaction = serializeTransaction(
 		{
 			...tx,

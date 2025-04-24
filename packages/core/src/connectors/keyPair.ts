@@ -25,7 +25,10 @@ export class KeyPairConnector implements Connector {
 	public readonly id = "keyPair";
 	public readonly name = "KeyPair";
 
-	constructor(private keyPair: ECPairInterface) {}
+	constructor(
+		private keyPair: ECPairInterface,
+		private readonly paymentAddressType: AddressType = AddressType.P2SH,
+	) {}
 
 	async connect({
 		purposes,
@@ -53,21 +56,38 @@ export class KeyPairConnector implements Connector {
 		}
 
 		if (purposes.includes(AddressPurpose.Payment)) {
-			const p2sh = bitcoin.payments.p2sh({
-				redeem: bitcoin.payments.p2wpkh({
+			if (this.paymentAddressType === AddressType.P2SH) {
+				const p2sh = bitcoin.payments.p2sh({
+					redeem: bitcoin.payments.p2wpkh({
+						pubkey: this.keyPair.publicKey,
+						network: bitcoinNetwork,
+					}),
+					network: bitcoinNetwork,
+				});
+
+				accounts.push({
+					// biome-ignore lint/style/noNonNullAssertion: <explanation>
+					address: p2sh.address!,
+					purpose: AddressPurpose.Payment,
+					publicKey: this.keyPair.publicKey.toString("hex"),
+					addressType: AddressType.P2SH,
+				});
+			}
+
+			if (this.paymentAddressType === AddressType.P2WPKH) {
+				const p2wpkh = bitcoin.payments.p2wpkh({
 					pubkey: this.keyPair.publicKey,
 					network: bitcoinNetwork,
-				}),
-				network: bitcoinNetwork,
-			});
+				});
 
-			accounts.push({
-				// biome-ignore lint/style/noNonNullAssertion: <explanation>
-				address: p2sh.address!,
-				purpose: AddressPurpose.Payment,
-				publicKey: this.keyPair.publicKey.toString("hex"),
-				addressType: AddressType.P2SH,
-			});
+				accounts.push({
+					// biome-ignore lint/style/noNonNullAssertion: <explanation>
+					address: p2wpkh.address!,
+					purpose: AddressPurpose.Payment,
+					publicKey: this.keyPair.publicKey.toString("hex"),
+					addressType: AddressType.P2WPKH,
+				});
+			}
 		}
 
 		return accounts;
