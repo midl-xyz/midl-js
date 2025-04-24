@@ -1,5 +1,4 @@
 import ecc from "@bitcoinerlab/secp256k1";
-import { signBip322MessageSimple } from "@leather.io/bitcoin";
 import bip322 from "bip322-js";
 import * as bitcoin from "bitcoinjs-lib";
 import { Psbt } from "bitcoinjs-lib";
