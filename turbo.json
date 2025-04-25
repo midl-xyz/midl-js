@@ -21,7 +21,8 @@
         "test": {
             "dependsOn": [
                 "^build"
-            ]
+            ],
+            "outputs": []
         }
     }
 }

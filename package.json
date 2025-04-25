@@ -7,7 +7,8 @@
 		"ci:publish": "pnpm publish -r",
 		"build:packages": "turbo run build --filter='./packages/*'",
 		"dev:packages": "turbo run dev --filter='./packages/*'",
-		"prepare": "husky"
+		"prepare": "husky",
+		"test:packages": "turbo run test --filter='./packages/*'"
 	},
 	"devDependencies": {
 		"@alcalzone/esm2cjs": "^1.4.1",
@@ -16,6 +17,7 @@
 		"@commitlint/cli": "^19.6.1",
 		"@commitlint/config-conventional": "^19.6.0",
 		"@testing-library/react": "^16.0.0",
+		"@vitest/coverage-v8": "^3.1.2",
 		"concurrently": "^9.1.0",
 		"esm2cjs": "^1.0.2",
 		"husky": "^9.1.7",
@@ -33,7 +35,7 @@
 		"vite-plugin-dts": "^4.4.0",
 		"vite-plugin-tsconfig-paths": "^1.4.1",
 		"vite-tsconfig-paths": "^4.3.2",
-		"vitest": "^2.1.8"
+		"vitest": "^3.1.2"
 	},
 	"pnpm": {
 		"overrides": {
