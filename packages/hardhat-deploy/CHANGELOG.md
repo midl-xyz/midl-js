@@ -1,5 +1,11 @@
 # @midl-xyz/hardhat-deploy
 
+## 0.1.14
+
+### Patch Changes
+
+- fix: allow empty assets to withdraw
+
 ## 0.1.13
 
 ### Patch Changes
