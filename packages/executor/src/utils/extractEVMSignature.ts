@@ -55,34 +55,36 @@ export const extractEVMSignature = (
 				recoveryId = 27n;
 			}
 
-			if (addressType === AddressType.P2WPKH) {
+			if ([AddressType.P2SH, AddressType.P2WPKH].includes(addressType)) {
 				const secp256k1N = BigInt(
 					"0xfffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141",
 				);
 				const secp256k1halfN = secp256k1N / 2n;
-				console.log(signatureBuffer.toString('hex'));
 				const rBytes = signatureBuffer.slice(6, 6 + signatureBuffer[5]);
 				const startS = 6 + signatureBuffer[5];
 				const sBytes = signatureBuffer.slice(
 					startS + 2,
 					startS + 2 + signatureBuffer[startS + 1],
 				);
-				console.log(rBytes.toString('hex'))
-				console.log(sBytes.toString('hex'))
+
 				const rBig = BigInt(toHex(rBytes));
 				let sBig = BigInt(toHex(sBytes));
-				console.log(sBig.toString(16));
+
 				if (sBig > secp256k1halfN) {
 					sBig = secp256k1N - sBig;
-					recoveryId = 28n;
-				} else {
 					recoveryId = 27n;
+				} else {
+					recoveryId = 28n;
+				}
+
+				if (addressType === AddressType.P2SH) {
+					recoveryId = recoveryId === 27n ? 28n : 27n;
 				}
 
 				r = new Uint8Array(32);
 				s = new Uint8Array(32);
 				r.set(Buffer.from(rBig.toString(16).padStart(64, "0"), "hex"));
-				s.set(Buffer.from(sBig.toString(16).padStart(64, "0"), "hex"))
+				s.set(Buffer.from(sBig.toString(16).padStart(64, "0"), "hex"));
 			}
 
 			break;

@@ -6,9 +6,16 @@ import {
 	getDefaultAccount,
 	signMessage,
 } from "@midl-xyz/midl-js-core";
-import { schnorr } from "@noble/secp256k1";
-import { OutScript, Transaction, p2wpkh } from "@scure/btc-signer";
-import { BIP322 } from "bip322-js";
+import { schnorr, Signature } from "@noble/secp256k1";
+import {
+	OutScript,
+	SigHash,
+	Transaction,
+	p2sh,
+	p2wpkh,
+} from "@scure/btc-signer";
+import { hash160 } from "@scure/btc-signer/utils";
+import { BIP322, Verifier } from "bip322-js";
 import { magicHash } from "bitcoinjs-message";
 import { publicKeyConvert } from "secp256k1";
 import { hexToBigInt, keccak256, recoverPublicKey } from "viem";
@@ -60,12 +67,13 @@ describe("extractEVMSignature", () => {
 		).toEqual(account.publicKey);
 	});
 
-	it.skip("extracts evm signature using p2sh(p2wpkh) address and bip322", async () => {
+	it("extracts evm signature using p2sh(p2wpkh) address and bip322", async () => {
 		await connect(midlConfigP2SH, {
 			purposes: [AddressPurpose.Payment],
 		});
 
 		const account = await getDefaultAccount(midlConfigP2SH);
+		const pk = await getPublicKeyForAccount(midlConfigP2SH);
 
 		const message = keccak256(new TextEncoder().encode("test"));
 
@@ -75,16 +83,20 @@ describe("extractEVMSignature", () => {
 			address: account.address,
 		});
 
+		const isValid = Verifier.verifySignature(
+			account.address,
+			message,
+			signature,
+		);
+
 		const { r, s, v } = extractEVMSignature(
 			signature,
 			protocol,
 			account.addressType,
 		);
 
-		const pk = await getPublicKeyForAccount(midlConfig);
-
 		const recovered = await recoverPublicKey({
-			hash: getBIP322HashP2WPKH(message, account.publicKey),
+			hash: getBIP322HashP2SHP2WPKH(message, account.publicKey),
 			signature: {
 				r,
 				s,
@@ -95,7 +107,9 @@ describe("extractEVMSignature", () => {
 		expect(
 			Buffer.from(
 				publicKeyConvert(Buffer.from(recovered.slice(2), "hex"), true),
-			).toString("hex"),
+			)
+				.toString("hex")
+				.substring(2),
 		).toEqual(pk.substring(2));
 	});
 
@@ -158,32 +172,22 @@ describe("extractEVMSignature", () => {
 		);
 
 		const pk = await getPublicKeyForAccount(midlConfig);
-		// To determine correct recovery id first try 27 and do recoverPublicKey check before sending transactions, if check fails, then try 28
-		/* correctly extracted signature from response signature according to DER
-			02483045022100d18c49cb93cadad374d14653d6530e22b5bc5cd7e59fc1acb800f6ec676af1850220015a9d101db6656ccba3cc8520b3661b4bed87de5080b2a1f9e8eb92a6389f12012102d89648524138dca33a14822646a036e3107f0297f948c36aaf696f5e59c36d7f
-		const recovered = await recoverPublicKey({
-			hash: getBIP322HashP2WPKH(message, account.publicKey),
-			signature: {
-				r: BigInt('0xd18c49cb93cadad374d14653d6530e22b5bc5cd7e59fc1acb800f6ec676af185'),
-				s: BigInt('0x015a9d101db6656ccba3cc8520b3661b4bed87de5080b2a1f9e8eb92a6389f12'),
-				v: 28n,
-			},
-		});*/
-		console.log(r);
-		console.log(s);
+
 		const recovered = await recoverPublicKey({
 			hash: getBIP322HashP2WPKH(message, account.publicKey),
 			signature: {
 				r,
 				s,
-				v, // v: 28n works
+				v,
 			},
 		});
 
 		expect(
 			Buffer.from(
 				publicKeyConvert(Buffer.from(recovered.slice(2), "hex"), true),
-			).toString("hex").substring(2),
+			)
+				.toString("hex")
+				.substring(2),
 		).toEqual(pk.substring(2));
 	});
 
@@ -261,6 +265,37 @@ function getBIP322HashP2WPKH(message: string, publicKey: string) {
 	const signingScript = OutScript.encode({
 		type: "pkh",
 		hash: scriptPubKey.slice(2),
+	});
+
+	return tx.preimageWitnessV0(0, signingScript, 1, 0n);
+}
+
+function getBIP322HashP2SHP2WPKH(message: string, publicKey: string) {
+	const publicKeyBuffer = Buffer.from(publicKey, "hex");
+
+	const p2wpkhResult = p2wpkh(publicKeyBuffer);
+
+	const redeemScript = p2wpkhResult.script;
+
+	const p2shResult = p2sh(p2wpkhResult);
+	if (!p2shResult.script) {
+		throw new Error("Failed to generate P2SH scriptPubKey");
+	}
+	const scriptPubKey = p2shResult.script;
+
+	const toSpendTx = BIP322.buildToSpendTx(message, Buffer.from(scriptPubKey));
+	const toSignTx = BIP322.buildToSignTx(
+		toSpendTx.getId(),
+		Buffer.from(scriptPubKey),
+	);
+
+	toSignTx.updateInput(0, { sighashType: 1 });
+
+	const tx = Transaction.fromPSBT(toSignTx.toBuffer());
+
+	const signingScript = OutScript.encode({
+		type: "pkh",
+		hash: redeemScript.slice(2),
 	});
 
 	return tx.preimageWitnessV0(0, signingScript, 1, 0n);
