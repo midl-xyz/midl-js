@@ -14,10 +14,6 @@
 
 ---
 
-![NPM Version](https://img.shields.io/npm/v/%40midl-xyz%2Fmidl-js-core)
-![NPM Downloads](https://img.shields.io/npm/d18m/%40midl-xyz%2Fmidl-js-core)
-[![codecov](https://codecov.io/gh/midl-xyz/midl-js/graph/badge.svg?token=TVJ2PAA1ZA)](https://codecov.io/gh/midl-xyz/midl-js)
-
 ### Features
 
 - **Connect to any Bitcoin network** (mainnet, testnet, regtest, etc.)
