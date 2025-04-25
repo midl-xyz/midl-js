@@ -8,7 +8,6 @@
 		"dev": "vite ./app",
 		"build": "vite build ./app",
 		"preview": "vite preview ./app",
-		"postinstall": "./scripts/prepare.sh",
 		"test": "playwright test"
 	},
 	"keywords": [],

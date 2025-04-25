@@ -45,11 +45,10 @@ test.describe("Add Liquidity Flow", () => {
 
 			const txId = await page.getByTestId("edict-tx-id").first().textContent();
 			const error = await page.getByTestId("edict-error").first().textContent();
+
 			if (!txId || error) {
 				throw new Error(error || "No txId found");
 			}
-
-			console.log(`waiting for transaction: ${txId}`);
 
 			const confirmations = await waitForTransaction(midlConfig, txId);
 
@@ -61,71 +60,54 @@ test.describe("Add Liquidity Flow", () => {
 				.getByTestId("edict-address")
 				.first()
 				.textContent();
-
-			console.log(`Rune edict at: ${runeAddress}`);
 		}
 	});
 
-	// test("add liquidity", async ({ page, extensionId, context }) => {
-	// 	await page.goto("http://localhost:5173", {
-	// 		waitUntil: "networkidle",
-	// 	});
+	test("add liquidity", async ({ page, wallet }) => {
+		await page.goto("http://localhost:5173", {
+			waitUntil: "networkidle",
+		});
 
-	// 	const isConnected = await page.getByTestId("address").isVisible();
+		const isConnected = await page.getByTestId("address").isVisible();
 
-	// 	if (!isConnected) {
-	// 		await page.getByTestId("connect").click();
+		if (!isConnected) {
+			await page.getByTestId("connect").click();
 
-	// 		await wallet.connectWallet({ context, extensionId });
-	// 	}
+			await wallet.connect();
+		}
 
-	// 	await page
-	// 		.getByTestId("address")
-	// 		.waitFor({ state: "visible", timeout: 10_000 });
+		await page
+			.getByTestId("address")
+			.waitFor({ state: "visible", timeout: 10_000 });
 
-	// 	await page.getByTestId("add-liquidity").click();
+		await page.getByTestId("add-liquidity").click();
 
-	// 	await wallet.acceptSign({ context, extensionId });
+		await wallet.confirmTransaction();
+		await wallet.confirmSignature();
+		await wallet.confirmSignature();
+		await wallet.confirmSignature();
 
-	// 	await page.waitForTimeout(2000);
+		const btcTx = await page
+			.getByTestId("add-liquidity-btc-tx")
+			.first()
+			.textContent();
+		const approveTx = await page
+			.getByTestId("add-liquidity-approve-tx")
+			.first()
+			.textContent();
+		const addLiquidityTx = await page
+			.getByTestId("add-liquidity-add-liquidity-tx")
+			.first()
+			.textContent();
 
-	// 	await wallet.acceptSign({ context, extensionId });
+		console.log(`BTC tx: ${btcTx}`);
+		console.log(`Approve tx: ${approveTx}`);
+		console.log(`Add liquidity tx: ${addLiquidityTx}`);
 
-	// 	await page.waitForTimeout(2000);
+		const confirmations = await waitForTransaction(midlConfig, btcTx as string);
 
-	// 	await wallet.acceptSign({ context, extensionId });
-
-	// 	// await page.waitForTimeout(2000);
-
-	// 	// await wallet.acceptSign({ context, extensionId });
-
-	// 	await page.waitForTimeout(500);
-
-	// 	const btcTx = await page
-	// 		.getByTestId("add-liquidity-btc-tx")
-	// 		.first()
-	// 		.textContent();
-	// 	const approveTx = await page
-	// 		.getByTestId("add-liquidity-approve-tx")
-	// 		.first()
-	// 		.textContent();
-	// 	const addLiquidityTx = await page
-	// 		.getByTestId("add-liquidity-add-liquidity-tx")
-	// 		.first()
-	// 		.textContent();
-
-	// 	console.log(`BTC tx: ${btcTx}`);
-	// 	console.log(`Approve tx: ${approveTx}`);
-	// 	console.log(`Add liquidity tx: ${addLiquidityTx}`);
-
-	// 	console.log(
-	// 		`waiting for transaction: ${midlConfig.network?.explorerUrl}/tx/${btcTx}`,
-	// 	);
-
-	// 	const confirmations = await waitForTransaction(midlConfig, btcTx as string);
-
-	// 	expect(confirmations).toBeGreaterThan(0);
-	// });
+		expect(confirmations).toBeGreaterThan(0);
+	});
 
 	// test("swap", async ({ page, extensionId, context }) => {
 	// 	await page.goto("http://localhost:5173", {

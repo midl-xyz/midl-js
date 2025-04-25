@@ -1,5 +1,6 @@
 import type { BrowserContext, Page } from "@playwright/test";
 import { mainnet, regtest, testnet, testnet4 } from "@midl-xyz/midl-js-core";
+import fs from "node:fs";
 
 export const supportedNetworks = {
 	mainnet,
