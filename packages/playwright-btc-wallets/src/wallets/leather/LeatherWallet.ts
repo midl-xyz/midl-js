@@ -1,5 +1,5 @@
 import type { Page } from "@playwright/test";
-import { NetworkApiUrls, type NetworkName, Wallet } from "~/wallets/Wallet";
+import { type NetworkName, supportedNetworks, Wallet } from "~/wallets/Wallet";
 
 export class LeatherWallet extends Wallet implements Wallet {
 	async configure(): Promise<void> {
@@ -85,7 +85,7 @@ export class LeatherWallet extends Wallet implements Wallet {
 				break;
 			}
 
-			case "testnet3": {
+			case "testnet": {
 				if (currentNetwork?.includes("Testnet3")) {
 					break;
 				}
@@ -140,7 +140,7 @@ export class LeatherWallet extends Wallet implements Wallet {
 
 		await page
 			.getByTestId("network-bitcoin-address")
-			.fill(NetworkApiUrls[networkName]);
+			.fill(supportedNetworks[networkName].rpcUrl);
 
 		await page.getByTestId("network-key").fill(networkName);
 		await page.getByRole("button", { name: "Add network" }).click();

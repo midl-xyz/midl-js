@@ -3,11 +3,16 @@ import midlConfig from "../app/midl.config";
 import { zeroAddress } from "viem";
 import { waitForTransaction } from "@midl-xyz/midl-js-core";
 
-const { test, expect } = createTest({
-	mnemonic: process.env.MNEMONIC as string,
-});
+const mnemonic = process.env.MNEMONIC;
 
-midlConfig.setState({ network: midlConfig.networks[0] });
+if (!mnemonic) {
+	throw new Error("MNEMONIC is not set");
+}
+
+const { test, expect } = createTest({
+	mnemonic,
+	extension: "leather",
+});
 
 test.describe("Add Liquidity Flow", () => {
 	test.describe.configure({ mode: "serial" });
@@ -44,9 +49,7 @@ test.describe("Add Liquidity Flow", () => {
 				throw new Error(error || "No txId found");
 			}
 
-			console.log(
-				`waiting for transaction: ${midlConfig.network?.explorerUrl}/tx/${txId}`,
-			);
+			console.log(`waiting for transaction: ${txId}`);
 
 			const confirmations = await waitForTransaction(midlConfig, txId);
 

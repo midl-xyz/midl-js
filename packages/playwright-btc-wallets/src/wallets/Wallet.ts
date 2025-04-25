@@ -1,19 +1,14 @@
 import type { BrowserContext, Page } from "@playwright/test";
 import { mainnet, regtest, testnet, testnet4 } from "@midl-xyz/midl-js-core";
 
-export const NetworkApiUrls: Record<NetworkName, string> = {
-	mainnet: mainnet.rpcUrl,
-	testnet3: testnet.rpcUrl,
-	testnet4: testnet4.rpcUrl,
-	regtest: regtest.rpcUrl,
-};
+export const supportedNetworks = {
+	mainnet,
+	regtest,
+	testnet,
+	testnet4,
+} as const;
 
-export type NetworkName =
-	| "mainnet"
-	| "testnet3"
-	| "testnet4"
-	| "regtest"
-	| (string & {});
+export type NetworkName = keyof typeof supportedNetworks;
 
 export abstract class Wallet {
 	constructor(
@@ -35,7 +30,7 @@ export abstract class Wallet {
 		throw new Error("Method not implemented.");
 	}
 
-	async changeNetwork(_networkName: NetworkName): Promise<void> {
+	async changeNetwork(networkName: NetworkName): Promise<void> {
 		throw new Error("Method not implemented.");
 	}
 
