@@ -3,7 +3,7 @@ import { useConnect } from "@midl-xyz/midl-js-react";
 
 export function ConnectWallet() {
 	const { connectors, connect } = useConnect({
-		purposes: [AddressPurpose.Ordinals],
+		purposes: [AddressPurpose.Payment],
 	});
 
 	return (

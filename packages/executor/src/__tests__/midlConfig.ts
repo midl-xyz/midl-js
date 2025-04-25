@@ -1,4 +1,5 @@
 import {
+	AddressType,
 	KeyPairConnector,
 	createConfig,
 	regtest,
@@ -8,5 +9,20 @@ import { getKeyPair } from "~/__tests__/keyPair";
 
 export const midlConfig = createConfig({
 	networks: [regtest],
-	connectors: [new KeyPairConnector(getKeyPair(bitcoin.networks.regtest))],
+	connectors: [
+		new KeyPairConnector(
+			getKeyPair(bitcoin.networks.regtest),
+			AddressType.P2WPKH,
+		),
+	],
+});
+
+export const midlConfigP2SH = createConfig({
+	networks: [regtest],
+	connectors: [
+		new KeyPairConnector(
+			getKeyPair(bitcoin.networks.regtest),
+			AddressType.P2SH,
+		),
+	],
 });

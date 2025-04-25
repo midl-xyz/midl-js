@@ -25,10 +25,13 @@ export const usePublicKey = ({ publicKey }: UsePublicKeyParams = {}) => {
 
 	try {
 		const pk =
-			publicKey ?? paymentAccount?.publicKey ?? ordinalsAccount?.publicKey;
+			publicKey || paymentAccount?.publicKey || ordinalsAccount?.publicKey;
 
-		// biome-ignore lint/style/noNonNullAssertion: Public key is guaranteed to be defined
-		return getPublicKey(config, pk!);
+		if (!pk) {
+			return null;
+		}
+
+		return getPublicKey(config, pk);
 	} catch (e) {
 		console.error(e);
 		return null;

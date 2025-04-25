@@ -3,10 +3,11 @@ import type { MidlContextState } from "@midl-xyz/midl-js-react";
 import { isHex, type Client } from "viem";
 import { getTransactionCount } from "viem/actions";
 import type { StoreApi } from "zustand";
+import { getPublicKey } from "~/actions/getPublicKey";
 import { getPublicKeyForAccount } from "~/actions/getPublicKeyForAccount";
 import { signTransaction } from "~/actions/signTransaction";
 import type { TransactionIntention } from "~/types/intention";
-import { getEVMAddress } from "~/utils";
+import { getBTCAddressByte, getEVMAddress } from "~/utils";
 
 type SignIntentionOptions = {
 	/**
@@ -50,7 +51,7 @@ export const signIntention = async (
 	intention: TransactionIntention,
 	options: SignIntentionOptions,
 ) => {
-	const { network } = config.getState();
+	const { network, accounts } = config.getState();
 
 	if (!network) {
 		throw new Error("No network set");
@@ -58,7 +59,13 @@ export const signIntention = async (
 
 	const publicKey = await getPublicKeyForAccount(config, options.publicKey);
 
-	if (!publicKey) {
+	const account = accounts?.find(
+		async (it) =>
+			(await getPublicKeyForAccount(config, it.publicKey)) ===
+			options.publicKey,
+	);
+
+	if (!account) {
 		throw new Error("No public key set");
 	}
 
@@ -82,6 +89,7 @@ export const signIntention = async (
 
 	intention.evmTransaction = {
 		...intention.evmTransaction,
+
 		nonce:
 			nonce +
 			intentions
@@ -89,6 +97,7 @@ export const signIntention = async (
 				.findIndex((it) => it === intention),
 		gasPrice: options.gasPrice,
 		publicKey,
+		btcAddressByte: getBTCAddressByte(account),
 		btcTxHash: isHex(options.txId, { strict: false })
 			? options.txId
 			: `0x${options.txId}`,

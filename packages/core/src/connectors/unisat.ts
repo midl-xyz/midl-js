@@ -65,6 +65,7 @@ export class UnisatConnector implements Connector {
 		return {
 			signature,
 			address: params.address,
+			protocol: params.protocol ?? SignMessageProtocol.Ecdsa,
 		};
 	}
 

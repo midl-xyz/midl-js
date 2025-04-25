@@ -14,7 +14,6 @@ import { getTransactionCount } from "viem/actions";
 import { getPublicKey } from "~/actions/getPublicKey";
 import {
 	extractEVMSignature,
-	getBTCAddressByte,
 	getEVMAddress,
 	getEVMFromBitcoinNetwork,
 } from "~/utils";
@@ -41,10 +40,6 @@ export const signTransaction = async (
 		config,
 		customPublicKey ? (it) => it.publicKey === customPublicKey : undefined,
 	);
-
-	const btcAddressByte = getBTCAddressByte(account);
-
-	tx.btcAddressByte = btcAddressByte;
 
 	const chainIdToUse = chainId || getEVMFromBitcoinNetwork(network).id;
 
@@ -73,7 +68,11 @@ export const signTransaction = async (
 		protocol,
 	});
 
-	const { r, s, v } = extractEVMSignature(data.signature, account);
+	const { r, s, v } = extractEVMSignature(
+		data.signature,
+		data.protocol,
+		account.addressType,
+	);
 	const signedSerializedTransaction = serializeTransaction(
 		{
 			...tx,

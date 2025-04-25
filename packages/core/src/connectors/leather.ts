@@ -94,7 +94,10 @@ export class LeatherConnector implements Connector {
 			throw new Error("Invalid response");
 		}
 
-		return response.result;
+		return {
+			...response.result,
+			protocol: SignMessageProtocol.Bip322,
+		};
 	}
 
 	async signPSBT(
