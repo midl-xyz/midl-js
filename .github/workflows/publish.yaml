@@ -1,16 +1,7 @@
-name: Publish to GitHub Packages
+name: Publish to NPM
 
 on:
-  release:
-    types:
-      - published
-
   workflow_dispatch:
-    inputs:
-      allowPublish:
-        description: "Allow publishing on any branch"
-        required: false
-        default: "false"
 
 jobs:
   build-and-publish:
@@ -32,20 +23,6 @@ jobs:
 
       - name: Install pnpm
         run: npm install -g pnpm
-
-      - name: Allow publishing on branches
-        run: |
-          if [ "${{ github.event_name }}" == "workflow_dispatch" ] && [ "${{ inputs.allowPublish }}" == "true" ]; then
-            echo "Allow publishing on branch ${{ github.ref_name }}"
-            echo "publish-branch=${{ github.ref_name }}" >> ~/.npmrc
-          fi
-
-      - name: Allow publishing on new releases
-        run: |
-          if [ "${{ github.event_name }}" == "release" ]; then
-            echo "Allow publishing on tag ${{ github.ref }}"
-            echo "publish-branch=${{ github.ref }}" >> ~/.npmrc
-          fi
 
       - name: Install dependencies
         run: pnpm install
