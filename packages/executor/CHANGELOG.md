@@ -1,5 +1,14 @@
 # @midl-xyz/midl-js-executor
 
+## 1.0.7
+
+### Patch Changes
+
+- feat: add p2wpkh signing support
+- Updated dependencies
+  - @midl-xyz/midl-js-core@1.0.7
+  - @midl-xyz/midl-js-react@1.0.7
+
 ## 1.0.6
 
 ### Patch Changes

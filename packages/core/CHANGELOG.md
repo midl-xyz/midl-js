@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 1.0.7
+
+### Patch Changes
+
+- feat: add p2wpkh signing support
+
 ## 1.0.6
 
 ### Patch Changes
