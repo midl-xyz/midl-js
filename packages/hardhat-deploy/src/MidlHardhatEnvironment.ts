@@ -270,7 +270,7 @@ export class MidlHardhatEnvironment {
 		  }
 		| {
 				shouldComplete: true;
-				assetsToWithdraw: [Address] | [Address, Address];
+				assetsToWithdraw?: [Address] | [Address, Address];
 		  }
 	) = {}) {
 		if (!this.config) {
