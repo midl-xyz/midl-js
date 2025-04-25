@@ -10,9 +10,9 @@
 		"preview": "vite preview"
 	},
 	"dependencies": {
-		"@midl-xyz/midl-js-core": "^workspace:*",
-		"@midl-xyz/midl-js-executor-react": "^workspace:*",
-		"@midl-xyz/midl-js-react": "^workspace:*",
+		"@midl-xyz/midl-js-core": "1.0.6",
+		"@midl-xyz/midl-js-executor-react": "1.0.6",
+		"@midl-xyz/midl-js-react": "1.0.6",
 		"@tanstack/react-query": "^5.66.0",
 		"bitcoinjs-lib": "^6.1.7",
 		"react": "^18.3.1",

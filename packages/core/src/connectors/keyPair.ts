@@ -1,5 +1,4 @@
 import ecc from "@bitcoinerlab/secp256k1";
-import bip322 from "bip322-js";
 import * as bitcoin from "bitcoinjs-lib";
 import { Psbt } from "bitcoinjs-lib";
 import bitcoinMessage from "bitcoinjs-message";
@@ -18,7 +17,6 @@ import type {
 import { AddressPurpose, AddressType } from "~/constants";
 import type { BitcoinNetwork } from "~/createConfig";
 import { extractXCoordinate, getAddressType, signBIP322Simple } from "~/utils";
-import * as btc from "@scure/btc-signer";
 
 bitcoin.initEccLib(ecc);
 

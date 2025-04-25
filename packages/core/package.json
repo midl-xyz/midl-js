@@ -10,9 +10,7 @@
 	"main": "./dist/cjs/index.js",
 	"module": "./dist/esm/index.js",
 	"types": "./dist/types/index.d.ts",
-	"files": [
-		"dist"
-	],
+	"files": ["dist"],
 	"exports": {
 		"./package.json": "./package.json",
 		".": {
@@ -31,18 +29,16 @@
 		"@leather.io/rpc": "2.1.12",
 		"@midl-xyz/midl-js-config": "workspace:^",
 		"@types/node": "^22.8.7",
-		"msw": "^2.5.2",
-		"vitest": "^2.1.8"
+		"bip322-js": "^2.0.0",
+		"msw": "^2.5.2"
 	},
 	"dependencies": {
 		"@bitcoinerlab/secp256k1": "^1.2.0",
 		"@leather.io/bitcoin": "^0.19.16",
 		"@metamask/providers": "^17.1.1",
 		"@noble/hashes": "^1.7.1",
-		"@scure/btc-signer": "1.4.0",
 		"axios": "^1.7.9",
 		"bip32": "5.0.0-rc.0",
-		"bip322-js": "^2.0.0",
 		"bitcoinjs-lib": "7.0.0-rc.0",
 		"bitcoinselect": "^1.0.0",
 		"ecpair": "^2.1.0",

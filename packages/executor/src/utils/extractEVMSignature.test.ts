@@ -6,15 +6,8 @@ import {
 	getDefaultAccount,
 	signMessage,
 } from "@midl-xyz/midl-js-core";
-import { schnorr, Signature } from "@noble/secp256k1";
-import {
-	OutScript,
-	SigHash,
-	Transaction,
-	p2sh,
-	p2wpkh,
-} from "@scure/btc-signer";
-import { hash160 } from "@scure/btc-signer/utils";
+import { schnorr } from "@noble/secp256k1";
+import { OutScript, Transaction, p2sh, p2wpkh } from "@scure/btc-signer";
 import { BIP322, Verifier } from "bip322-js";
 import { magicHash } from "bitcoinjs-message";
 import { publicKeyConvert } from "secp256k1";
