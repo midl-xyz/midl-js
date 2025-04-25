@@ -54,6 +54,18 @@ export const signBIP322Simple = (
 		},
 	});
 
+	if (getAddressType(address) === AddressType.P2SH) {
+		const p2wpkh = bitcoin.payments.p2wpkh({
+			pubkey: keyPair.publicKey,
+			network,
+		});
+		const p2sh = bitcoin.payments.p2sh({ redeem: p2wpkh, network });
+
+		psbtToSign.updateInput(0, {
+			redeemScript: p2sh.redeem?.output,
+		});
+	}
+
 	psbtToSign.addOutput({ script: Buffer.from("6a", "hex"), value: 0n });
 
 	switch (getAddressType(address)) {
