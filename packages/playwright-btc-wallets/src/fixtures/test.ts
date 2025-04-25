@@ -1,27 +1,27 @@
-/* eslint-disable no-empty-pattern */
-/* eslint-disable react-hooks/rules-of-hooks */
 import { test as base, chromium, type BrowserContext } from "@playwright/test";
 import path from "node:path";
 import { extensions } from "~/config";
 import type { Wallet, WalletConstructor } from "~/wallets/Wallet";
+import type LeatherWallet from "~/wallets/leather";
 
-type CreateTestParams = {
+type Extensions = {
+	leather: LeatherWallet;
+	generic: Wallet;
+};
+
+type CreateTestParams<T extends keyof Extensions> = {
 	mnemonic: string;
-	extension?: string;
+	extension: T;
 	shouldPersist?: boolean;
 	walletPassword?: string;
 };
 
-export const createTest = ({
+export function createTest<T extends keyof Extensions = "leather">({
 	mnemonic,
-	extension = "leather",
+	extension,
 	shouldPersist = true,
 	walletPassword = "W(6RgP.3q&AeCLHr",
-}: CreateTestParams) => {
-	if (!mnemonic) {
-		throw new Error("Mnemonic is required");
-	}
-
+}: CreateTestParams<T>) {
 	const persistDir = shouldPersist
 		? path.join(extensions.path, `./.data/${extension}`)
 		: "";
@@ -29,7 +29,7 @@ export const createTest = ({
 	const test = base.extend<{
 		context: BrowserContext;
 		extensionId: string;
-		wallet: Wallet;
+		wallet: Extensions[T];
 		mnemonic: string;
 	}>({
 		// biome-ignore lint/correctness/noEmptyPattern: Playwright requires an empty object here
@@ -62,7 +62,7 @@ export const createTest = ({
 				extensionId,
 				mnemonic,
 				walletPassword,
-			);
+			) as Extensions[T];
 
 			const walletPage = await wallet.getPage();
 			await walletPage.close();
@@ -75,7 +75,7 @@ export const createTest = ({
 	const expect = test.expect;
 
 	return { test, expect };
-};
+}
 
 export type TestArgs = Parameters<
 	Parameters<ReturnType<typeof createTest>["test"]>[2]
