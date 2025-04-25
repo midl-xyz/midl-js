@@ -11,7 +11,7 @@ describe("core | createConfig", () => {
 			connectors: [],
 		});
 
-		expect(config.network).toEqual(regtest);
+		expect(config.getState().network).toEqual(regtest);
 	});
 
 	it("should set the network", () => {
@@ -28,7 +28,7 @@ describe("core | createConfig", () => {
 
 		config.setState({ network: mockNetwork });
 
-		expect(config.network).toEqual(mockNetwork);
+		expect(config.getState().network).toEqual(mockNetwork);
 	});
 
 	it("should subscribe to changes", () => {
@@ -49,10 +49,8 @@ describe("core | createConfig", () => {
 
 		config.setState({ network: mockNetwork });
 
-		expect(callback).toHaveBeenCalledWith(
-			{ network: mockNetwork },
-			{ network: regtest },
-		);
+		expect(callback).toHaveBeenCalledOnce();
+		expect(config.getState().network).toEqual(mockNetwork);
 	});
 
 	it("should persist the state", () => {

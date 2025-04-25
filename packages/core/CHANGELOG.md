@@ -1,5 +1,77 @@
 # @midl-xyz/midl-js-core
 
+## 1.0.7
+
+### Patch Changes
+
+- feat: add p2wpkh signing support
+
+## 1.0.6
+
+### Patch Changes
+
+- fix: satoshi-kit portal, xverse icon, tailwind
+
+## 1.0.1
+
+### Patch Changes
+
+- fix: satoshi kit export
+
+## 1.0.0
+
+### Minor Changes
+
+- feat: intrudoce satoshikit, update config api
+
+## 0.0.81
+
+### Patch Changes
+
+- add Bitget Wallet connector
+
+## 0.0.80
+
+### Patch Changes
+
+- feat(core): update sats-connect
+
+## 0.0.79
+
+### Patch Changes
+
+- fix(core): rune utxo select
+
+## 0.0.78
+
+### Patch Changes
+
+- fix(core): support latest leather api
+
+## 0.0.77
+
+### Patch Changes
+
+- fix(executor): remove optional ethers dep
+
+## 0.0.76
+
+### Patch Changes
+
+- docs: update docs
+
+## 0.0.38
+
+### Patch Changes
+
+- 91a6cb6: feat: hardhat-deploy
+
+## 0.0.37
+
+### Patch Changes
+
+- feat: support nodejs and ethers
+
 ## 0.0.36
 
 ### Patch Changes

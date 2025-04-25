@@ -1,17 +1,31 @@
-import ky from "ky";
+import axios from "axios";
 import type { Config } from "~/createConfig";
 
+/**
+ * Broadcasts a transaction to the bitcoin network
+ *
+ * @example
+ * ```ts
+ * const txHex = "02000000000101...";
+ * const txHash = await broadcastTransaction(config, txHex);
+ * console.log(txHash);
+ * ```
+ *
+ * @param config The configuration object
+ * @param txHex The transaction hex
+ * @returns The transaction hash
+ */
 export const broadcastTransaction = async (
 	config: Config,
 	txHex: string,
 ): Promise<string> => {
-	if (!config.network) {
+	const { network } = config.getState();
+
+	if (!network) {
 		throw new Error("No network");
 	}
 
-	return ky
-		.post<string>(`${config.network.rpcUrl}/tx`, {
-			body: txHex,
-		})
-		.text();
+	const { data } = await axios.post<string>(`${network.rpcUrl}/tx`, txHex);
+
+	return data;
 };

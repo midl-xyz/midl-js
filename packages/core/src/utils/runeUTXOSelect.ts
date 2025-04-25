@@ -2,22 +2,32 @@ import { parseUnits } from "viem/utils";
 import type { RuneUTXO } from "~/actions";
 
 export const runeUTXOSelect = (
-  utxos: RuneUTXO[],
-  amount: bigint
+	utxos: RuneUTXO[],
+	runeId: string,
+	amount: bigint,
 ): RuneUTXO[] => {
-  const selectedUTXOs: RuneUTXO[] = [];
-  let selectedAmount = 0n;
+	const selectedUTXOs: RuneUTXO[] = [];
+	let selectedAmount = 0n;
 
-  for (const utxo of utxos) {
-    if (selectedAmount >= amount) {
-      break;
-    }
+	for (const utxo of utxos) {
+		if (selectedAmount >= amount) {
+			break;
+		}
 
-    const { amount: runeAmount, divisibility } = utxo.runes[0];
+		const rune = utxo.runes.find((rune) => rune.runeid === runeId);
 
-    selectedUTXOs.push(utxo);
-    selectedAmount += parseUnits(runeAmount, divisibility);
-  }
+		if (!rune) {
+			continue;
+		}
 
-  return selectedUTXOs;
+		const { amount: runeAmount, divisibility } = rune;
+		selectedUTXOs.push(utxo);
+		selectedAmount += parseUnits(runeAmount, divisibility);
+	}
+
+	if (selectedAmount < amount) {
+		throw new Error("Insufficient funds");
+	}
+
+	return selectedUTXOs;
 };

@@ -5,6 +5,7 @@ import {
 	signMessage,
 } from "@midl-xyz/midl-js-core";
 import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
+import { useMidlContext } from "~/context";
 import { useAccounts } from "~/hooks/useAccounts";
 import { useConfig } from "~/hooks/useConfig";
 
@@ -22,33 +23,25 @@ type UseSignMessageParams = {
 };
 
 /**
- * Custom hook to sign a message.
- *
- * This hook provides functions to sign a message using the connected payment account or a specified address.
+ * Signs a message
  *
  * @example
  * ```typescript
  * const { signMessage, signMessageAsync } = useSignMessage();
- * 
- * // To sign a message
+ *
  * signMessage({ message: 'Hello, World!' });
- * 
- * // To sign a message asynchronously
- * await signMessageAsync({ message: 'Hello, World!' });
  * ```
  *
- * @param {UseSignMessageParams} [params] - Configuration options for the mutation.
+ * @param params Configuration options for the mutation.
  *
  * @returns
  * - `signMessage`: `(variables: SignMessageVariables) => void` – Function to initiate message signing.
  * - `signMessageAsync`: `(variables: SignMessageVariables) => Promise<SignMessageData>` – Function to asynchronously sign the message.
- * - `isLoading`: `boolean` – Indicates if the mutation is currently loading.
- * - `error`: `Error | null` – Contains error information if the mutation failed.
- * - `data`: `SignMessageData | undefined` – The response data from the message signing.
  */
 export const useSignMessage = ({ mutation }: UseSignMessageParams = {}) => {
-	const config = useConfig();
-	const { paymentAccount } = useAccounts();
+	const { connection } = useConfig();
+	const { config } = useMidlContext();
+	const { paymentAccount, ordinalsAccount } = useAccounts();
 
 	const { mutate, mutateAsync, ...rest } = useMutation<
 		SignMessageData,
@@ -63,15 +56,15 @@ export const useSignMessage = ({ mutation }: UseSignMessageParams = {}) => {
 			let signingAddress = address;
 
 			if (!signingAddress) {
-				if (!config.currentConnection) {
+				if (!connection) {
 					throw new Error("No connection");
 				}
 
-				if (!paymentAccount) {
-					throw new Error("No payment account");
+				if (!paymentAccount || !ordinalsAccount) {
+					throw new Error("No accounts");
 				}
 
-				signingAddress = paymentAccount.address;
+				signingAddress = paymentAccount.address ?? ordinalsAccount?.address;
 			}
 
 			return signMessage(config, {

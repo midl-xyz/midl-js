@@ -4,6 +4,7 @@
     <script type="module">
       import { Buffer } from "buffer";
       window.Buffer = Buffer;
+      window.global = window;
       BigInt.prototype.toJSON = function () {
         return this.toString();
       };

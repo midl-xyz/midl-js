@@ -4,7 +4,7 @@ import {
 	getRunes,
 } from "@midl-xyz/midl-js-core";
 import { type UseQueryOptions, useQuery } from "@tanstack/react-query";
-import { useConfig } from "~/hooks/useConfig";
+import { useMidlContext } from "~/context";
 
 type QueryOptions = Omit<
 	UseQueryOptions<GetRunesResponse>,
@@ -18,22 +18,18 @@ type UseRunesParams = GetRunesParams & {
 };
 
 /**
- * Custom hook to retrieve a list of Runes for a given address with pagination.
- *
- * This hook fetches Runes associated with the provided `address`, supporting pagination through `limit` and `offset`.
- *
+ * Gets the runes for an address, with optional limit and offset
+ * Limit defaults to 20, offset defaults to 0
+ *`
  * @example
  * ```typescript
  * const { runes, isLoading } = useRunes({ address: 'address-123', limit: 10, offset: 0 });
  * ```
  *
- * @param {UseRunesParams} params - Parameters for fetching the Runes.
+ * @param params Parameters for fetching the Runes.
  *
  * @returns
  * - `runes`: `Array<Rune> | undefined` – The list of fetched Runes.
- * - `isLoading`: `boolean` – Indicates if the query is currently loading.
- * - `error`: `Error | null` – Contains error information if the query failed.
- * - `isFetching`: `boolean` – Indicates if the query is in the background fetching state.
  */
 export const useRunes = ({
 	address,
@@ -41,7 +37,7 @@ export const useRunes = ({
 	offset,
 	query: { queryKey, ...query } = {} as QueryOptions,
 }: UseRunesParams) => {
-	const config = useConfig();
+	const { config } = useMidlContext();
 
 	const { data: runes, ...rest } = useQuery<GetRunesResponse>({
 		queryKey: ["runes", address, limit, offset, ...(queryKey ?? [])],

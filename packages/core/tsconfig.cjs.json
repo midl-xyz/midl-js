@@ -1,0 +1,17 @@
+{
+	"extends": "./tsconfig.json",
+	"include": ["./src/**/*.ts", "./src/**/*.tsx"],
+	"exclude": [
+		"./src/**/*.test.ts",
+		"./src/**/*.test.tsx",
+		"./src/**/__tests__"
+	],
+	"compilerOptions": {
+		"target": "es2020",
+		"module": "CommonJS",
+		"moduleResolution": "node",
+		"outDir": "./dist/cjs",
+		"sourceMap": true,
+		"noImplicitAny": false
+	}
+}

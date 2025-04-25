@@ -1,6 +1,7 @@
 {
     "name": "@midl-xyz/midl-js-config",
-    "version": "0.0.2",
+    "version": "0.0.3",
+    "private": true,
     "files": [
         "tsconfig.base.json"
     ]

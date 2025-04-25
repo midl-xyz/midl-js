@@ -6,33 +6,26 @@ import {
 import type { SignPSBTParams, SignPSBTResponse } from "~/actions/signPSBT";
 import {
 	type Account,
-	type ConnectParams,
+	type ConnectorConnectParams,
 	type Connector,
 	ConnectorType,
-	type CreateConnectorConfig,
-	createConnector,
 } from "~/connectors/createConnector";
-import { getAddressType, isCorrectAddress } from "~/utils";
+import type { Unisat } from "~/types/unisat";
+import { get, getAddressType } from "~/utils";
 import { getAddressPurpose } from "~/utils/getAddressPurpose";
 
-class UnisatConnector implements Connector {
-	public readonly id = "unisat";
-	public readonly name = "Unisat";
+export class UnisatConnector implements Connector {
 	public readonly type = ConnectorType.Unisat;
 
-	constructor(private config: CreateConnectorConfig) {}
+	constructor(
+		public readonly id: string = "unisat",
+		public readonly name: string = "Unisat",
+	) {}
 
-	async getNetwork() {
-		return this.config.getState().network;
-	}
-
-	async connect(_params: ConnectParams): Promise<Account[]> {
-		if (typeof window.unisat === "undefined") {
-			throw new Error("Unisat not found");
-		}
-
-		const requestedAccounts = await window.unisat.requestAccounts();
-		const publicKey = await window.unisat.getPublicKey();
+	async connect(params: ConnectorConnectParams): Promise<Account[]> {
+		const provider = this.getProvider();
+		const requestedAccounts = await provider.requestAccounts();
+		const publicKey = await provider.getPublicKey();
 
 		if (!publicKey) {
 			throw new Error("Public key not found");
@@ -42,49 +35,16 @@ class UnisatConnector implements Connector {
 			return {
 				address: it,
 				publicKey: publicKey,
-				purpose: getAddressPurpose(it, this.config.getState().network),
+				purpose: getAddressPurpose(it, params.network),
 				addressType: getAddressType(it),
 			};
-		});
-
-		this.config.setState({
-			connection: this.id,
-			publicKey: publicKey,
-			accounts,
 		});
 
 		return accounts;
 	}
 
-	async disconnect() {
-		this.config.setState({
-			connection: undefined,
-			publicKey: undefined,
-		});
-	}
-
-	async getAccounts() {
-		if (!this.config.getState().connection) {
-			throw new Error("Not connected");
-		}
-
-		if (!this.config.getState().accounts) {
-			throw new Error("No accounts");
-		}
-
-		for (const account of this.config.getState().accounts as Account[]) {
-			if (!isCorrectAddress(account.address, this.config.getState().network)) {
-				throw new Error("Invalid address network");
-			}
-		}
-
-		return this.config.getState().accounts as Account[];
-	}
-
 	async signMessage(params: SignMessageParams): Promise<SignMessageResponse> {
-		if (typeof window.unisat === "undefined") {
-			throw new Error("Unisat not found");
-		}
+		const provider = this.getProvider();
 
 		let type: "ecdsa" | "bip322-simple" = "ecdsa";
 
@@ -100,11 +60,12 @@ class UnisatConnector implements Connector {
 				break;
 		}
 
-		const signature = await window.unisat.signMessage(params.message, type);
+		const signature = await provider.signMessage(params.message, type);
 
 		return {
 			signature,
 			address: params.address,
+			protocol: params.protocol ?? SignMessageProtocol.Ecdsa,
 		};
 	}
 
@@ -113,9 +74,7 @@ class UnisatConnector implements Connector {
 		signInputs,
 		disableTweakSigner,
 	}: SignPSBTParams): Promise<SignPSBTResponse> {
-		if (typeof window.unisat === "undefined") {
-			throw new Error("Unisat not found");
-		}
+		const provider = this.getProvider();
 
 		const toSignInputs = Object.keys(signInputs).flatMap((address) =>
 			signInputs[address].map((index) => ({
@@ -125,7 +84,7 @@ class UnisatConnector implements Connector {
 			})),
 		);
 
-		const signature = await window.unisat.signPsbt(psbt, {
+		const signature = await provider.signPsbt(psbt, {
 			autoFinalized: false,
 			toSignInputs,
 		});
@@ -136,10 +95,14 @@ class UnisatConnector implements Connector {
 			psbt: base64Psbt,
 		};
 	}
-}
 
-export const unisat = () => {
-	return createConnector((config) => {
-		return new UnisatConnector(config);
-	});
-};
+	private getProvider() {
+		const provider = get(window, this.id);
+
+		if (typeof provider === "undefined") {
+			throw new Error("Unisat not found");
+		}
+
+		return provider as Unisat;
+	}
+}

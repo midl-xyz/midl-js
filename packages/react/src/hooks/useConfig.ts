@@ -1,9 +1,8 @@
+import { useStore } from "zustand";
 import { useMidlContext } from "~/context";
 
 /**
- * Custom hook to access the configuration context.
- *
- * This hook retrieves the current configuration from the Midl context, providing access to connectors, networks, and connections.
+ * Retrieves the current configuration
  *
  * @example
  * ```typescript
@@ -15,5 +14,6 @@ import { useMidlContext } from "~/context";
  */
 export const useConfig = () => {
 	const { config } = useMidlContext();
-	return config;
+
+	return useStore(config);
 };

@@ -3,7 +3,7 @@ import {
 	useEVMAddress,
 	usePublicKey,
 	useSignTransaction,
-} from "@midl-xyz/midl-js-executor";
+} from "@midl-xyz/midl-js-executor-react";
 import { useBroadcastTransaction, useEdictRune } from "@midl-xyz/midl-js-react";
 import { useState } from "react";
 import { encodeFunctionData, erc20Abi, parseUnits } from "viem";

@@ -1,5 +1,142 @@
 # @midl-xyz/midl-js-executor
 
+## 1.0.7
+
+### Patch Changes
+
+- feat: add p2wpkh signing support
+- Updated dependencies
+  - @midl-xyz/midl-js-core@1.0.7
+  - @midl-xyz/midl-js-react@1.0.7
+
+## 1.0.6
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-core@1.0.6
+  - @midl-xyz/midl-js-react@1.0.6
+
+## 1.0.5
+
+### Patch Changes
+
+- a1066f9: fix: remove ethers as a dependency
+
+## 1.0.3
+
+### Patch Changes
+
+- feat(executor): allow skip estimate gas"
+
+## 1.0.2
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-react@1.0.2
+
+## 1.0.1
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-react@1.0.1
+  - @midl-xyz/midl-js-core@1.0.1
+
+## 1.0.0
+
+### Minor Changes
+
+- feat: intrudoce satoshikit, update config api
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-react@1.0.0
+  - @midl-xyz/midl-js-core@1.0.0
+
+## 0.0.82
+
+### Patch Changes
+
+- feat: upgrade executor contracts
+
+## 0.0.81
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-core@0.0.81
+  - @midl-xyz/midl-js-react@0.0.81
+
+## 0.0.80
+
+### Patch Changes
+
+- feat(core): update sats-connect
+- Updated dependencies
+  - @midl-xyz/midl-js-core@0.0.80
+  - @midl-xyz/midl-js-react@0.0.80
+
+## 0.0.79
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-core@0.0.79
+  - @midl-xyz/midl-js-react@0.0.79
+
+## 0.0.78
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-core@0.0.78
+  - @midl-xyz/midl-js-react@0.0.78
+
+## 0.0.77
+
+### Patch Changes
+
+- fix(executor): remove optional ethers dep
+- Updated dependencies
+  - @midl-xyz/midl-js-core@0.0.77
+  - @midl-xyz/midl-js-react@0.0.77
+
+## 0.0.76
+
+### Patch Changes
+
+- docs: update docs
+- Updated dependencies
+  - @midl-xyz/midl-js-core@0.0.76
+  - @midl-xyz/midl-js-react@0.0.76
+
+## 0.0.75
+
+### Patch Changes
+
+- feat: update contracts
+
+## 0.0.74
+
+### Patch Changes
+
+- 91a6cb6: feat: hardhat-deploy
+- Updated dependencies [91a6cb6]
+  - @midl-xyz/midl-js-react@0.0.45
+  - @midl-xyz/midl-js-core@0.0.38
+
+## 0.0.73
+
+### Patch Changes
+
+- feat: support nodejs and ethers
+- Updated dependencies
+  - @midl-xyz/midl-js-core@0.0.37
+  - @midl-xyz/midl-js-react@0.0.44
+
 ## 0.0.72
 
 ### Patch Changes

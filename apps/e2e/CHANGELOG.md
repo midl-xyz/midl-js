@@ -1,5 +1,30 @@
 # e2e
 
+## 1.0.47
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@0.0.75
+
+## 1.0.46
+
+### Patch Changes
+
+- Updated dependencies [91a6cb6]
+  - @midl-xyz/midl-js-executor@0.0.74
+  - @midl-xyz/midl-js-react@0.0.45
+  - @midl-xyz/midl-js-core@0.0.38
+
+## 1.0.45
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@0.0.73
+  - @midl-xyz/midl-js-core@0.0.37
+  - @midl-xyz/midl-js-react@0.0.44
+
 ## 1.0.44
 
 ### Patch Changes

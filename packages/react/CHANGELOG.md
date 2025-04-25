@@ -1,5 +1,102 @@
 # @midl-xyz/midl-js-react
 
+## 1.0.7
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-core@1.0.7
+
+## 1.0.6
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-core@1.0.6
+
+## 1.0.2
+
+### Patch Changes
+
+- feat(satoshi-kit): add customizations
+
+## 1.0.1
+
+### Patch Changes
+
+- fix: satoshi kit export
+- Updated dependencies
+  - @midl-xyz/midl-js-core@1.0.1
+
+## 1.0.0
+
+### Minor Changes
+
+- feat: intrudoce satoshikit, update config api
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-core@1.0.0
+
+## 0.0.81
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-core@0.0.81
+
+## 0.0.80
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-core@0.0.80
+
+## 0.0.79
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-core@0.0.79
+
+## 0.0.78
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-core@0.0.78
+
+## 0.0.77
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-core@0.0.77
+
+## 0.0.76
+
+### Patch Changes
+
+- docs: update docs
+- Updated dependencies
+  - @midl-xyz/midl-js-core@0.0.76
+
+## 0.0.45
+
+### Patch Changes
+
+- 91a6cb6: feat: hardhat-deploy
+- Updated dependencies [91a6cb6]
+  - @midl-xyz/midl-js-core@0.0.38
+
+## 0.0.44
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-core@0.0.37
+
 ## 0.0.43
 
 ### Patch Changes

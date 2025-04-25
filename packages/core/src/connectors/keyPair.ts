@@ -1,5 +1,4 @@
 import ecc from "@bitcoinerlab/secp256k1";
-import * as bip322 from "bip322-js";
 import * as bitcoin from "bitcoinjs-lib";
 import { Psbt } from "bitcoinjs-lib";
 import bitcoinMessage from "bitcoinjs-message";
@@ -10,33 +9,31 @@ import {
 	type SignMessageResponse,
 	type SignPSBTParams,
 } from "~/actions";
-import {
-	type Account,
-	type ConnectParams,
-	type Connector,
-	type CreateConnectorConfig,
-	createConnector,
+import type {
+	Account,
+	Connector,
+	ConnectorConnectParams,
 } from "~/connectors/createConnector";
 import { AddressPurpose, AddressType } from "~/constants";
 import type { BitcoinNetwork } from "~/createConfig";
-import { extractXCoordinate, getAddressType, isCorrectAddress } from "~/utils";
+import { extractXCoordinate, getAddressType, signBIP322Simple } from "~/utils";
 
 bitcoin.initEccLib(ecc);
 
-type KeyPairConnectorParams = {
-	keyPair: ECPairInterface;
-};
-
-class KeyPairConnector implements Connector {
+export class KeyPairConnector implements Connector {
 	public readonly id = "keyPair";
 	public readonly name = "KeyPair";
 
 	constructor(
-		private config: CreateConnectorConfig,
 		private keyPair: ECPairInterface,
+		private readonly paymentAddressType: AddressType = AddressType.P2SH,
 	) {}
-	async connect({ purposes }: ConnectParams): Promise<Account[]> {
-		const bitcoinNetwork = bitcoin.networks[this.config.network.network];
+
+	async connect({
+		purposes,
+		network,
+	}: ConnectorConnectParams): Promise<Account[]> {
+		const bitcoinNetwork = bitcoin.networks[network.network];
 		const accounts: Account[] = [];
 
 		if (purposes.includes(AddressPurpose.Ordinals)) {
@@ -58,75 +55,66 @@ class KeyPairConnector implements Connector {
 		}
 
 		if (purposes.includes(AddressPurpose.Payment)) {
-			const p2sh = bitcoin.payments.p2sh({
-				redeem: bitcoin.payments.p2wpkh({
+			if (this.paymentAddressType === AddressType.P2SH) {
+				const p2sh = bitcoin.payments.p2sh({
+					redeem: bitcoin.payments.p2wpkh({
+						pubkey: this.keyPair.publicKey,
+						network: bitcoinNetwork,
+					}),
+					network: bitcoinNetwork,
+				});
+
+				accounts.push({
+					// biome-ignore lint/style/noNonNullAssertion: <explanation>
+					address: p2sh.address!,
+					purpose: AddressPurpose.Payment,
+					publicKey: this.keyPair.publicKey.toString("hex"),
+					addressType: AddressType.P2SH,
+				});
+			}
+
+			if (this.paymentAddressType === AddressType.P2WPKH) {
+				const p2wpkh = bitcoin.payments.p2wpkh({
 					pubkey: this.keyPair.publicKey,
 					network: bitcoinNetwork,
-				}),
-				network: bitcoinNetwork,
-			});
+				});
 
-			accounts.push({
-				// biome-ignore lint/style/noNonNullAssertion: <explanation>
-				address: p2sh.address!,
-				purpose: AddressPurpose.Payment,
-				publicKey: this.keyPair.publicKey.toString("hex"),
-				addressType: AddressType.P2SH,
-			});
-		}
-
-		this.config.setState({
-			connection: this.id,
-			publicKey: this.keyPair.publicKey.toString("hex"),
-			accounts,
-		});
-
-		return accounts;
-	}
-	async disconnect() {
-		this.config.setState({
-			connection: undefined,
-			publicKey: undefined,
-		});
-	}
-	async getAccounts(): Promise<Account[]> {
-		const { connection, accounts, network } = this.config.getState();
-
-		if (!connection) {
-			throw new Error("Not connected");
-		}
-
-		if (!accounts) {
-			throw new Error("No accounts");
-		}
-
-		for (const account of accounts as Account[]) {
-			if (!isCorrectAddress(account.address, network)) {
-				throw new Error("Invalid address network");
+				accounts.push({
+					// biome-ignore lint/style/noNonNullAssertion: <explanation>
+					address: p2wpkh.address!,
+					purpose: AddressPurpose.Payment,
+					publicKey: this.keyPair.publicKey.toString("hex"),
+					addressType: AddressType.P2WPKH,
+				});
 			}
 		}
 
-		return accounts as Account[];
+		return accounts;
 	}
-	async getNetwork(): Promise<BitcoinNetwork> {
-		return this.config.getState().network;
-	}
-	async signMessage(params: SignMessageParams): Promise<SignMessageResponse> {
+
+	async signMessage(
+		params: SignMessageParams,
+		network: BitcoinNetwork,
+	): Promise<SignMessageResponse> {
 		if (!this.keyPair.privateKey) {
 			throw new Error("No private key");
 		}
 
+		const addressType = getAddressType(params.address);
+
 		switch (params.protocol) {
 			case SignMessageProtocol.Bip322: {
-				const signature = bip322.Signer.sign(
+				const signature = signBIP322Simple(
+					params.message,
 					this.keyPair.toWIF(),
 					params.address,
-					params.message,
+					bitcoin.networks[network.network],
 				);
 
 				return {
-					signature: signature.toString("hex"),
+					signature: signature as string,
 					address: params.address,
+					protocol: SignMessageProtocol.Bip322,
 				};
 			}
 
@@ -135,12 +123,16 @@ class KeyPairConnector implements Connector {
 					params.message,
 					this.keyPair.privateKey,
 					this.keyPair.compressed,
-					{ segwitType: "p2sh(p2wpkh)" },
+					{
+						segwitType:
+							addressType === AddressType.P2SH ? "p2sh(p2wpkh)" : "p2wpkh",
+					},
 				);
 
 				return {
 					signature: signature.toString("base64"),
 					address: params.address,
+					protocol: SignMessageProtocol.Ecdsa,
 				};
 			}
 
@@ -148,12 +140,19 @@ class KeyPairConnector implements Connector {
 				throw new Error("Unsupported protocol");
 		}
 	}
-	async signPSBT({
-		psbt: psbtData,
-		signInputs,
-		disableTweakSigner,
-	}: Omit<SignPSBTParams, "publish">) {
-		const psbt = Psbt.fromBase64(psbtData);
+	async signPSBT(
+		{
+			psbt: psbtData,
+			signInputs,
+			disableTweakSigner,
+		}: Omit<SignPSBTParams, "publish">,
+		network: BitcoinNetwork,
+	) {
+		const bitcoinNetwork = bitcoin.networks[network.network];
+
+		const psbt = Psbt.fromBase64(psbtData, {
+			network: bitcoinNetwork,
+		});
 
 		for (const [address, inputs] of Object.entries(signInputs)) {
 			const type = getAddressType(address);
@@ -192,8 +191,3 @@ class KeyPairConnector implements Connector {
 		};
 	}
 }
-
-export const keyPair = ({ keyPair }: KeyPairConnectorParams) =>
-	createConnector((config) => {
-		return new KeyPairConnector(config, keyPair);
-	});

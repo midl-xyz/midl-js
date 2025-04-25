@@ -1,4 +1,4 @@
-import { address, Psbt } from "bitcoinjs-lib";
+import { Psbt, networks } from "bitcoinjs-lib";
 import {
 	type SignMessageParams,
 	SignMessageProtocol,
@@ -7,28 +7,21 @@ import {
 import type { SignPSBTParams, SignPSBTResponse } from "~/actions/signPSBT";
 import {
 	type Account,
-	type ConnectParams,
+	type ConnectorConnectParams,
 	type Connector,
 	ConnectorType,
-	type CreateConnectorConfig,
-	createConnector,
 } from "~/connectors/createConnector";
 import { AddressType } from "~/constants";
-import { getAddressType, isCorrectAddress } from "~/utils";
+import type { BitcoinNetwork } from "~/createConfig";
+import { getAddressType } from "~/utils";
 import { getAddressPurpose } from "~/utils/getAddressPurpose";
 
-class LeatherConnector implements Connector {
+export class LeatherConnector implements Connector {
 	public readonly id = "leather";
 	public readonly name = "Leather";
 	public readonly type = ConnectorType.Leather;
 
-	constructor(private config: CreateConnectorConfig) {}
-
-	async getNetwork() {
-		return this.config.getState().network;
-	}
-
-	async connect(params: ConnectParams): Promise<Account[]> {
+	async connect(params: ConnectorConnectParams): Promise<Account[]> {
 		if (typeof window.LeatherProvider === "undefined") {
 			throw new Error("LeatherProvider not found");
 		}
@@ -39,7 +32,7 @@ class LeatherConnector implements Connector {
 			throw new Error("Invalid response");
 		}
 
-		const { purposes } = params;
+		const { purposes, network } = params;
 
 		const accounts = response.result.addresses
 			.filter((it) => it.symbol === "BTC")
@@ -47,10 +40,7 @@ class LeatherConnector implements Connector {
 				return {
 					address: it.address,
 					publicKey: it.publicKey,
-					purpose: getAddressPurpose(
-						it.address,
-						this.config.getState().network,
-					),
+					purpose: getAddressPurpose(it.address, network),
 					addressType: getAddressType(it.address),
 				};
 			})
@@ -66,43 +56,10 @@ class LeatherConnector implements Connector {
 			}
 		}
 
-		this.config.setState({
-			connection: this.id,
-			publicKey: accounts[0].publicKey,
-			accounts,
-		});
-
 		return accounts;
 	}
 
-	async disconnect() {
-		this.config.setState({
-			connection: undefined,
-			publicKey: undefined,
-		});
-	}
-
-	async getAccounts() {
-		if (!this.config.getState().connection) {
-			throw new Error("Not connected");
-		}
-
-		if (!this.config.getState().accounts) {
-			throw new Error("No accounts");
-		}
-
-		for (const account of this.config.getState().accounts as Account[]) {
-			if (!isCorrectAddress(account.address, this.config.getState().network)) {
-				throw new Error("Invalid address network");
-			}
-		}
-
-		return this.config.getState().accounts as Account[];
-	}
-
-	private getNetworkName() {
-		const network = this.config.getState().network;
-
+	private getNetworkName(network: BitcoinNetwork) {
 		switch (network.network) {
 			case "bitcoin":
 				return "mainnet";
@@ -114,7 +71,10 @@ class LeatherConnector implements Connector {
 		}
 	}
 
-	async signMessage(params: SignMessageParams): Promise<SignMessageResponse> {
+	async signMessage(
+		params: SignMessageParams,
+		network: BitcoinNetwork,
+	): Promise<SignMessageResponse> {
 		if (typeof window.LeatherProvider === "undefined") {
 			throw new Error("LeatherProvider not found");
 		}
@@ -125,7 +85,7 @@ class LeatherConnector implements Connector {
 
 		const response = await window.LeatherProvider.request("signMessage", {
 			message: params.message,
-			network: this.getNetworkName(),
+			network: this.getNetworkName(network),
 			paymentType:
 				getAddressType(params.address) === AddressType.P2TR ? "p2tr" : "p2wpkh",
 		});
@@ -134,13 +94,16 @@ class LeatherConnector implements Connector {
 			throw new Error("Invalid response");
 		}
 
-		return response.result;
+		return {
+			...response.result,
+			protocol: SignMessageProtocol.Bip322,
+		};
 	}
 
-	async signPSBT({
-		psbt,
-		signInputs,
-	}: SignPSBTParams): Promise<SignPSBTResponse> {
+	async signPSBT(
+		{ psbt, signInputs }: SignPSBTParams,
+		network: BitcoinNetwork,
+	): Promise<SignPSBTResponse> {
 		if (typeof window.LeatherProvider === "undefined") {
 			throw new Error("LeatherProvider not found");
 		}
@@ -151,26 +114,27 @@ class LeatherConnector implements Connector {
 			});
 		});
 
+		const bitcoinNetwork = networks[network.network];
+
 		const response = await window.LeatherProvider.request("signPsbt", {
-			hex: Psbt.fromBase64(psbt).toHex(),
+			hex: Psbt.fromBase64(psbt, {
+				network: bitcoinNetwork,
+			}).toHex(),
 			signInputs: toSignInputs,
-			network: this.getNetworkName(),
+			network: this.getNetworkName(network),
+			broadcast: false,
 		});
 
 		if (!("result" in response)) {
 			throw new Error("Invalid response");
 		}
 
-		const base64Psbt = Psbt.fromHex(response.result.hex).toBase64();
+		const base64Psbt = Psbt.fromHex(response.result.hex, {
+			network: bitcoinNetwork,
+		}).toBase64();
 
 		return {
 			psbt: base64Psbt,
 		};
 	}
 }
-
-export const leather = () => {
-	return createConnector((config) => {
-		return new LeatherConnector(config);
-	});
-};

@@ -1,5 +1,5 @@
 import { AddressPurpose } from "@midl-xyz/midl-js-core";
-import { usePublicKey } from "@midl-xyz/midl-js-executor";
+import { usePublicKey } from "@midl-xyz/midl-js-executor-react";
 import {
 	useAccounts,
 	useConnect,
@@ -12,9 +12,11 @@ export const Connect = () => {
 		AddressPurpose.Ordinals,
 	]);
 
-	const { connect, connectors } = useConnect({
+	const { connect, connectors, error } = useConnect({
 		purposes,
 	});
+
+	console.error(error);
 
 	const { disconnect } = useDisconnect();
 

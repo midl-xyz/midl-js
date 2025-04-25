@@ -3,7 +3,7 @@ import {
 	useEVMAddress,
 	usePublicKey,
 	useSignTransaction,
-} from "@midl-xyz/midl-js-executor";
+} from "@midl-xyz/midl-js-executor-react";
 import {
 	useBroadcastTransaction,
 	useTransferBTC,

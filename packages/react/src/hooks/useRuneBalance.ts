@@ -4,7 +4,7 @@ import {
 	getRuneBalance,
 } from "@midl-xyz/midl-js-core";
 import { type UseQueryOptions, useQuery } from "@tanstack/react-query";
-import { useConfig } from "~/hooks/useConfig";
+import { useMidlContext } from "~/context";
 
 type QueryOptions = Omit<
 	UseQueryOptions<GetRuneBalanceResponse>,
@@ -18,16 +18,14 @@ type UseRuneBalanceParams = GetRuneBalanceParams & {
 };
 
 /**
- * Custom hook to retrieve the balance of a specific Rune for a given address.
- *
- * This hook fetches the Rune balance associated with the provided `address` and `runeId`.
+ * Fetches the balance of a specified Rune for a given address.
  *
  * @example
  * ```typescript
  * const { balance, isLoading } = useRuneBalance({ address: 'address-123', runeId: 'rune-123' });
  * ```
  *
- * @param {UseRuneBalanceParams} params - Parameters for fetching the Rune balance.
+ * @param params Parameters for fetching the Rune balance.
  *
  * @returns
  * - **balance**: `RuneBalance | undefined` – The balance of the specified Rune.
@@ -40,7 +38,7 @@ export const useRuneBalance = ({
 	runeId,
 	query: { queryKey, ...query } = {} as QueryOptions,
 }: UseRuneBalanceParams) => {
-	const config = useConfig();
+	const { config } = useMidlContext();
 
 	const { data: balance, ...rest } = useQuery<GetRuneBalanceResponse>({
 		queryKey: ["runeBalance", address, runeId, ...(queryKey ?? [])],

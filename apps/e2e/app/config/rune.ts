@@ -1,1 +1,1 @@
-export const runeId = "88886:1";
+export const runeId = "154474:1";

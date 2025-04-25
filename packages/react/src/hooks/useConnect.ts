@@ -1,10 +1,15 @@
-import type { ConnectParams, Connector } from "@midl-xyz/midl-js-core";
+import {
+	connect,
+	type ConnectParams,
+	type Connector,
+} from "@midl-xyz/midl-js-core";
 import {
 	type DefaultError,
 	type UseMutationOptions,
 	useMutation,
 	useQueryClient,
 } from "@tanstack/react-query";
+import { useMidlContext } from "~/context";
 import { useConfig } from "~/hooks/useConfig";
 
 type ConnectData = Awaited<ReturnType<Connector["connect"]>>;
@@ -28,37 +33,30 @@ type UseConnectParams = ConnectParams & {
 export const ConnectMutationKey = "connect";
 
 /**
- * Custom hook to manage connection to a connector.
- *
- * This hook provides functions to connect to a specified connector and manages the connection state.
+ * Connects to a wallet using the specified connector.
  *
  * @example
  * ```typescript
- * const { connect, connectAsync, connectors, status } = useConnect({ id: 'connector-id' });
- * 
- * // To initiate a connection
+ * const { connect } = useConnect();
+ *
  * connect({ id: 'connector-id' });
- * 
- * // To initiate a connection asynchronously
- * await connectAsync({ id: 'connector-id' });
  * ```
  *
- * @param {UseConnectParams} params - Parameters for establishing the connection.
+ * @param params Configuration for useConnect.
  *
  * @returns
  * - **connect**: `(variables: ConnectVariables) => void` – Function to initiate connection.
  * - **connectAsync**: `(variables: ConnectVariables) => Promise<ConnectData>` – Function to asynchronously connect.
  * - **connectors**: `Array<Connector>` – The list of available connectors.
- * - **isLoading**: `boolean` – Indicates if the mutation is currently loading.
- * - **error**: `ConnectError | null` – Contains error information if the mutation failed.
- * - **data**: `ConnectData | undefined` – The response data from the connection.
  */
 export const useConnect = ({
 	mutation: { onSuccess, ...mutationOptions } = {},
 	...params
 }: UseConnectParams) => {
-	const config = useConfig();
+	const { config } = useMidlContext();
 	const queryClient = useQueryClient();
+
+	const { connectors } = useConfig();
 
 	const mutation = useMutation<ConnectData, ConnectError, ConnectVariables>({
 		mutationKey: [ConnectMutationKey],
@@ -67,11 +65,7 @@ export const useConnect = ({
 			queryClient.invalidateQueries({ queryKey: ["accounts"] });
 		},
 		mutationFn: async ({ id }) => {
-			const connector =
-				config.connectors.find((connector) => connector.id === id) ??
-				config.connectors[0];
-
-			return connector.connect(params);
+			return connect(config, params, id);
 		},
 		...mutationOptions,
 	});
@@ -81,7 +75,7 @@ export const useConnect = ({
 	return {
 		connect: mutation.mutate,
 		connectAsync: mutation.mutateAsync,
-		connectors: config.connectors,
+		connectors,
 		...rest,
 	};
 };

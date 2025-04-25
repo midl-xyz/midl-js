@@ -1,18 +1,17 @@
 import { getUTXOs } from "@midl-xyz/midl-js-core";
 import { useQuery } from "@tanstack/react-query";
+import { useMidlContext } from "~/context";
 import { useConfig } from "~/hooks/useConfig";
 
 /**
- * Custom hook to retrieve UTXOs (Unspent Transaction Outputs) for a given address.
- *
- * This hook fetches the UTXOs associated with the provided Bitcoin address from the configured network.
+ * Retrieves UTXOs for the specified address.
  *
  * @example
  * ```typescript
- * const { utxos, isLoading } = useUTXOs('address-123');
+ * const { utxos, isLoading } = useUTXOs('bc1q...');
  * ```
  *
- * @param {string} [address] - The Bitcoin address for which to retrieve UTXOs.
+ * @param address - The Bitcoin address for which to retrieve UTXOs.
  *
  * @returns
  * - `utxos`: `Array<UTXO> | undefined` – The list of UTXOs for the specified address.
@@ -21,9 +20,10 @@ import { useConfig } from "~/hooks/useConfig";
  * - `isFetching`: `boolean` – Indicates if the query is in the background fetching state.
  */
 export const useUTXOs = (address?: string) => {
-	const config = useConfig();
+	const { network, connection } = useConfig();
+	const { config } = useMidlContext();
 
-	const skipQuery = !config.network || !config.currentConnection || !address;
+	const skipQuery = !network || !connection || !address;
 
 	const { data, ...rest } = useQuery({
 		queryKey: ["utxos", address],

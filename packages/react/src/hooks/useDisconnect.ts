@@ -1,40 +1,33 @@
+import { disconnect } from "@midl-xyz/midl-js-core";
 import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
-import { useConfig } from "~/hooks/useConfig";
+import { useMidlContext } from "~/context";
 
 type UseDisconnectParams = {
 	mutation?: Omit<UseMutationOptions, "mutationFn">;
 };
 
 /**
- * Custom hook to manage disconnection from the current connector.
- *
- * This hook provides functions to disconnect the current connection and handles the mutation state.
+ * Disconnects the app from the wallet.
  *
  * @example
  * ```typescript
- * const { disconnect, disconnectAsync } = useDisconnect();
- * 
- * // To disconnect
+ * const { disconnect } = useDisconnect();
+ *
  * disconnect();
- * 
- * // To disconnect asynchronously
- * await disconnectAsync();
  * ```
  *
- * @param {UseDisconnectParams} [params] - Configuration options for the mutation.
+ * @param params - Configuration options for the mutation.
  *
  * @returns
  * - **disconnect**: `() => void` – Function to initiate disconnection.
  * - **disconnectAsync**: `() => Promise<void>` – Function to asynchronously disconnect.
- * - **isLoading**: `boolean` – Indicates if the mutation is currently loading.
- * - **error**: `Error | null` – Contains error information if the mutation failed.
  */
 export const useDisconnect = ({ mutation }: UseDisconnectParams = {}) => {
-	const config = useConfig();
+	const { config } = useMidlContext();
 
 	const { mutate, mutateAsync, ...rest } = useMutation({
 		mutationFn: async () => {
-			return config.currentConnection?.disconnect();
+			return disconnect(config);
 		},
 		...mutation,
 	});

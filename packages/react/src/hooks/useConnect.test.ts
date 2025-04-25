@@ -5,17 +5,17 @@ import { AddressPurpose } from "@midl-xyz/midl-js-core";
 import { wrapper } from "~/__tests__/wrapper";
 
 describe("useConnect", () => {
-  it("returns the correct values", () => {
-    const { result } = renderHook(
-      () =>
-        useConnect({
-          purposes: [AddressPurpose.Ordinals],
-        }),
-      { wrapper }
-    );
+	it("returns the correct values", () => {
+		const { result } = renderHook(
+			() =>
+				useConnect({
+					purposes: [AddressPurpose.Ordinals],
+				}),
+			{ wrapper },
+		);
 
-    expect("connect" in result.current).toBeTruthy();
-    expect("connectAsync" in result.current).toBeTruthy();
-    expect("connectors" in result.current).toBeTruthy();
-  });
+		expect("connect" in result.current).toBeTruthy();
+		expect("connectAsync" in result.current).toBeTruthy();
+		expect("connectors" in result.current).toBeTruthy();
+	});
 });

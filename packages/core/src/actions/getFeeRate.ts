@@ -1,22 +1,53 @@
 import type { Config } from "~/createConfig";
-import ky from "ky";
+import axios from "axios";
 
 export type GetFeeRateResponse = {
+	/**
+	 * The fastest fee rate in satoshis per byte
+	 */
 	fastestFee: number;
+	/**
+	 * The half hour fee rate in satoshis per byte
+	 */
 	halfHourFee: number;
+	/**
+	 * The hour fee rate in satoshis per byte
+	 */
 	hourFee: number;
+	/**
+	 * The economy fee rate in satoshis per byte
+	 */
 	economyFee: number;
+	/**
+	 * The minimum fee rate in satoshis per byte
+	 */
 	minimumFee: number;
 };
 
+/**
+ * Gets the recommended fee rate
+ *
+ * @example
+ * ```ts
+ * const feeRate = await getFeeRate(config);
+ * console.log(feeRate);
+ * ```
+ *
+ * @param config  The configuration object
+ * @returns The recommended fee rate object
+ */
 export const getFeeRate = async (
 	config: Config,
 ): Promise<GetFeeRateResponse> => {
-	if (!config.network) {
+	const { network } = config.getState();
+
+	if (!network) {
 		throw new Error("No network");
 	}
 
-	return ky<GetFeeRateResponse>(
-		`${config.network.rpcUrl}/v1/fees/recommended`,
-	).json();
+	const response = await axios.get<GetFeeRateResponse>(
+		`${network.rpcUrl}/v1/fees/recommended`,
+	);
+
+	return response.data;
 };

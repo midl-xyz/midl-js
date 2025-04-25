@@ -1,98 +1,113 @@
 import { createJSONStorage, persist } from "zustand/middleware";
-import { createStore, type StoreApi } from "zustand/vanilla";
-import type { Account, Connector, CreateConnectorFn } from "~/connectors";
+import { type StoreApi, createStore } from "zustand/vanilla";
+import type { Account, Connector } from "~/connectors";
 
 export type BitcoinNetwork = {
+	/**
+	 * The id of the network
+	 */
 	id: string;
+	/**
+	 * Bitcoin API used to generate addresses and sign transactions
+	 */
 	network: "bitcoin" | "testnet" | "regtest";
+	/**
+	 * The RPC URL for the network
+	 */
 	rpcUrl: string;
+	/**
+	 * Runes API URL
+	 */
 	runesUrl: string;
+	/**
+	 * The explorer URL for the network
+	 */
 	explorerUrl: string;
+	/**
+	 * The runes UTXO API URL
+	 */
 	runesUTXOUrl: string;
 };
 
 type ConfigParams = {
+	/**
+	 * The bitcoin networks to use
+	 */
 	networks: BitcoinNetwork[];
-	connectors: CreateConnectorFn[];
+	/**
+	 * The connectors to use
+	 */
+	connectors: Connector[];
+	/**
+	 * If true, the config will persist in local storage
+	 */
 	persist?: boolean;
-};
-
-export type Config = {
-	readonly networks: BitcoinNetwork[];
-	readonly connectors: Connector[];
-	readonly network: BitcoinNetwork | undefined;
-	readonly currentConnection?: Connector;
-	setState(state: Partial<ConfigState>): void;
-	getState(): ConfigState;
-	subscribe(callback: (newState: ConfigState | undefined) => void): () => void;
-	_internal: {
-		configStore: StoreApi<ConfigState>;
-	};
 };
 
 export type ConfigState = {
 	readonly network: BitcoinNetwork;
-	readonly publicKey?: string;
-	readonly connection?: string;
+	readonly networks: BitcoinNetwork[];
+	readonly connection?: Connector;
 	readonly accounts?: Account[];
+	readonly connectors: Connector[];
+
+	// hasHydrated: boolean;
+	// setHasHydrated: (state: boolean) => void;
 };
 
-const configStore = createStore();
+export type Config = ReturnType<typeof createConfig>;
 
-export const createConfig = (params: ConfigParams): Config => {
+export const createConfig = (params: ConfigParams) => {
 	const [network] = params.networks;
 
-	const configStore = params.persist
-		? createStore<ConfigState>()(
-				persist(
-					(set, get) => ({
-						network,
-					}),
-					{
-						name: "midl-js",
-						storage: createJSONStorage(() => localStorage),
-					},
-				),
-			)
-		: createStore<ConfigState>()(() => ({
+	const configStore = createStore<ConfigState>()(
+		persist(
+			() => ({
+				networks: params.networks,
+				connectors: params.connectors,
 				network,
-			}));
+			}),
+			{
+				name: "midl-js",
+				storage: createJSONStorage(() => localStorage, {
+					reviver(key, value) {
+						if (key === "connection") {
+							return params.connectors.find((it) => it.id === value);
+						}
 
-	const state = configStore.getState();
+						if (key === "network") {
+							return (
+								params.networks.find((it) => it.id === value) ??
+								params.networks[0]
+							);
+						}
 
-	const networkToUse =
-		params.networks.find((n) => n.id === state?.network.id) ||
-		params.networks[0];
+						return value;
+					},
+					replacer(key, value) {
+						if (key === "connection") {
+							return (value as ConfigState["connection"])?.id;
+						}
 
-	configStore.setState({
-		...state,
-		network: networkToUse,
-	});
+						if (key === "network") {
+							return (value as ConfigState["network"])?.id;
+						}
 
-	const connectors = params.connectors.map((createConnectorFn) =>
-		createConnectorFn({
-			network,
-			setState: configStore.setState,
-			getState: configStore.getState,
-		}),
+						return value;
+					},
+				}),
+				partialize: (state: ConfigState) => ({
+					...Object.fromEntries(
+						Object.entries(state).filter(
+							([key]) =>
+								params.persist &&
+								["network", "connection", "accounts"].includes(key),
+						),
+					),
+				}),
+			},
+		),
 	);
 
-	return {
-		networks: params.networks,
-		get network() {
-			return configStore.getState().network;
-		},
-		setState: configStore.setState,
-		connectors,
-		subscribe: configStore.subscribe,
-		getState: configStore.getState,
-		get currentConnection() {
-			return this.connectors.find(
-				(connector) => connector.id === configStore.getState().connection,
-			);
-		},
-		_internal: {
-			configStore,
-		},
-	};
+	return configStore;
 };

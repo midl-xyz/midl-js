@@ -1,7 +1,6 @@
 import { Psbt, initEccLib, networks, payments } from "bitcoinjs-lib";
 import coinSelect from "bitcoinselect";
 import { Edict, RuneId, Runestone, none, some } from "runelib";
-import { AddressPurpose } from "sats-connect";
 import { broadcastTransaction } from "~/actions/broadcastTransaction";
 import { getFeeRate } from "~/actions/getFeeRate";
 import { type RuneUTXO, getRuneUTXO } from "~/actions/getRuneUTXO";
@@ -9,6 +8,7 @@ import { getUTXOs } from "~/actions/getUTXOs";
 import type { Config } from "~/createConfig";
 import { extractXCoordinate, makePSBTInputs, runeUTXOSelect } from "~/utils";
 import ecc from "@bitcoinerlab/secp256k1";
+import { AddressPurpose } from "~/constants";
 
 initEccLib(ecc);
 
@@ -18,41 +18,102 @@ type TransferOutput = {
 };
 
 export type EdictRuneParams = {
+	/**
+	 * The address to transfer the rune from
+	 */
 	from?: string;
+	/**
+	 * An array of transfers, supporting both rune and bitcoin transfers
+	 */
 	transfers: (
 		| {
+				/**
+				 * The rune ID, in the format `blockHeight:txIndex`
+				 */
 				runeId: string;
+				/**
+				 * The amount to transfer
+				 */
 				amount: bigint;
+				/**
+				 * The receiver address
+				 */
 				receiver: string;
 		  }
 		| {
+				/**
+				 * The receiver address
+				 * */
 				receiver: string;
+				/**
+				 *The amount in satoshis to transfer
+				 */
 				amount: number;
 		  }
 	)[];
+	/**
+	 * The fee rate in satoshis per byte
+	 */
 	feeRate?: number;
+	/**
+	 * If true, the transaction will be broadcasted
+	 */
 	publish?: boolean;
 };
 
 export type EdictRuneResponse = {
+	/**
+	 * Base64-encoded PSBT data
+	 */
 	psbt: string;
+	/**
+	 * The transaction data
+	 */
 	tx: {
+		/**
+		 * The transaction hash
+		 */
 		id: string;
+		/**
+		 * The transaction hex
+		 * */
 		hex: string;
 	};
 };
 
 const RUNE_MAGIC_VALUE = 546;
 
+/**
+ * Edicts (transfers) one or more runes to one or more receivers
+ *
+ * @example
+ * ```ts
+ * edictRune(config, {
+ * 	transfers: [
+ * 		{
+ * 			runeId: "1:1",
+ * 			amount: 100n,
+ * 			receiver: "tb1q9zj...zj9q"
+ * 		},
+ * 	]
+ * });
+ * ```
+ *
+ * @param config The configuration object
+ * @param params Edict rune parameters
+ * @returns The PSBT and transaction data
+ */
 export const edictRune = async (
 	config: Config,
 	{ transfers, feeRate: customFeeRate, publish, from }: EdictRuneParams,
 ): Promise<EdictRuneResponse> => {
-	if (!config.currentConnection) {
+	const { connection, network: currentNetwork } = config.getState();
+
+	if (!connection) {
 		throw new Error("No connection");
 	}
 
-	if (!config.network) {
+	if (!currentNetwork) {
 		throw new Error("No network");
 	}
 
@@ -74,7 +135,7 @@ export const edictRune = async (
 		throw new Error("No transfer account");
 	}
 
-	const network = networks[config.network.network];
+	const network = networks[currentNetwork.network];
 	const feeRate = customFeeRate || (await getFeeRate(config)).hourFee;
 
 	const utxos = await getUTXOs(config, account.address);
@@ -93,7 +154,11 @@ export const edictRune = async (
 				throw new Error("No ordinals UTXOs");
 			}
 
-			const selectedUTXOs = runeUTXOSelect(utxos, transfer.amount).filter(
+			const selectedUTXOs = runeUTXOSelect(
+				utxos,
+				transfer.runeId,
+				transfer.amount,
+			).filter(
 				(utxo) => !runeUTXOs.some((runeUTXO) => runeUTXO.txid === utxo.txid),
 			);
 
@@ -200,9 +265,9 @@ export const edictRune = async (
 
 	const mintStone = new Runestone(edicts, none(), none(), some(changeIndex));
 
-	// if (mintStone.edicts.length > 1) {
-	// 	throw new Error("Only one edict per transaction is allowed");
-	// }
+	if (mintStone.edicts.length > 2) {
+		throw new Error("Only two edicts per transaction is allowed");
+	}
 
 	psbt.addOutput({
 		script: mintStone.encipher(),
@@ -226,12 +291,17 @@ export const edictRune = async (
 		);
 	}
 
-	const data = await config.currentConnection.signPSBT({
-		psbt: psbtData,
-		signInputs,
-	});
+	const data = await connection.signPSBT(
+		{
+			psbt: psbtData,
+			signInputs,
+		},
+		currentNetwork,
+	);
 
-	const signedPSBT = Psbt.fromBase64(data.psbt);
+	const signedPSBT = Psbt.fromBase64(data.psbt, {
+		network,
+	});
 
 	signedPSBT.finalizeAllInputs();
 

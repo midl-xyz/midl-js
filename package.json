@@ -1,27 +1,48 @@
 {
-  "name": "@midl-xyz/midl-js",
-  "private": true,
-  "description": "",
-  "packageManager": "pnpm@9.1.4",
-  "scripts": {
-    "ci:publish": "pnpm publish -r"
-  },
-  "devDependencies": {
-    "@biomejs/biome": "1.8.3",
-    "@changesets/cli": "^2.27.7",
-    "@testing-library/react": "^16.0.0",
-    "concurrently": "^9.1.0",
-    "jsdom": "^24.1.1",
-    "tsc-alias": "^1.8.10",
-    "tsx": "^4.16.2",
-    "turbo": "^2.0.9",
-    "typescript": "^5.5.3",
-    "vite-tsconfig-paths": "^4.3.2",
-    "vitest": "^2.0.4"
-  },
-  "pnpm": {
-    "overrides": {
-      "viem": "npm:@midl-xyz/midl-viem@2.21.36"
-    }
-  }
+	"name": "@midl-xyz/midl-js",
+	"private": true,
+	"description": "",
+	"packageManager": "pnpm@9.1.4",
+	"scripts": {
+		"ci:publish": "pnpm publish -r",
+		"build:packages": "turbo run build --filter='./packages/*'",
+		"dev:packages": "turbo run dev --filter='./packages/*'",
+		"prepare": "husky",
+		"test:packages": "turbo run test --filter='./packages/*'"
+	},
+	"devDependencies": {
+		"@alcalzone/esm2cjs": "^1.4.1",
+		"@biomejs/biome": "1.8.3",
+		"@changesets/cli": "^2.27.7",
+		"@commitlint/cli": "^19.6.1",
+		"@commitlint/config-conventional": "^19.6.0",
+		"@testing-library/react": "^16.0.0",
+		"@vitest/coverage-v8": "^3.1.2",
+		"concurrently": "^9.1.0",
+		"esm2cjs": "^1.0.2",
+		"husky": "^9.1.7",
+		"jsdom": "^24.1.1",
+		"pkgroll": "^2.6.1",
+		"ts-node": "^10.9.2",
+		"ts-patch": "^3.3.0",
+		"tsc-alias": "^1.8.10",
+		"tsconfig-paths": "^4.2.0",
+		"tsx": "^4.16.2",
+		"turbo": "^2.0.9",
+		"typescript": "^5.5.3",
+		"typescript-transform-paths": "^3.5.3",
+		"vite": "^5.4.10",
+		"vite-plugin-dts": "^4.4.0",
+		"vite-plugin-tsconfig-paths": "^1.4.1",
+		"vite-tsconfig-paths": "^4.3.2",
+		"vitest": "^3.1.2"
+	},
+	"pnpm": {
+		"overrides": {
+			"viem": "npm:@midl-xyz/midl-viem",
+			"@bitcoinerlab/secp256k1": "^1.2.0",
+			"@noble/secp256k1": "1.7.1",
+			"@tanstack/react-query": "5.69.0"
+		}
+	}
 }

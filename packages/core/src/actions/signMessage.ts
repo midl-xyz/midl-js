@@ -1,41 +1,91 @@
-import type { Config } from "~/createConfig";
+import type { BitcoinNetwork, Config } from "~/createConfig";
 
 export enum SignMessageProtocol {
-  Ecdsa = "ECDSA",
-  Bip322 = "BIP322",
+	Ecdsa = "ECDSA",
+	Bip322 = "BIP322",
 }
 
 export type SignMessageParams = {
-  address: string;
-  message: string;
-  protocol?: SignMessageProtocol;
+	/**
+	 * The address to sign the message with
+	 */
+	address: string;
+	/**
+	 * The message to sign
+	 */
+	message: string;
+	/**
+	 * The protocol to use for signing.
+	 */
+	protocol?: SignMessageProtocol;
 };
 
-export type SignMessageResponse =
-  | {
-      signature: string;
-      address: string;
-    }
-  | {
-      signature: string;
-      address: string;
-      protocol: string;
-      messageHash: string;
-    };
+export type SignMessageResponse = (
+	| {
+			/**
+			 * Base64 encoded signature
+			 */
+			signature: string;
+			/**
+			 * The address that signed the message
+			 */
+			address: string;
+	  }
+	| {
+			/**
+			 * Base64 encoded signature
+			 */
+			signature: string;
+			/**
+			 * The address that signed the message
+			 */
+			address: string;
 
+			/**
+			 * The message hash
+			 */
+			messageHash: string;
+	  }
+) & {
+	protocol: SignMessageProtocol;
+};
+
+/**
+ * Signs a message with the given address and message.
+ * Supports ECDSA and BIP322 protocols
+ *
+ * @example
+ * ```ts
+ * const signature = await signMessage(config, {
+ * 	address: "bc1q...",
+ * 	message: "Hello, world!",
+ * });
+ * ```
+ *
+ * @param config The configuration object
+ * @param params The parameters for the request
+ * @returns The signature response
+ */
 export const signMessage = (
-  config: Config,
-  { address, message, protocol = SignMessageProtocol.Ecdsa }: SignMessageParams
+	config: Config,
+	{
+		address,
+		message,
+		protocol = SignMessageProtocol.Bip322,
+	}: SignMessageParams,
 ) => {
-  const { currentConnection } = config;
+	const { connection, network } = config.getState();
 
-  if (!currentConnection) {
-    throw new Error("No provider found");
-  }
+	if (!connection) {
+		throw new Error("No provider found");
+	}
 
-  return currentConnection.signMessage({
-    address,
-    message,
-    protocol,
-  });
+	return connection.signMessage(
+		{
+			address,
+			message,
+			protocol,
+		},
+		network,
+	);
 };

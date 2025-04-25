@@ -1,7 +1,22 @@
 import { getBlockNumber } from "~/actions/getBlockNumber";
 import type { Config } from "~/createConfig";
-import ky from "ky";
+import axios from "axios";
 
+/**
+ * Waits for a transaction to be confirmed
+ *
+ * @example
+ * ```ts
+ * const confirmations = await waitForTransaction(config, "txid", 1);
+ * console.log(confirmations);
+ * ```
+ *
+ * @param config The configuration object
+ * @param txId The transaction ID
+ * @param confirmations The number of confirmations to wait for
+ * @param params The parameters for the request
+ * @returns The number of confirmations
+ */
 export const waitForTransaction = (
 	config: Config,
 	txId: string,
@@ -9,8 +24,19 @@ export const waitForTransaction = (
 	{
 		maxAttempts = 1000,
 		intervalMs = 30_000,
-	}: { maxAttempts?: number; intervalMs?: number } = {},
+	}: {
+		/**
+		 * The maximum number of attempts
+		 */
+		maxAttempts?: number;
+		/**
+		 * The interval in milliseconds
+		 */
+		intervalMs?: number;
+	} = {},
 ) => {
+	const { network } = config.getState();
+
 	const check = async () => {
 		let confirmed = -1;
 		let attempt = 0;
@@ -21,10 +47,10 @@ export const waitForTransaction = (
 			}
 
 			try {
-				const data = await ky<{
+				const { data } = await axios.get<{
 					confirmed: boolean;
 					block_height: number;
-				}>(`${config.network?.rpcUrl}/tx/${txId}/status`).json();
+				}>(`${network?.rpcUrl}/tx/${txId}/status`);
 
 				if (data.confirmed) {
 					const currentBlockHeight = await getBlockNumber(config);

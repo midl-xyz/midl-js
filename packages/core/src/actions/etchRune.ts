@@ -1,5 +1,4 @@
 import { Psbt, initEccLib, networks, payments, script } from "bitcoinjs-lib";
-import type { Taptree } from "bitcoinjs-lib/src/types";
 import coinselect from "bitcoinselect";
 import {
 	EtchInscription,
@@ -23,8 +22,10 @@ import ecc from "@bitcoinerlab/secp256k1";
 initEccLib(ecc);
 
 export type EtchRuneParams = {
+	/**
+	 * The address to etch the rune from
+	 */
 	from?: string;
-
 	/**
 	 * The name of the rune to etch. Should be uppercase and spaced with • (U+2022).
 	 * Example: "RUNE•NAME"
@@ -84,6 +85,35 @@ const ETCHING_SCRIPT_VERSION = 192;
 const RUNE_MAGIC_VALUE = 546;
 const ETCHING_TX_SIZE = 350;
 
+/**
+ * Etches (mints) a rune on Bitcoin. The rune will be etched and revealed in the consecutive transactions.
+ * This function creates the etching, funding, and reveal transactions.
+ * The transactions won't be broadcasted. Once the transactions are created, you can broadcast them using the `broadcastTransaction` function in
+ * the following order: funding, etching, reveal.
+ *
+ * @example
+ * ```ts
+ * import { etchRune } from "@midl-xyz/midl-js-core";
+ * import { broadcastTransaction } from "@midl-xyz/midl-js-core";
+ *
+ * const etching = await etchRune(config, {
+ * 	name: "RUNE•NAME",
+ * 	receiver: "bc1q...",
+ * 	amount: 100,
+ *  ...
+ * });
+ *
+ * const fundingTxHash = await broadcastTransaction(config, etching.fundingTx);
+ * const etchingTxHash = await broadcastTransaction(config, etching.etchingTx);
+ * const revealTxHash = await broadcastTransaction(config, etching.revealTx);
+ *
+ * console.log(fundingTxHash, etchingTxHash, revealTxHash);
+ * ```
+ *
+ * @param config The configuration object
+ * @param params The etch rune parameters
+ * @returns The etching, funding, and reveal hex transactions
+ */
 export const etchRune = async (
 	config: Config,
 	{
@@ -106,16 +136,17 @@ export const etchRune = async (
 	const inscription = new EtchInscription();
 	const runeName = formatRuneName(name);
 	const feeRate = customFeeRate || (await getFeeRate(config)).hourFee;
+	const { connection, network: currentNetwork } = config.getState();
 
-	if (!config.currentConnection) {
+	if (!connection) {
 		throw new Error("No connection");
 	}
 
-	if (!config.network) {
+	if (!currentNetwork) {
 		throw new Error("No network");
 	}
 
-	const network = networks[config.network.network];
+	const network = networks[currentNetwork.network];
 	const { accounts } = config.getState();
 
 	const account = from
@@ -149,7 +180,7 @@ export const etchRune = async (
 		inscription.encipher(),
 	]);
 
-	const scriptTree: Taptree = {
+	const scriptTree: payments.Payment["scriptTree"] = {
 		output: etchingScript,
 	};
 
@@ -250,7 +281,7 @@ export const etchRune = async (
 		disableTweakSigner: false,
 	});
 
-	const signedFundingPSBT = Psbt.fromBase64(fundingData.psbt);
+	const signedFundingPSBT = Psbt.fromBase64(fundingData.psbt, { network });
 
 	signedFundingPSBT.finalizeAllInputs();
 
@@ -317,7 +348,7 @@ export const etchRune = async (
 		},
 	});
 
-	const signedPSBT = Psbt.fromBase64(data.psbt);
+	const signedPSBT = Psbt.fromBase64(data.psbt, { network });
 
 	signedPSBT.finalizeAllInputs();
 
@@ -361,7 +392,9 @@ export const etchRune = async (
 		disableTweakSigner: true,
 	});
 
-	const revealSignedPSBT = Psbt.fromBase64(revealData.psbt).finalizeAllInputs();
+	const revealSignedPSBT = Psbt.fromBase64(revealData.psbt, {
+		network,
+	}).finalizeAllInputs();
 
 	const etchingTx = signedPSBT.extractTransaction();
 

@@ -24,9 +24,10 @@ import { useToast } from "@/hooks/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMaskito } from "@maskito/react";
 import {
+	useAccounts,
 	useBroadcastTransaction,
+	useConfig,
 	useEtchRune,
-	useMidlContext,
 	useRune,
 	useWaitForTransaction,
 } from "@midl-xyz/midl-js-react";
@@ -65,14 +66,14 @@ export const RuneForm = () => {
 		defaultValues: {
 			name: "RUNE•TO•THE•MOON",
 			symbol: "🚀",
-			divisibility: 0,
+			divisibility: 18,
 			premine: 1000000000000,
 			mintable: false,
 		},
 	});
 
 	const { toast } = useToast();
-	const { config } = useMidlContext();
+	const config = useConfig();
 
 	const [name, isMintable, premine, divisibility] = form.watch([
 		"name",
@@ -82,6 +83,8 @@ export const RuneForm = () => {
 	]);
 
 	const { rune, isFetching } = useRune({ runeId: name });
+
+	const { ordinalsAccount } = useAccounts();
 
 	const { etchRune } = useEtchRune({
 		mutation: {
@@ -389,7 +392,7 @@ export const RuneForm = () => {
 								<FormItem className="flex-grow">
 									<FormLabel>Divisibility</FormLabel>
 									<FormControl>
-										<Input {...field} type="number" />
+										<Input {...field} type="number" disabled />
 									</FormControl>
 									<FormDescription>
 										Enter the divisibility of the rune

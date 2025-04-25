@@ -1,5 +1,6 @@
 import { waitForTransaction } from "@midl-xyz/midl-js-core";
 import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
+import { useMidlContext } from "~/context";
 import { useConfig } from "~/hooks/useConfig";
 
 type WaitForTransactionVariables = {
@@ -24,19 +25,17 @@ type UseWaitForTransactionParams = {
 };
 
 /**
- * Custom hook to wait for a transaction to be confirmed.
- *
- * This hook provides functions to wait for a specified number of confirmations for a given transaction ID.
+ * Waits for the transaction to be confirmed
  *
  * @example
  * ```typescript
  * const { waitForTransaction, isLoading } = useWaitForTransaction();
- * 
+ *
  * // To wait for a transaction to confirm
  * waitForTransaction({ txId: 'tx-123', confirmations: 3 });
  * ```
  *
- * @param {UseWaitForTransactionParams} [params] - Configuration options for the mutation.
+ * @param params Configuration options for the mutation.
  *
  * @returns
  * - `waitForTransaction`: `(variables: WaitForTransactionVariables) => void` – Function to initiate waiting for a transaction confirmation.
@@ -48,7 +47,7 @@ type UseWaitForTransactionParams = {
 export const useWaitForTransaction = ({
 	mutation,
 }: UseWaitForTransactionParams = {}) => {
-	const config = useConfig();
+	const { config } = useMidlContext();
 
 	const { mutate, mutateAsync, ...rest } = useMutation<
 		WaitForTransactionData,

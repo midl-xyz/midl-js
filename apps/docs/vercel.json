@@ -1,0 +1,16 @@
+{
+    "$schema": "https://openapi.vercel.sh/vercel.json",
+    "cleanUrls": true,
+    "redirects": [
+        {
+            "source": "/intro/overview",
+            "destination": "/docs",
+            "statusCode": 301
+        },
+        {
+            "source": "/bitcoin/react/overview",
+            "destination": "/hooks/overview",
+            "statusCode": 301
+        }
+    ]
+}
