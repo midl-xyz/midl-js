@@ -1,5 +1,17 @@
 # @midl-xyz/hardhat-deploy
 
+## 0.1.12
+
+### Patch Changes
+
+- fix: hh deploy reload intentions
+
+## 0.1.11
+
+### Patch Changes
+
+- feat: add shouldComplete for execute
+
 ## 0.1.10
 
 ### Patch Changes

@@ -257,16 +257,27 @@ export class MidlHardhatEnvironment {
 		stateOverride,
 		feeRateMultiplier = 4,
 		skipEstimateGasMulti = false,
+		shouldComplete = false,
+		assetsToWithdraw,
 	}: {
 		stateOverride?: StateOverride;
 		feeRateMultiplier?: number;
 		skipEstimateGasMulti?: boolean;
-	} = {}) {
+	} & (
+		| {
+				shouldComplete?: false;
+				assetsToWithdraw?: never;
+		  }
+		| {
+				shouldComplete: true;
+				assetsToWithdraw: [Address] | [Address, Address];
+		  }
+	) = {}) {
 		if (!this.config) {
 			throw new Error("MidlHardhatEnvironment not initialized");
 		}
 
-		const intentions = this.store.getState().intentions;
+		let intentions = this.store.getState().intentions;
 
 		if (!intentions || intentions.length === 0) {
 			console.warn("No intentions to execute");
@@ -288,12 +299,17 @@ export class MidlHardhatEnvironment {
 						balance: intentions.reduce((acc, it) => acc + (it.value ?? 0n), 0n),
 					},
 				],
+				shouldComplete,
 				feeRateMultiplier,
 				skipEstimateGasMulti,
+				assetsToWithdraw,
 			},
 		);
 
 		const confirmationPromises: Promise<unknown>[] = [];
+
+		// biome-ignore lint/style/noNonNullAssertion: reload intentions in case of shouldComplete equal true
+		intentions = this.store.getState().intentions!;
 
 		for (const intention of intentions) {
 			const signed = await signIntention(
