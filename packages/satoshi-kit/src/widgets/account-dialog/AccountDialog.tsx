@@ -77,7 +77,7 @@ export const AccountDialog = ({ open, onClose }: AccountDialogProps) => {
 								<Stack gap={6} width="full" direction="column">
 									{accounts?.map((it) => (
 										<Stack
-											key={it.address}
+											key={it.address + it.purpose}
 											gap={4}
 											direction="row"
 											alignItems="center"
