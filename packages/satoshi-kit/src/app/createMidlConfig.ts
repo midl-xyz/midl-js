@@ -3,6 +3,7 @@ import {
 	LeatherConnector,
 	createBitGetConnector,
 	UnisatConnector,
+	PhantomConnector,
 } from "@midl-xyz/midl-js-core";
 import { createXverseConnector } from "@midl-xyz/midl-js-core/connectors/xverse";
 
@@ -16,6 +17,7 @@ export const createMidlConfig = (params: ConfigParams) => {
 			createXverseConnector(),
 			createBitGetConnector(),
 			new UnisatConnector(),
+			new PhantomConnector(),
 		],
 	});
 };
