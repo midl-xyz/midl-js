@@ -1,6 +1,6 @@
 {
 	"name": "@midl-xyz/midl-js-executor",
-	"version": "1.0.8",
+	"version": "1.0.9",
 	"scripts": {
 		"build": "pnpm run clean && tspc --project tsconfig.esm.json && tspc --project tsconfig.cjs.json",
 		"dev": "concurrently \"tspc --watch --preserveWatchOutput --project tsconfig.esm.json\" \"tspc --watch --preserveWatchOutput --project tsconfig.cjs.json\"",

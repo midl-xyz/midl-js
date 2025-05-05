@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 1.0.9
+
+### Patch Changes
+
+- fix(core): sats-connect filter unsupported address
+
 ## 1.0.8
 
 ### Patch Changes
