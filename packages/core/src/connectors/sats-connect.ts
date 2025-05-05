@@ -2,6 +2,7 @@ import {
 	BitcoinNetworkType,
 	MessageSigningProtocols,
 	request,
+	AddressPurpose,
 } from "sats-connect";
 import {
 	type SignMessageParams,
@@ -43,13 +44,18 @@ export class SatsConnectConnector implements Connector {
 			throw data.error;
 		}
 
-		const accounts = data.result.addresses.map(({ walletType, ...account }) => {
-			return {
-				...account,
-				purpose: getAddressPurpose(account.address, network),
-				addressType: getAddressType(account.address),
-			};
-		}) as Account[];
+		const accounts = data.result.addresses
+			.filter((it) => {
+				[AddressPurpose.Ordinals, AddressPurpose.Payment].includes(it.purpose);
+			})
+			.map(({ walletType, ...account }) => {
+				return {
+					...account,
+					purpose: getAddressPurpose(account.address, network),
+					addressType: getAddressType(account.address),
+				};
+			})
+			.filter((it) => purposes.includes(it.purpose)) as Account[];
 
 		return accounts;
 	}
