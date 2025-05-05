@@ -1,4 +1,5 @@
 import {
+	AddressPurpose,
 	type Config,
 	type EdictRuneParams,
 	type EdictRuneResponse,
@@ -15,10 +16,12 @@ import {
 	type StateOverride,
 	encodeFunctionData,
 	padHex,
+	zeroAddress,
 } from "viem";
 import { estimateGasMulti } from "viem/actions";
 import type { StoreApi } from "zustand";
 import { addTxIntention } from "~/actions/addTxIntention";
+import { getPublicKey } from "~/actions/getPublicKey";
 import { getPublicKeyForAccount } from "~/actions/getPublicKeyForAccount";
 import { executorAddress, multisigAddress } from "~/config";
 import { executorAbi } from "~/contracts/abi";
@@ -79,9 +82,9 @@ export const finalizeBTCTransaction = async (
 	config: Config,
 	store: StoreApi<MidlContextState>,
 	client: Client,
-	options: FinalizeBTCTransactionOptions,
+	options: FinalizeBTCTransactionOptions = {},
 ) => {
-	const { network } = config.getState();
+	const { network, accounts } = config.getState();
 
 	if (!network) {
 		throw new Error("No network set");
@@ -90,7 +93,7 @@ export const finalizeBTCTransaction = async (
 	const { intentions = [] } = store.getState();
 
 	if (intentions.length === 0) {
-		throw new Error("No intentions found");
+		throw new Error("Cannot finalize BTC transaction without intentions");
 	}
 
 	const pk = await getPublicKeyForAccount(config, options.publicKey);
@@ -216,6 +219,34 @@ export const finalizeBTCTransaction = async (
 	}
 
 	if (options.shouldComplete) {
+		const runesReceiver = accounts?.find(
+			(it) => it.purpose === AddressPurpose.Ordinals,
+		);
+		const btcReceiver =
+			accounts?.find((it) => it.purpose === AddressPurpose.Payment) ??
+			runesReceiver;
+
+		if (
+			!runesReceiver &&
+			options.assetsToWithdraw?.find((it) => it !== zeroAddress)
+		) {
+			throw new Error("No ordinals account found to withdraw runes");
+		}
+
+		if (!btcReceiver) {
+			throw new Error("No account found to withdraw BTC");
+		}
+
+		const btcPublicKey = getPublicKey(
+			config,
+			btcReceiver.publicKey,
+		) as `0x${string}`;
+
+		const runesPublicKey = getPublicKey(
+			config,
+			runesReceiver?.publicKey ?? btcReceiver.publicKey,
+		) as `0x${string}`;
+
 		addTxIntention(config, store, {
 			hasWithdraw,
 			hasRunesWithdraw,
@@ -228,8 +259,8 @@ export const finalizeBTCTransaction = async (
 					functionName: "completeTx",
 					args: [
 						`0x${btcTx.tx.id}`,
-						pk as `0x${string}`,
-						padHex("0x0", { size: 32 }), // BTC receiver
+						runesPublicKey,
+						btcPublicKey,
 						options.assetsToWithdraw ?? [],
 						new Array(options.assetsToWithdraw?.length ?? 0).fill(0n),
 					],
