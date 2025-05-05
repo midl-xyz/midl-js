@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 1.0.13
+
+### Patch Changes
+
+- d89f911: fix: add ability to pass custom config and store
+
 ## 1.0.12
 
 ### Patch Changes

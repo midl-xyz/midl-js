@@ -1,5 +1,14 @@
 # @midl-xyz/hardhat-deploy
 
+## 0.1.20
+
+### Patch Changes
+
+- Updated dependencies [d89f911]
+  - @midl-xyz/midl-js-react@1.0.13
+  - @midl-xyz/midl-js-core@1.0.13
+  - @midl-xyz/midl-js-executor@1.0.13
+
 ## 0.1.19
 
 ### Patch Changes

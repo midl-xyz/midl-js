@@ -1,5 +1,15 @@
 # @midl-xyz/midl-js-executor-react
 
+## 1.0.13
+
+### Patch Changes
+
+- d89f911: fix: add ability to pass custom config and store
+- Updated dependencies [d89f911]
+  - @midl-xyz/midl-js-react@1.0.13
+  - @midl-xyz/midl-js-core@1.0.13
+  - @midl-xyz/midl-js-executor@1.0.13
+
 ## 1.0.12
 
 ### Patch Changes
