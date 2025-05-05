@@ -1,7 +1,12 @@
+import type { MidlContextStore } from "@midl-xyz/midl-js-react";
 import type { TransactionSerializableBTC } from "viem";
 import { serializeTransaction } from "viem";
 import { useChainId } from "wagmi";
 import { useLastNonce } from "~/hooks/useLastNonce";
+
+type UseSerializeTransactionParams = {
+	store?: MidlContextStore;
+};
 
 /**
  * Custom hook to serialize a Bitcoin transaction.
@@ -22,8 +27,10 @@ import { useLastNonce } from "~/hooks/useLastNonce";
  *
  * @returns Function to serialize the given Bitcoin transaction.
  */
-export const useSerializeTransaction = () => {
-	const lastNonce = useLastNonce();
+export const useSerializeTransaction = ({
+	store: customStore,
+}: UseSerializeTransactionParams = {}) => {
+	const lastNonce = useLastNonce({ store: customStore });
 	const globalChainId = useChainId();
 
 	const prepareTx = async ({ chainId, ...tx }: TransactionSerializableBTC) => {

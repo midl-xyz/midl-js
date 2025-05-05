@@ -1,13 +1,14 @@
 import {
+	type Config,
 	type SignMessageParams,
 	SignMessageProtocol,
 	type SignMessageResponse,
 	signMessage,
 } from "@midl-xyz/midl-js-core";
 import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
-import { useMidlContext } from "~/context";
 import { useAccounts } from "~/hooks/useAccounts";
 import { useConfig } from "~/hooks/useConfig";
+import { useConfigInternal } from "~/hooks/useConfigInternal";
 
 type SignMessageVariables = Omit<SignMessageParams, "address"> & {
 	address?: string;
@@ -20,6 +21,7 @@ type UseSignMessageParams = {
 		UseMutationOptions<SignMessageData, SignMessageError, SignMessageVariables>,
 		"mutationFn"
 	>;
+	config?: Config;
 };
 
 /**
@@ -38,9 +40,13 @@ type UseSignMessageParams = {
  * - `signMessage`: `(variables: SignMessageVariables) => void` – Function to initiate message signing.
  * - `signMessageAsync`: `(variables: SignMessageVariables) => Promise<SignMessageData>` – Function to asynchronously sign the message.
  */
-export const useSignMessage = ({ mutation }: UseSignMessageParams = {}) => {
-	const { connection } = useConfig();
-	const { config } = useMidlContext();
+export const useSignMessage = ({
+	mutation,
+	config: customConfig,
+}: UseSignMessageParams = {}) => {
+	const { connection } = useConfig(customConfig);
+	const config = useConfigInternal(customConfig);
+
 	const { paymentAccount, ordinalsAccount } = useAccounts();
 
 	const { mutate, mutateAsync, ...rest } = useMutation<

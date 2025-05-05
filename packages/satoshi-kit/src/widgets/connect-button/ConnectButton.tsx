@@ -1,6 +1,7 @@
 "use client";
 
 import { useAccounts } from "@midl-xyz/midl-js-react";
+import { useSatoshiKit } from "~/app";
 import { useToggle } from "~/shared/api";
 import { Button } from "~/shared/ui/button";
 import { AccountButton } from "~/widgets/account-button";
@@ -44,7 +45,8 @@ export const ConnectButton = ({
 	hideAvatar = false,
 	children,
 }: ConnectButtonProps) => {
-	const { isConnected, isConnecting } = useAccounts();
+	const { config } = useSatoshiKit();
+	const { isConnected, isConnecting } = useAccounts({ config });
 	const [isConnectDialogOpen, toggleConnectDialog] = useToggle(false);
 	const [isAccountDialogOpen, toggleAccountDialog] = useToggle(false);
 
@@ -85,20 +87,16 @@ export const ConnectButton = ({
 					</Button>
 				))}
 
-			{children && (
-				<>
-					{children({
-						openConnectDialog: () => {
-							toggleConnectDialog(true);
-						},
-						openAccountDialog: () => {
-							toggleAccountDialog(true);
-						},
-						isConnected,
-						isConnecting,
-					})}
-				</>
-			)}
+			{children?.({
+				openConnectDialog: () => {
+					toggleConnectDialog(true);
+				},
+				openAccountDialog: () => {
+					toggleAccountDialog(true);
+				},
+				isConnected,
+				isConnecting,
+			})}
 		</>
 	);
 };

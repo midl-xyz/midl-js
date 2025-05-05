@@ -11,9 +11,9 @@ export const useAuthentication = ({
 	signInMutation,
 	signOutMutation,
 }: UseAuthenticationParams = {}) => {
-	const { authenticationAdapter } = useSatoshiKit();
-	const { signMessageAsync } = useSignMessage();
-	const { network } = useConfig();
+	const { authenticationAdapter, config } = useSatoshiKit();
+	const { signMessageAsync } = useSignMessage({ config });
+	const { network } = useConfig(config);
 
 	const {
 		mutate: signIn,

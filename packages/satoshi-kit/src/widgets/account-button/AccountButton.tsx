@@ -2,6 +2,7 @@
 
 import { useAccounts, useBalance } from "@midl-xyz/midl-js-react";
 import { css } from "styled-system/css";
+import { useSatoshiKit } from "~/app";
 import { formatBTC, shortenAddress } from "~/shared";
 import { Button } from "~/shared/ui/button";
 import { IdentIcon } from "~/shared/ui/ident-icon";
@@ -28,10 +29,12 @@ export const AccountButton = ({
 	onClick,
 	children,
 }: AccountButtonProps) => {
-	const { accounts } = useAccounts();
+	const { config } = useSatoshiKit();
+	const { accounts } = useAccounts({ config });
 	const [primaryAccount] = accounts ?? [];
-	const { balance } = useBalance({
+	const { balance, isLoading } = useBalance({
 		address: primaryAccount.address,
+		config,
 		query: {
 			enabled: Boolean(primaryAccount.address) && !hideBalance,
 		},
@@ -64,8 +67,8 @@ export const AccountButton = ({
 		>
 			{!hideBalance && (
 				<span>
-					{balance ? (
-						`${formatBTC(balance)} BTC`
+					{!isLoading ? (
+						`${formatBTC(balance ?? 0)} BTC`
 					) : (
 						<Spinner
 							width="1.1em"
