@@ -1,14 +1,14 @@
 import {
 	type Config,
 	type GetRuneBalanceParams,
-	type GetRuneBalanceResponse,
+	type RuneBalanceResponse,
 	getRuneBalance,
 } from "@midl-xyz/midl-js-core";
 import { type UseQueryOptions, useQuery } from "@tanstack/react-query";
 import { useConfigInternal } from "~/hooks/useConfigInternal";
 
 type QueryOptions = Omit<
-	UseQueryOptions<GetRuneBalanceResponse>,
+	UseQueryOptions<RuneBalanceResponse>,
 	"queryFn" | "queryKey"
 > & {
 	queryKey?: ReadonlyArray<unknown>;
@@ -43,7 +43,7 @@ export const useRuneBalance = ({
 }: UseRuneBalanceParams) => {
 	const config = useConfigInternal(customConfig);
 
-	const { data: balance, ...rest } = useQuery<GetRuneBalanceResponse>({
+	const { data: balance, ...rest } = useQuery<RuneBalanceResponse>({
 		queryKey: ["runeBalance", address, runeId, ...(queryKey ?? [])],
 		queryFn: () => {
 			return getRuneBalance(config, {

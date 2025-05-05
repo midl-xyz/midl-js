@@ -1,13 +1,13 @@
 import {
 	type Config,
-	type GetFeeRateResponse,
+	type FeeRateResponse,
 	getFeeRate,
 } from "@midl-xyz/midl-js-core";
 import { type UseQueryOptions, useQuery } from "@tanstack/react-query";
 import { useConfigInternal } from "~/hooks/useConfigInternal";
 
 type QueryOptions = Omit<
-	UseQueryOptions<GetFeeRateResponse>,
+	UseQueryOptions<FeeRateResponse>,
 	"queryFn" | "queryKey"
 > & {
 	queryKey?: ReadonlyArray<unknown>;
