@@ -3,20 +3,12 @@
 import type { Config } from "@midl-xyz/midl-js-core";
 import { createContext, useContext, useMemo } from "react";
 
-import { type StoreApi, createStore } from "zustand/vanilla";
+import { createStore } from "zustand/vanilla";
+import type { MidlContextState, MidlContextType } from "~/types";
 
-// biome-ignore lint/suspicious/noEmptyInterface: <explanation>
-export interface MidlContextState {}
-
-export interface MidlContextType {
-	readonly config: Config;
-	readonly store: StoreApi<MidlContextState>;
-}
-
-export const MidlContext = createContext<MidlContextType>({
-	config: {} as Config,
-	store: {} as StoreApi<MidlContextState>,
-});
+export const MidlContext = createContext<MidlContextType>(
+	undefined as unknown as MidlContextType,
+);
 
 export const useMidlContext = () => {
 	return useContext(MidlContext);

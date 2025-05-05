@@ -1,7 +1,6 @@
-import { waitForTransaction } from "@midl-xyz/midl-js-core";
+import { type Config, waitForTransaction } from "@midl-xyz/midl-js-core";
 import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
-import { useMidlContext } from "~/context";
-import { useConfig } from "~/hooks/useConfig";
+import { useConfigInternal } from "~/hooks/useConfigInternal";
 
 type WaitForTransactionVariables = {
 	txId: string;
@@ -22,6 +21,7 @@ type UseWaitForTransactionParams = {
 		>,
 		"mutationFn"
 	>;
+	config?: Config;
 };
 
 /**
@@ -46,8 +46,9 @@ type UseWaitForTransactionParams = {
  */
 export const useWaitForTransaction = ({
 	mutation,
+	config: customConfig,
 }: UseWaitForTransactionParams = {}) => {
-	const { config } = useMidlContext();
+	const config = useConfigInternal(customConfig);
 
 	const { mutate, mutateAsync, ...rest } = useMutation<
 		WaitForTransactionData,

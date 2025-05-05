@@ -1,7 +1,8 @@
 import {
-	connect,
+	type Config,
 	type ConnectParams,
 	type Connector,
+	connect,
 } from "@midl-xyz/midl-js-core";
 import {
 	type DefaultError,
@@ -9,8 +10,8 @@ import {
 	useMutation,
 	useQueryClient,
 } from "@tanstack/react-query";
-import { useMidlContext } from "~/context";
 import { useConfig } from "~/hooks/useConfig";
+import { useConfigInternal } from "~/hooks/useConfigInternal";
 
 type ConnectData = Awaited<ReturnType<Connector["connect"]>>;
 
@@ -28,6 +29,7 @@ type UseConnectParams = ConnectParams & {
 		UseMutationOptions<ConnectData, ConnectError, ConnectVariables>,
 		"mutationFn"
 	>;
+	config?: Config;
 };
 
 export const ConnectMutationKey = "connect";
@@ -51,12 +53,13 @@ export const ConnectMutationKey = "connect";
  */
 export const useConnect = ({
 	mutation: { onSuccess, ...mutationOptions } = {},
+	config: customConfig,
 	...params
 }: UseConnectParams) => {
-	const { config } = useMidlContext();
+	const config = useConfigInternal(customConfig);
 	const queryClient = useQueryClient();
 
-	const { connectors } = useConfig();
+	const { connectors } = useConfig(customConfig);
 
 	const mutation = useMutation<ConnectData, ConnectError, ConnectVariables>({
 		mutationKey: [ConnectMutationKey],

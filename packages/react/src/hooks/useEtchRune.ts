@@ -1,6 +1,10 @@
-import { type EtchRuneParams, etchRune } from "@midl-xyz/midl-js-core";
+import {
+	type Config,
+	type EtchRuneParams,
+	etchRune,
+} from "@midl-xyz/midl-js-core";
 import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
-import { useMidlContext } from "~/context";
+import { useConfigInternal } from "~/hooks/useConfigInternal";
 
 type EtchRuneData = Awaited<ReturnType<typeof etchRune>>;
 type EtchRuneError = Error;
@@ -11,6 +15,7 @@ type UseEtchRuneParams = {
 		UseMutationOptions<EtchRuneData, EtchRuneError, EtchRuneVariables>,
 		"mutationFn"
 	>;
+	config?: Config;
 };
 
 /**
@@ -29,14 +34,17 @@ type UseEtchRuneParams = {
  * - **etchRune**: `(variables: EtchRuneVariables) => void` – Function to initiate the Etch Rune action.
  * - **etchRuneAsync**: `(variables: EtchRuneVariables) => Promise<EtchRuneData>` – Function to asynchronously execute the Etch Rune action.
  */
-export const useEtchRune = (params: UseEtchRuneParams) => {
-	const { config } = useMidlContext();
+export const useEtchRune = ({
+	mutation: mutationParams,
+	config: customConfig,
+}: UseEtchRuneParams) => {
+	const config = useConfigInternal(customConfig);
 
 	const mutation = useMutation<EtchRuneData, EtchRuneError, EtchRuneVariables>({
 		mutationFn: (params) => {
 			return etchRune(config, params);
 		},
-		...params.mutation,
+		...mutationParams,
 	});
 
 	return {

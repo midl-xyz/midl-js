@@ -21,6 +21,10 @@ export const connect = async (
 		network: params.network ?? network,
 	});
 
+	if (accounts.length === 0) {
+		throw new Error("No accounts connected");
+	}
+
 	config.setState({
 		connection: connector,
 		accounts,
