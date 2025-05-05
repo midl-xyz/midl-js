@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 1.0.11
+
+### Patch Changes
+
+- fix(core): sats-connect filter addresses
+
 ## 1.0.10
 
 ### Patch Changes

@@ -45,9 +45,9 @@ export class SatsConnectConnector implements Connector {
 		}
 
 		const accounts = data.result.addresses
-			.filter((it) => {
-				[AddressPurpose.Ordinals, AddressPurpose.Payment].includes(it.purpose);
-			})
+			.filter((it) =>
+				[AddressPurpose.Ordinals, AddressPurpose.Payment].includes(it.purpose),
+			)
 			.map(({ walletType, ...account }) => {
 				return {
 					...account,
