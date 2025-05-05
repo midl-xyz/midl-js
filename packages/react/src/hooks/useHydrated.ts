@@ -1,15 +1,22 @@
+import type { Config } from "@midl-xyz/midl-js-core";
 import { useEffect, useState } from "react";
-import { useMidlContext } from "~/context";
+import { useConfigInternal } from "~/hooks/useConfigInternal";
 
-export const useHydrated = () => {
-	const { config } = useMidlContext();
+type UseHydratedParams = {
+	config?: Config;
+};
+
+export const useHydrated = ({
+	config: customConfig,
+}: UseHydratedParams = {}) => {
+	const config = useConfigInternal(customConfig);
 	const [hydrated, setHydrated] = useState(false);
 
 	useEffect(() => {
 		if (config.persist?.hasHydrated()) {
 			setHydrated(true);
 		}
-	}, [config.persist]);
+	}, [config]);
 
 	return hydrated;
 };

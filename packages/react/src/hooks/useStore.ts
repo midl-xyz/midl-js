@@ -1,5 +1,6 @@
-import { useMidlContext } from "~/context";
 import { useStore as useZustandStore } from "zustand";
+import { useStoreInternal } from "~/hooks/useStoreInternal";
+import type { MidlContextStore } from "~/types";
 
 /**
  * Accesses the global state within the Midl context.
@@ -11,7 +12,8 @@ import { useStore as useZustandStore } from "zustand";
  *
  * @returns `Store` – The Zustand store instance.
  */
-export const useStore = () => {
-	const { store } = useMidlContext();
+export const useStore = (customStore?: MidlContextStore) => {
+	const store = useStoreInternal(customStore);
+
 	return useZustandStore(store);
 };

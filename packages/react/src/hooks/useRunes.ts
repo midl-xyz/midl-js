@@ -1,10 +1,12 @@
 import {
+	type Config,
 	type GetRunesParams,
 	type GetRunesResponse,
 	getRunes,
 } from "@midl-xyz/midl-js-core";
 import { type UseQueryOptions, useQuery } from "@tanstack/react-query";
 import { useMidlContext } from "~/context";
+import { useConfigInternal } from "~/hooks/useConfigInternal";
 
 type QueryOptions = Omit<
 	UseQueryOptions<GetRunesResponse>,
@@ -15,6 +17,7 @@ type QueryOptions = Omit<
 
 type UseRunesParams = GetRunesParams & {
 	query?: QueryOptions;
+	config?: Config;
 };
 
 /**
@@ -36,13 +39,18 @@ export const useRunes = ({
 	limit,
 	offset,
 	query: { queryKey, ...query } = {} as QueryOptions,
+	config: customConfig,
 }: UseRunesParams) => {
-	const { config } = useMidlContext();
+	const config = useConfigInternal(customConfig);
 
 	const { data: runes, ...rest } = useQuery<GetRunesResponse>({
 		queryKey: ["runes", address, limit, offset, ...(queryKey ?? [])],
 		queryFn: () => {
-			return getRunes(config, { address, limit, offset });
+			return getRunes(config, {
+				address,
+				limit,
+				offset,
+			});
 		},
 		...query,
 	});

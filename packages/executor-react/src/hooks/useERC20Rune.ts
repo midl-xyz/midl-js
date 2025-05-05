@@ -1,4 +1,5 @@
 import deployment from "@midl-xyz/contracts/deployments/0.0.10/Executor.json";
+import type { Config } from "@midl-xyz/midl-js-core";
 import { executorAbi, runeIdToBytes32 } from "@midl-xyz/midl-js-executor";
 import { useRune } from "@midl-xyz/midl-js-react";
 import { type UseReadContractParameters, useReadContract } from "wagmi";
@@ -10,6 +11,7 @@ type UseERC20Params = {
 			"getAssetAddressByRuneId"
 		>["query"]
 	>;
+	config?: Config;
 };
 
 /**
@@ -35,9 +37,9 @@ type UseERC20Params = {
  */
 export const useERC20Rune = (
 	runeId: string,
-	{ query }: UseERC20Params = {},
+	{ query, config }: UseERC20Params = {},
 ) => {
-	const { rune, ...rest } = useRune({ runeId });
+	const { rune, ...rest } = useRune({ runeId, config });
 	const bytes32RuneId = runeIdToBytes32(rune?.id ?? "");
 
 	const { data: erc20Address, ...erc20rest } = useReadContract({

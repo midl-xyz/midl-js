@@ -1,7 +1,16 @@
-import { getUTXOs } from "@midl-xyz/midl-js-core";
-import { useQuery } from "@tanstack/react-query";
-import { useMidlContext } from "~/context";
+import { type Config, getUTXOs } from "@midl-xyz/midl-js-core";
+import { useQuery, type UseQueryOptions } from "@tanstack/react-query";
 import { useConfig } from "~/hooks/useConfig";
+import { useConfigInternal } from "~/hooks/useConfigInternal";
+
+type QueryOptions = Omit<UseQueryOptions, "queryFn" | "queryKey"> & {
+	queryKey?: ReadonlyArray<unknown>;
+};
+
+type UseUTXOsParams = {
+	config?: Config;
+	query?: QueryOptions;
+};
 
 /**
  * Retrieves UTXOs for the specified address.
@@ -19,9 +28,12 @@ import { useConfig } from "~/hooks/useConfig";
  * - `error`: `Error | null` – Contains error information if the query failed.
  * - `isFetching`: `boolean` – Indicates if the query is in the background fetching state.
  */
-export const useUTXOs = (address?: string) => {
-	const { network, connection } = useConfig();
-	const { config } = useMidlContext();
+export const useUTXOs = (
+	address?: string,
+	{ config: customConfig, query }: UseUTXOsParams = {},
+) => {
+	const { network, connection } = useConfig(customConfig);
+	const config = useConfigInternal(customConfig);
 
 	const skipQuery = !network || !connection || !address;
 
@@ -32,6 +44,7 @@ export const useUTXOs = (address?: string) => {
 			return getUTXOs(config, address!);
 		},
 		enabled: !skipQuery,
+		...query,
 	});
 
 	return {

@@ -1,7 +1,14 @@
-import { AddressPurpose } from "@midl-xyz/midl-js-core";
+import { AddressPurpose, type Config } from "@midl-xyz/midl-js-core";
 import { useIsMutating, useQuery } from "@tanstack/react-query";
 import { useConfig } from "~/hooks/useConfig";
 import { ConnectMutationKey } from "~/hooks/useConnect";
+
+type UseAccountsParams = {
+	/**
+	 * Config object to use instead of the one from the context.
+	 */
+	config?: Config;
+};
 
 /**
  * Provides access to the connected user's accounts.
@@ -22,8 +29,8 @@ import { ConnectMutationKey } from "~/hooks/useConnect";
  * - **network**: `BitcoinNetwork | undefined` – The connected network.
  * - **...rest**: `any` – Additional query state provided by `useQuery`.
  */
-export const useAccounts = () => {
-	const { accounts, connection, network } = useConfig();
+export const useAccounts = ({ config }: UseAccountsParams = {}) => {
+	const { accounts, connection, network } = useConfig(config);
 	const { data, status, ...rest } = useQuery({
 		queryKey: ["accounts", connection],
 		queryFn: async () => {

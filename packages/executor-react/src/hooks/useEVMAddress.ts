@@ -1,3 +1,4 @@
+import type { Config } from "@midl-xyz/midl-js-core";
 import { getEVMAddress } from "@midl-xyz/midl-js-executor";
 import { useConfig } from "@midl-xyz/midl-js-react";
 import { zeroAddress } from "viem";
@@ -8,6 +9,8 @@ type UseEVMAddressParams = {
 	 * The public key to get the EVM address from
 	 */
 	publicKey?: string;
+
+	config?: Config;
 };
 
 /**
@@ -19,10 +22,14 @@ type UseEVMAddressParams = {
  * const evmAddress = useEVMAddress({ publicKey: '0xabc123...' });
  * ```
  */
-export const useEVMAddress = ({ publicKey }: UseEVMAddressParams = {}) => {
-	const config = useConfig();
+export const useEVMAddress = ({
+	publicKey,
+	config: customConfig,
+}: UseEVMAddressParams = {}) => {
+	const config = useConfig(customConfig);
 	const pk = usePublicKey({
 		publicKey,
+		config: customConfig,
 	});
 
 	try {

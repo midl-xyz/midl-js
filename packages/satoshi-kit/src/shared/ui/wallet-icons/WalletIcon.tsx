@@ -3,6 +3,7 @@ import LeatherIcon from "./LeatherIcon";
 import UnisatIcon from "./UnisatIcon";
 import XverseIcon from "./XverseIcon";
 import BitgetIcon from "./BitgetIcon";
+import PhantomIcon from "./PhantomIcon";
 
 type WalletIconProps = {
 	size: number;
@@ -34,6 +35,11 @@ export const WalletIcon = ({
 		case "bitkeep.unisat":
 			Icon = BitgetIcon;
 			break;
+
+		case "phantom":
+			Icon = PhantomIcon;
+			break;
+
 		default:
 			if (process.env.NODE_ENV === "development") {
 				console.warn(`Unknown connectorId: ${connectorId}`);

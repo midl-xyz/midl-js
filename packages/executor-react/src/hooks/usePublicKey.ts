@@ -1,11 +1,18 @@
 import { getPublicKey } from "@midl-xyz/midl-js-executor";
-import { useAccounts, useMidlContext } from "@midl-xyz/midl-js-react";
+import {
+	useAccounts,
+	useConfigInternal,
+	useMidlContext,
+} from "@midl-xyz/midl-js-react";
+import type { Config } from "@midl-xyz/midl-js-core";
 
 type UsePublicKeyParams = {
 	/**
 	 * The public key to convert to an EVM address.
 	 */
 	publicKey?: string;
+
+	config?: Config;
 };
 
 /**
@@ -19,9 +26,14 @@ type UsePublicKeyParams = {
  * const publicKeyHex = usePublicKey({ publicKey: '0xabc123...' });
  * ```
  */
-export const usePublicKey = ({ publicKey }: UsePublicKeyParams = {}) => {
-	const { ordinalsAccount, paymentAccount } = useAccounts();
-	const { config } = useMidlContext();
+export const usePublicKey = ({
+	publicKey,
+	config: customConfig,
+}: UsePublicKeyParams = {}) => {
+	const { ordinalsAccount, paymentAccount } = useAccounts({
+		config: customConfig,
+	});
+	const config = useConfigInternal(customConfig);
 
 	try {
 		const pk =

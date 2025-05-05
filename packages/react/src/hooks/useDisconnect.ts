@@ -1,9 +1,10 @@
-import { disconnect } from "@midl-xyz/midl-js-core";
+import { type Config, disconnect } from "@midl-xyz/midl-js-core";
 import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
-import { useMidlContext } from "~/context";
+import { useConfigInternal } from "~/hooks/useConfigInternal";
 
 type UseDisconnectParams = {
 	mutation?: Omit<UseMutationOptions, "mutationFn">;
+	config?: Config;
 };
 
 /**
@@ -22,8 +23,11 @@ type UseDisconnectParams = {
  * - **disconnect**: `() => void` – Function to initiate disconnection.
  * - **disconnectAsync**: `() => Promise<void>` – Function to asynchronously disconnect.
  */
-export const useDisconnect = ({ mutation }: UseDisconnectParams = {}) => {
-	const { config } = useMidlContext();
+export const useDisconnect = ({
+	mutation,
+	config: customConfig,
+}: UseDisconnectParams = {}) => {
+	const config = useConfigInternal(customConfig);
 
 	const { mutate, mutateAsync, ...rest } = useMutation({
 		mutationFn: async () => {

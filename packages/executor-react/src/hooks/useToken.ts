@@ -4,6 +4,7 @@ import type { Address } from "viem";
 import { type UseReadContractParameters, useReadContract } from "wagmi";
 import { executorAbi } from "@midl-xyz/midl-js-executor";
 import { bytes32toRuneId } from "@midl-xyz/midl-js-executor";
+import type { Config } from "@midl-xyz/midl-js-core";
 
 type UseERC20Params = {
 	query?: NonNullable<
@@ -12,6 +13,7 @@ type UseERC20Params = {
 			"getRuneIdByAssetAddress"
 		>["query"]
 	>;
+	config?: Config;
 };
 
 /**
@@ -36,7 +38,10 @@ type UseERC20Params = {
  * - **bytes32RuneId**: `string | undefined` – The bytes32 representation of the Rune ID.
  * - **rune**: `Rune | undefined` – The corresponding Rune data.
  */
-export const useToken = (address: Address, { query }: UseERC20Params = {}) => {
+export const useToken = (
+	address: Address,
+	{ query, config: customConfig }: UseERC20Params = {},
+) => {
 	const { data: bytes32RuneId, ...bytes32State } = useReadContract({
 		abi: executorAbi,
 		functionName: "getRuneIdByAssetAddress",
@@ -59,7 +64,7 @@ export const useToken = (address: Address, { query }: UseERC20Params = {}) => {
 		// do nothing
 	}
 
-	const { rune, ...rest } = useRune({ runeId });
+	const { rune, ...rest } = useRune({ runeId, config: customConfig });
 
 	return {
 		state: rest,

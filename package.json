@@ -12,7 +12,7 @@
 	},
 	"devDependencies": {
 		"@alcalzone/esm2cjs": "^1.4.1",
-		"@biomejs/biome": "1.8.3",
+		"@biomejs/biome": "1.9.4",
 		"@changesets/cli": "^2.27.7",
 		"@commitlint/cli": "^19.6.1",
 		"@commitlint/config-conventional": "^19.6.0",

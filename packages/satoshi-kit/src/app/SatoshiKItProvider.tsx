@@ -1,8 +1,8 @@
 import { Toaster } from "@ark-ui/react";
-import { AddressPurpose } from "@midl-xyz/midl-js-core";
-import { useConfig } from "@midl-xyz/midl-js-react";
+import { AddressPurpose, type Config } from "@midl-xyz/midl-js-core";
+import { useConfigInternal } from "@midl-xyz/midl-js-react";
 import { XIcon } from "lucide-react";
-import { createContext, useContext, useEffect, type ReactNode } from "react";
+import { type ReactNode, createContext, useContext, useEffect } from "react";
 import type { AuthenticationAdapter } from "~/features/auth";
 import { useToaster } from "~/shared";
 import { IconButton } from "~/shared/ui/icon-button";
@@ -11,6 +11,7 @@ import { Toast } from "~/shared/ui/toast";
 type SatoshiKitContext = {
 	purposes: AddressPurpose[];
 	authenticationAdapter: AuthenticationAdapter | null;
+	config: Config;
 };
 
 const context = createContext<SatoshiKitContext>(
@@ -18,9 +19,10 @@ const context = createContext<SatoshiKitContext>(
 );
 
 type SatoshiKitProviderProps = {
+	children: ReactNode;
 	purposes?: AddressPurpose[];
 	authenticationAdapter?: AuthenticationAdapter;
-	children: ReactNode;
+	config?: Config;
 };
 
 export const useSatoshiKit = () => {
@@ -30,22 +32,22 @@ export const useSatoshiKit = () => {
 export const SatoshiKitProvider = ({
 	children,
 	authenticationAdapter,
+	config: customConfig,
 	purposes = [AddressPurpose.Payment, AddressPurpose.Ordinals],
 }: SatoshiKitProviderProps) => {
-	const { accounts } = useConfig();
+	const config = useConfigInternal(customConfig);
 	const toaster = useToaster();
 
 	useEffect(() => {
-		if (!authenticationAdapter) {
-			return;
-		}
-
-		// TODO: Check if user is authenticated,
-		// however it's better add hook for disconnect in react library
-		if (!accounts || accounts.length === 0) {
-			authenticationAdapter.signOut();
-		}
-	}, [accounts, authenticationAdapter]);
+		config.subscribe((state, prevState) => {
+			if (
+				typeof state.connection === "undefined" &&
+				typeof prevState.connection !== "undefined"
+			) {
+				authenticationAdapter?.signOut();
+			}
+		});
+	}, [config, authenticationAdapter]);
 
 	return (
 		<>
@@ -53,6 +55,7 @@ export const SatoshiKitProvider = ({
 				value={{
 					purposes,
 					authenticationAdapter: authenticationAdapter ?? null,
+					config,
 				}}
 			>
 				{children}

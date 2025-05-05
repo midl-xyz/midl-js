@@ -1,5 +1,6 @@
+import type { Config } from "@midl-xyz/midl-js-core";
 import { useStore } from "zustand";
-import { useMidlContext } from "~/context";
+import { useConfigInternal } from "~/hooks/useConfigInternal";
 
 /**
  * Retrieves the current configuration
@@ -12,8 +13,12 @@ import { useMidlContext } from "~/context";
  *
  * @returns **Config** – The current configuration object.
  */
-export const useConfig = () => {
-	const { config } = useMidlContext();
+export const useConfig = (customConfig?: Config) => {
+	const config = useConfigInternal(customConfig);
+
+	if (!config) {
+		throw new Error("No config provided");
+	}
 
 	return useStore(config);
 };
