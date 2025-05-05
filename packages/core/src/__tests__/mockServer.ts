@@ -1,8 +1,7 @@
 import { http, HttpResponse, type RequestHandler } from "msw";
 import { setupServer } from "msw/node";
-import type { RuneUTXO } from "~/actions";
 import { randomBytes } from "node:crypto";
-import type { UTXO } from "~/providers";
+import type { RuneUTXO, UTXO } from "~/providers";
 
 const handlers: RequestHandler[] = [
 	http.get("https://mempool.regtest.midl.xyz/api/v1/fees/recommended", () => {
