@@ -2,7 +2,9 @@ name: Publish to NPM
 
 on:
   workflow_dispatch:
-
+  release:
+    types: [published]
+    
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
