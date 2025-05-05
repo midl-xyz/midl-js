@@ -1,5 +1,4 @@
 import type { Config } from "~/createConfig";
-import axios from "axios";
 
 /**
  * Gets the current block number
@@ -14,15 +13,11 @@ import axios from "axios";
  * @returns The current block number
  * */
 export const getBlockNumber = async (config: Config) => {
-	const { network } = config.getState();
+	const { network, provider } = config.getState();
 
 	if (!network) {
 		throw new Error("No network");
 	}
 
-	const response = await axios.get<string>(
-		`${network.rpcUrl}/blocks/tip/height`,
-	);
-
-	return Number.parseInt(response.data, 10);
+	return provider.getLatestBlockHeight(network);
 };

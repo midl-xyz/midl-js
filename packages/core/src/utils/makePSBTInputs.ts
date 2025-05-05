@@ -4,7 +4,6 @@ import type { Account } from "~/connectors";
 import { AddressType } from "~/constants";
 import type { Config } from "~/createConfig";
 import { extractXCoordinate } from "~/utils/extractXCoordinate";
-import axios from "axios";
 
 type PSBTInput = Parameters<typeof Psbt.prototype.addInput>[0];
 
@@ -20,7 +19,7 @@ export const makePSBTInputs = async (
 	account: Account,
 	utxos: UTXO[],
 ): Promise<PSBTInput[]> => {
-	const { network: currentNetwork } = config.getState();
+	const { network: currentNetwork, provider } = config.getState();
 
 	if (!currentNetwork) {
 		throw new Error("No network");
@@ -40,8 +39,9 @@ export const makePSBTInputs = async (
 			});
 
 			for (const utxo of utxos) {
-				const { data: hex } = await axios.get(
-					`${currentNetwork.rpcUrl}/tx/${utxo.txid}/hex`,
+				const hex = await provider.getTransactionHex(
+					currentNetwork,
+					utxo.txid as string,
 				);
 
 				inputs.push({

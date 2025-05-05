@@ -1,5 +1,4 @@
 import type { Config } from "~/createConfig";
-import axios from "axios";
 
 export type GetRunesParams = {
 	/**
@@ -14,43 +13,6 @@ export type GetRunesParams = {
 	 * The address to get the runes of
 	 */
 	address: string;
-};
-
-export type GetRunesResponse = {
-	/**
-	 * The limit of runes
-	 */
-	limit: number;
-	/**
-	 * The offset of runes
-	 */
-	offset: number;
-	/**
-	 * The total number of runes
-	 */
-	total: number;
-	/**
-	 * The results
-	 */
-	results: {
-		/**
-		 * The rune details
-		 * */
-		rune: {
-			id: string;
-			number: number;
-			name: string;
-			spaced_name: string;
-		};
-		/**
-		 * The balance of the rune
-		 */
-		balance: string;
-		/**
-		 * The address
-		 */
-		address: string;
-	}[];
 };
 
 /**
@@ -75,21 +37,14 @@ export const getRunes = async (
 	config: Config,
 	{ address, limit = 20, offset = 0 }: GetRunesParams,
 ) => {
-	const { network } = config.getState();
+	const { network, provider } = config.getState();
 
 	if (!network) {
 		throw new Error("No network found");
 	}
 
-	const response = await axios.get<GetRunesResponse>(
-		`${network.runesUrl}/runes/v1/addresses/${address}/balances`,
-		{
-			params: {
-				limit,
-				offset,
-			},
-		},
-	);
-
-	return response.data;
+	return provider.getRunes(network, address, {
+		limit,
+		offset,
+	});
 };

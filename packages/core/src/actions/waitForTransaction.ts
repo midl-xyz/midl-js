@@ -1,6 +1,5 @@
 import { getBlockNumber } from "~/actions/getBlockNumber";
 import type { Config } from "~/createConfig";
-import axios from "axios";
 
 /**
  * Waits for a transaction to be confirmed
@@ -35,7 +34,7 @@ export const waitForTransaction = (
 		intervalMs?: number;
 	} = {},
 ) => {
-	const { network } = config.getState();
+	const { network, provider } = config.getState();
 
 	const check = async () => {
 		let confirmed = -1;
@@ -47,10 +46,7 @@ export const waitForTransaction = (
 			}
 
 			try {
-				const { data } = await axios.get<{
-					confirmed: boolean;
-					block_height: number;
-				}>(`${network?.rpcUrl}/tx/${txId}/status`);
+				const data = await provider.getTransactionStatus(network, txId);
 
 				if (data.confirmed) {
 					const currentBlockHeight = await getBlockNumber(config);

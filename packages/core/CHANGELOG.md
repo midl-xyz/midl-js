@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 1.0.15
+
+### Patch Changes
+
+- feat: introduce abstract provider
+
 ## 1.0.13
 
 ### Patch Changes

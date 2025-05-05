@@ -1,5 +1,4 @@
 import type { Config } from "~/createConfig";
-import axios from "axios";
 
 export type GetRuneBalanceParams = {
 	/**
@@ -10,17 +9,6 @@ export type GetRuneBalanceParams = {
 	 * The rune ID
 	 */
 	runeId: string;
-};
-
-export type GetRuneBalanceResponse = {
-	/**
-	 * The address
-	 */
-	address?: string;
-	/**
-	 * The balance of the rune
-	 */
-	balance: string;
 };
 
 /**
@@ -43,15 +31,11 @@ export const getRuneBalance = async (
 	config: Config,
 	{ address, runeId }: GetRuneBalanceParams,
 ) => {
-	const { network } = config.getState();
+	const { network, provider } = config.getState();
 
 	if (!network) {
 		throw new Error("No network found");
 	}
 
-	const response = await axios.get<GetRuneBalanceResponse>(
-		`${network.runesUrl}/runes/v1/etchings/${runeId}/holders/${address}`,
-	);
-
-	return response.data;
+	return provider.getRuneBalance(network, address, runeId);
 };
