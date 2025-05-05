@@ -4,6 +4,7 @@ import ecc from "@bitcoinerlab/secp256k1";
 import {
 	afterEach,
 	assert,
+	beforeAll,
 	beforeEach,
 	describe,
 	expect,
@@ -14,6 +15,7 @@ import {
 import { getUTXOs } from "~/actions/getUTXOs";
 import { createConfig } from "~/createConfig";
 import { regtest } from "~/networks";
+import { mockServer } from "~/__tests__/mockServer";
 
 const ECPair = ECPairFactory(ecc);
 
@@ -27,40 +29,17 @@ describe("core | actions | getUTXOs", () => {
 
 	assert(address);
 
-	beforeEach(() => {
-		global.fetch = vi.fn();
+	beforeAll(() => {
+		mockServer.listen();
 	});
 
-	afterEach(() => {
-		(global.fetch as Mock).mockReset();
-	});
-
-	// TODO: Fix this test
-	it.skip("should get UTXOs", async () => {
+	it("should get UTXOs", async () => {
 		const config = createConfig({
 			networks: [regtest],
 			connectors: [],
 		});
 
-		(global.fetch as Mock).mockResolvedValue({
-			json: async () => [
-				{
-					txid: "txid",
-					vout: 0,
-					value: 100000000,
-					address,
-					scriptPubKey: "scriptPubKey",
-					blockHeight: 0,
-					confirmations: 0,
-				},
-			],
-		});
-
 		const result = await getUTXOs(config, address);
-
-		expect(global.fetch).toHaveBeenCalledWith(
-			`${regtest.rpcUrl}/address/${address}/utxo`,
-		);
 
 		expect(result).toBeInstanceOf(Array);
 	});

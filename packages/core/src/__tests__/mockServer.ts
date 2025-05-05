@@ -1,7 +1,8 @@
 import { http, HttpResponse, type RequestHandler } from "msw";
 import { setupServer } from "msw/node";
-import type { RuneUTXO, UTXO } from "~/actions";
+import type { RuneUTXO } from "~/actions";
 import { randomBytes } from "node:crypto";
+import type { UTXO } from "~/providers";
 
 const handlers: RequestHandler[] = [
 	http.get("https://mempool.regtest.midl.xyz/api/v1/fees/recommended", () => {
@@ -13,6 +14,11 @@ const handlers: RequestHandler[] = [
 			minimumFee: 1,
 		});
 	}),
+
+	http.post("https://mempool.regtest.midl.xyz/api/tx", () => {
+		return HttpResponse.text(randomBytes(32).toString("hex"));
+	}),
+
 	http.get("https://mempool.regtest.midl.xyz/api/address/:address/utxo", () => {
 		const utxos: UTXO[] = [
 			{
@@ -43,7 +49,7 @@ const handlers: RequestHandler[] = [
 				scriptPk: "scriptPk",
 				runes: [
 					{
-						runeId: url.searchParams.get("runeId") || "",
+						runeid: url.searchParams.get("runeId") || "",
 						rune: "MOCK",
 						spacedRune: "MOCK",
 						symbol: "M",
@@ -55,6 +61,22 @@ const handlers: RequestHandler[] = [
 		];
 
 		return HttpResponse.json(runeUTXOS);
+	}),
+	http.get("https://mempool.regtest.midl.xyz/api/tx/:txid/hex", () => {
+		return HttpResponse.text(
+			"02000000000101c0b2f3d4e5f6a7b8c9d0e1f2g3h4i5j6k7l8m9n0o1p2q3r4s5t6u7v8w9x0y1z2a3b4c5d6e7f8g9h0i1j2k3l4m5n6o7p8q9r0s1t2u3v4w5x6y7z8a9b0c1d2e3f4g5h6i7j8k9l0m1n2o3p4q5r6s7t8u9v0",
+		);
+	}),
+
+	http.get("https://mempool.regtest.midl.xyz/api/tx/:txid/status", () => {
+		return HttpResponse.json({
+			confirmed: true,
+			block_height: 0,
+		});
+	}),
+
+	http.get("https://mempool.regtest.midl.xyz/api/blocks/tip/height", () => {
+		return HttpResponse.text("0");
 	}),
 ];
 

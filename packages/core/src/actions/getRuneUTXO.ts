@@ -1,5 +1,4 @@
 import type { Config } from "~/createConfig";
-import axios from "axios";
 
 export type RuneUTXO = {
 	/**
@@ -59,20 +58,11 @@ export const getRuneUTXO = async (
 	address: string,
 	runeId: string,
 ) => {
-	const { network } = config.getState();
+	const { network, provider } = config.getState();
 
 	if (!network) {
 		throw new Error("No network");
 	}
 
-	const response = await axios.get<RuneUTXO[]>(
-		`${network.runesUTXOUrl}/utxos/${address}/`,
-		{
-			params: {
-				runeId,
-			},
-		},
-	);
-
-	return response.data;
+	return provider.getRuneUTXOs(network, address, runeId);
 };
