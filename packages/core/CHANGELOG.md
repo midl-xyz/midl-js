@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 1.0.12
+
+### Patch Changes
+
+- fix: xverse provider id
+
 ## 1.0.11
 
 ### Patch Changes
