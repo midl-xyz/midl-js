@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 1.0.10
+
+### Patch Changes
+
+- fix: missing dependencies
+
 ## 1.0.9
 
 ### Patch Changes
