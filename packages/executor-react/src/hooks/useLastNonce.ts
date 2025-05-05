@@ -1,5 +1,9 @@
-import { useStore } from "@midl-xyz/midl-js-react";
+import { type MidlContextStore, useStore } from "@midl-xyz/midl-js-react";
 import { useAccount, useTransactionCount } from "wagmi";
+
+type UseLastNonceParams = {
+	store?: MidlContextStore;
+};
 
 /**
  * Custom hook to retrieve the last nonce for the current account.
@@ -12,10 +16,12 @@ import { useAccount, useTransactionCount } from "wagmi";
  * console.log(`Last nonce: ${lastNonce}`);
  * ```
  *
- * @returns {number} – The last nonce value for the current account, or 0 if not available.
+ * @returns The last nonce value for the current account, or 0 if not available.
  */
-export const useLastNonce = () => {
-	const { wallet } = useStore();
+export const useLastNonce = ({
+	store: customStore,
+}: UseLastNonceParams = {}) => {
+	const { wallet } = useStore(customStore);
 	const { address } = useAccount();
 	const { data } = useTransactionCount({ address });
 

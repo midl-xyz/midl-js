@@ -6,6 +6,7 @@ import { useAccounts, useDisconnect } from "@midl-xyz/midl-js-react";
 import { ClipboardIcon, LogOutIcon, XIcon } from "lucide-react";
 import { css } from "styled-system/css";
 import { Stack } from "styled-system/jsx";
+import { useSatoshiKit } from "~/app";
 import { useClipboard } from "~/features/clipboard";
 import { shortenAddress, useToaster } from "~/shared";
 import { Button } from "~/shared/ui/button";
@@ -20,9 +21,11 @@ type AccountDialogProps = {
 };
 
 export const AccountDialog = ({ open, onClose }: AccountDialogProps) => {
-	const { accounts } = useAccounts();
+	const { config } = useSatoshiKit();
+	const { accounts } = useAccounts({ config });
 	const [primaryAccount] = accounts ?? [];
 	const { disconnect } = useDisconnect({
+		config,
 		mutation: {
 			onSuccess: onClose,
 		},
@@ -77,7 +80,7 @@ export const AccountDialog = ({ open, onClose }: AccountDialogProps) => {
 								<Stack gap={6} width="full" direction="column">
 									{accounts?.map((it) => (
 										<Stack
-											key={it.address}
+											key={it.address + it.purpose}
 											gap={4}
 											direction="row"
 											alignItems="center"

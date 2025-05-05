@@ -1,5 +1,75 @@
 # @midl-xyz/hardhat-deploy
 
+## 1.0.15
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-react@1.0.15
+  - @midl-xyz/midl-js-core@1.0.15
+  - @midl-xyz/midl-js-executor@1.0.15
+
+## 0.1.20
+
+### Patch Changes
+
+- Updated dependencies [d89f911]
+  - @midl-xyz/midl-js-react@1.0.13
+  - @midl-xyz/midl-js-core@1.0.13
+  - @midl-xyz/midl-js-executor@1.0.13
+
+## 0.1.19
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-core@1.0.12
+  - @midl-xyz/midl-js-executor@1.0.12
+  - @midl-xyz/midl-js-react@1.0.12
+
+## 0.1.18
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-core@1.0.11
+  - @midl-xyz/midl-js-executor@1.0.11
+  - @midl-xyz/midl-js-react@1.0.11
+
+## 0.1.17
+
+### Patch Changes
+
+- fix: missing dependencies
+- Updated dependencies
+  - @midl-xyz/midl-js-react@1.0.10
+  - @midl-xyz/midl-js-core@1.0.10
+  - @midl-xyz/midl-js-executor@1.0.10
+
+## 0.1.16
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-core@1.0.9
+  - @midl-xyz/midl-js-executor@1.0.9
+  - @midl-xyz/midl-js-react@1.0.9
+
+## 0.1.15
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-core@1.0.8
+  - @midl-xyz/midl-js-executor@1.0.8
+  - @midl-xyz/midl-js-react@1.0.8
+
+## 0.1.14
+
+### Patch Changes
+
+- fix: allow empty assets to withdraw
+
 ## 0.1.13
 
 ### Patch Changes

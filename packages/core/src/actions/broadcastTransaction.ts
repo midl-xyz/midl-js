@@ -1,4 +1,3 @@
-import axios from "axios";
 import type { Config } from "~/createConfig";
 
 /**
@@ -19,13 +18,11 @@ export const broadcastTransaction = async (
 	config: Config,
 	txHex: string,
 ): Promise<string> => {
-	const { network } = config.getState();
+	const { network, provider } = config.getState();
 
 	if (!network) {
 		throw new Error("No network");
 	}
 
-	const { data } = await axios.post<string>(`${network.rpcUrl}/tx`, txHex);
-
-	return data;
+	return provider.broadcastTransaction(network, txHex);
 };

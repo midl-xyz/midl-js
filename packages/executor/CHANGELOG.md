@@ -1,5 +1,61 @@
 # @midl-xyz/midl-js-executor
 
+## 1.0.15
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-react@1.0.15
+  - @midl-xyz/midl-js-core@1.0.15
+
+## 1.0.13
+
+### Patch Changes
+
+- Updated dependencies [d89f911]
+  - @midl-xyz/midl-js-react@1.0.13
+  - @midl-xyz/midl-js-core@1.0.13
+
+## 1.0.12
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-core@1.0.12
+  - @midl-xyz/midl-js-react@1.0.12
+
+## 1.0.11
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-core@1.0.11
+  - @midl-xyz/midl-js-react@1.0.11
+
+## 1.0.10
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-react@1.0.10
+  - @midl-xyz/midl-js-core@1.0.10
+
+## 1.0.9
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-core@1.0.9
+  - @midl-xyz/midl-js-react@1.0.9
+
+## 1.0.8
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-core@1.0.8
+  - @midl-xyz/midl-js-react@1.0.8
+
 ## 1.0.7
 
 ### Patch Changes

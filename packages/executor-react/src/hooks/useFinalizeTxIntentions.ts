@@ -1,18 +1,23 @@
 import type {
-	SignMessageProtocol,
+	Config,
 	EdictRuneResponse,
+	SignMessageProtocol,
 	TransferBTCResponse,
 } from "@midl-xyz/midl-js-core";
-import { useMidlContext } from "@midl-xyz/midl-js-react";
+import {
+	type TransactionIntention,
+	finalizeBTCTransaction,
+	signIntention,
+} from "@midl-xyz/midl-js-executor";
+import {
+	type MidlContextStore,
+	useConfigInternal,
+	useStore,
+	useStoreInternal,
+} from "@midl-xyz/midl-js-react";
 import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
 import type { Address, StateOverride } from "viem";
 import { useGasPrice, useWalletClient } from "wagmi";
-import { useStore } from "zustand";
-import {
-	finalizeBTCTransaction,
-	signIntention,
-	type TransactionIntention,
-} from "@midl-xyz/midl-js-executor";
 import { useLastNonce } from "~/hooks/useLastNonce";
 
 type FinalizeMutationVariables = {
@@ -50,6 +55,8 @@ type UseFinalizeTxIntentionsParams = {
 	options?: {
 		signMessageProtocol?: SignMessageProtocol;
 	};
+	config?: Config;
+	store?: MidlContextStore;
 };
 
 /**
@@ -69,9 +76,12 @@ type UseFinalizeTxIntentionsParams = {
 export const useFinalizeTxIntentions = ({
 	mutation,
 	options = {},
+	config: customConfig,
+	store: customStore,
 }: UseFinalizeTxIntentionsParams = {}) => {
-	const { store, config } = useMidlContext();
-	const { intentions = [] } = useStore(store);
+	const store = useStoreInternal(customStore);
+	const config = useConfigInternal(customConfig);
+	const { intentions = [] } = useStore(customStore);
 	const { data: publicClient } = useWalletClient();
 	const nonce = useLastNonce();
 	const { data: gasPrice } = useGasPrice();

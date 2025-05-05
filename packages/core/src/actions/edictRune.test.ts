@@ -1,5 +1,5 @@
 import * as bitcoin from "bitcoinjs-lib";
-import { beforeAll, describe, expect, it, vi } from "vitest";
+import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import { makeRuneUTXO } from "~/__tests__/fixtures/utxo";
 import { getKeyPair } from "~/__tests__/keyPair";
 import { makeRandomAddress } from "~/__tests__/makeRandomAddress";
@@ -25,6 +25,10 @@ describe("core | actions | edictRune", () => {
 		});
 
 		await connect(config, { purposes: [AddressPurpose.Ordinals] });
+	});
+
+	afterAll(() => {
+		mockServer.close();
 	});
 
 	it("should throw if more than 2 edicts", async () => {

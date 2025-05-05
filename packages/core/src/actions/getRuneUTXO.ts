@@ -1,43 +1,4 @@
 import type { Config } from "~/createConfig";
-import axios from "axios";
-
-export type RuneUTXO = {
-	/**
-	 * The height of the UTXO
-	 */
-	height: number;
-	/**
-	 * The address of the UTXO
-	 */
-	address: string;
-	/**
-	 * The txid of the UTXO
-	 */
-	txid: string;
-	/**
-	 * The vout of the UTXO
-	 */
-	vout: number;
-	/**
-	 * The amount of satoshis
-	 */
-	satoshis: number;
-	/**
-	 * The scriptPubKey
-	 */
-	scriptPk: string;
-	/**
-	 * The runes in the UTXO
-	 */
-	runes: {
-		rune: string;
-		runeid: string;
-		spacedRune: string;
-		amount: string;
-		symbol: string;
-		divisibility: number;
-	}[];
-};
 
 /**
  * Retrieves the UTXOs associated with a specific rune for a given address.
@@ -59,20 +20,11 @@ export const getRuneUTXO = async (
 	address: string,
 	runeId: string,
 ) => {
-	const { network } = config.getState();
+	const { network, provider } = config.getState();
 
 	if (!network) {
 		throw new Error("No network");
 	}
 
-	const response = await axios.get<RuneUTXO[]>(
-		`${network.runesUTXOUrl}/utxos/${address}/`,
-		{
-			params: {
-				runeId,
-			},
-		},
-	);
-
-	return response.data;
+	return provider.getRuneUTXOs(network, address, runeId);
 };

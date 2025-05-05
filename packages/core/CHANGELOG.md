@@ -1,5 +1,47 @@
 # @midl-xyz/midl-js-core
 
+## 1.0.15
+
+### Patch Changes
+
+- feat: introduce abstract provider
+
+## 1.0.13
+
+### Patch Changes
+
+- d89f911: fix: add ability to pass custom config and store
+
+## 1.0.12
+
+### Patch Changes
+
+- fix: xverse provider id
+
+## 1.0.11
+
+### Patch Changes
+
+- fix(core): sats-connect filter addresses
+
+## 1.0.10
+
+### Patch Changes
+
+- fix: missing dependencies
+
+## 1.0.9
+
+### Patch Changes
+
+- fix(core): sats-connect filter unsupported address
+
+## 1.0.8
+
+### Patch Changes
+
+- feat: add phantom wallet
+
 ## 1.0.7
 
 ### Patch Changes

@@ -20,8 +20,8 @@ type ConnectDialogProps = {
 };
 
 export const ConnectDialog = ({ open, onClose }: ConnectDialogProps) => {
-	const { purposes } = useSatoshiKit();
-	const { disconnect } = useDisconnect();
+	const { purposes, config } = useSatoshiKit();
+	const { disconnect } = useDisconnect({ config });
 	const toaster = useToaster();
 
 	const { adapter, signInAsync, signInState, signOutState } = useAuthentication(
@@ -44,6 +44,7 @@ export const ConnectDialog = ({ open, onClose }: ConnectDialogProps) => {
 
 	const { connect, connectors, isPending, isSuccess, reset } = useConnect({
 		purposes,
+		config,
 		mutation: {
 			onSuccess: async (accounts) => {
 				if (!adapter) {
@@ -55,6 +56,10 @@ export const ConnectDialog = ({ open, onClose }: ConnectDialogProps) => {
 				await signInAsync(account.address);
 			},
 			onError: (error) => {
+				toaster.error({
+					title: "Authentication failed",
+					description: error.message,
+				});
 				console.error(error);
 			},
 		},

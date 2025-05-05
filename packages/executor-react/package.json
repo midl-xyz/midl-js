@@ -1,6 +1,6 @@
 {
 	"name": "@midl-xyz/midl-js-executor-react",
-	"version": "1.0.7",
+	"version": "1.0.15",
 	"scripts": {
 		"build": "pnpm run clean && tspc --project tsconfig.esm.json && tspc --project tsconfig.cjs.json",
 		"dev": "concurrently \"tspc --watch --preserveWatchOutput --project tsconfig.esm.json\" \"tspc --watch --preserveWatchOutput --project tsconfig.cjs.json\"",
@@ -33,7 +33,6 @@
 		"@tanstack/react-query": "^5.59.9",
 		"@types/node": "^22.8.7",
 		"@types/react": "^18",
-		"@wagmi/cli": "^2.1.15",
 		"@wagmi/connectors": "^5.1.11",
 		"bitcoinjs-lib": "7.0.0-rc.0",
 		"happy-dom": "^15.11.7",

@@ -1,6 +1,6 @@
-import { getBlockNumber } from "@midl-xyz/midl-js-core";
+import { type Config, getBlockNumber } from "@midl-xyz/midl-js-core";
 import { type UseQueryOptions, useQuery } from "@tanstack/react-query";
-import { useMidlContext } from "~/context";
+import { useConfigInternal } from "~/hooks/useConfigInternal";
 
 type QueryOptions = Omit<UseQueryOptions<number>, "queryFn" | "queryKey"> & {
 	queryKey?: ReadonlyArray<unknown>;
@@ -16,6 +16,8 @@ type UseBlockNumberParams = {
 	 */
 	pollingInterval?: number;
 	query?: QueryOptions;
+
+	config?: Config;
 };
 
 // TODO: Add websocket support
@@ -37,8 +39,9 @@ export const useBlockNumber = ({
 	watch,
 	pollingInterval = 30_000,
 	query: { queryKey, ...query } = {} as QueryOptions,
+	config: customConfig,
 }: UseBlockNumberParams = {}) => {
-	const { config } = useMidlContext();
+	const config = useConfigInternal(customConfig);
 
 	const { data, ...rest } = useQuery<number>({
 		queryKey: ["blockNumber", ...(queryKey ?? [])],

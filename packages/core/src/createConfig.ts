@@ -1,32 +1,22 @@
 import { createJSONStorage, persist } from "zustand/middleware";
-import { type StoreApi, createStore } from "zustand/vanilla";
+import { createStore } from "zustand/vanilla";
 import type { Account, Connector } from "~/connectors";
+import { type AbstractProvider, MempoolSpaceProvider } from "~/providers";
 
 export type BitcoinNetwork = {
 	/**
 	 * The id of the network
 	 */
-	id: string;
+	id: "mainnet" | "testnet" | "testnet4" | "regtest";
+
 	/**
 	 * Bitcoin API used to generate addresses and sign transactions
 	 */
 	network: "bitcoin" | "testnet" | "regtest";
 	/**
-	 * The RPC URL for the network
-	 */
-	rpcUrl: string;
-	/**
-	 * Runes API URL
-	 */
-	runesUrl: string;
-	/**
 	 * The explorer URL for the network
 	 */
 	explorerUrl: string;
-	/**
-	 * The runes UTXO API URL
-	 */
-	runesUTXOUrl: string;
 };
 
 type ConfigParams = {
@@ -42,6 +32,12 @@ type ConfigParams = {
 	 * If true, the config will persist in local storage
 	 */
 	persist?: boolean;
+
+	/**
+	 * The data provider to use
+	 * @default MempoolSpaceProvider
+	 */
+	provider?: AbstractProvider;
 };
 
 export type ConfigState = {
@@ -50,9 +46,7 @@ export type ConfigState = {
 	readonly connection?: Connector;
 	readonly accounts?: Account[];
 	readonly connectors: Connector[];
-
-	// hasHydrated: boolean;
-	// setHasHydrated: (state: boolean) => void;
+	readonly provider: AbstractProvider;
 };
 
 export type Config = ReturnType<typeof createConfig>;
@@ -66,6 +60,7 @@ export const createConfig = (params: ConfigParams) => {
 				networks: params.networks,
 				connectors: params.connectors,
 				network,
+				provider: params.provider ?? new MempoolSpaceProvider(),
 			}),
 			{
 				name: "midl-js",

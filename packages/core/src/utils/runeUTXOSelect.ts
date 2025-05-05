@@ -1,5 +1,5 @@
 import { parseUnits } from "viem/utils";
-import type { RuneUTXO } from "~/actions";
+import type { RuneUTXO } from "~/providers";
 
 export const runeUTXOSelect = (
 	utxos: RuneUTXO[],
