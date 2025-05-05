@@ -1,0 +1,31 @@
+{
+  "name": "@midl-xyz/playwright-btc-wallets",
+  "version": "0.0.1",
+  "bin": {
+    "playwright-btc-wallets": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "pnpm run clean && tsc --project tsconfig.build.json && tsc-alias -p tsconfig.build.json",
+    "dev": "concurrently \"tsc --watch --preserveWatchOutput --project tsconfig.build.json\" \"tsc-alias -w -p tsconfig.build.json\"",
+    "clean": "rm -rf dist",
+    "test": "vitest",
+    "postinstall": "./scripts/prepare.sh"
+  },
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "scripts"
+  ],
+  "devDependencies": {
+    "@playwright/test": "^1.48.2"
+  },
+  "peerDependencies": {
+    "@playwright/test": "^1.48.2"
+  },
+  "dependencies": {
+    "@midl-xyz/midl-js-core": "workspace:^"
+  }
+}
