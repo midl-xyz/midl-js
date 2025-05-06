@@ -15,12 +15,6 @@ import type { Config } from "~/createConfig";
  * @returns The balance in satoshis
  */
 export const getBalance = async (config: Config, address: string) => {
-	const { network } = config.getState();
-
-	if (!network) {
-		throw new Error("No network");
-	}
-
 	const utxos = await getUTXOs(config, address);
 
 	return utxos.reduce((acc, utxo) => acc + utxo.value, 0);

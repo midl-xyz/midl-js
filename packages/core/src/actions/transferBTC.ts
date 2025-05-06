@@ -58,7 +58,8 @@ export type TransferBTCResponse = {
 };
 
 /**
- * Transfers BTC
+ * Creates a transfer BTC transaction without publishing to the network.
+ * To publish the created PSBT pass the publish: true param.
  *
  * @example
  * ```ts
