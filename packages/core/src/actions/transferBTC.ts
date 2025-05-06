@@ -6,6 +6,7 @@ import { getUTXOs } from "~/actions/getUTXOs";
 import type { Config } from "~/createConfig";
 import { makePSBTInputs } from "~/utils";
 import ecc from "@bitcoinerlab/secp256k1";
+import { WalletConnectionError } from "~/actions/connect";
 
 initEccLib(ecc);
 
@@ -86,11 +87,7 @@ export const transferBTC = async (
 	const { connection, network: currentNetwork } = config.getState();
 
 	if (!connection) {
-		throw new Error("No connection");
-	}
-
-	if (!currentNetwork) {
-		throw new Error("No network");
+		throw new WalletConnectionError();
 	}
 
 	const { accounts } = config.getState();
@@ -100,7 +97,7 @@ export const transferBTC = async (
 		: accounts?.[0];
 
 	if (!account) {
-		throw new Error("No account found");
+		throw new Error();
 	}
 
 	const network = networks[currentNetwork.network];
@@ -122,7 +119,6 @@ export const transferBTC = async (
 	}
 
 	const psbt = new Psbt({ network });
-
 	const inputs = await makePSBTInputs(config, account, selectedUTXOs.inputs);
 
 	if (inputs.length === 0) {
