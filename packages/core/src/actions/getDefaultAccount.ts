@@ -50,5 +50,5 @@ export const getDefaultAccount = async (
 		throw new PredicateError("No account found matching the predicate");
 	}
 
-	return account;
+	return account as Account;
 };
