@@ -97,7 +97,7 @@ export const transferBTC = async (
 		: accounts?.[0];
 
 	if (!account) {
-		throw new Error();
+		throw new Error("No account found for the specified address.");
 	}
 
 	const network = networks[currentNetwork.network];
