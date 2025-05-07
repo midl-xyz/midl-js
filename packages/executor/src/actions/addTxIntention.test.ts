@@ -15,7 +15,7 @@ import { addTxIntention } from "~/actions/addTxIntention";
 import { midlRegtest } from "~/config";
 import type { TransactionIntention } from "~/types/intention";
 
-describe("addTxIntention", () => {
+describe("executor | actions | addTxIntention", () => {
 	const config = createConfig({
 		networks: [regtest],
 		connectors: [new KeyPairConnector(getKeyPair(bitcoin.networks.regtest))],

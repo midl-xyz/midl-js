@@ -21,13 +21,13 @@ const handlers: RequestHandler[] = [
 	http.get("https://mempool.regtest.midl.xyz/api/address/:address/utxo", () => {
 		const utxos: UTXO[] = [
 			{
-				txid: randomBytes(32).toString("hex"),
+				txid: Buffer.alloc(32).toString("hex"),
 				vout: 0,
 				value: 100000000,
 				status: {
 					confirmed: true,
 					block_height: 0,
-					block_hash: "block_hash",
+					block_hash: Buffer.alloc(32).toString("hex"),
 					block_time: 0,
 				},
 			},
@@ -41,7 +41,7 @@ const handlers: RequestHandler[] = [
 		const runeUTXOS: RuneUTXO[] = [
 			{
 				height: 0,
-				txid: randomBytes(32).toString("hex"),
+				txid: Buffer.alloc(32).toString("hex"),
 				vout: 0,
 				address: "address",
 				satoshis: 546,
@@ -63,7 +63,18 @@ const handlers: RequestHandler[] = [
 	}),
 	http.get("https://mempool.regtest.midl.xyz/api/tx/:txid/hex", () => {
 		return HttpResponse.text(
-			"02000000000101c0b2f3d4e5f6a7b8c9d0e1f2g3h4i5j6k7l8m9n0o1p2q3r4s5t6u7v8w9x0y1z2a3b4c5d6e7f8g9h0i1j2k3l4m5n6o7p8q9r0s1t2u3v4w5x6y7z8a9b0c1d2e3f4g5h6i7j8k9l0m1n2o3p4q5r6s7t8u9v0",
+			Buffer.concat([
+				Buffer.from("01000000", "hex"), // version
+				Buffer.from([0x01]), // input count
+				Buffer.alloc(32), // txid
+				Buffer.from("00000000", "hex"), // vout
+				Buffer.from([0x00]), // scriptSig length
+				Buffer.from("ffffffff", "hex"), // sequence
+				Buffer.from([0x01]), // output count
+				Buffer.from("00f2052a01000000", "hex"), // value (0.01 BTC)
+				Buffer.from([0x00]), // scriptPubKey length
+				Buffer.from("00000000", "hex"), // locktime
+			]).toString("hex"),
 		);
 	}),
 

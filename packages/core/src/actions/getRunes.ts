@@ -39,10 +39,6 @@ export const getRunes = async (
 ) => {
 	const { network, provider } = config.getState();
 
-	if (!network) {
-		throw new Error("No network found");
-	}
-
 	return provider.getRunes(network, address, {
 		limit,
 		offset,

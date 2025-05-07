@@ -1,5 +1,6 @@
 import { Psbt, networks } from "bitcoinjs-lib";
 import { broadcastTransaction } from "~/actions/broadcastTransaction";
+import { WalletConnectionError } from "~/actions/connect";
 import type { Config } from "~/createConfig";
 
 export type SignPSBTParams = {
@@ -8,7 +9,7 @@ export type SignPSBTParams = {
 	 */
 	psbt: string;
 	/**
-	 * The inputs to sign, in the format `{ pubkey: [inputIndex] }`
+	 * The inputs to sign, in the format `{ [address]: [inputIndex] }`
 	 */
 	signInputs: Record<string, number[]>;
 	/**
@@ -33,7 +34,8 @@ export type SignPSBTResponse = {
 };
 
 /**
- * Signs a PSBT
+ * Signs a base64 encoded bitcoin PSBT.
+ * By default the transaction is not published to the network.
  *
  * @example
  * ```ts
@@ -49,7 +51,7 @@ export type SignPSBTResponse = {
  *
  * @param config The configuration object
  * @param params The sign PSBT parameters
- * @returns The signed PSBT
+ * @returns Base64-encoded signed PSBT
  */
 export const signPSBT = async (
 	config: Config,
@@ -58,7 +60,7 @@ export const signPSBT = async (
 	const { connection, network } = config.getState();
 
 	if (!connection) {
-		throw new Error("No provider found");
+		throw new WalletConnectionError();
 	}
 
 	const signedPSBT = await connection.signPSBT(params, network);

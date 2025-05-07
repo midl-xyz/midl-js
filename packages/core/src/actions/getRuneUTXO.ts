@@ -22,9 +22,5 @@ export const getRuneUTXO = async (
 ) => {
 	const { network, provider } = config.getState();
 
-	if (!network) {
-		throw new Error("No network");
-	}
-
 	return provider.getRuneUTXOs(network, address, runeId);
 };

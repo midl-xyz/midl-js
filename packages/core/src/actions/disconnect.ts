@@ -7,6 +7,6 @@ export const disconnect = async (config: Config) => {
 
 	config.setState({
 		connection: undefined,
-		accounts: [],
+		accounts: undefined,
 	});
 };
