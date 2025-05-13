@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 1.0.16
+
+### Patch Changes
+
+- fix(core): get runes endpoint
+
 ## 1.0.15
 
 ### Patch Changes

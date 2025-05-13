@@ -137,7 +137,7 @@ export class MempoolSpaceProvider implements AbstractProvider {
 			offset: 0,
 		},
 	): Promise<RunesResponse> {
-		const url = `${this.getApURL(network)}/runes/v1/etchings/${address}?limit=${limit}&offset=${offset}`;
+		const url = `${this.getApURL(network)}/runes/v1/addresses/${address}/balances?limit=${limit}&offset=${offset}`;
 		const response = await fetch(url, {
 			method: "GET",
 			headers: {
