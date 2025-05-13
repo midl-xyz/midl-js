@@ -31,7 +31,12 @@ type ConfigParams = {
 	/**
 	 * If true, the config will persist in local storage
 	 */
-	persist?: boolean;
+	persist?:
+		| boolean
+		| {
+				enabled: boolean;
+				storageKey?: string;
+		  };
 
 	/**
 	 * The data provider to use
@@ -54,6 +59,16 @@ export type Config = ReturnType<typeof createConfig>;
 export const createConfig = (params: ConfigParams) => {
 	const [network] = params.networks;
 
+	const shouldPersist =
+		typeof params.persist === "boolean"
+			? params.persist
+			: params.persist?.enabled;
+
+	const persistStorageKey =
+		(typeof params.persist === "object"
+			? params.persist.storageKey?.trim()
+			: null) || "midl-js";
+
 	const configStore = createStore<ConfigState>()(
 		persist(
 			() => ({
@@ -63,7 +78,7 @@ export const createConfig = (params: ConfigParams) => {
 				provider: params.provider ?? new MempoolSpaceProvider(),
 			}),
 			{
-				name: "midl-js",
+				name: persistStorageKey,
 				storage: createJSONStorage(() => localStorage, {
 					reviver(key, value) {
 						if (key === "connection") {
@@ -95,7 +110,7 @@ export const createConfig = (params: ConfigParams) => {
 					...Object.fromEntries(
 						Object.entries(state).filter(
 							([key]) =>
-								params.persist &&
+								shouldPersist &&
 								["network", "connection", "accounts"].includes(key),
 						),
 					),

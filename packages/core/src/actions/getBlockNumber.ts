@@ -15,9 +15,5 @@ import type { Config } from "~/createConfig";
 export const getBlockNumber = async (config: Config) => {
 	const { network, provider } = config.getState();
 
-	if (!network) {
-		throw new Error("No network");
-	}
-
 	return provider.getLatestBlockHeight(network);
 };

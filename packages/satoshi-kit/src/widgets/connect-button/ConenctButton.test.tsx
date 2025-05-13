@@ -3,8 +3,8 @@ import { describe, expect, it } from "vitest";
 import { Wrapper } from "~/__tests__/wrapper";
 import { ConnectButton } from "~/widgets/connect-button/ConnectButton";
 
-describe("widgets | ConnectButton", () => {
-	it("should render default button", () => {
+describe("satoshi-kit | widgets | ConnectButton", () => {
+	it("renders default button", () => {
 		render(<ConnectButton />, { wrapper: Wrapper });
 
 		expect(
@@ -12,7 +12,7 @@ describe("widgets | ConnectButton", () => {
 		).toBeTruthy();
 	});
 
-	it("should render custom button", () => {
+	it("renders custom button", () => {
 		render(
 			<ConnectButton>
 				{({ openConnectDialog }) => (
