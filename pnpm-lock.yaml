@@ -545,8 +545,8 @@ importers:
         version: 0.453.0(react@18.3.1)
     devDependencies:
       '@midl-xyz/midl-js-config':
-        specifier: ^0.0.2
-        version: 0.0.2
+        specifier: workspace:^
+        version: link:../config
       '@midl-xyz/midl-js-core':
         specifier: workspace:^
         version: link:../core
@@ -2230,9 +2230,6 @@ packages:
 
   '@midl-xyz/contracts@0.0.10':
     resolution: {integrity: sha512-cpGEthHy9HnunIZs44o/61+VM510diA70AApLnDorHHrvNduHLjfiyIMsOkjvFqkrKyB6DTPOZHXEIkmjdDrDA==}
-
-  '@midl-xyz/midl-js-config@0.0.2':
-    resolution: {integrity: sha512-m4dE8pf4cYKNs6PvrlYRxaK40L6OqOJrkcfpbyLw/P1c2akkH6XC9Q52g3RKvojmZNJqZEV8YCMOGFSMGghh8Q==}
 
   '@midl-xyz/midl-viem@2.21.36':
     resolution: {integrity: sha512-KwYArD2sAZAIXH7BvqBmzExlkOG4CPjUrK26R/uiBexYvXCWwTJo6BpvGqWfcHx9ZiiUpM6JTGvSepDN4xTBsA==}
@@ -11000,8 +10997,6 @@ snapshots:
   '@microsoft/tsdoc@0.15.1': {}
 
   '@midl-xyz/contracts@0.0.10': {}
-
-  '@midl-xyz/midl-js-config@0.0.2': {}
 
   '@midl-xyz/midl-viem@2.21.36(bufferutil@4.0.9)(typescript@5.6.3)(utf-8-validate@5.0.10)(zod@3.24.1)':
     dependencies:

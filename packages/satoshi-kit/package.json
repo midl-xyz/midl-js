@@ -31,7 +31,7 @@
 	},
 	"files": ["dist", "styled-system"],
 	"devDependencies": {
-		"@midl-xyz/midl-js-config": "^0.0.3",
+		"@midl-xyz/midl-js-config": "workspace:^",
 		"@midl-xyz/midl-js-core": "workspace:^",
 		"@midl-xyz/midl-js-react": "workspace:^",
 		"@pandacss/dev": "^0.53.1",
