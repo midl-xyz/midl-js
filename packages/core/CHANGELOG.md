@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 1.0.18
+
+### Patch Changes
+
+- fix(core): additional cors endpoints fixes
+
 ## 1.0.17
 
 ### Patch Changes
