@@ -67,12 +67,7 @@ export class MempoolSpaceProvider implements AbstractProvider {
 	async getFeeRate(network: BitcoinNetwork): Promise<FeeRateResponse> {
 		const url = `${this.getApURL(network)}/api/v1/fees/recommended`;
 
-		const response = await fetch(url, {
-			method: "GET",
-			headers: {
-				"Content-Type": "application/json",
-			},
-		});
+		const response = await fetch(url);
 
 		if (!response.ok) {
 			throw new Error(`Failed to fetch fee rate: ${response.statusText}`);
@@ -219,12 +214,7 @@ export class MempoolSpaceProvider implements AbstractProvider {
 	async getUTXOs(network: BitcoinNetwork, address: string): Promise<UTXO[]> {
 		const url = `${this.getApURL(network)}/api/address/${address}/utxo`;
 
-		const response = await fetch(url, {
-			method: "GET",
-			headers: {
-				"Content-Type": "application/json",
-			},
-		});
+		const response = await fetch(url);
 
 		if (!response.ok) {
 			throw new Error(`Failed to fetch UTXOs: ${response.statusText}`);
