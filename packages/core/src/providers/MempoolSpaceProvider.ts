@@ -49,12 +49,7 @@ export class MempoolSpaceProvider implements AbstractProvider {
 	async getLatestBlockHeight(network: BitcoinNetwork): Promise<number> {
 		const url = `${this.getApURL(network)}/api/blocks/tip/height`;
 
-		const response = await fetch(url, {
-			method: "GET",
-			headers: {
-				"Content-Type": "application/json",
-			},
-		});
+		const response = await fetch(url);
 
 		if (!response.ok) {
 			throw new Error(`Failed to fetch block height: ${response.statusText}`);
@@ -173,12 +168,7 @@ export class MempoolSpaceProvider implements AbstractProvider {
 	): Promise<TransactionStatusResponse> {
 		const url = `${this.getApURL(network)}/api/tx/${txid}/status`;
 
-		const response = await fetch(url, {
-			method: "GET",
-			headers: {
-				"Content-Type": "application/json",
-			},
-		});
+		const response = await fetch(url);
 
 		if (!response.ok) {
 			throw new Error(
