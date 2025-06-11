@@ -1,11 +1,5 @@
 # @midl-xyz/midl-js-core
 
-## 1.0.17
-
-### Patch Changes
-
-- fix(core): fix cors error at fees retrieval
-
 ## 1.0.16
 
 ### Patch Changes
