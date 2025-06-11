@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 1.0.17
+
+### Patch Changes
+
+- fix(core): fix cors error at mempool fetching
+
 ## 1.0.16
 
 ### Patch Changes
