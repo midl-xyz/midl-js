@@ -306,7 +306,7 @@ export class MidlHardhatEnvironment {
 			},
 		);
 
-		const confirmationPromises: Promise<unknown>[] = [];
+		const evmTXHashes: `0x${string}`[] = [];
 
 		// biome-ignore lint/style/noNonNullAssertion: reload intentions in case of shouldComplete equal true
 		intentions = this.store.getState().intentions!;
@@ -345,19 +345,21 @@ export class MidlHardhatEnvironment {
 				);
 			}
 
-			confirmationPromises.push(
-				waitForTransactionReceipt(walletClient, {
-					hash: txId,
-					confirmations: this.confirmationsRequired,
-				}),
-			);
+			evmTXHashes.push(txId);
 
 			console.log("Transaction sent", txId);
 		}
 
 		const txId = await broadcastTransaction(this.config, tx.tx.hex);
 		await waitForTransaction(this.config, txId, this.btcConfirmationsRequired);
-		await Promise.all(confirmationPromises);
+		await Promise.all(
+			evmTXHashes.map((hash) =>
+				waitForTransactionReceipt(walletClient, {
+					hash,
+					confirmations: this.confirmationsRequired,
+				}),
+			),
+		);
 
 		console.log("Transaction confirmed", txId);
 
