@@ -1,5 +1,11 @@
 # @midl-xyz/hardhat-deploy
 
+## 1.0.19
+
+### Patch Changes
+
+- fix(hardhat-deploy): fix evm transactions confirmations handling
+
 ## 1.0.18
 
 ### Patch Changes
