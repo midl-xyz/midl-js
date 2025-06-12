@@ -20,9 +20,5 @@ export const broadcastTransaction = async (
 ): Promise<string> => {
 	const { network, provider } = config.getState();
 
-	if (!network) {
-		throw new Error("No network");
-	}
-
 	return provider.broadcastTransaction(network, txHex);
 };

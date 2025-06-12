@@ -1,9 +1,9 @@
 import { formatUnits } from "viem";
 import { describe, expect, it } from "vitest";
-import type { RuneUTXO } from "~/actions";
+import type { RuneUTXO } from "~/providers";
 import { runeUTXOSelect } from "~/utils";
 
-describe("runeUTXOSelect", () => {
+describe("core | utils | runeUTXOSelect", () => {
 	it("should return selected UTXOs", () => {
 		const utxos = [
 			{

@@ -6,6 +6,27 @@ export type ConnectParams = {
 	network?: BitcoinNetwork;
 };
 
+export class ConnectError extends Error {
+	constructor(msg: string) {
+		super(msg);
+		this.name = "ConnectError";
+	}
+}
+
+export class EmptyAccountsError extends ConnectError {
+	constructor() {
+		super("Empty accounts");
+		this.name = "EmptyAccountsError";
+	}
+}
+
+export class WalletConnectionError extends ConnectError {
+	constructor() {
+		super("No wallet connection");
+		this.name = "WalletConnectionError";
+	}
+}
+
 export const connect = async (
 	config: Config,
 	params: ConnectParams,
@@ -22,7 +43,7 @@ export const connect = async (
 	});
 
 	if (accounts.length === 0) {
-		throw new Error("No accounts connected");
+		throw new EmptyAccountsError();
 	}
 
 	config.setState({
