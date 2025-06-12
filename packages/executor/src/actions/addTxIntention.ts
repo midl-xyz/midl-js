@@ -4,7 +4,7 @@ import type { TransactionSerializableBTC } from "viem";
 import type { StoreApi } from "zustand";
 import { getPublicKeyForAccount } from "~/actions/getPublicKeyForAccount";
 import type { TransactionIntention } from "~/types/intention";
-import { getEVMAddress, getEVMFromBitcoinNetwork } from "~/utils";
+import { getEVMAddress } from "~/utils";
 
 export type PartialIntention = Omit<
 	TransactionIntention,
@@ -32,14 +32,7 @@ export const addTxIntention = async (
 	reset = false,
 	publicKey?: string,
 ): Promise<TransactionIntention> => {
-	const { network } = config.getState();
-
-	if (!network) {
-		throw new Error("No network found");
-	}
-
 	const pk = await getPublicKeyForAccount(config, publicKey);
-	const chain = getEVMFromBitcoinNetwork(network);
 	const evmAddress = getEVMAddress(pk);
 	const { intentions = [] } = store.getState();
 
@@ -57,9 +50,6 @@ export const addTxIntention = async (
 	}
 
 	if (intention.evmTransaction) {
-		intention.evmTransaction.chainId =
-			intention.evmTransaction.chainId ?? chain.id;
-
 		intention.evmTransaction.from = intention.evmTransaction.from ?? evmAddress;
 	}
 

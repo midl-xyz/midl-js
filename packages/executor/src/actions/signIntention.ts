@@ -1,9 +1,8 @@
 import type { Config, SignMessageProtocol } from "@midl-xyz/midl-js-core";
 import type { MidlContextState } from "@midl-xyz/midl-js-react";
-import { isHex, type Client } from "viem";
+import { type Client, isHex } from "viem";
 import { getTransactionCount } from "viem/actions";
 import type { StoreApi } from "zustand";
-import { getPublicKey } from "~/actions/getPublicKey";
 import { getPublicKeyForAccount } from "~/actions/getPublicKeyForAccount";
 import { signTransaction } from "~/actions/signTransaction";
 import type { TransactionIntention } from "~/types/intention";
@@ -87,9 +86,14 @@ export const signIntention = async (
 		throw new Error("No EVM transaction set");
 	}
 
+	if (!client.chain) {
+		throw new Error("No EVM chain set");
+	}
+
 	intention.evmTransaction = {
 		...intention.evmTransaction,
-
+		chainId: client.chain.id,
+		from: intention.evmTransaction.from ?? evmAddress,
 		nonce:
 			nonce +
 			intentions
