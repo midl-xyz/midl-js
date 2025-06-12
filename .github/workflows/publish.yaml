@@ -42,7 +42,7 @@ jobs:
         run: |
           TAG=""
           if [[ "${GITHUB_REF##*/}" == "next" ]]; then
-            TAG="--tag next"
+            TAG="--tag next --publish-branch next"
           fi
           pnpm publish -r --filter="./packages/*" --access public $TAG
         env:
