@@ -8,7 +8,6 @@ module.exports = {
 		path: "deployments",
 		networks: {
 			default: {
-				// network: "default",
 				mnemonic:
 					"face spike layer label health knee cry taste carpet found elegant october",
 				confirmationsRequired: 1,
@@ -16,10 +15,4 @@ module.exports = {
 			},
 		},
 	},
-	// networks: {
-	// 	default: {
-	// 		url: "https://evm-rpc.regtest.midl.xyz",
-	// 		chainId: 777,
-	// 	},
-	// },
 };
