@@ -1,5 +1,10 @@
 import type { BitcoinNetwork, Config } from "~/createConfig";
-import { isCorrectAddress } from "~/utils";
+
+// TODO: rename Wrong Usage error
+class CommonError extends Error {}
+
+// TODO: misleading error
+export class NetworkError extends CommonError {}
 
 /**
  * Switches the network to the given network
@@ -20,7 +25,7 @@ export const switchNetwork = async (
 ) => {
 	const { networks } = config.getState();
 	if (!networks.includes(network)) {
-		throw new Error(`Network ${network} is not supported`);
+		throw new NetworkError();
 	}
 
 	config.setState({

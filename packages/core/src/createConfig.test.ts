@@ -17,8 +17,6 @@ describe("core | createConfig", () => {
 	it("should set the network", () => {
 		const mockNetwork: BitcoinNetwork = {
 			network: "testnet",
-			rpcUrl: "http://localhost:183",
-			runesUrl: "http://localhost:183",
 		} as BitcoinNetwork;
 
 		const config = createConfig({
@@ -34,8 +32,6 @@ describe("core | createConfig", () => {
 	it("should subscribe to changes", () => {
 		const mockNetwork: BitcoinNetwork = {
 			network: "testnet",
-			rpcUrl: "http://localhost:183",
-			runesUrl: "http://localhost:183",
 		} as BitcoinNetwork;
 
 		const config = createConfig({
@@ -64,8 +60,6 @@ describe("core | createConfig", () => {
 
 		const mockNetwork: BitcoinNetwork = {
 			network: "testnet",
-			rpcUrl: "http://localhost:183",
-			runesUrl: "http://localhost:183",
 		} as BitcoinNetwork;
 
 		config.setState({ network: mockNetwork });

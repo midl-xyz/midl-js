@@ -33,9 +33,5 @@ export const getRuneBalance = async (
 ) => {
 	const { network, provider } = config.getState();
 
-	if (!network) {
-		throw new Error("No network found");
-	}
-
 	return provider.getRuneBalance(network, address, runeId);
 };

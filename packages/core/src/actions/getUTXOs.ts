@@ -23,11 +23,6 @@ export const getUTXOs = async (
 	includeRunes = false,
 ): Promise<UTXO[]> => {
 	const { network, provider } = config.getState();
-
-	if (!network) {
-		throw new Error("No network");
-	}
-
 	const utxos = await provider.getUTXOs(network, address);
 
 	if (!includeRunes) {
