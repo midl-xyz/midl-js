@@ -1,9 +1,13 @@
 import { useConfig } from "@midl-xyz/midl-js-react";
-import { getEVMFromBitcoinNetwork } from "@midl-xyz/midl-js-executor";
+import {
+	type Chain,
+	getEVMFromBitcoinNetwork,
+} from "@midl-xyz/midl-js-executor";
 import type { Config } from "@midl-xyz/midl-js-core";
 
 type UseEVMChainParams = {
 	config?: Config;
+	chain?: Chain;
 };
 
 /**
@@ -21,8 +25,13 @@ type UseEVMChainParams = {
  */
 export const useEVMChain = ({
 	config: customConfig,
+	chain: customChain,
 }: UseEVMChainParams = {}) => {
 	const { network } = useConfig(customConfig);
+
+	if (customChain) {
+		return customChain;
+	}
 
 	return network ? getEVMFromBitcoinNetwork(network) : null;
 };

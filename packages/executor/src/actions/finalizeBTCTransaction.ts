@@ -26,7 +26,6 @@ import {
 	calculateTransactionsCost,
 	convertETHtoBTC,
 	getEVMAddress,
-	getEVMFromBitcoinNetwork,
 } from "~/utils";
 
 type FinalizeBTCTransactionOptions = {
@@ -234,7 +233,7 @@ export const finalizeBTCTransaction = async (
 						new Array(options.assetsToWithdraw?.length ?? 0).fill(0n),
 					],
 				}),
-				chainId: getEVMFromBitcoinNetwork(network).id,
+				chainId: client.chain?.id,
 			},
 		});
 	}
