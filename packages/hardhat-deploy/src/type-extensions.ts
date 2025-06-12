@@ -1,4 +1,4 @@
-import type { BitcoinNetwork } from "@midl-xyz/midl-js-core";
+import type { AbstractProvider, BitcoinNetwork } from "@midl-xyz/midl-js-core";
 import type { Chain } from "@midl-xyz/midl-js-executor";
 import "hardhat/types/config";
 import "hardhat/types/runtime";
@@ -17,6 +17,7 @@ declare module "hardhat/types/config" {
 					btcConfirmationsRequired?: number;
 					network?: string | BitcoinNetwork;
 					hardhatNetwork?: string;
+					provider?: AbstractProvider;
 				}
 			>;
 		};

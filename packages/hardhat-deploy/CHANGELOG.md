@@ -1,5 +1,11 @@
 # @midl-xyz/hardhat-deploy
 
+## 2.0.0-next.1
+
+### Patch Changes
+
+- feat: add ability to pass provider
+
 ## 2.0.0-next.0
 
 ### Minor Changes

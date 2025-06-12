@@ -151,6 +151,7 @@ export class MidlHardhatEnvironment {
 			connectors: [
 				new KeyPairConnector(this.wallet.getAccount(this.accountIndex)),
 			],
+			provider: this.userConfig.provider,
 		});
 
 		await connect(this.config, {
