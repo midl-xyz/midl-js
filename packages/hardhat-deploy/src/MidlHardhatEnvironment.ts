@@ -13,7 +13,7 @@ import {
 	testnet4,
 	waitForTransaction,
 } from "@midl-xyz/midl-js-core";
-import type { TransactionIntention } from "@midl-xyz/midl-js-executor";
+import type { TransactionIntention, Chain } from "@midl-xyz/midl-js-executor";
 import {
 	addTxIntention,
 	clearTxIntentions,
@@ -29,12 +29,15 @@ import {
 	type Libraries,
 	resolveBytecodeWithLinkedLibraries,
 } from "@nomicfoundation/hardhat-viem/internal/bytecode";
-import type { HardhatRuntimeEnvironment } from "hardhat/types";
+import type {
+	HardhatRuntimeEnvironment,
+	HttpNetworkConfig,
+} from "hardhat/types";
 import fs from "node:fs";
 import path from "node:path";
 import {
+	type Chain as ViemChain,
 	type Address,
-	type Chain,
 	type StateOverride,
 	type TransactionSerializableBTC,
 	type WalletClient,
@@ -64,35 +67,40 @@ export class MidlHardhatEnvironment {
 	private walletClient: WalletClient | undefined;
 
 	public wallet: Wallet;
-	private bitcoinNetwork: BitcoinNetwork;
+	private bitcoinNetwork!: BitcoinNetwork;
+	private chain!: Chain;
 
 	private config: Config | null = null;
+	private readonly userConfig: HardhatRuntimeEnvironment["userConfig"]["midl"]["networks"][string];
 
 	constructor(private readonly hre: HardhatRuntimeEnvironment) {
-		this.bitcoinNetwork = regtest;
+		this.userConfig =
+			this.hre.userConfig.midl.networks[
+				hre.hardhatArguments.network ?? "default"
+			];
 		this.initializeNetwork();
 
 		this.deploymentsPath = path.join(
 			this.hre.config.paths.root,
 			this.hre.userConfig.midl.path ?? "deployments",
 		);
-		this.confirmationsRequired =
-			this.hre.userConfig.midl.confirmationsRequired ?? 5;
+		this.confirmationsRequired = this.userConfig.confirmationsRequired ?? 5;
 		this.btcConfirmationsRequired =
-			this.hre.userConfig.midl.btcConfirmationsRequired ?? 1;
+			this.userConfig.btcConfirmationsRequired ?? 1;
 
 		if (!fs.existsSync(this.deploymentsPath)) {
 			fs.mkdirSync(this.deploymentsPath);
 		}
 
-		this.wallet = new Wallet(this.hre.userConfig.midl.mnemonic, regtest);
+		this.wallet = new Wallet(this.userConfig.mnemonic, this.bitcoinNetwork);
 	}
 
 	private initializeNetwork() {
 		const networks = { regtest, mainnet, testnet4, testnet } as const;
-		const network = this.hre.userConfig.midl.network;
+		const { network, hardhatNetwork } = this.userConfig;
 
 		if (!network) {
+			this.bitcoinNetwork = regtest;
 			return;
 		}
 
@@ -104,6 +112,35 @@ export class MidlHardhatEnvironment {
 			this.bitcoinNetwork = networks[network as keyof typeof networks];
 		} else {
 			this.bitcoinNetwork = network;
+		}
+
+		this.chain = getEVMFromBitcoinNetwork(this.bitcoinNetwork);
+
+		if (hardhatNetwork) {
+			const { chainId, url } = this.hre.config.networks[
+				hardhatNetwork
+			] as HttpNetworkConfig;
+
+			if (!chainId) {
+				throw new Error(
+					`Hardhat network ${hardhatNetwork} does not have chainId defined`,
+				);
+			}
+
+			if (!url) {
+				throw new Error(
+					`Hardhat network ${hardhatNetwork} does not have url defined`,
+				);
+			}
+
+			this.chain = {
+				id: chainId,
+				rpcUrls: {
+					default: {
+						http: [url],
+					},
+				},
+			};
 		}
 	}
 
@@ -167,7 +204,7 @@ export class MidlHardhatEnvironment {
 		await addTxIntention(this.config, this.store, {
 			evmTransaction: {
 				type: "btc",
-				chainId: 777,
+				chainId: this.walletClient?.chain?.id,
 				data: deployData,
 				gas: options?.gas,
 				gasPrice: options?.gasPrice,
@@ -241,7 +278,7 @@ export class MidlHardhatEnvironment {
 			hasDeposit: Boolean(options.value && options.value > 0n),
 			evmTransaction: {
 				type: "btc",
-				chainId: 777,
+				chainId: this.walletClient?.chain?.id,
 				data,
 				to: options.to ?? (address as Address),
 				value: options.value,
@@ -368,11 +405,9 @@ export class MidlHardhatEnvironment {
 
 	public async getWalletClient(): Promise<WalletClient> {
 		if (!this.walletClient) {
-			const chain = getEVMFromBitcoinNetwork(this.bitcoinNetwork);
-
 			this.walletClient = createWalletClient({
-				chain: chain as Chain,
-				transport: http(chain.rpcUrls.default.http[0]),
+				chain: this.chain as ViemChain,
+				transport: http(this.chain.rpcUrls.default.http[0]),
 			});
 		}
 

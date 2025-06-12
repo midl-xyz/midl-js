@@ -39,6 +39,11 @@ jobs:
         run: pnpm turbo run test --filter="./packages/*"
 
       - name: Publish packages
-        run: pnpm publish -r --filter="./packages/*" --access public
+        run: |
+          TAG=""
+          if [[ "${GITHUB_REF##*/}" == "next" ]]; then
+            TAG="--tag next"
+          fi
+          pnpm publish -r --filter="./packages/*" --access public $TAG
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

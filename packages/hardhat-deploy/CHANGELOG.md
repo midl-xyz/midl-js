@@ -1,5 +1,19 @@
 # @midl-xyz/hardhat-deploy
 
+## 2.0.0-next.0
+
+### Minor Changes
+
+- feat: add custom network support
+
+### Patch Changes
+
+- Updated dependencies [46ce271]
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@2.0.0-next.0
+  - @midl-xyz/midl-js-core@2.0.0-next.0
+  - @midl-xyz/midl-js-react@2.0.0-next.0
+
 ## 1.0.22
 
 ### Patch Changes

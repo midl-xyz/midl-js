@@ -12,11 +12,7 @@ import {
 } from "viem";
 import { getTransactionCount } from "viem/actions";
 import { getPublicKey } from "~/actions/getPublicKey";
-import {
-	extractEVMSignature,
-	getEVMAddress,
-	getEVMFromBitcoinNetwork,
-} from "~/utils";
+import { extractEVMSignature, getEVMAddress } from "~/utils";
 
 type SignTransactionOptions = {
 	publicKey?: string;
@@ -41,7 +37,11 @@ export const signTransaction = async (
 		customPublicKey ? (it) => it.publicKey === customPublicKey : undefined,
 	);
 
-	const chainIdToUse = chainId || getEVMFromBitcoinNetwork(network).id;
+	const chainIdToUse = chainId || client.chain?.id;
+
+	if (!chainIdToUse) {
+		throw new Error("No chain ID found");
+	}
 
 	const publicKey = getPublicKey(config, account.publicKey);
 

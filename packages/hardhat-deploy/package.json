@@ -1,6 +1,6 @@
 {
 	"name": "@midl-xyz/hardhat-deploy",
-	"version": "1.0.22",
+	"version": "2.0.0-next.0",
 	"scripts": {
 		"build": "pnpm run clean && tspc --project tsconfig.esm.json && tspc --project tsconfig.cjs.json",
 		"dev": "concurrently \"tspc --watch --preserveWatchOutput --project tsconfig.esm.json\" \"tspc --watch --preserveWatchOutput --project tsconfig.cjs.json\"",
@@ -27,7 +27,8 @@
 		}
 	},
 	"devDependencies": {
-		"hardhat": "^2.22.17"
+		"hardhat": "^2.22.17",
+		"hardhat-deploy": "^1.0.3"
 	},
 	"peerDependencies": {
 		"hardhat": "^2.22.17"
