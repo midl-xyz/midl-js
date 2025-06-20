@@ -16,7 +16,12 @@ import { getUTXOs } from "~/actions/getUTXOs";
 import { signPSBT } from "~/actions/signPSBT";
 import { AddressPurpose } from "~/constants";
 import type { Config } from "~/createConfig";
-import { extractXCoordinate, formatRuneName, makePSBTInputs } from "~/utils";
+import {
+	encodeRuneSymbol,
+	extractXCoordinate,
+	formatRuneName,
+	makePSBTInputs,
+} from "~/utils";
 import ecc from "@bitcoinerlab/secp256k1";
 
 initEccLib(ecc);
@@ -209,7 +214,7 @@ export const etchRune = async (
 		premine ? some(premine) : none(),
 		some(rune),
 		some(getSpacersVal(name)),
-		symbol ? some(symbol) : none(),
+		encodeRuneSymbol(symbol),
 		amount && cap
 			? some(
 					new Terms(
