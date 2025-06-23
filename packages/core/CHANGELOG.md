@@ -1,5 +1,12 @@
 # @midl-xyz/midl-js-core
 
+## 1.0.20
+
+### Patch Changes
+
+- 46ce271: test: add coverage
+- fcb0941: fix(core): rune utxo endpoint
+
 ## 1.0.18
 
 ### Patch Changes
