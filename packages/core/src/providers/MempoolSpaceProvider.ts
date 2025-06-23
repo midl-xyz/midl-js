@@ -147,7 +147,7 @@ export class MempoolSpaceProvider implements AbstractProvider {
 		address: string,
 		runeId: string,
 	): Promise<RuneUTXO[]> {
-		const url = `${this.getApURL(network)}/runes/v1/etchings/${runeId}/address/${address}/utxo`;
+		const url = `${this.getApURL(network)}/utxos/${address}?runeId=${runeId}`;
 		const response = await fetch(url, {
 			method: "GET",
 			headers: {
