@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 2.0.0-next.2
+
+### Patch Changes
+
+- chore: bump version
+
 ## 2.0.0-next.0
 
 ### Minor Changes

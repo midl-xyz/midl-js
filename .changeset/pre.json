@@ -14,8 +14,8 @@
     "@midl-xyz/satoshi-kit": "1.0.18"
   },
   "changesets": [
-    "fresh-windows-end",
     "green-boxes-repair",
-    "loud-crabs-warn"
+    "loud-crabs-warn",
+    "unlucky-zebras-melt"
   ]
 }
