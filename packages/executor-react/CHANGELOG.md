@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor-react
 
+## 1.0.21
+
+### Patch Changes
+
+- 3427de2: fix: wagmi midl provider connection
+
 ## 1.0.20
 
 ### Patch Changes
