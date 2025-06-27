@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { zeroAddress } from "viem";
-import { useConnect, useSwitchChain } from "wagmi";
+import { useAccount, useConnect, useSwitchChain } from "wagmi";
 import { mock } from "wagmi/connectors";
 import { useEVMAddress, useEVMChain } from "~/hooks";
 
@@ -14,17 +14,22 @@ export const WagmiMidlProvider = () => {
 	const chain = useEVMChain();
 	const { switchChain } = useSwitchChain();
 	const { connect } = useConnect();
+	const { address } = useAccount();
+
+	const connector = useMemo(() => {
+		return mock({
+			accounts: [evmAddress],
+			features: { defaultConnected: true },
+		});
+	}, [evmAddress]);
 
 	useEffect(() => {
-		if (!evmAddress || evmAddress === zeroAddress) {
+		if (!evmAddress || evmAddress === zeroAddress || evmAddress === address) {
 			return;
 		}
 
 		connect({
-			connector: mock({
-				accounts: [evmAddress],
-				features: { defaultConnected: true },
-			}),
+			connector,
 		});
 
 		if (chain) {
@@ -32,7 +37,7 @@ export const WagmiMidlProvider = () => {
 		} else {
 			console.error("Chain not found");
 		}
-	}, [evmAddress, connect, chain, switchChain]);
+	}, [evmAddress, connector, address, connect, chain, switchChain]);
 
 	return null;
 };

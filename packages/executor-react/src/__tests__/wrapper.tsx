@@ -5,7 +5,7 @@ import { type ReactNode, useLayoutEffect } from "react";
 import { WagmiProvider } from "wagmi";
 import { midlConfig } from "~/__tests__/midlConfig";
 import { wagmiConfig } from "~/__tests__/wagmiConfig";
-import { WagmiMidlProvider } from "~/provider";
+import { WagmiMidlProvider } from "~/providers";
 
 const queryClient = new QueryClient({
 	defaultOptions: {

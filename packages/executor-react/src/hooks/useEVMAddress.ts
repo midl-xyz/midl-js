@@ -39,6 +39,7 @@ export const useEVMAddress = ({
 
 		return getEVMAddress(pk);
 	} catch (e) {
+		console.error("Error getting EVM address:", e);
 		return zeroAddress;
 	}
 };
