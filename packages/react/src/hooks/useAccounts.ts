@@ -38,6 +38,7 @@ export const useAccounts = ({ config }: UseAccountsParams = {}) => {
 		},
 		enabled: !!connection,
 		retry: false,
+		initialData: accounts,
 	});
 
 	const isMutating = useIsMutating({

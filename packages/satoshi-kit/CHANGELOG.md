@@ -1,5 +1,12 @@
 # @midl-xyz/satoshi-kit
 
+## 1.0.22
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-react@1.0.22
+
 ## 1.0.20
 
 ### Patch Changes

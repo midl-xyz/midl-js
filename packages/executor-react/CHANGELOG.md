@@ -1,5 +1,14 @@
 # @midl-xyz/midl-js-executor-react
 
+## 1.0.22
+
+### Patch Changes
+
+- fix(react): provide accounts with initial data
+- Updated dependencies
+  - @midl-xyz/midl-js-react@1.0.22
+  - @midl-xyz/midl-js-executor@1.0.22
+
 ## 1.0.21
 
 ### Patch Changes
