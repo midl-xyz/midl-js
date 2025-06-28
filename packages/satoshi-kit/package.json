@@ -1,6 +1,6 @@
 {
 	"name": "@midl-xyz/satoshi-kit",
-	"version": "1.0.20",
+	"version": "1.0.22",
 	"type": "module",
 	"scripts": {
 		"build": "pnpm run build:lib && pnpm run build:styles",

@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-react
 
+## 1.0.22
+
+### Patch Changes
+
+- fix(react): provide accounts with initial data
+
 ## 1.0.20
 
 ### Patch Changes

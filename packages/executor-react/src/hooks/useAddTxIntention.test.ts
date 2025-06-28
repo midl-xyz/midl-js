@@ -1,10 +1,18 @@
+import { AddressPurpose, connect } from "@midl-xyz/midl-js-core";
 import { renderHook, waitFor } from "@testing-library/react";
 import { zeroAddress } from "viem";
-import { describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import { wrapper } from "~/__tests__";
+import { midlConfig } from "~/__tests__/midlConfig";
 import { useAddTxIntention } from "~/hooks/useAddTxIntention";
 
 describe("useAddTxIntention", () => {
+	beforeEach(() => {
+		connect(midlConfig, {
+			purposes: [AddressPurpose.Ordinals],
+		});
+	});
+
 	it("should add intention to the store", async () => {
 		const { result } = renderHook(() => useAddTxIntention(), {
 			wrapper,
