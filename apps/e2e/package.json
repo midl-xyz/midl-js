@@ -1,6 +1,6 @@
 {
 	"name": "e2e",
-	"version": "1.0.47",
+	"version": "1.0.44",
 	"description": "",
 	"main": "index.js",
 	"type": "module",
@@ -8,7 +8,6 @@
 		"dev": "vite ./app",
 		"build": "vite build ./app",
 		"preview": "vite preview ./app",
-		"postinstall": "./scripts/prepare.sh",
 		"test": "playwright test"
 	},
 	"keywords": [],
@@ -36,13 +35,13 @@
 		"@midl-xyz/midl-js-core": "workspace:^",
 		"@midl-xyz/midl-js-executor": "workspace:^",
 		"@midl-xyz/midl-js-react": "workspace:^",
-		"@midl-xyz/midl-js-executor-react": "workspace:^",
+		"@midl-xyz/playwright-btc-wallets": "workspace:^",
 		"@tanstack/react-query": "*",
 		"@wagmi/connectors": "^5.1.11",
 		"buffer": "^6.0.3",
 		"react": "^18.3.1",
 		"react-dom": "^18.3.1",
-		"viem": "npm:@midl-xyz/midl-viem",
+		"viem": "npm:@midl-xyz/midl-viem@2.21.36",
 		"wagmi": "^2.*"
 	}
 }
