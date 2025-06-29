@@ -10,3 +10,4 @@ export * from "./usePublicKey";
 export * from "./useSerializeTransaction";
 export * from "./useSignTransaction";
 export * from "./useToken";
+export * from "./useSendBTCTransactions";
