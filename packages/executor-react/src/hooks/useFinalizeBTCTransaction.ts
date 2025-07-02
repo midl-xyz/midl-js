@@ -1,24 +1,17 @@
 import type {
 	Config,
 	EdictRuneResponse,
-	SignMessageProtocol,
 	TransferBTCResponse,
 } from "@midl-xyz/midl-js-core";
-import {
-	type TransactionIntention,
-	finalizeBTCTransaction,
-	signIntention,
-} from "@midl-xyz/midl-js-executor";
+import { finalizeBTCTransaction } from "@midl-xyz/midl-js-executor";
 import {
 	type MidlContextStore,
 	useConfigInternal,
-	useStore,
 	useStoreInternal,
 } from "@midl-xyz/midl-js-react";
 import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
 import type { Address, StateOverride } from "viem";
-import { useGasPrice, useWalletClient } from "wagmi";
-import { useLastNonce } from "~/hooks/useLastNonce";
+import { useWalletClient } from "wagmi";
 
 type FinalizeMutationVariables = {
 	/**
@@ -40,54 +33,44 @@ type FinalizeMutationVariables = {
 	skipEstimateGasMulti?: boolean;
 };
 
-type UseFinalizeTxIntentionsResponse = EdictRuneResponse | TransferBTCResponse;
+type UseFinalizeBTCTransactionResponse =
+	| EdictRuneResponse
+	| TransferBTCResponse;
 
-type UseFinalizeTxIntentionsParams = {
+type UseFinalizeBTCTransactionParams = {
 	mutation?: Omit<
 		UseMutationOptions<
-			UseFinalizeTxIntentionsResponse,
+			UseFinalizeBTCTransactionResponse,
 			Error,
 			FinalizeMutationVariables
 		>,
 		"mutationFn"
 	>;
-
-	options?: {
-		signMessageProtocol?: SignMessageProtocol;
-	};
 	config?: Config;
 	store?: MidlContextStore;
 };
 
 /**
- * Prepares BTC transaction for the intentions. Finalizes the transaction and signs the intentions.
+ * Prepares BTC transaction for the intentions. Finalizes the transaction.
  * Calculates gas limits for EVM transactions, total fees and transfers.
  *
  * @returns
  * - **finalizeBTCTransaction**: `() => void` – Function to initiate finalizing BTC transactions.
  * - **finalizeBTCTransactionAsync**: `() => Promise<EdictRuneResponse>` – Function to asynchronously finalize BTC transactions.
- * - **btcTransaction**: `EdictRuneResponse` – The finalized BTC transaction.
- * - **signIntention**: `(intention: TransactionIntention) => void` – Function to sign a specific transaction intention.
- * - **signIntentionAsync**: `(intention: TransactionIntention) => Promise<SignTransactionResult>` – Function to asynchronously sign an intention.
- * - **intentions**: `TransactionIntention[]` – The current list of transaction intentions.
- * - **signIntentionState**: `UseMutationState` – The state of the sign intention mutation.
+ * - **data**: `EdictRuneResponse` – The finalized BTC transaction.
  * - Other mutation states from `useMutation`.
  */
-export const useFinalizeTxIntentions = ({
+export const useFinalizeBTCTransaction = ({
 	mutation,
-	options = {},
 	config: customConfig,
 	store: customStore,
-}: UseFinalizeTxIntentionsParams = {}) => {
+}: UseFinalizeBTCTransactionParams = {}) => {
 	const store = useStoreInternal(customStore);
 	const config = useConfigInternal(customConfig);
-	const { intentions = [] } = useStore(customStore);
 	const { data: publicClient } = useWalletClient();
-	const nonce = useLastNonce();
-	const { data: gasPrice } = useGasPrice();
 
-	const { mutate, mutateAsync, data, ...rest } = useMutation<
-		UseFinalizeTxIntentionsResponse,
+	const { mutate, mutateAsync, ...rest } = useMutation<
+		UseFinalizeBTCTransactionResponse,
 		Error,
 		FinalizeMutationVariables
 	>({
@@ -113,39 +96,9 @@ export const useFinalizeTxIntentions = ({
 		...mutation,
 	});
 
-	const {
-		mutate: _signIntention,
-		mutateAsync: signIntentionAsync,
-		...restSignIntention
-	} = useMutation({
-		mutationFn: async ({
-			intention,
-			txId,
-		}: {
-			intention: TransactionIntention;
-			txId: string;
-		}) => {
-			if (!publicClient) {
-				throw new Error("No public client set");
-			}
-
-			return signIntention(config, store, publicClient, intention, {
-				txId,
-				gasPrice,
-				nonce,
-				protocol: options.signMessageProtocol,
-			});
-		},
-	});
-
 	return {
 		finalizeBTCTransaction: mutate,
 		finalizeBTCTransactionAsync: mutateAsync,
-		signIntention: _signIntention,
-		signIntentionAsync,
-		intentions,
-		signIntentionState: restSignIntention,
-		btcTransaction: data,
 		...rest,
 	};
 };
