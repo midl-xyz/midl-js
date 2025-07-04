@@ -67,6 +67,7 @@ export const addCompleteTxIntention = async (
 
 		const p2wpkh = bitcoin.payments.p2wpkh({
 			address: btcReceiver.address,
+			network: bitcoin.networks[network.network],
 		});
 
 		receiverBTC = toHex(
