@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor
 
+## 2.0.0-next.7
+
+### Patch Changes
+
+- fix: zero address in complete tx intention util
+
 ## 2.0.0-next.6
 
 ### Patch Changes
