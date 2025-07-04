@@ -1,6 +1,17 @@
-import { AddressPurpose, type Config } from "@midl-xyz/midl-js-core";
+import {
+	AddressPurpose,
+	AddressType,
+	type Config,
+} from "@midl-xyz/midl-js-core";
 import type { MidlContextState } from "@midl-xyz/midl-js-react";
-import { type Address, encodeFunctionData, zeroAddress } from "viem";
+import * as bitcoin from "bitcoinjs-lib";
+import {
+	type Address,
+	encodeFunctionData,
+	padBytes,
+	toHex,
+	zeroAddress,
+} from "viem";
 import type { StoreApi } from "zustand";
 import { getPublicKey } from "~/actions";
 import { addTxIntention } from "~/actions/addTxIntention";
@@ -40,15 +51,29 @@ export const addCompleteTxIntention = async (
 		throw new Error("No account found to withdraw BTC");
 	}
 
-	const btcPublicKey = getPublicKey(
-		config,
-		btcReceiver.publicKey,
-	) as `0x${string}`;
-
-	const runesPublicKey = getPublicKey(
+	const receiver = getPublicKey(
 		config,
 		runesReceiver?.publicKey ?? btcReceiver.publicKey,
 	) as `0x${string}`;
+
+	let receiverBTC = toHex(0);
+
+	if (btcReceiver.address !== runesReceiver?.address) {
+		if (btcReceiver.addressType !== AddressType.P2WPKH) {
+			throw new Error(
+				`Unsupported address type for BTC receiver: ${btcReceiver.addressType}`,
+			);
+		}
+
+		const p2wpkh = bitcoin.payments.p2wpkh({
+			address: btcReceiver.address,
+		});
+
+		receiverBTC = `0x${
+			// biome-ignore lint/style/noNonNullAssertion: Output is guaranteed to be defined
+			Buffer.from(p2wpkh.output!).toString("hex")
+		}`;
+	}
 
 	return addTxIntention(config, store, {
 		hasWithdraw,
@@ -59,8 +84,8 @@ export const addCompleteTxIntention = async (
 				abi: executorAbi,
 				functionName: "completeTx",
 				args: [
-					runesPublicKey,
-					btcPublicKey,
+					receiver,
+					receiverBTC,
 					assetsToWithdraw ?? [],
 					new Array(assetsToWithdraw?.length ?? 0).fill(0n),
 				],
