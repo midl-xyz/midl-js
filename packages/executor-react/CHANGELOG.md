@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor-react
 
+## 2.0.0-next.5
+
+### Patch Changes
+
+- fix: useSignIntention export
+
 ## 2.0.0-next.4
 
 ### Patch Changes

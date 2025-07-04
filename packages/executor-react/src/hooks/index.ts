@@ -12,3 +12,4 @@ export * from "./useSignTransaction";
 export * from "./useToken";
 export * from "./useSendBTCTransactions";
 export * from "./useAddCompleteTxIntention";
+export * from "./useSignIntention";
