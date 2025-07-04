@@ -69,10 +69,12 @@ export const addCompleteTxIntention = async (
 			address: btcReceiver.address,
 		});
 
-		receiverBTC = `0x${
-			// biome-ignore lint/style/noNonNullAssertion: Output is guaranteed to be defined
-			Buffer.from(p2wpkh.output!).toString("hex")
-		}`;
+		receiverBTC = toHex(
+			// biome-ignore lint/style/noNonNullAssertion: <explanation>
+			padBytes(p2wpkh.output!, {
+				size: 32,
+			}),
+		);
 	}
 
 	return addTxIntention(config, store, {
