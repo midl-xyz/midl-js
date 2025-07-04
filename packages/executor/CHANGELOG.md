@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor
 
+## 2.0.0-next.9
+
+### Patch Changes
+
+- fix: 0x0 padhex
+
 ## 2.0.0-next.8
 
 ### Patch Changes
