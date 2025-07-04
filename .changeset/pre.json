@@ -15,6 +15,7 @@
 		"@midl-xyz/playwright-btc-wallets": "0.0.1"
 	},
 	"changesets": [
+		"fluffy-seals-fly",
 		"green-boxes-repair",
 		"lemon-tigers-crash",
 		"loud-crabs-warn",
