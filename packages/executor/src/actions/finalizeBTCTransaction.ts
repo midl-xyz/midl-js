@@ -1,5 +1,4 @@
 import {
-	AddressPurpose,
 	type Config,
 	type EdictRuneParams,
 	type EdictRuneResponse,
@@ -10,21 +9,11 @@ import {
 	transferBTC,
 } from "@midl-xyz/midl-js-core";
 import type { MidlContextState } from "@midl-xyz/midl-js-react";
-import {
-	type Address,
-	type Client,
-	type StateOverride,
-	encodeFunctionData,
-	padHex,
-	zeroAddress,
-} from "viem";
+import type { Client, StateOverride } from "viem";
 import { estimateGasMulti } from "viem/actions";
 import type { StoreApi } from "zustand";
-import { addTxIntention } from "~/actions/addTxIntention";
-import { getPublicKey } from "~/actions/getPublicKey";
 import { getPublicKeyForAccount } from "~/actions/getPublicKeyForAccount";
-import { executorAddress, multisigAddress } from "~/config";
-import { executorAbi } from "~/contracts/abi";
+import { multisigAddress } from "~/config";
 import {
 	calculateTransactionsCost,
 	convertETHtoBTC,
@@ -44,10 +33,6 @@ type FinalizeBTCTransactionOptions = {
 	 * Gas price for EVM transactions
 	 */
 	gasPrice?: bigint;
-	/**
-	 * If true, send complete transaction
-	 */
-	shouldComplete?: boolean;
 
 	/**
 	 * Fee rate multiplier for the transaction
@@ -55,9 +40,9 @@ type FinalizeBTCTransactionOptions = {
 	feeRateMultiplier?: number;
 
 	/**
-	 * Array of ERC20 assets to withdraw
+	 * Number of assets to withdraw
 	 */
-	assetsToWithdraw?: [Address] | [Address, Address];
+	assetsToWithdrawSize?: number;
 
 	/**
 	 * If true skips estimate gas for EVM transactions
@@ -68,8 +53,6 @@ type FinalizeBTCTransactionOptions = {
 /**
  * Prepares BTC transaction for the intentions.
  * Calculates gas limits for EVM transactions, total fees and transfers.
- *
- * If `options.shouldComplete` is true, adds a complete transaction to the intentions.
  *
  * @param config The configuration object
  * @param store The store object
@@ -83,7 +66,7 @@ export const finalizeBTCTransaction = async (
 	client: Client,
 	options: FinalizeBTCTransactionOptions = {},
 ) => {
-	const { network, accounts } = config.getState();
+	const { network } = config.getState();
 
 	if (!network) {
 		throw new Error("No network set");
@@ -111,28 +94,17 @@ export const finalizeBTCTransaction = async (
 
 		for (const [i, intention] of evmIntentions.entries()) {
 			intention.evmTransaction.gas = BigInt(
+				// Increase gas limit by 20% to account for potential fluctuations
 				Math.ceil(Number(gasLimits[i]) * 1.2),
 			);
 		}
 	}
 
-	const hasWithdraw =
-		intentions.some((it) => it.hasWithdraw) || options.shouldComplete;
-	const hasRunesWithdraw =
-		intentions.some((it) => it.hasRunesWithdraw) ||
-		(options.shouldComplete && (options.assetsToWithdraw?.length ?? 0) > 0);
+	const hasWithdraw = intentions.some((it) => it.hasWithdraw);
+	const hasRunesWithdraw = intentions.some((it) => it.hasRunesWithdraw);
 
 	const totalCost = await calculateTransactionsCost(
-		[
-			...evmTransactions,
-			...(options.shouldComplete
-				? [
-						{
-							gas: 300_000n,
-						},
-					]
-				: []),
-		],
+		[...evmTransactions],
 		config,
 		{
 			feeRateMultiplier: options.feeRateMultiplier,
@@ -141,7 +113,7 @@ export const finalizeBTCTransaction = async (
 			hasWithdraw: hasWithdraw,
 			hasRunesDeposit: intentions.some((it) => it.hasRunesDeposit),
 			hasRunesWithdraw: hasRunesWithdraw,
-			assetsToWithdrawSize: options.assetsToWithdraw?.length ?? 0,
+			assetsToWithdrawSize: options.assetsToWithdrawSize ?? 0,
 		},
 	);
 
@@ -214,58 +186,6 @@ export const finalizeBTCTransaction = async (
 		btcTx = await transferBTC(config, {
 			transfers: transfers as TransferBTCParams["transfers"],
 			publish: false,
-		});
-	}
-
-	if (options.shouldComplete) {
-		const runesReceiver = accounts?.find(
-			(it) => it.purpose === AddressPurpose.Ordinals,
-		);
-		const btcReceiver =
-			accounts?.find((it) => it.purpose === AddressPurpose.Payment) ??
-			runesReceiver;
-
-		if (
-			!runesReceiver &&
-			options.assetsToWithdraw?.find((it) => it !== zeroAddress)
-		) {
-			throw new Error("No ordinals account found to withdraw runes");
-		}
-
-		if (!btcReceiver) {
-			throw new Error("No account found to withdraw BTC");
-		}
-
-		const btcPublicKey = getPublicKey(
-			config,
-			btcReceiver.publicKey,
-		) as `0x${string}`;
-
-		const runesPublicKey = getPublicKey(
-			config,
-			runesReceiver?.publicKey ?? btcReceiver.publicKey,
-		) as `0x${string}`;
-
-		addTxIntention(config, store, {
-			hasWithdraw,
-			hasRunesWithdraw,
-
-			evmTransaction: {
-				to: executorAddress[network.id] as Address,
-				gas: 300_000n,
-				data: encodeFunctionData({
-					abi: executorAbi,
-					functionName: "completeTx",
-					args: [
-						`0x${btcTx.tx.id}`,
-						runesPublicKey,
-						btcPublicKey,
-						options.assetsToWithdraw ?? [],
-						new Array(options.assetsToWithdraw?.length ?? 0).fill(0n),
-					],
-				}),
-				chainId: client.chain?.id,
-			},
 		});
 	}
 

@@ -26,7 +26,6 @@ const {
 // To finalize a BTC transaction
 finalizeBTCTransaction({
   stateOverride,
-  shouldComplete,
   feeRateMultiplier,
 });
 
