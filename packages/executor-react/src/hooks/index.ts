@@ -11,3 +11,4 @@ export * from "./useSerializeTransaction";
 export * from "./useSignTransaction";
 export * from "./useToken";
 export * from "./useSendBTCTransactions";
+export * from "./useAddCompleteTxIntention";

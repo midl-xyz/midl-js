@@ -1,11 +1,6 @@
 import { AddressPurpose, type Config } from "@midl-xyz/midl-js-core";
 import type { MidlContextState } from "@midl-xyz/midl-js-react";
-import {
-	type Address,
-	type Client,
-	encodeFunctionData,
-	zeroAddress,
-} from "viem";
+import { type Address, encodeFunctionData, zeroAddress } from "viem";
 import type { StoreApi } from "zustand";
 import { getPublicKey } from "~/actions";
 import { addTxIntention } from "~/actions/addTxIntention";
@@ -16,8 +11,6 @@ import type { TransactionIntention } from "~/types";
 export const addCompleteTxIntention = async (
 	config: Config,
 	store: StoreApi<MidlContextState>,
-	client: Client,
-	btcTx: string,
 	assetsToWithdraw?: [Address] | [Address, Address],
 ): Promise<TransactionIntention> => {
 	const { network, accounts } = config.getState();
@@ -66,14 +59,12 @@ export const addCompleteTxIntention = async (
 				abi: executorAbi,
 				functionName: "completeTx",
 				args: [
-					`0x${btcTx}`,
 					runesPublicKey,
 					btcPublicKey,
 					assetsToWithdraw ?? [],
 					new Array(assetsToWithdraw?.length ?? 0).fill(0n),
 				],
 			}),
-			chainId: client.chain?.id,
 		},
 	});
 };

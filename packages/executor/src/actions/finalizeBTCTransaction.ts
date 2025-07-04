@@ -54,8 +54,6 @@ type FinalizeBTCTransactionOptions = {
  * Prepares BTC transaction for the intentions.
  * Calculates gas limits for EVM transactions, total fees and transfers.
  *
- * If `options.shouldComplete` is true, adds a complete transaction to the intentions.
- *
  * @param config The configuration object
  * @param store The store object
  * @param client EVM client or provider (viem)

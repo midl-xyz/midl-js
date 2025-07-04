@@ -5,7 +5,6 @@
 Prepares BTC transaction for the intentions.
 Calculates gas limits for EVM transactions, total fees and transfers.
 
-If `options.shouldComplete` is true, adds a complete transaction to the intentions.
 
 ## Import
 
@@ -23,9 +22,7 @@ const client = createPublicClient({
   transport, // http transport for midl chain
 });
 
-const tx = await finalizeBTCTransaction(config, store, client, {
-  shouldComplete: true,
-});
+const tx = await finalizeBTCTransaction(config, store, client);
 ```
 
 ## Parameters
@@ -39,15 +36,14 @@ const tx = await finalizeBTCTransaction(config, store, client, {
 
 ### FinalizeBTCTransactionOptions
 
-| Name                  | Type                              | Description                                    |
-| --------------------- | --------------------------------- | ---------------------------------------------- |
-| stateOverride?        | `StateOverride`                   | State override for EVM transactions            |
-| publicKey?            | `string`                          | Public key of the account to use for signing   |
-| gasPrice?             | `bigint`                          | Gas price for EVM transactions                 |
-| shouldComplete?       | `boolean`                         | If true, send complete transaction             |
-| feeRateMultiplier?    | `number`                          | Fee rate multiplier for the transaction        |
-| assetsToWithdraw?     | `[Address] \| [Address, Address]` | Array of ERC20 assets to withdraw              |
-| skipEstimateGasMulti? | `boolean`                         | If true, skip estimating gas multi for EVM txs |
+| Name                  | Type            | Description                                    |
+| --------------------- | --------------- | ---------------------------------------------- |
+| stateOverride?        | `StateOverride` | State override for EVM transactions            |
+| publicKey?            | `string`        | Public key of the account to use for signing   |
+| gasPrice?             | `bigint`        | Gas price for EVM transactions                 |
+| feeRateMultiplier?    | `number`        | Fee rate multiplier for the transaction        |
+| assetsToWithdrawSize? | `number`        | Number of assets to withdraw                   |
+| skipEstimateGasMulti? | `boolean`       | If true, skip estimating gas multi for EVM txs |
 
 ## Returns
 

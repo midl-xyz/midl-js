@@ -1,12 +1,15 @@
+import packageJson from "@midl-xyz/contracts/package.json" with {
+	type: "json",
+};
 import { defineConfig } from "@wagmi/cli";
-
-import Executor from "@midl-xyz/contracts/deployments/0.0.10/Executor.json" with {
-	type: "json",
-};
-import ExecutorL2 from "@midl-xyz/contracts/deployments/0.0.10/ExecutorL2.json" with {
-	type: "json",
-};
 import type { Abi } from "viem";
+
+const { default: Executor } = await import(
+	`@midl-xyz/contracts/deployments/${packageJson.version}/Executor.json`,
+	{
+		with: { type: "json" },
+	}
+);
 
 export default defineConfig({
 	out: "src/contracts/abi.ts",
@@ -14,10 +17,6 @@ export default defineConfig({
 		{
 			name: Executor.contractName,
 			abi: Executor.abi as Abi,
-		},
-		{
-			name: ExecutorL2.contractName,
-			abi: ExecutorL2.abi as Abi,
 		},
 	],
 });

@@ -18,12 +18,8 @@ type FinalizeMutationVariables = {
 	 * State override to estimate the cost of the transaction
 	 */
 	stateOverride?: StateOverride;
-	/**
-	 * If true, send complete transaction
-	 */
-	shouldComplete?: boolean;
 
-	assetsToWithdraw?: [Address] | [Address, Address];
+	assetsToWithdrawSize?: number;
 
 	feeRateMultiplier?: number;
 
@@ -76,8 +72,7 @@ export const useFinalizeBTCTransaction = ({
 	>({
 		mutationFn: async ({
 			stateOverride,
-			shouldComplete,
-			assetsToWithdraw,
+			assetsToWithdrawSize,
 			feeRateMultiplier,
 			skipEstimateGasMulti,
 		} = {}) => {
@@ -87,8 +82,7 @@ export const useFinalizeBTCTransaction = ({
 
 			return finalizeBTCTransaction(config, store, publicClient, {
 				stateOverride,
-				shouldComplete,
-				assetsToWithdraw,
+				assetsToWithdrawSize,
 				feeRateMultiplier,
 				skipEstimateGasMulti,
 			});

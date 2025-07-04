@@ -6,3 +6,4 @@ export * from "./getPublicKey";
 export * from "./getPublicKeyForAccount";
 export * from "./signIntention";
 export * from "./signTransaction";
+export * from "./addCompleteTxIntention";

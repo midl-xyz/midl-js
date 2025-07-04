@@ -13,8 +13,9 @@ import {
 	testnet4,
 	waitForTransaction,
 } from "@midl-xyz/midl-js-core";
-import type { TransactionIntention, Chain } from "@midl-xyz/midl-js-executor";
+import type { Chain, TransactionIntention } from "@midl-xyz/midl-js-executor";
 import {
+	addCompleteTxIntention,
 	addTxIntention,
 	clearTxIntentions,
 	finalizeBTCTransaction,
@@ -25,6 +26,8 @@ import {
 } from "@midl-xyz/midl-js-executor";
 import type { MidlContextState } from "@midl-xyz/midl-js-react";
 
+import fs from "node:fs";
+import path from "node:path";
 import {
 	type Libraries,
 	resolveBytecodeWithLinkedLibraries,
@@ -33,19 +36,17 @@ import type {
 	HardhatRuntimeEnvironment,
 	HttpNetworkConfig,
 } from "hardhat/types";
-import fs from "node:fs";
-import path from "node:path";
 import {
-	type Chain as ViemChain,
+	http,
 	type Address,
 	type StateOverride,
 	type TransactionSerializableBTC,
+	type Chain as ViemChain,
 	type WalletClient,
 	createWalletClient,
 	encodeDeployData,
 	encodeFunctionData,
 	getContractAddress,
-	http,
 } from "viem";
 import { waitForTransactionReceipt } from "viem/actions";
 import { type StoreApi, createStore } from "zustand";
@@ -326,6 +327,10 @@ export class MidlHardhatEnvironment {
 		const walletClient = await this.getWalletClient();
 		const publicKey = await getPublicKeyForAccount(this.config);
 
+		if (shouldComplete) {
+			await addCompleteTxIntention(this.config, this.store, assetsToWithdraw);
+		}
+
 		const tx = await finalizeBTCTransaction(
 			this.config,
 			this.store,
@@ -337,10 +342,9 @@ export class MidlHardhatEnvironment {
 						balance: intentions.reduce((acc, it) => acc + (it.value ?? 0n), 0n),
 					},
 				],
-				shouldComplete,
 				feeRateMultiplier,
 				skipEstimateGasMulti,
-				assetsToWithdraw,
+				assetsToWithdrawSize: assetsToWithdraw?.length ?? 0,
 			},
 		);
 
