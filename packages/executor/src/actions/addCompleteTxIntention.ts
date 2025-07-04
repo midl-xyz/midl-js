@@ -57,7 +57,7 @@ export const addCompleteTxIntention = async (
 		runesReceiver?.publicKey ?? btcReceiver.publicKey,
 	) as `0x${string}`;
 
-	let receiverBTC = padHex(0, { size: 32 });
+	let receiverBTC = padHex("0x0", { size: 32 });
 
 	if (btcReceiver.address !== runesReceiver?.address) {
 		if (btcReceiver.addressType !== AddressType.P2WPKH) {
