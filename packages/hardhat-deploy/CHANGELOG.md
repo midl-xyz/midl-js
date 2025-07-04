@@ -1,5 +1,13 @@
 # @midl-xyz/hardhat-deploy
 
+## 2.0.0-next.4
+
+### Patch Changes
+
+- 6f5743d: feat: add complete tx intetnion
+- Updated dependencies [6f5743d]
+  - @midl-xyz/midl-js-executor@2.0.0-next.4
+
 ## 2.0.0-next.2
 
 ### Patch Changes
