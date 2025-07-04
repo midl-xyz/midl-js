@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor-react
 
+## 2.0.0-next.3
+
+### Patch Changes
+
+- ac33f3b: feat(executor-react): add useSendBTCTransactions
+
 ## 2.0.0-next.2
 
 ### Patch Changes
