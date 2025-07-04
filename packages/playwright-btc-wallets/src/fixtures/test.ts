@@ -1,5 +1,5 @@
-import { test as base, chromium, type BrowserContext } from "@playwright/test";
 import path from "node:path";
+import { type BrowserContext, test as base, chromium } from "@playwright/test";
 import { extensions } from "~/config";
 import type { Wallet, WalletConstructor } from "~/wallets/Wallet";
 import type LeatherWallet from "~/wallets/leather";
@@ -19,7 +19,7 @@ type CreateTestParams<T extends keyof Extensions> = {
 export function createTest<T extends keyof Extensions = "leather">({
 	mnemonic,
 	extension,
-	shouldPersist = true,
+	shouldPersist = false,
 	walletPassword = "W(6RgP.3q&AeCLHr",
 }: CreateTestParams<T>) {
 	const persistDir = shouldPersist
@@ -42,6 +42,7 @@ export function createTest<T extends keyof Extensions = "leather">({
 					`--load-extension=${pathToExtension}`,
 				],
 			});
+
 			await use(context);
 			await context.close();
 		},
@@ -66,7 +67,10 @@ export function createTest<T extends keyof Extensions = "leather">({
 
 			const walletPage = await wallet.getPage();
 			await walletPage.close();
-			await wallet.configure();
+
+			if (shouldPersist) {
+				await wallet.configure();
+			}
 
 			await use(wallet);
 		},

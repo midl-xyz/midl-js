@@ -1,15 +1,21 @@
 import type { Page } from "@playwright/test";
-import { type NetworkName, supportedNetworks, Wallet } from "~/wallets/Wallet";
+import rxjs, { firstValueFrom, fromEventPattern, merge, of, take } from "rxjs";
+import { type NetworkName, Wallet } from "~/wallets/Wallet";
 
 export class LeatherWallet extends Wallet implements Wallet {
+	private popupPage$!: rxjs.Observable<Page>;
+
+	constructor(...rest: ConstructorParameters<typeof Wallet>) {
+		super(...rest);
+
+		this.trackPopupPage();
+	}
+
 	async configure(): Promise<void> {
 		const page = await this.context.newPage();
 
 		await page.goto(
 			`chrome-extension://${this.extensionId}/index.html#/get-started`,
-			{
-				waitUntil: "networkidle",
-			},
 		);
 
 		const createNewWalletButton = page.getByText("Use existing key");
@@ -40,9 +46,6 @@ export class LeatherWallet extends Wallet implements Wallet {
 		await page.getByText("Continue").click();
 		await page.waitForURL(
 			`chrome-extension://${this.extensionId}/index.html#/`,
-			{
-				waitUntil: "networkidle",
-			},
 		);
 	}
 
@@ -140,7 +143,7 @@ export class LeatherWallet extends Wallet implements Wallet {
 
 		await page
 			.getByTestId("network-bitcoin-address")
-			.fill(supportedNetworks[networkName].rpcUrl);
+			.fill(this.rpcUrls[networkName]);
 
 		await page.getByTestId("network-key").fill(networkName);
 		await page.getByRole("button", { name: "Add network" }).click();
@@ -159,33 +162,45 @@ export class LeatherWallet extends Wallet implements Wallet {
 	}
 
 	async connect(): Promise<void> {
-		const page = await this.getPage();
+		const page = await firstValueFrom(this.popupPage$);
 		await this.unlock(page);
 		await page.getByRole("button", { name: "Confirm" }).click();
 	}
 	async confirmSignature(): Promise<void> {
-		const page = await this.getPage();
+		const page = await firstValueFrom(this.popupPage$);
 		await this.unlock(page);
-
 		await page.getByRole("button", { name: "Sign" }).click();
 	}
 
 	async confirmTransaction(): Promise<void> {
-		const page = await this.getPage();
+		const page = await firstValueFrom(this.popupPage$);
 		await this.unlock(page);
-
 		await page.getByRole("button", { name: "Confirm" }).click();
 	}
 	async cancelSignature(): Promise<void> {
-		const page = await this.getPage();
+		const page = await firstValueFrom(this.popupPage$);
 		await this.unlock(page);
-
 		await page.getByRole("button", { name: "Deny" }).click();
 	}
 	async cancelTransaction(): Promise<void> {
-		const page = await this.getPage();
-		await this.unlock(page);
+		const page = await firstValueFrom(this.popupPage$);
 
+		await this.unlock(page);
 		await page.getByRole("button", { name: "Cancel" }).click();
+	}
+
+	private trackPopupPage() {
+		const pageEvents$ = fromEventPattern<Page>(
+			(handler) => this.context.on("page", handler),
+			(handler) => this.context.off("page", handler),
+		);
+
+		const existingPages = of(...this.context.pages());
+
+		this.popupPage$ = merge(existingPages, pageEvents$).pipe(
+			rxjs.filter((page) => page.url().includes(this.extensionId)),
+			rxjs.filter((page) => page.url().includes("popup.html")),
+			rxjs.filter((page) => !page.isClosed()),
+		);
 	}
 }

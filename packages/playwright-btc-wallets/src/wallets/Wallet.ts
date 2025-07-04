@@ -1,6 +1,5 @@
-import type { BrowserContext, Page } from "@playwright/test";
 import { mainnet, regtest, testnet, testnet4 } from "@midl-xyz/midl-js-core";
-import fs from "node:fs";
+import type { BrowserContext, Page } from "@playwright/test";
 
 export const supportedNetworks = {
 	mainnet,
@@ -17,6 +16,12 @@ export abstract class Wallet {
 		protected readonly extensionId: string,
 		protected readonly mnemonic: string,
 		protected readonly password: string,
+		protected readonly rpcUrls: Record<NetworkName, string> = {
+			mainnet: "https://mempool.midl.xyz/api",
+			regtest: "https://mempool.regtest.midl.xyz/api",
+			testnet: "https://mempool.testnet.midl.xyz/api",
+			testnet4: "https://mempool.testnet4.midl.xyz/api",
+		},
 	) {}
 
 	async configure(): Promise<void> {
@@ -55,10 +60,14 @@ export abstract class Wallet {
 		throw new Error("Method not implemented.");
 	}
 
-	async getPage(): Promise<Page> {
+	async getPage(filter?: (page: Page) => Promise<boolean>): Promise<Page> {
 		return new Promise<Page>((resolve) => {
 			const onNewPage = async (page: Page) => {
 				if (page.url().includes(this.extensionId)) {
+					if (filter) {
+						const isValid = await filter(page);
+						if (!isValid) return;
+					}
 					resolve(page);
 				}
 
@@ -66,7 +75,11 @@ export abstract class Wallet {
 			};
 
 			for (const page of this.context.pages()) {
-				if (page.url().includes(this.extensionId)) {
+				if (page.url().includes(this.extensionId) && !page.isClosed()) {
+					if (filter) {
+						const isValid = filter(page);
+						if (!isValid) return;
+					}
 					resolve(page);
 					return;
 				}
