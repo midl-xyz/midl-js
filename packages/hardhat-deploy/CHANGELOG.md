@@ -1,5 +1,12 @@
 # @midl-xyz/hardhat-deploy
 
+## 2.0.0-next.6
+
+### Patch Changes
+
+- Updated dependencies [0df7eef]
+  - @midl-xyz/midl-js-executor@2.0.0-next.6
+
 ## 2.0.0-next.4
 
 ### Patch Changes

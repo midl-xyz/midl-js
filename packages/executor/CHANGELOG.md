@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor
 
+## 2.0.0-next.6
+
+### Patch Changes
+
+- 0df7eef: fix(executor): p2wpkh receiver btc
+
 ## 2.0.0-next.4
 
 ### Patch Changes
