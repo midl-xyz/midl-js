@@ -40,7 +40,7 @@
 	},
 	"pnpm": {
 		"overrides": {
-			"viem": "npm:@midl-xyz/midl-viem",
+			"viem": "npm:@midl-xyz/midl-viem@2.21.37",
 			"@bitcoinerlab/secp256k1": "^1.2.0",
 			"@noble/secp256k1": "1.7.1",
 			"@tanstack/react-query": "5.69.0"
