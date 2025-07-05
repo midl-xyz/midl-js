@@ -1,6 +1,6 @@
 {
 	"name": "@midl-xyz/satoshi-kit",
-	"version": "2.0.0-next.2",
+	"version": "2.0.0-next.10",
 	"type": "module",
 	"scripts": {
 		"build": "pnpm run build:lib && pnpm run build:styles",
@@ -29,10 +29,7 @@
 		"./styles.css": "./dist/styles.css",
 		"./styled-system/*": "./styled-system/*"
 	},
-	"files": [
-		"dist",
-		"styled-system"
-	],
+	"files": ["dist", "styled-system"],
 	"devDependencies": {
 		"@midl-xyz/midl-js-config": "workspace:^",
 		"@midl-xyz/midl-js-core": "workspace:^",

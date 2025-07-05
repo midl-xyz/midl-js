@@ -1,47 +1,45 @@
 {
-    "name": "@midl-xyz/midl-js-react",
-    "version": "2.0.0-next.2",
-    "scripts": {
-        "build": "pnpm run clean && tspc --project tsconfig.esm.json && tspc --project tsconfig.cjs.json",
-        "dev": "concurrently \"tspc --watch --preserveWatchOutput --project tsconfig.esm.json\" \"tspc --watch --preserveWatchOutput --project tsconfig.cjs.json\"",
-        "clean": "rm -rf dist",
-        "test": "vitest"
-    },
-    "main": "./dist/cjs/index.js",
-    "module": "./dist/esm/index.js",
-    "types": "./dist/types/index.d.ts",
-    "exports": {
-        "./package.json": "./package.json",
-        ".": {
-            "import": "./dist/esm/index.js",
-            "require": "./dist/cjs/index.js",
-            "types": "./dist/types/index.d.ts"
-        },
-        "./*": {
-            "import": "./dist/esm/*.js",
-            "require": "./dist/cjs/*.js",
-            "types": "./dist/types/*.d.ts"
-        }
-    },
-    "files": [
-        "dist"
-    ],
-    "devDependencies": {
-        "@midl-xyz/midl-js-config": "workspace:^",
-        "@tanstack/react-query": "*",
-        "@types/react": "^18.3.11",
-        "bitcoinjs-lib": "^6.1.6",
-        "react": "^18.3.1",
-        "react-dom": "^18.3.1"
-    },
-    "dependencies": {
-        "@midl-xyz/midl-js-core": "workspace:^",
-        "zustand": "^5.0.1"
-    },
-    "peerDependencies": {
-        "@tanstack/react-query": "*",
-        "@types/react": "^18.3.11",
-        "react": "^18.3.1",
-        "react-dom": "^18.3.1"
-    }
+	"name": "@midl-xyz/midl-js-react",
+	"version": "2.0.0-next.10",
+	"scripts": {
+		"build": "pnpm run clean && tspc --project tsconfig.esm.json && tspc --project tsconfig.cjs.json",
+		"dev": "concurrently \"tspc --watch --preserveWatchOutput --project tsconfig.esm.json\" \"tspc --watch --preserveWatchOutput --project tsconfig.cjs.json\"",
+		"clean": "rm -rf dist",
+		"test": "vitest"
+	},
+	"main": "./dist/cjs/index.js",
+	"module": "./dist/esm/index.js",
+	"types": "./dist/types/index.d.ts",
+	"exports": {
+		"./package.json": "./package.json",
+		".": {
+			"import": "./dist/esm/index.js",
+			"require": "./dist/cjs/index.js",
+			"types": "./dist/types/index.d.ts"
+		},
+		"./*": {
+			"import": "./dist/esm/*.js",
+			"require": "./dist/cjs/*.js",
+			"types": "./dist/types/*.d.ts"
+		}
+	},
+	"files": ["dist"],
+	"devDependencies": {
+		"@midl-xyz/midl-js-config": "workspace:^",
+		"@tanstack/react-query": "*",
+		"@types/react": "^18.3.11",
+		"bitcoinjs-lib": "^6.1.6",
+		"react": "^18.3.1",
+		"react-dom": "^18.3.1"
+	},
+	"dependencies": {
+		"@midl-xyz/midl-js-core": "workspace:^",
+		"zustand": "^5.0.1"
+	},
+	"peerDependencies": {
+		"@tanstack/react-query": "*",
+		"@types/react": "^18.3.11",
+		"react": "^18.3.1",
+		"react-dom": "^18.3.1"
+	}
 }
