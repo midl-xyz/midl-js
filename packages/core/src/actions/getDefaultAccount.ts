@@ -14,7 +14,7 @@ class PredicateError extends Error {
  * If no account is found, an error is thrown.
  *
  * If a search function is provided, the first account that matches the search function is returned.
- * In other cases, the first account with the purpose of `Ordinals` or `Payment` is returned.
+ * In other cases, the first account with the purpose of `Payment` or `Ordinals` is returned.
  *
  * @param config The configuration object
  * @param predicate A search function to find the account
@@ -44,7 +44,7 @@ export const getDefaultAccount = async (
 
 	const account = predicate
 		? accounts.find(predicate)
-		: ordinalsAccount || paymentAccount;
+		: paymentAccount || ordinalsAccount;
 
 	if (!account && predicate) {
 		throw new PredicateError("No account found matching the predicate");

@@ -27,7 +27,10 @@ type UseSignIntentionParams = {
 	>;
 	config?: Config;
 	store?: MidlContextStore;
-	signMessageProtocol?: SignMessageProtocol;
+	options?: {
+		publicKey?: string;
+		protocol?: SignMessageProtocol;
+	};
 };
 
 /**
@@ -45,7 +48,9 @@ export const useSignIntention = ({
 	config: customConfig,
 	store: customStore,
 	mutation,
-	signMessageProtocol = SignMessageProtocol.Bip322,
+	options = {
+		protocol: SignMessageProtocol.Bip322,
+	},
 }: UseSignIntentionParams = {}) => {
 	const nonce = useLastNonce();
 	const { data: gasPrice } = useGasPrice();
@@ -70,7 +75,8 @@ export const useSignIntention = ({
 				txId,
 				gasPrice,
 				nonce,
-				protocol: signMessageProtocol,
+				publicKey: options.publicKey,
+				protocol: options.protocol,
 			});
 		},
 		...mutation,

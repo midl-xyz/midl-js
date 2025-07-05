@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 2.0.0-next.10
+
+### Patch Changes
+
+- fix(core): extract default account
+
 ## 2.0.0-next.2
 
 ### Patch Changes
