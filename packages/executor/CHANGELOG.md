@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor
 
+## 2.0.0-next.11
+
+### Patch Changes
+
+- fix(executor): bip322 extract evm signature
+
 ## 2.0.0-next.10
 
 ### Patch Changes

@@ -62,16 +62,22 @@ export const signTransaction = async (
 		...tx,
 	});
 
+	const message = keccak256(serialized);
+
 	const data = await signMessage(config, {
-		message: keccak256(serialized),
+		message,
 		address: account.address,
 		protocol,
 	});
 
-	const { r, s, v } = extractEVMSignature(
+	const { r, s, v } = await extractEVMSignature(
+		message,
 		data.signature,
 		data.protocol,
-		account.addressType,
+		{
+			addressType: account.addressType,
+			publicKey: account.publicKey,
+		},
 	);
 	const signedSerializedTransaction = serializeTransaction(
 		{
