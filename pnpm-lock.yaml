@@ -350,6 +350,15 @@ importers:
       '@noble/secp256k1':
         specifier: 1.7.1
         version: 1.7.1
+      '@scure/btc-signer':
+        specifier: 1.4.0
+        version: 1.4.0
+      bip322-js:
+        specifier: ^2.0.0
+        version: 2.0.0
+      secp256k1:
+        specifier: ^4.0.3
+        version: 4.0.4
       zustand:
         specifier: ^5.0.1
         version: 5.0.3(@types/react@18.3.18)(react@18.3.1)(use-sync-external-store@1.4.0(react@18.3.1))
@@ -357,18 +366,12 @@ importers:
       '@midl-xyz/midl-js-config':
         specifier: workspace:^
         version: link:../config
-      '@scure/btc-signer':
-        specifier: 1.4.0
-        version: 1.4.0
       '@types/node':
         specifier: ^22.8.7
         version: 22.12.0
       '@wagmi/cli':
         specifier: ^2.1.15
         version: 2.2.0(bufferutil@4.0.9)(typescript@5.7.2)(utf-8-validate@5.0.10)
-      bip322-js:
-        specifier: ^2.0.0
-        version: 2.0.0
       bitcoinjs-lib:
         specifier: 7.0.0-rc.0
         version: 7.0.0-rc.0(typescript@5.7.2)
