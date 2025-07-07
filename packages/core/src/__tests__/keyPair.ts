@@ -1,12 +1,11 @@
 import ecc from "@bitcoinerlab/secp256k1";
+import Bip32Factory from "bip32";
+import bip39 from "bip39";
 import * as bitcoin from "bitcoinjs-lib";
 import type { Network } from "bitcoinjs-lib";
 import ECPairFactory from "ecpair";
-import Bip32Factory from "bip32";
-import bip39 from "bip39";
 
 const bip32 = Bip32Factory(ecc);
-
 const ECPair = ECPairFactory(ecc);
 
 export const getKeyPair = (network: Network = bitcoin.networks.regtest) => {

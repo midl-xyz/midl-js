@@ -330,9 +330,6 @@ importers:
       '@midl-xyz/midl-js-config':
         specifier: workspace:^
         version: link:../config
-      '@midl-xyz/midl-js-node':
-        specifier: workspace:^
-        version: link:../node
       '@types/node':
         specifier: ^22.8.7
         version: 22.12.0
