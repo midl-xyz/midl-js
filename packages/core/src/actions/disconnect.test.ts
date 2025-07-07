@@ -1,9 +1,10 @@
 import { describe } from "node:test";
+import { keyPairConnector } from "@midl-xyz/midl-js-node";
 import { expect, it, vi } from "vitest";
 import { getKeyPair } from "~/__tests__/keyPair";
 import { connect } from "~/actions/connect";
 import { disconnect } from "~/actions/disconnect";
-import { type Connector, keyPairConnector } from "~/connectors";
+import type { Connector } from "~/connectors";
 import { AddressPurpose } from "~/constants";
 import { createConfig } from "~/createConfig";
 import { regtest } from "~/networks";

@@ -1,7 +1,7 @@
+import { keyPairConnector } from "@midl-xyz/midl-js-node";
 import { describe, expect, it } from "vitest";
 import { getKeyPair } from "~/__tests__/keyPair";
 import { EmptyAccountsError, connect } from "~/actions/connect";
-import { KeyPairConnector, keyPairConnector } from "~/connectors";
 import { AddressPurpose } from "~/constants";
 import { createConfig } from "~/createConfig";
 import { regtest } from "~/networks";

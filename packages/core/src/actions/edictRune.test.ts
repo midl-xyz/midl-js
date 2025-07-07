@@ -1,3 +1,4 @@
+import { keyPairConnector } from "@midl-xyz/midl-js-node";
 import * as bitcoin from "bitcoinjs-lib";
 import { Runestone } from "runelib";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
@@ -7,7 +8,6 @@ import { makeRandomAddress } from "~/__tests__/makeRandomAddress";
 import { mockServer } from "~/__tests__/mockServer";
 import { connect } from "~/actions/connect";
 import { edictRune } from "~/actions/edictRune";
-import { KeyPairConnector, keyPairConnector } from "~/connectors";
 import { AddressPurpose } from "~/constants";
 import { type Config, createConfig } from "~/createConfig";
 import { regtest } from "~/networks";

@@ -1,7 +1,8 @@
+import { keyPairConnector } from "@midl-xyz/midl-js-node";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { getKeyPair } from "~/__tests__/keyPair";
 import { mockServer } from "~/__tests__/mockServer";
 import { waitForTransaction } from "~/actions/waitForTransaction";
-import { unisatConnector } from "~/connectors";
 import { type Config, createConfig } from "~/createConfig";
 import { regtest } from "~/networks";
 
@@ -16,7 +17,11 @@ describe("core | actions | waitForTransaction", () => {
 	beforeAll(() => {
 		config = createConfig({
 			networks: [regtest],
-			connectors: [unisatConnector()],
+			connectors: [
+				keyPairConnector({
+					keyPair: getKeyPair(),
+				}),
+			],
 		});
 
 		mockServer.listen();

@@ -1,3 +1,4 @@
+import { keyPairConnector } from "@midl-xyz/midl-js-node";
 import * as bitcoin from "bitcoinjs-lib";
 import { describe, expect, it, vi } from "vitest";
 import { getKeyPair } from "~/__tests__/keyPair";
@@ -5,8 +6,8 @@ import { broadcastTransaction } from "~/actions/broadcastTransaction";
 import { WalletConnectionError, connect } from "~/actions/connect";
 import { getDefaultAccount } from "~/actions/getDefaultAccount";
 import { signPSBT } from "~/actions/signPSBT";
-import { type Account, keyPairConnector } from "~/connectors";
-import { AddressPurpose } from "~/constants";
+import type { Account } from "~/connectors";
+import { AddressPurpose, AddressType } from "~/constants";
 import { createConfig } from "~/createConfig";
 import { regtest } from "~/networks";
 
@@ -20,7 +21,11 @@ describe("core | actions | signPSBT", () => {
 	it("signs psbt with the connected wallet", async () => {
 		const config = createConfig({
 			networks: [regtest],
-			connectors: [keyPairConnector({ keyPair: getKeyPair() })],
+			connectors: [
+				keyPairConnector({
+					keyPair: getKeyPair(),
+				}),
+			],
 		});
 
 		await connect(config, { purposes: [AddressPurpose.Payment] });
@@ -80,7 +85,12 @@ describe("core | actions | signPSBT", () => {
 	it("publishes the transaction", async () => {
 		const config = createConfig({
 			networks: [regtest],
-			connectors: [keyPairConnector({ keyPair: getKeyPair() })],
+			connectors: [
+				keyPairConnector({
+					keyPair: getKeyPair(),
+					paymentAddressType: AddressType.P2SH_P2WPKH,
+				}),
+			],
 		});
 
 		await connect(config, {
