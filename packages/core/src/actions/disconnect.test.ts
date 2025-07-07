@@ -1,6 +1,4 @@
-import { describe } from "node:test";
-import { keyPairConnector } from "@midl-xyz/midl-js-node";
-import { expect, it, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { getKeyPair } from "~/__tests__/keyPair";
 import { connect } from "~/actions/connect";
 import { disconnect } from "~/actions/disconnect";
@@ -9,7 +7,9 @@ import { AddressPurpose } from "~/constants";
 import { createConfig } from "~/createConfig";
 import { regtest } from "~/networks";
 
-describe("core | actions | disconnect", () => {
+describe("core | actions | disconnect", async () => {
+	const { keyPairConnector } = await import("@midl-xyz/midl-js-node");
+
 	it("disconnects and saves latest network", async () => {
 		const config = createConfig({
 			networks: [regtest],

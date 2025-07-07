@@ -5,12 +5,13 @@ import { makeRandomAddress } from "~/__tests__/makeRandomAddress";
 import { mockServer } from "~/__tests__/mockServer";
 import { connect } from "~/actions/connect";
 import { transferBTC } from "~/actions/transferBTC";
-import { keyPairConnector } from "~/connectors";
 import { AddressPurpose } from "~/constants";
 import { createConfig } from "~/createConfig";
 import { regtest } from "~/networks";
 
-describe("core | actions | transferBTC", () => {
+describe("core | actions | transferBTC", async () => {
+	const { keyPairConnector } = await import("@midl-xyz/midl-js-node");
+
 	beforeAll(() => {
 		mockServer.listen();
 	});

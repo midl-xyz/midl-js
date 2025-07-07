@@ -1,4 +1,3 @@
-import { keyPairConnector } from "@midl-xyz/midl-js-node";
 import * as bitcoin from "bitcoinjs-lib";
 import { Runestone } from "runelib";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
@@ -13,7 +12,9 @@ import { type Config, createConfig } from "~/createConfig";
 import { regtest } from "~/networks";
 import * as mod from "./getRuneUTXO";
 
-describe("core | actions | edictRune", () => {
+describe("core | actions | edictRune", async () => {
+	const { keyPairConnector } = await import("@midl-xyz/midl-js-node");
+
 	let config: Config;
 
 	beforeAll(async () => {

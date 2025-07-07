@@ -1,4 +1,3 @@
-import { keyPairConnector } from "@midl-xyz/midl-js-node";
 import { describe, expect, it } from "vitest";
 import { getKeyPair } from "~/__tests__/keyPair";
 import { EmptyAccountsError, connect } from "~/actions/connect";
@@ -6,7 +5,9 @@ import { AddressPurpose } from "~/constants";
 import { createConfig } from "~/createConfig";
 import { regtest } from "~/networks";
 
-describe("core | actions | connect", () => {
+describe("core | actions | connect", async () => {
+	const { keyPairConnector } = await import("@midl-xyz/midl-js-node");
+
 	it("connects", async () => {
 		const config = createConfig({
 			networks: [regtest],

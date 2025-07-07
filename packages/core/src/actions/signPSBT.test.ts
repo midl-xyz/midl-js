@@ -1,4 +1,3 @@
-import { keyPairConnector } from "@midl-xyz/midl-js-node";
 import * as bitcoin from "bitcoinjs-lib";
 import { describe, expect, it, vi } from "vitest";
 import { getKeyPair } from "~/__tests__/keyPair";
@@ -17,7 +16,9 @@ vi.mock("./broadcastTransaction", () => {
 	};
 });
 
-describe("core | actions | signPSBT", () => {
+describe("core | actions | signPSBT", async () => {
+	const { keyPairConnector } = await import("@midl-xyz/midl-js-node");
+
 	it("signs psbt with the connected wallet", async () => {
 		const config = createConfig({
 			networks: [regtest],
