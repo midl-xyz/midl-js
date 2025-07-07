@@ -2,6 +2,7 @@ import ecc from "@bitcoinerlab/secp256k1";
 import {
 	KeyPairConnector,
 	createConfig,
+	keyPairConnector,
 	regtest,
 } from "@midl-xyz/midl-js-core";
 import Bip32Factory from "bip32";
@@ -27,5 +28,5 @@ const getKeyPair = (network: Network = bitcoin.networks.regtest) => {
 
 export const midlConfig = createConfig({
 	networks: [regtest],
-	connectors: [new KeyPairConnector(getKeyPair())],
+	connectors: [keyPairConnector({ keyPair: getKeyPair() })],
 });

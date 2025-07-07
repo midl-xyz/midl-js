@@ -6,21 +6,17 @@ import {
 import type { SignPSBTParams, SignPSBTResponse } from "~/actions/signPSBT";
 import {
 	type Account,
-	type ConnectorConnectParams,
 	type Connector,
-	ConnectorType,
+	type ConnectorConnectParams,
+	type CreateConnectorFn,
+	createConnector,
 } from "~/connectors/createConnector";
 import type { Unisat } from "~/types/unisat";
 import { get, getAddressType } from "~/utils";
 import { getAddressPurpose } from "~/utils/getAddressPurpose";
 
 export class UnisatConnector implements Connector {
-	public readonly type = ConnectorType.Unisat;
-
-	constructor(
-		public readonly id: string = "unisat",
-		public readonly name: string = "Unisat",
-	) {}
+	constructor(public readonly id: string = "unisat") {}
 
 	async connect(params: ConnectorConnectParams): Promise<Account[]> {
 		const provider = this.getProvider();
@@ -106,3 +102,14 @@ export class UnisatConnector implements Connector {
 		return provider as Unisat;
 	}
 }
+
+export const unisatConnector: CreateConnectorFn = ({ metadata } = {}) =>
+	createConnector(
+		{
+			metadata: {
+				name: "Unisat",
+			},
+			create: () => new UnisatConnector(),
+		},
+		metadata,
+	);

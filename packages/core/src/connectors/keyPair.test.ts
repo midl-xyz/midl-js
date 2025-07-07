@@ -4,8 +4,8 @@ import { Psbt } from "bitcoinjs-lib";
 import bitcoinMessage from "bitcoinjs-message";
 import { afterEach, describe, expect, it } from "vitest";
 import { getKeyPair } from "~/__tests__/keyPair";
-import { connect, disconnect, SignMessageProtocol } from "~/actions";
-import { KeyPairConnector } from "~/connectors/keyPair";
+import { SignMessageProtocol, connect, disconnect } from "~/actions";
+import { keyPairConnector } from "~/connectors/keyPair";
 import { AddressPurpose } from "~/constants";
 import { createConfig } from "~/createConfig";
 import { regtest } from "~/networks";
@@ -16,7 +16,7 @@ const key = getKeyPair();
 describe("core | connectors | keyPair", () => {
 	const midlConfig = createConfig({
 		networks: [regtest],
-		connectors: [new KeyPairConnector(key)],
+		connectors: [keyPairConnector({ keyPair: key })],
 	});
 
 	afterEach(async () => {

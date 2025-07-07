@@ -9,10 +9,12 @@ import {
 	type SignMessageResponse,
 	type SignPSBTParams,
 } from "~/actions";
-import type {
-	Account,
-	Connector,
-	ConnectorConnectParams,
+import {
+	type Account,
+	type Connector,
+	type ConnectorConnectParams,
+	type CreateConnectorFn,
+	createConnector,
 } from "~/connectors/createConnector";
 import { AddressPurpose, AddressType } from "~/constants";
 import type { BitcoinNetwork } from "~/createConfig";
@@ -22,7 +24,6 @@ bitcoin.initEccLib(ecc);
 
 export class KeyPairConnector implements Connector {
 	public readonly id = "keyPair";
-	public readonly name = "KeyPair";
 
 	constructor(
 		private keyPair: ECPairInterface,
@@ -191,3 +192,17 @@ export class KeyPairConnector implements Connector {
 		};
 	}
 }
+
+export const keyPairConnector: CreateConnectorFn<{
+	keyPair: ECPairInterface;
+	paymentAddressType?: AddressType;
+}> = ({ metadata, keyPair, paymentAddressType }) =>
+	createConnector(
+		{
+			metadata: {
+				name: "KeyPair",
+			},
+			create: () => new KeyPairConnector(keyPair, paymentAddressType),
+		},
+		metadata,
+	);

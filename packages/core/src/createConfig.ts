@@ -1,6 +1,6 @@
 import { createJSONStorage, persist } from "zustand/middleware";
 import { createStore } from "zustand/vanilla";
-import type { Account, Connector } from "~/connectors";
+import type { Account, Connector, ConnectorWithMetadata } from "~/connectors";
 import { type AbstractProvider, MempoolSpaceProvider } from "~/providers";
 
 export type BitcoinNetwork = {
@@ -27,7 +27,7 @@ type ConfigParams = {
 	/**
 	 * The connectors to use
 	 */
-	connectors: Connector[];
+	connectors: ConnectorWithMetadata[];
 	/**
 	 * If true, the config will persist in local storage
 	 */
@@ -50,7 +50,7 @@ export type ConfigState = {
 	readonly networks: BitcoinNetwork[];
 	readonly connection?: Connector;
 	readonly accounts?: Account[];
-	readonly connectors: Connector[];
+	readonly connectors: ConnectorWithMetadata[];
 	readonly provider: AbstractProvider;
 };
 

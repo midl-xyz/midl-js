@@ -1,14 +1,20 @@
 import { Psbt } from "bitcoinjs-lib";
 import {
-	SignMessageProtocol,
 	type SignMessageParams,
+	SignMessageProtocol,
 	type SignMessageResponse,
 	type SignPSBTParams,
 	type SignPSBTResponse,
 } from "~/actions";
-import type { Account, Connector, ConnectorConnectParams } from "~/connectors";
+import {
+	type Account,
+	type Connector,
+	type ConnectorConnectParams,
+	type CreateConnectorFn,
+	createConnector,
+} from "~/connectors";
 import type { AddressPurpose } from "~/constants";
-import { getAddressPurpose, getAddressType } from "~/utils";
+import { getAddressType } from "~/utils";
 
 type Phantom = {
 	requestAccounts: () => Promise<
@@ -39,7 +45,6 @@ type Phantom = {
 
 export class PhantomConnector implements Connector {
 	public readonly id = "phantom";
-	public readonly name = "Phantom";
 	async connect(params: ConnectorConnectParams): Promise<Account[]> {
 		const provider = this.getProvider();
 
@@ -108,3 +113,14 @@ export class PhantomConnector implements Connector {
 		return provider;
 	}
 }
+
+export const phantomConnector: CreateConnectorFn = ({ metadata } = {}) =>
+	createConnector(
+		{
+			metadata: {
+				name: "Phantom",
+			},
+			create: () => new PhantomConnector(),
+		},
+		metadata,
+	);

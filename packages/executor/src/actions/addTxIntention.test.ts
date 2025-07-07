@@ -1,8 +1,9 @@
 import {
 	AddressPurpose,
+	KeyPairConnector,
 	connect,
 	createConfig,
-	KeyPairConnector,
+	keyPairConnector,
 	regtest,
 } from "@midl-xyz/midl-js-core";
 import type { MidlContextState } from "@midl-xyz/midl-js-react";
@@ -18,7 +19,11 @@ import type { TransactionIntention } from "~/types/intention";
 describe("executor | actions | addTxIntention", () => {
 	const config = createConfig({
 		networks: [regtest],
-		connectors: [new KeyPairConnector(getKeyPair(bitcoin.networks.regtest))],
+		connectors: [
+			keyPairConnector({
+				keyPair: getKeyPair(bitcoin.networks.regtest),
+			}),
+		],
 	});
 
 	const store = createStore<MidlContextState>()(() => ({

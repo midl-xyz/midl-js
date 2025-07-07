@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { getKeyPair } from "~/__tests__/keyPair";
 import { EmptyAccountsError, connect } from "~/actions/connect";
-import { KeyPairConnector } from "~/connectors";
+import { KeyPairConnector, keyPairConnector } from "~/connectors";
 import { AddressPurpose } from "~/constants";
 import { createConfig } from "~/createConfig";
 import { regtest } from "~/networks";
@@ -10,7 +10,7 @@ describe("core | actions | connect", () => {
 	it("connects", async () => {
 		const config = createConfig({
 			networks: [regtest],
-			connectors: [new KeyPairConnector(getKeyPair())],
+			connectors: [keyPairConnector({ keyPair: getKeyPair() })],
 		});
 
 		await connect(config, { purposes: [AddressPurpose.Ordinals] });
@@ -25,10 +25,10 @@ describe("core | actions | connect", () => {
 	it("throws error", async () => {
 		const config = createConfig({
 			networks: [regtest],
-			connectors: [new KeyPairConnector(getKeyPair())],
+			connectors: [keyPairConnector({ keyPair: getKeyPair() })],
 		});
 
-		expect(
+		await expect(
 			connect(config, {
 				purposes: [],
 			}),

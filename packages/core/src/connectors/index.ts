@@ -6,3 +6,4 @@ export * from "./unisat";
 export * from "./bitget";
 export * from "./keyPair";
 export * from "./phantom";
+export * from "./xverse";

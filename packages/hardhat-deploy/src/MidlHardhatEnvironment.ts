@@ -7,6 +7,7 @@ import {
 	broadcastTransaction,
 	connect,
 	createConfig,
+	keyPairConnector,
 	mainnet,
 	regtest,
 	testnet,
@@ -150,7 +151,9 @@ export class MidlHardhatEnvironment {
 		this.config = createConfig({
 			networks: [this.bitcoinNetwork],
 			connectors: [
-				new KeyPairConnector(this.wallet.getAccount(this.accountIndex)),
+				keyPairConnector({
+					keyPair: this.wallet.getAccount(this.accountIndex),
+				}),
 			],
 			provider: this.userConfig.provider,
 		});

@@ -1,5 +1,16 @@
-import { UnisatConnector } from "~/connectors";
+import {
+	type CreateConnectorFn,
+	UnisatConnector,
+	createConnector,
+} from "~/connectors";
 
-export const createBitGetConnector = () => {
-	return new UnisatConnector("bitkeep.unisat", "Bitget");
-};
+export const bitgetConnector: CreateConnectorFn = ({ metadata } = {}) =>
+	createConnector(
+		{
+			metadata: {
+				name: "Bitget",
+			},
+			create: () => new UnisatConnector("bitkeep.unisat"),
+		},
+		metadata,
+	);

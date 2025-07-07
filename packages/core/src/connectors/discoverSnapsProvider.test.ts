@@ -39,6 +39,6 @@ describe("core | connectors | discoverSnapsProvider", () => {
 		vi.advanceTimersByTime(5000);
 		expect(vi.getTimerCount()).toBe(0);
 
-		expect(promise).resolves.toEqual("metamask");
+		await expect(promise).resolves.toEqual("metamask");
 	});
 });

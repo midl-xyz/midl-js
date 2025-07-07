@@ -1,6 +1,7 @@
 import {
 	KeyPairConnector,
 	createConfig,
+	keyPairConnector,
 	regtest,
 } from "@midl-xyz/midl-js-core";
 import { MidlProvider } from "@midl-xyz/midl-js-react";
@@ -19,7 +20,7 @@ const queryClient = new QueryClient({
 });
 
 const midlConfig = createConfig({
-	connectors: [new KeyPairConnector(getKeyPair())],
+	connectors: [keyPairConnector({ keyPair: getKeyPair() })],
 	networks: [regtest],
 });
 

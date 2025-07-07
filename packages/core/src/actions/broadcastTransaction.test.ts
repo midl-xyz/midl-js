@@ -1,7 +1,7 @@
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { mockServer } from "~/__tests__/mockServer";
 import { broadcastTransaction } from "~/actions/broadcastTransaction";
-import { SatsConnectConnector } from "~/connectors/sats-connect";
+import { unisatConnector } from "~/connectors";
 import { createConfig } from "~/createConfig";
 import { regtest } from "~/networks";
 
@@ -17,7 +17,7 @@ describe("core | actions | broadcastTransaction", () => {
 	it("should broadcast a transaction", async () => {
 		const config = createConfig({
 			networks: [regtest],
-			connectors: [new SatsConnectConnector()],
+			connectors: [unisatConnector()],
 		});
 
 		const result = await broadcastTransaction(config, "txHex");

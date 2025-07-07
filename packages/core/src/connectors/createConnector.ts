@@ -1,3 +1,4 @@
+import deepmerge from "deepmerge";
 import type { SignMessageParams, SignMessageResponse } from "~/actions";
 import type { SignPSBTParams, SignPSBTResponse } from "~/actions/signPSBT";
 import type { AddressPurpose, AddressType } from "~/constants";
@@ -10,13 +11,6 @@ export type Account = {
 	readonly addressType: AddressType;
 };
 
-export enum ConnectorType {
-	Snap = "snap",
-	Unisat = "unisat",
-	SatsConnect = "satsConnect",
-	Leather = "leather",
-}
-
 export type ConnectorConnectParams = {
 	purposes: AddressPurpose[];
 	network: BitcoinNetwork;
@@ -24,7 +18,6 @@ export type ConnectorConnectParams = {
 
 export interface Connector {
 	readonly id: string;
-	readonly name: string;
 	connect(params: ConnectorConnectParams): Promise<Account[]>;
 	signMessage(
 		params: SignMessageParams,
@@ -38,3 +31,40 @@ export interface Connector {
 	beforeDisconnect?(): Promise<void>;
 	switchNetwork?(network: BitcoinNetwork): Promise<Account[]>;
 }
+
+// biome-ignore lint/suspicious/noEmptyInterface: To allow for user-defined metadata
+export interface UserMetadata {}
+
+export interface ConnectorMetadata {
+	name: string;
+	icon?: string;
+	description?: string;
+	downloadUrls?: Partial<Record<"chrome" | "firefox" | "safari", string>>;
+	website?: string;
+}
+
+export interface ConnectorFactory<T extends Connector> {
+	metadata: ConnectorMetadata;
+	create: () => T;
+}
+
+export type ConnectorWithMetadata<T extends Connector = Connector> = T & {
+	metadata: ConnectorMetadata & UserMetadata;
+};
+
+export const createConnector = <T extends Connector>(
+	factory: ConnectorFactory<T>,
+	metadata: UserMetadata = {},
+): ConnectorWithMetadata<T> => {
+	const connector = factory.create() as ConnectorWithMetadata<T>;
+
+	connector.metadata = deepmerge(factory.metadata, metadata);
+
+	return connector;
+};
+
+export type CreateConnectorFn<Params = void> = Params extends void
+	? (params?: { metadata?: UserMetadata }) => ConnectorWithMetadata<Connector>
+	: (
+			params: Params & { metadata?: UserMetadata },
+		) => ConnectorWithMetadata<Connector>;

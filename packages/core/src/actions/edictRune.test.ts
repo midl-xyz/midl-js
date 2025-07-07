@@ -1,17 +1,17 @@
 import * as bitcoin from "bitcoinjs-lib";
+import { Runestone } from "runelib";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import { makeRuneUTXO } from "~/__tests__/fixtures/utxo";
 import { getKeyPair } from "~/__tests__/keyPair";
 import { makeRandomAddress } from "~/__tests__/makeRandomAddress";
 import { mockServer } from "~/__tests__/mockServer";
+import { connect } from "~/actions/connect";
 import { edictRune } from "~/actions/edictRune";
+import { KeyPairConnector, keyPairConnector } from "~/connectors";
 import { AddressPurpose } from "~/constants";
 import { type Config, createConfig } from "~/createConfig";
 import { regtest } from "~/networks";
 import * as mod from "./getRuneUTXO";
-import { Runestone } from "runelib";
-import { KeyPairConnector } from "~/connectors";
-import { connect } from "~/actions/connect";
 
 describe("core | actions | edictRune", () => {
 	let config: Config;
@@ -21,7 +21,7 @@ describe("core | actions | edictRune", () => {
 
 		config = createConfig({
 			networks: [regtest],
-			connectors: [new KeyPairConnector(getKeyPair())],
+			connectors: [keyPairConnector({ keyPair: getKeyPair() })],
 		});
 
 		await connect(config, { purposes: [AddressPurpose.Ordinals] });

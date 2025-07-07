@@ -7,9 +7,10 @@ import {
 import type { SignPSBTParams, SignPSBTResponse } from "~/actions/signPSBT";
 import {
 	type Account,
-	type ConnectorConnectParams,
 	type Connector,
-	ConnectorType,
+	type ConnectorConnectParams,
+	type CreateConnectorFn,
+	createConnector,
 } from "~/connectors/createConnector";
 import { AddressType } from "~/constants";
 import type { BitcoinNetwork } from "~/createConfig";
@@ -18,8 +19,6 @@ import { getAddressPurpose } from "~/utils/getAddressPurpose";
 
 export class LeatherConnector implements Connector {
 	public readonly id = "leather";
-	public readonly name = "Leather";
-	public readonly type = ConnectorType.Leather;
 
 	async connect(params: ConnectorConnectParams): Promise<Account[]> {
 		if (typeof window.LeatherProvider === "undefined") {
@@ -138,3 +137,14 @@ export class LeatherConnector implements Connector {
 		};
 	}
 }
+
+export const leatherConnector: CreateConnectorFn = ({ metadata } = {}) =>
+	createConnector(
+		{
+			metadata: {
+				name: "Leather",
+			},
+			create: () => new LeatherConnector(),
+		},
+		metadata,
+	);

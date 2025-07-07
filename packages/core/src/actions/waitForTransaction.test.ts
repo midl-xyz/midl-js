@@ -1,7 +1,7 @@
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { mockServer } from "~/__tests__/mockServer";
 import { waitForTransaction } from "~/actions/waitForTransaction";
-import { SatsConnectConnector } from "~/connectors/sats-connect";
+import { unisatConnector } from "~/connectors";
 import { type Config, createConfig } from "~/createConfig";
 import { regtest } from "~/networks";
 
@@ -16,7 +16,7 @@ describe("core | actions | waitForTransaction", () => {
 	beforeAll(() => {
 		config = createConfig({
 			networks: [regtest],
-			connectors: [new SatsConnectConnector()],
+			connectors: [unisatConnector()],
 		});
 
 		mockServer.listen();
