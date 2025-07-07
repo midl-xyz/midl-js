@@ -41,7 +41,7 @@ export const getPublicKey = (
 		}
 
 		case AddressType.P2WPKH:
-		case AddressType.P2SH: {
+		case AddressType.P2SH_P2WPKH: {
 			return `0x${extractXCoordinate(publicKey)}`;
 		}
 	}

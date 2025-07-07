@@ -17,6 +17,7 @@
 	"types": "dist/index.d.ts",
 	"files": ["dist", "scripts"],
 	"devDependencies": {
+		"@midl-xyz/midl-js-config": "workspace:^",
 		"@playwright/test": "^1.48.2"
 	},
 	"peerDependencies": {

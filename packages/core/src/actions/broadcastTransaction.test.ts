@@ -1,11 +1,13 @@
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { getKeyPair } from "~/__tests__/keyPair";
 import { mockServer } from "~/__tests__/mockServer";
 import { broadcastTransaction } from "~/actions/broadcastTransaction";
-import { SatsConnectConnector } from "~/connectors/sats-connect";
 import { createConfig } from "~/createConfig";
 import { regtest } from "~/networks";
 
-describe("core | actions | broadcastTransaction", () => {
+describe("core | actions | broadcastTransaction", async () => {
+	const { keyPairConnector } = await import("@midl-xyz/midl-js-node");
+
 	beforeAll(() => {
 		mockServer.listen();
 	});
@@ -17,7 +19,7 @@ describe("core | actions | broadcastTransaction", () => {
 	it("should broadcast a transaction", async () => {
 		const config = createConfig({
 			networks: [regtest],
-			connectors: [new SatsConnectConnector()],
+			connectors: [keyPairConnector({ keyPair: getKeyPair() })],
 		});
 
 		const result = await broadcastTransaction(config, "txHex");

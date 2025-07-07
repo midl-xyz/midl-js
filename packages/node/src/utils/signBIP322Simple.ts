@@ -1,11 +1,13 @@
-import { AddressType } from "~/constants";
-import * as bitcoin from "bitcoinjs-lib";
-import { sha256 } from "@noble/hashes/sha256";
-import { getAddressType } from "~/utils/getAddressType";
-import { extractXCoordinate } from "~/utils";
-import { encode } from "varuint-bitcoin";
-import ECPairFactory from "ecpair";
 import * as ecc from "@bitcoinerlab/secp256k1";
+import {
+	AddressType,
+	extractXCoordinate,
+	getAddressType,
+} from "@midl-xyz/midl-js-core";
+import { sha256 } from "@noble/hashes/sha256";
+import * as bitcoin from "bitcoinjs-lib";
+import ECPairFactory from "ecpair";
+import { encode } from "varuint-bitcoin";
 
 function bip0322_hash(message: string) {
 	const tag = "BIP0322-signed-message";
@@ -54,7 +56,7 @@ export const signBIP322Simple = (
 		},
 	});
 
-	if (getAddressType(address) === AddressType.P2SH) {
+	if (getAddressType(address) === AddressType.P2SH_P2WPKH) {
 		const p2wpkh = bitcoin.payments.p2wpkh({
 			pubkey: keyPair.publicKey,
 			network,

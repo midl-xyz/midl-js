@@ -171,8 +171,6 @@ describe("extractEVMSignature", () => {
 			account,
 		);
 
-		console.log("v", v);
-
 		const recovered = await recoverPublicKey({
 			hash: getBIP322Hash(message, account.addressType, account.publicKey),
 			signature: {

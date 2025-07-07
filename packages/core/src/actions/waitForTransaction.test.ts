@@ -1,13 +1,15 @@
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { getKeyPair } from "~/__tests__/keyPair";
 import { mockServer } from "~/__tests__/mockServer";
 import { waitForTransaction } from "~/actions/waitForTransaction";
-import { SatsConnectConnector } from "~/connectors/sats-connect";
 import { type Config, createConfig } from "~/createConfig";
 import { regtest } from "~/networks";
 
 const txId = "1";
 
-describe("core | actions | waitForTransaction", () => {
+describe("core | actions | waitForTransaction", async () => {
+	const { keyPairConnector } = await import("@midl-xyz/midl-js-node");
+
 	let config: Config;
 
 	//  Close server after all tests
@@ -16,7 +18,11 @@ describe("core | actions | waitForTransaction", () => {
 	beforeAll(() => {
 		config = createConfig({
 			networks: [regtest],
-			connectors: [new SatsConnectConnector()],
+			connectors: [
+				keyPairConnector({
+					keyPair: getKeyPair(),
+				}),
+			],
 		});
 
 		mockServer.listen();

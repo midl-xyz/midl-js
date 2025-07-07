@@ -1,22 +1,26 @@
+import {
+	AddressPurpose,
+	SignMessageProtocol,
+	connect,
+	createConfig,
+	disconnect,
+	extractXCoordinate,
+	regtest,
+} from "@midl-xyz/midl-js-core";
 import { Verifier } from "bip322-js";
 import * as bitcoin from "bitcoinjs-lib";
 import { Psbt } from "bitcoinjs-lib";
 import bitcoinMessage from "bitcoinjs-message";
 import { afterEach, describe, expect, it } from "vitest";
 import { getKeyPair } from "~/__tests__/keyPair";
-import { connect, disconnect, SignMessageProtocol } from "~/actions";
-import { KeyPairConnector } from "~/connectors/keyPair";
-import { AddressPurpose } from "~/constants";
-import { createConfig } from "~/createConfig";
-import { regtest } from "~/networks";
-import { extractXCoordinate } from "~/utils";
+import { keyPairConnector } from "~/connectors/keyPair";
 
 const key = getKeyPair();
 
 describe("core | connectors | keyPair", () => {
 	const midlConfig = createConfig({
 		networks: [regtest],
-		connectors: [new KeyPairConnector(key)],
+		connectors: [keyPairConnector({ keyPair: key })],
 	});
 
 	afterEach(async () => {

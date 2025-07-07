@@ -157,7 +157,7 @@ export const ConnectDialog = ({ open, onClose }: ConnectDialogProps) => {
 												})}
 											/>
 
-											{it.name}
+											{it.metadata.name}
 
 											<ArrowRightIcon
 												className={css({

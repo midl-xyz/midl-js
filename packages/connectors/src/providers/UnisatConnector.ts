@@ -1,26 +1,20 @@
 import {
+	type Account,
+	type Connector,
+	type ConnectorConnectParams,
 	type SignMessageParams,
 	SignMessageProtocol,
 	type SignMessageResponse,
-} from "~/actions";
-import type { SignPSBTParams, SignPSBTResponse } from "~/actions/signPSBT";
-import {
-	type Account,
-	type ConnectorConnectParams,
-	type Connector,
-	ConnectorType,
-} from "~/connectors/createConnector";
+	type SignPSBTParams,
+	type SignPSBTResponse,
+	get,
+	getAddressPurpose,
+	getAddressType,
+} from "@midl-xyz/midl-js-core";
 import type { Unisat } from "~/types/unisat";
-import { get, getAddressType } from "~/utils";
-import { getAddressPurpose } from "~/utils/getAddressPurpose";
 
 export class UnisatConnector implements Connector {
-	public readonly type = ConnectorType.Unisat;
-
-	constructor(
-		public readonly id: string = "unisat",
-		public readonly name: string = "Unisat",
-	) {}
+	constructor(public readonly id: string = "unisat") {}
 
 	async connect(params: ConnectorConnectParams): Promise<Account[]> {
 		const provider = this.getProvider();

@@ -1,18 +1,19 @@
-import { describe } from "node:test";
-import { expect, it, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { getKeyPair } from "~/__tests__/keyPair";
 import { connect } from "~/actions/connect";
 import { disconnect } from "~/actions/disconnect";
-import { type Connector, KeyPairConnector } from "~/connectors";
+import type { Connector } from "~/connectors";
 import { AddressPurpose } from "~/constants";
 import { createConfig } from "~/createConfig";
 import { regtest } from "~/networks";
 
-describe("core | actions | disconnect", () => {
+describe("core | actions | disconnect", async () => {
+	const { keyPairConnector } = await import("@midl-xyz/midl-js-node");
+
 	it("disconnects and saves latest network", async () => {
 		const config = createConfig({
 			networks: [regtest],
-			connectors: [new KeyPairConnector(getKeyPair())],
+			connectors: [keyPairConnector({ keyPair: getKeyPair() })],
 		});
 
 		await connect(config, { purposes: [AddressPurpose.Payment] });
@@ -27,7 +28,9 @@ describe("core | actions | disconnect", () => {
 	});
 
 	it("calls beforeDisconnect", async () => {
-		const connector = new KeyPairConnector(getKeyPair());
+		const connector = keyPairConnector({
+			keyPair: getKeyPair(),
+		});
 		const mockDisconnect = vi.fn();
 
 		(connector as Connector).beforeDisconnect = mockDisconnect;

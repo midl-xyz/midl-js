@@ -1,45 +1,18 @@
-import { Psbt } from "bitcoinjs-lib";
 import {
-	SignMessageProtocol,
+	type Account,
+	type Connector,
+	type ConnectorConnectParams,
 	type SignMessageParams,
+	SignMessageProtocol,
 	type SignMessageResponse,
 	type SignPSBTParams,
 	type SignPSBTResponse,
-} from "~/actions";
-import type { Account, Connector, ConnectorConnectParams } from "~/connectors";
-import type { AddressPurpose } from "~/constants";
-import { getAddressPurpose, getAddressType } from "~/utils";
-
-type Phantom = {
-	requestAccounts: () => Promise<
-		{
-			address: string;
-			publicKey: string;
-			addressType: "p2tr" | "p2wpkh" | "p2sh" | "p2pkh";
-			purpose: AddressPurpose;
-		}[]
-	>;
-	signPSBT(
-		psbt: Uint8Array,
-		options: {
-			inputsToSign: {
-				sigHash?: number | undefined;
-				address: string;
-				signingIndexes: number[];
-			}[];
-		},
-	): Promise<Uint8Array>;
-	signMessage(
-		address: string,
-		message: Uint8Array,
-	): Promise<{
-		signature: Uint8Array;
-	}>;
-};
+	getAddressType,
+} from "@midl-xyz/midl-js-core";
+import { Psbt } from "bitcoinjs-lib";
 
 export class PhantomConnector implements Connector {
 	public readonly id = "phantom";
-	public readonly name = "Phantom";
 	async connect(params: ConnectorConnectParams): Promise<Account[]> {
 		const provider = this.getProvider();
 

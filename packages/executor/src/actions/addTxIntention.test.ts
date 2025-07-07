@@ -2,9 +2,9 @@ import {
 	AddressPurpose,
 	connect,
 	createConfig,
-	KeyPairConnector,
 	regtest,
 } from "@midl-xyz/midl-js-core";
+import { keyPairConnector } from "@midl-xyz/midl-js-node";
 import type { MidlContextState } from "@midl-xyz/midl-js-react";
 import * as bitcoin from "bitcoinjs-lib";
 import { zeroAddress } from "viem";
@@ -18,7 +18,11 @@ import type { TransactionIntention } from "~/types/intention";
 describe("executor | actions | addTxIntention", () => {
 	const config = createConfig({
 		networks: [regtest],
-		connectors: [new KeyPairConnector(getKeyPair(bitcoin.networks.regtest))],
+		connectors: [
+			keyPairConnector({
+				keyPair: getKeyPair(bitcoin.networks.regtest),
+			}),
+		],
 	});
 
 	const store = createStore<MidlContextState>()(() => ({

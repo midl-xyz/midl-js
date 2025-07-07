@@ -1,33 +1,31 @@
 import {
-	BitcoinNetworkType,
-	MessageSigningProtocols,
-	request,
-	AddressPurpose,
-} from "sats-connect";
-import {
+	type Account,
+	type BitcoinNetwork,
+	type Connector,
+	type ConnectorConnectParams,
 	type SignMessageParams,
 	SignMessageProtocol,
 	type SignMessageResponse,
-} from "~/actions";
-import type { SignPSBTParams, SignPSBTResponse } from "~/actions/signPSBT";
+	type SignPSBTParams,
+	type SignPSBTResponse,
+	getAddressPurpose,
+	getAddressType,
+	mainnet,
+	regtest,
+	testnet,
+	testnet4,
+} from "@midl-xyz/midl-js-core";
 import {
-	type Account,
-	type ConnectorConnectParams,
-	type Connector,
-	ConnectorType,
-} from "~/connectors/createConnector";
-import type { BitcoinNetwork } from "~/createConfig";
-import { mainnet, regtest, testnet, testnet4 } from "~/networks";
-import { getAddressPurpose, getAddressType } from "~/utils";
+	AddressPurpose,
+	BitcoinNetworkType,
+	MessageSigningProtocols,
+	request,
+} from "sats-connect";
 
 export class SatsConnectConnector implements Connector {
 	public readonly id: string;
-	public readonly type = ConnectorType.SatsConnect;
 
-	constructor(
-		public readonly providerId?: string,
-		public readonly name = "SatsConnect",
-	) {
+	constructor(public readonly providerId?: string) {
 		this.id = `sats-connect-${providerId ?? "default"}`;
 	}
 
