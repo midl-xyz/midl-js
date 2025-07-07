@@ -1,9 +1,5 @@
-import {
-	KeyPairConnector,
-	createConfig,
-	keyPairConnector,
-	regtest,
-} from "@midl-xyz/midl-js-core";
+import { createConfig, regtest } from "@midl-xyz/midl-js-core";
+import { keyPairConnector } from "@midl-xyz/midl-js-node";
 import { MidlProvider } from "@midl-xyz/midl-js-react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { ReactNode } from "react";
@@ -19,7 +15,9 @@ const queryClient = new QueryClient({
 	},
 });
 
-const midlConfig = createConfig({
+export const testConnector = keyPairConnector({ keyPair: getKeyPair() });
+
+export const midlConfig = createConfig({
 	connectors: [keyPairConnector({ keyPair: getKeyPair() })],
 	networks: [regtest],
 });

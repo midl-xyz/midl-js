@@ -272,29 +272,39 @@ importers:
 
   packages/config: {}
 
+  packages/connectors:
+    dependencies:
+      bitcoinjs-lib:
+        specifier: 7.0.0-rc.0
+        version: 7.0.0-rc.0(typescript@5.7.2)
+      sats-connect:
+        specifier: ^3.3.0
+        version: 3.3.0(typescript@5.7.2)
+    devDependencies:
+      '@leather.io/rpc':
+        specifier: 2.1.12
+        version: 2.1.12
+      '@midl-xyz/midl-js-config':
+        specifier: workspace:^
+        version: link:../config
+      '@midl-xyz/midl-js-core':
+        specifier: workspace:^
+        version: link:../core
+      '@types/node':
+        specifier: ^22.8.7
+        version: 22.12.0
+
   packages/core:
     dependencies:
       '@bitcoinerlab/secp256k1':
         specifier: ^1.2.0
         version: 1.2.0
-      '@metamask/providers':
-        specifier: ^17.1.1
-        version: 17.2.1(webextension-polyfill@0.10.0)
-      '@noble/hashes':
-        specifier: ^1.7.1
-        version: 1.7.1
-      axios:
-        specifier: ^1.7.9
-        version: 1.7.9
       bip32:
         specifier: 5.0.0-rc.0
         version: 5.0.0-rc.0(typescript@5.7.2)
       bitcoinjs-lib:
         specifier: 7.0.0-rc.0
         version: 7.0.0-rc.0(typescript@5.7.2)
-      bitcoinjs-message:
-        specifier: ^2.2.0
-        version: 2.2.0
       bitcoinselect:
         specifier: ^1.0.0
         version: 1.0.0
@@ -307,12 +317,6 @@ importers:
       runelib:
         specifier: ^1.0.7
         version: 1.0.7
-      sats-connect:
-        specifier: ^3.3.0
-        version: 3.3.0(typescript@5.7.2)
-      varuint-bitcoin:
-        specifier: 1.1.2
-        version: 1.1.2
       viem:
         specifier: npm:@midl-xyz/midl-viem@2.21.37
         version: '@midl-xyz/midl-viem@2.21.37(bufferutil@4.0.9)(typescript@5.7.2)(utf-8-validate@5.0.10)(zod@3.24.1)'
@@ -329,9 +333,9 @@ importers:
       '@types/node':
         specifier: ^22.8.7
         version: 22.12.0
-      bip322-js:
-        specifier: ^2.0.0
-        version: 2.0.0
+      bip39:
+        specifier: ^3.1.0
+        version: 3.1.0
       msw:
         specifier: ^2.5.2
         version: 2.7.0(@types/node@22.12.0)(typescript@5.7.2)
@@ -369,6 +373,9 @@ importers:
       '@midl-xyz/midl-js-config':
         specifier: workspace:^
         version: link:../config
+      '@midl-xyz/midl-js-node':
+        specifier: workspace:^
+        version: link:../node
       '@types/node':
         specifier: ^22.8.7
         version: 22.12.0
@@ -378,6 +385,12 @@ importers:
       bitcoinjs-lib:
         specifier: 7.0.0-rc.0
         version: 7.0.0-rc.0(typescript@5.7.2)
+      bitcoinjs-message:
+        specifier: ^2.2.0
+        version: 2.2.0
+      ecpair:
+        specifier: ^2.1.0
+        version: 2.1.0
       viem:
         specifier: npm:@midl-xyz/midl-viem@2.21.37
         version: '@midl-xyz/midl-viem@2.21.37(bufferutil@4.0.9)(typescript@5.7.2)(utf-8-validate@5.0.10)(zod@3.24.1)'
@@ -400,6 +413,9 @@ importers:
       '@midl-xyz/midl-js-config':
         specifier: workspace:^
         version: link:../config
+      '@midl-xyz/midl-js-node':
+        specifier: workspace:^
+        version: link:../node
       '@midl-xyz/midl-js-react':
         specifier: workspace:^
         version: link:../react
@@ -418,6 +434,9 @@ importers:
       bitcoinjs-lib:
         specifier: 7.0.0-rc.0
         version: 7.0.0-rc.0(typescript@5.7.2)
+      ecpair:
+        specifier: ^2.1.0
+        version: 2.1.0
       happy-dom:
         specifier: ^15.11.7
         version: 15.11.7
@@ -445,6 +464,9 @@ importers:
       '@midl-xyz/midl-js-executor':
         specifier: workspace:^
         version: link:../executor
+      '@midl-xyz/midl-js-node':
+        specifier: workspace:^
+        version: link:../node
       '@midl-xyz/midl-js-react':
         specifier: workspace:^
         version: link:../react
@@ -470,12 +492,55 @@ importers:
         specifier: ^5.0.1
         version: 5.0.3(@types/react@18.3.18)(react@18.3.1)(use-sync-external-store@1.4.0(react@18.3.1))
     devDependencies:
+      '@midl-xyz/midl-js-config':
+        specifier: workspace:^
+        version: link:../config
       hardhat:
         specifier: ^2.22.17
         version: 2.22.18(bufferutil@4.0.9)(ts-node@10.9.2(@swc/core@1.10.11)(@types/node@22.12.0)(typescript@5.7.2))(typescript@5.7.2)(utf-8-validate@5.0.10)
       hardhat-deploy:
         specifier: ^1.0.3
         version: 1.0.3(bufferutil@4.0.9)(utf-8-validate@5.0.10)
+
+  packages/node:
+    dependencies:
+      '@bitcoinerlab/secp256k1':
+        specifier: ^1.2.0
+        version: 1.2.0
+      '@noble/hashes':
+        specifier: ^1.7.1
+        version: 1.7.1
+      bitcoinjs-lib:
+        specifier: 7.0.0-rc.0
+        version: 7.0.0-rc.0(typescript@5.7.2)
+      bitcoinjs-message:
+        specifier: ^2.2.0
+        version: 2.2.0
+      ecpair:
+        specifier: ^2.1.0
+        version: 2.1.0
+      varuint-bitcoin:
+        specifier: 1.1.2
+        version: 1.1.2
+    devDependencies:
+      '@midl-xyz/midl-js-config':
+        specifier: workspace:^
+        version: link:../config
+      '@midl-xyz/midl-js-core':
+        specifier: workspace:^
+        version: link:../core
+      '@types/node':
+        specifier: ^22.8.7
+        version: 22.12.0
+      bip32:
+        specifier: 5.0.0-rc.0
+        version: 5.0.0-rc.0(typescript@5.7.2)
+      bip322-js:
+        specifier: ^2.0.0
+        version: 2.0.0
+      bip39:
+        specifier: ^3.1.0
+        version: 3.1.0
 
   packages/playwright-btc-wallets:
     dependencies:
@@ -486,6 +551,9 @@ importers:
         specifier: ^7.8.2
         version: 7.8.2
     devDependencies:
+      '@midl-xyz/midl-js-config':
+        specifier: workspace:^
+        version: link:../config
       '@playwright/test':
         specifier: ^1.48.2
         version: 1.50.0
@@ -499,9 +567,15 @@ importers:
         specifier: ^5.0.1
         version: 5.0.3(@types/react@18.3.18)(react@18.3.1)(use-sync-external-store@1.4.0(react@18.3.1))
     devDependencies:
+      '@bitcoinerlab/secp256k1':
+        specifier: ^1.2.0
+        version: 1.2.0
       '@midl-xyz/midl-js-config':
         specifier: workspace:^
         version: link:../config
+      '@midl-xyz/midl-js-node':
+        specifier: workspace:^
+        version: link:../node
       '@tanstack/react-query':
         specifier: 5.69.0
         version: 5.69.0(react@18.3.1)
@@ -511,6 +585,9 @@ importers:
       bitcoinjs-lib:
         specifier: ^6.1.6
         version: 6.1.7
+      ecpair:
+        specifier: ^2.1.0
+        version: 2.1.0
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -533,9 +610,15 @@ importers:
       '@midl-xyz/midl-js-config':
         specifier: workspace:^
         version: link:../config
+      '@midl-xyz/midl-js-connectors':
+        specifier: workspace:^
+        version: link:../connectors
       '@midl-xyz/midl-js-core':
         specifier: workspace:^
         version: link:../core
+      '@midl-xyz/midl-js-node':
+        specifier: workspace:^
+        version: link:../node
       '@midl-xyz/midl-js-react':
         specifier: workspace:^
         version: link:../react
@@ -2142,10 +2225,6 @@ packages:
     resolution: {integrity: sha512-tghyZKLHZjcdlDqCA3gNZmLeR0XvOE9U1qoQO9ohyAZT6Pya+H9vkBPcsyXytmYLNgVoin7CKCmweo/R43V+tQ==}
     engines: {node: '>=12.0.0'}
 
-  '@metamask/json-rpc-engine@10.0.2':
-    resolution: {integrity: sha512-UZKKvgEGVZyBOTKe0NrERv6J4QtR1X4a3Ppa10FZ2tY+nNvwQg3gFpWPRsYNQdPDFxtIsUdrMrqKvbkYSuHZkw==}
-    engines: {node: ^18.18 || >=20}
-
   '@metamask/json-rpc-engine@7.3.3':
     resolution: {integrity: sha512-dwZPq8wx9yV3IX2caLi9q9xZBw2XeIoYqdyihDDDpuHVCEiqadJLwqM3zy+uwf6F1QYQ65A8aOMQg1Uw7LMLNg==}
     engines: {node: '>=16.0.0'}
@@ -2154,17 +2233,9 @@ packages:
     resolution: {integrity: sha512-IoQPmql8q7ABLruW7i4EYVHWUbF74yrp63bRuXV5Zf9BQwcn5H9Ww1eLtROYvI1bUXwOiHZ6qT5CWTrDc/t/AA==}
     engines: {node: '>=16.0.0'}
 
-  '@metamask/json-rpc-engine@9.0.3':
-    resolution: {integrity: sha512-efeRXW7KaL0BJcAeudSGhzu6sD3hMpxx9nl3V+Yemm1bsyc66yVUhYPR+XH+Y6ZvB2p05ywgvd1Ev5PBwFzr/g==}
-    engines: {node: ^18.18 || >=20}
-
   '@metamask/json-rpc-middleware-stream@7.0.2':
     resolution: {integrity: sha512-yUdzsJK04Ev98Ck4D7lmRNQ8FPioXYhEUZOMS01LXW8qTvPGiRVXmVltj2p4wrLkh0vW7u6nv0mNl5xzC5Qmfg==}
     engines: {node: '>=16.0.0'}
-
-  '@metamask/json-rpc-middleware-stream@8.0.6':
-    resolution: {integrity: sha512-wE2CfuNZHnWbSjLEPCCb4MSyWgbQBUI5cslGZb+uRdXNzYOM/RDfq8FAdl6HhjmldHKdBFCW0L3kDr8frgahqA==}
-    engines: {node: ^18.18 || >=20}
 
   '@metamask/object-multiplex@2.1.0':
     resolution: {integrity: sha512-4vKIiv0DQxljcXwfpnbsXcfa5glMj5Zg9mqn4xpIWqkv6uJ2ma5/GtUfLFSxhlxnR8asRMv8dDmWya1Tc1sDFA==}
@@ -2177,19 +2248,9 @@ packages:
     resolution: {integrity: sha512-znVCvux30+3SaUwcUGaSf+pUckzT5ukPRpcBmy+muBLC0yaWnBcvDqGfcsw6CBIenUdFrVoAFa8B6jsuCY/a+g==}
     engines: {node: ^18.18 || >=20}
 
-  '@metamask/providers@17.2.1':
-    resolution: {integrity: sha512-xnF48ULB0uZ4mOPLMv5xzLWenMs1zbAUNP+wiBofetzIqnD/i6S8u9axIkAwEXBsb0JXtDI1lBPiTBJ5HUxRdw==}
-    engines: {node: ^18.18 || >=20}
-    peerDependencies:
-      webextension-polyfill: ^0.10.0 || ^0.11.0 || ^0.12.0
-
   '@metamask/rpc-errors@6.4.0':
     resolution: {integrity: sha512-1ugFO1UoirU2esS3juZanS/Fo8C8XYocCuBpfZI5N7ECtoG+zu0wF+uWZASik6CkO6w9n/Iebt4iI4pT0vptpg==}
     engines: {node: '>=16.0.0'}
-
-  '@metamask/rpc-errors@7.0.2':
-    resolution: {integrity: sha512-YYYHsVYd46XwY2QZzpGeU4PSdRhHdxnzkB8piWGvJW2xbikZ3R+epAYEL4q/K8bh9JPTucsUdwRFnACor1aOYw==}
-    engines: {node: ^18.20 || ^20.17 || >=22}
 
   '@metamask/safe-event-emitter@2.0.0':
     resolution: {integrity: sha512-/kSXhY692qiV1MXu6EeOZvg5nECLclxNXcKCxJ3cXQgYuRymRHpdx/t7JXfsK+JLjwA1e1c1/SBrlQYpusC29Q==}
@@ -2216,10 +2277,6 @@ packages:
   '@metamask/superstruct@3.1.0':
     resolution: {integrity: sha512-N08M56HdOgBfRKkrgCMZvQppkZGcArEop3kixNEtVbJKm6P9Cfg0YkI6X0s1g78sNrj2fWUwvJADdZuzJgFttA==}
     engines: {node: '>=16.0.0'}
-
-  '@metamask/utils@11.1.0':
-    resolution: {integrity: sha512-lhR3sEZisT6hVBrnS3Ftgg9FRUFca0/5fcxDA+5paqLo4YYE6euV7622l0Qi3yMwy4mlgrrDTBiPSTXtCUKrdg==}
-    engines: {node: ^18.18 || ^20.14 || >=22}
 
   '@metamask/utils@5.0.2':
     resolution: {integrity: sha512-yfmE79bRQtnMzarnKfX7AEJBwFTxvTyw3nBQlu/5rmGXrjAeAMltoGxO62TFurxrQAFMNa/fEjIHNvungZp0+g==}
@@ -5646,12 +5703,6 @@ packages:
   extension-port-stream@3.0.0:
     resolution: {integrity: sha512-an2S5quJMiy5bnZKEf6AkfH/7r8CzHvhchU40gxN+OM6HPhe7Z9T1FUychcf2M9PpPOO0Hf7BAEfJkw2TDIBDw==}
     engines: {node: '>=12.0.0'}
-
-  extension-port-stream@4.2.0:
-    resolution: {integrity: sha512-i5IgiPVMVrHN+Zx8PRjvFsOw8L1A3sboVwPZghDjW9Yp1BMmBDE6mCcTNu4xMXPYduBOwI3CBK7wd72LcOyD6g==}
-    engines: {node: '>=12.0.0'}
-    peerDependencies:
-      webextension-polyfill: ^0.10.0 || ^0.11.0 || ^0.12.0
 
   external-editor@3.1.0:
     resolution: {integrity: sha512-hMQ4CX1p1izmuLYyZqLMO/qGNw10wSv9QDCPfzXfyFrOaCSSoRfqE1Kf1s5an66J5JZC62NewG+mK49jOCtQew==}
@@ -11037,14 +11088,6 @@ snapshots:
       tweetnacl: 1.0.3
       tweetnacl-util: 0.15.1
 
-  '@metamask/json-rpc-engine@10.0.2':
-    dependencies:
-      '@metamask/rpc-errors': 7.0.2
-      '@metamask/safe-event-emitter': 3.1.2
-      '@metamask/utils': 11.1.0
-    transitivePeerDependencies:
-      - supports-color
-
   '@metamask/json-rpc-engine@7.3.3':
     dependencies:
       '@metamask/rpc-errors': 6.4.0
@@ -11061,28 +11104,11 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@metamask/json-rpc-engine@9.0.3':
-    dependencies:
-      '@metamask/rpc-errors': 6.4.0
-      '@metamask/safe-event-emitter': 3.1.2
-      '@metamask/utils': 9.3.0
-    transitivePeerDependencies:
-      - supports-color
-
   '@metamask/json-rpc-middleware-stream@7.0.2':
     dependencies:
       '@metamask/json-rpc-engine': 8.0.2
       '@metamask/safe-event-emitter': 3.1.2
       '@metamask/utils': 8.5.0
-      readable-stream: 3.6.2
-    transitivePeerDependencies:
-      - supports-color
-
-  '@metamask/json-rpc-middleware-stream@8.0.6':
-    dependencies:
-      '@metamask/json-rpc-engine': 10.0.2
-      '@metamask/safe-event-emitter': 3.1.2
-      '@metamask/utils': 11.1.0
       readable-stream: 3.6.2
     transitivePeerDependencies:
       - supports-color
@@ -11113,33 +11139,9 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@metamask/providers@17.2.1(webextension-polyfill@0.10.0)':
-    dependencies:
-      '@metamask/json-rpc-engine': 9.0.3
-      '@metamask/json-rpc-middleware-stream': 8.0.6
-      '@metamask/object-multiplex': 2.1.0
-      '@metamask/rpc-errors': 6.4.0
-      '@metamask/safe-event-emitter': 3.1.2
-      '@metamask/utils': 9.3.0
-      detect-browser: 5.3.0
-      extension-port-stream: 4.2.0(webextension-polyfill@0.10.0)
-      fast-deep-equal: 3.1.3
-      is-stream: 2.0.1
-      readable-stream: 3.6.2
-      webextension-polyfill: 0.10.0
-    transitivePeerDependencies:
-      - supports-color
-
   '@metamask/rpc-errors@6.4.0':
     dependencies:
       '@metamask/utils': 9.3.0
-      fast-safe-stringify: 2.1.1
-    transitivePeerDependencies:
-      - supports-color
-
-  '@metamask/rpc-errors@7.0.2':
-    dependencies:
-      '@metamask/utils': 11.1.0
       fast-safe-stringify: 2.1.1
     transitivePeerDependencies:
       - supports-color
@@ -11195,20 +11197,6 @@ snapshots:
       - utf-8-validate
 
   '@metamask/superstruct@3.1.0': {}
-
-  '@metamask/utils@11.1.0':
-    dependencies:
-      '@ethereumjs/tx': 4.2.0
-      '@metamask/superstruct': 3.1.0
-      '@noble/hashes': 1.7.1
-      '@scure/base': 1.2.4
-      '@types/debug': 4.1.12
-      debug: 4.4.0(supports-color@8.1.1)
-      pony-cause: 2.1.11
-      semver: 7.7.1
-      uuid: 9.0.1
-    transitivePeerDependencies:
-      - supports-color
 
   '@metamask/utils@5.0.2':
     dependencies:
@@ -14647,6 +14635,7 @@ snapshots:
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
       - debug
+    optional: true
 
   babel-code-frame@6.26.0:
     dependencies:
@@ -16259,11 +16248,6 @@ snapshots:
   extendable-error@0.1.7: {}
 
   extension-port-stream@3.0.0:
-    dependencies:
-      readable-stream: 3.6.2
-      webextension-polyfill: 0.10.0
-
-  extension-port-stream@4.2.0(webextension-polyfill@0.10.0):
     dependencies:
       readable-stream: 3.6.2
       webextension-polyfill: 0.10.0

@@ -70,7 +70,7 @@ export const extractEVMSignature = async (
 				recoveryId = 27n;
 			}
 
-			if ([AddressType.P2SH, AddressType.P2WPKH].includes(addressType)) {
+			if ([AddressType.P2SH_P2WPKH, AddressType.P2WPKH].includes(addressType)) {
 				const secp256k1N = BigInt(
 					"0xfffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141",
 				);
@@ -90,10 +90,6 @@ export const extractEVMSignature = async (
 				}
 
 				recoveryId = null;
-
-				// if (addressType === AddressType.P2SH) {
-				// 	recoveryId = recoveryId === 27n ? 28n : 27n;
-				// }
 
 				r = new Uint8Array(32);
 				s = new Uint8Array(32);

@@ -1,13 +1,13 @@
+import fs from "node:fs";
+import path from "node:path";
 import {
 	AddressPurpose,
 	type BitcoinNetwork,
 	type Config,
-	KeyPairConnector,
 	SignMessageProtocol,
 	broadcastTransaction,
 	connect,
 	createConfig,
-	keyPairConnector,
 	mainnet,
 	regtest,
 	testnet,
@@ -25,10 +25,8 @@ import {
 	getPublicKeyForAccount,
 	signIntention,
 } from "@midl-xyz/midl-js-executor";
+import { keyPairConnector } from "@midl-xyz/midl-js-node";
 import type { MidlContextState } from "@midl-xyz/midl-js-react";
-
-import fs from "node:fs";
-import path from "node:path";
 import {
 	type Libraries,
 	resolveBytecodeWithLinkedLibraries,
@@ -462,17 +460,6 @@ export class MidlHardhatEnvironment {
 			address,
 			abi: artifact.abi,
 		});
-	}
-
-	/**
-	 * @deprecated Use `wallet.getEVMAddress()` instead
-	 */
-	public getAddress() {
-		console.warn(
-			"getAddress is deprecated. Use wallet.getEVMAddress() instead",
-		);
-
-		return this.wallet.getEVMAddress(this.accountIndex);
 	}
 
 	public getConfig() {

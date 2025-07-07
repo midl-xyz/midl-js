@@ -1,8 +1,8 @@
 import {
 	type CreateConnectorFn,
 	createConnector,
-} from "~/connectors/createConnector";
-import { SatsConnectConnector } from "~/connectors/sats-connect";
+} from "@midl-xyz/midl-js-core";
+import { SatsConnectConnector } from "~/providers";
 
 // DO NOT USE THIS CONNECTOR
 // This connector is not implemented correctly
@@ -14,6 +14,7 @@ export const magicEdenConnector: CreateConnectorFn = ({ metadata } = {}) =>
 				name: "MagicEden",
 			},
 			create: () => {
+				console.warn("Magic Eden connector is not implemented correctly");
 				const defaultProviderId = "magicEden.bitcoin";
 
 				return new SatsConnectConnector(defaultProviderId);

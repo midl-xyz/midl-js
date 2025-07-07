@@ -1,33 +1,34 @@
 import ecc from "@bitcoinerlab/secp256k1";
-import * as bitcoin from "bitcoinjs-lib";
-import { Psbt } from "bitcoinjs-lib";
-import bitcoinMessage from "bitcoinjs-message";
-import type { ECPairInterface } from "ecpair";
 import {
+	type Account,
+	AddressPurpose,
+	AddressType,
+	type BitcoinNetwork,
+	type Connector,
+	type ConnectorConnectParams,
+	type CreateConnectorFn,
 	type SignMessageParams,
 	SignMessageProtocol,
 	type SignMessageResponse,
 	type SignPSBTParams,
-} from "~/actions";
-import {
-	type Account,
-	type Connector,
-	type ConnectorConnectParams,
-	type CreateConnectorFn,
 	createConnector,
-} from "~/connectors/createConnector";
-import { AddressPurpose, AddressType } from "~/constants";
-import type { BitcoinNetwork } from "~/createConfig";
-import { extractXCoordinate, getAddressType, signBIP322Simple } from "~/utils";
+	extractXCoordinate,
+	getAddressType,
+} from "@midl-xyz/midl-js-core";
+import * as bitcoin from "bitcoinjs-lib";
+import { Psbt } from "bitcoinjs-lib";
+import bitcoinMessage from "bitcoinjs-message";
+import type { ECPairInterface } from "ecpair";
+import { signBIP322Simple } from "~/utils";
 
 bitcoin.initEccLib(ecc);
 
-export class KeyPairConnector implements Connector {
+class KeyPairConnector implements Connector {
 	public readonly id = "keyPair";
 
 	constructor(
 		private keyPair: ECPairInterface,
-		private readonly paymentAddressType: AddressType = AddressType.P2SH,
+		private readonly paymentAddressType: AddressType = AddressType.P2WPKH,
 	) {}
 
 	async connect({
@@ -56,7 +57,7 @@ export class KeyPairConnector implements Connector {
 		}
 
 		if (purposes.includes(AddressPurpose.Payment)) {
-			if (this.paymentAddressType === AddressType.P2SH) {
+			if (this.paymentAddressType === AddressType.P2SH_P2WPKH) {
 				const p2sh = bitcoin.payments.p2sh({
 					redeem: bitcoin.payments.p2wpkh({
 						pubkey: this.keyPair.publicKey,
@@ -70,7 +71,7 @@ export class KeyPairConnector implements Connector {
 					address: p2sh.address!,
 					purpose: AddressPurpose.Payment,
 					publicKey: this.keyPair.publicKey.toString("hex"),
-					addressType: AddressType.P2SH,
+					addressType: AddressType.P2SH_P2WPKH,
 				});
 			}
 
@@ -126,7 +127,9 @@ export class KeyPairConnector implements Connector {
 					this.keyPair.compressed,
 					{
 						segwitType:
-							addressType === AddressType.P2SH ? "p2sh(p2wpkh)" : "p2wpkh",
+							addressType === AddressType.P2SH_P2WPKH
+								? "p2sh(p2wpkh)"
+								: "p2wpkh",
 					},
 				);
 
@@ -159,7 +162,7 @@ export class KeyPairConnector implements Connector {
 			const type = getAddressType(address);
 
 			switch (type) {
-				case AddressType.P2SH: {
+				case AddressType.P2SH_P2WPKH: {
 					for (const input of inputs) {
 						psbt.signInput(input, this.keyPair);
 					}

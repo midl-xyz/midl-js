@@ -8,7 +8,7 @@ export const getBTCAddressByte = (account: Account): bigint => {
 	const addressType = getAddressType(account.address);
 
 	switch (addressType) {
-		case AddressType.P2SH:
+		case AddressType.P2SH_P2WPKH:
 		case AddressType.P2WPKH: {
 			const pkFirstByte = Uint8Array.prototype.slice.call(
 				Buffer.from(account.publicKey, "hex"),

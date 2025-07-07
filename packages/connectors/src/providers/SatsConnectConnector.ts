@@ -1,23 +1,26 @@
 import {
+	type Account,
+	type BitcoinNetwork,
+	type Connector,
+	type ConnectorConnectParams,
+	type SignMessageParams,
+	SignMessageProtocol,
+	type SignMessageResponse,
+	type SignPSBTParams,
+	type SignPSBTResponse,
+	getAddressPurpose,
+	getAddressType,
+	mainnet,
+	regtest,
+	testnet,
+	testnet4,
+} from "@midl-xyz/midl-js-core";
+import {
 	AddressPurpose,
 	BitcoinNetworkType,
 	MessageSigningProtocols,
 	request,
 } from "sats-connect";
-import {
-	type SignMessageParams,
-	SignMessageProtocol,
-	type SignMessageResponse,
-} from "~/actions";
-import type { SignPSBTParams, SignPSBTResponse } from "~/actions/signPSBT";
-import type {
-	Account,
-	Connector,
-	ConnectorConnectParams,
-} from "~/connectors/createConnector";
-import type { BitcoinNetwork } from "~/createConfig";
-import { mainnet, regtest, testnet, testnet4 } from "~/networks";
-import { getAddressPurpose, getAddressType } from "~/utils";
 
 export class SatsConnectConnector implements Connector {
 	public readonly id: string;

@@ -25,6 +25,7 @@
 		}
 	},
 	"devDependencies": {
+		"@midl-xyz/midl-js-config": "workspace:^",
 		"hardhat": "^2.22.17",
 		"hardhat-deploy": "^1.0.3"
 	},
@@ -35,6 +36,7 @@
 		"@bitcoinerlab/secp256k1": "^1.2.0",
 		"@midl-xyz/midl-js-core": "workspace:^",
 		"@midl-xyz/midl-js-executor": "workspace:^",
+		"@midl-xyz/midl-js-node": "workspace:^",
 		"@midl-xyz/midl-js-react": "workspace:^",
 		"@nomicfoundation/hardhat-viem": "^2.0.6",
 		"bip32": "5.0.0-rc.0",

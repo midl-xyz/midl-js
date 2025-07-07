@@ -1,19 +1,17 @@
 import {
-	type SignMessageParams,
-	SignMessageProtocol,
-	type SignMessageResponse,
-} from "~/actions";
-import type { SignPSBTParams, SignPSBTResponse } from "~/actions/signPSBT";
-import {
 	type Account,
 	type Connector,
 	type ConnectorConnectParams,
-	type CreateConnectorFn,
-	createConnector,
-} from "~/connectors/createConnector";
+	type SignMessageParams,
+	SignMessageProtocol,
+	type SignMessageResponse,
+	type SignPSBTParams,
+	type SignPSBTResponse,
+	get,
+	getAddressPurpose,
+	getAddressType,
+} from "@midl-xyz/midl-js-core";
 import type { Unisat } from "~/types/unisat";
-import { get, getAddressType } from "~/utils";
-import { getAddressPurpose } from "~/utils/getAddressPurpose";
 
 export class UnisatConnector implements Connector {
 	constructor(public readonly id: string = "unisat") {}
@@ -102,14 +100,3 @@ export class UnisatConnector implements Connector {
 		return provider as Unisat;
 	}
 }
-
-export const unisatConnector: CreateConnectorFn = ({ metadata } = {}) =>
-	createConnector(
-		{
-			metadata: {
-				name: "Unisat",
-			},
-			create: () => new UnisatConnector(),
-		},
-		metadata,
-	);

@@ -1,5 +1,5 @@
 import type { Page } from "@playwright/test";
-import rxjs, { firstValueFrom, fromEventPattern, merge, of, take } from "rxjs";
+import rxjs, { firstValueFrom, fromEventPattern, merge, of } from "rxjs";
 import { type NetworkName, Wallet } from "~/wallets/Wallet";
 
 export class LeatherWallet extends Wallet implements Wallet {

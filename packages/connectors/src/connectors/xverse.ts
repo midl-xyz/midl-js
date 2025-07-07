@@ -1,8 +1,8 @@
 import {
 	type CreateConnectorFn,
 	createConnector,
-} from "~/connectors/createConnector";
-import { SatsConnectConnector } from "~/connectors/sats-connect";
+} from "@midl-xyz/midl-js-core";
+import { SatsConnectConnector } from "~/providers";
 
 export const xverseConnector: CreateConnectorFn = ({ metadata } = {}) =>
 	createConnector(

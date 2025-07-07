@@ -1,11 +1,11 @@
 import {
 	bitgetConnector,
-	createConfig,
 	leatherConnector,
 	phantomConnector,
 	unisatConnector,
 	xverseConnector,
-} from "@midl-xyz/midl-js-core";
+} from "@midl-xyz/midl-js-connectors";
+import { createConfig } from "@midl-xyz/midl-js-core";
 
 type ConfigParams = Omit<Parameters<typeof createConfig>[0], "connectors"> & {
 	connectors?: Parameters<typeof createConfig>[0]["connectors"];

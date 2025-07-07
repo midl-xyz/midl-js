@@ -1,8 +1,5 @@
-import {
-	createConfig,
-	keyPairConnector,
-	regtest,
-} from "@midl-xyz/midl-js-core";
+import { createConfig, regtest } from "@midl-xyz/midl-js-core";
+import { keyPairConnector } from "@midl-xyz/midl-js-node";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { ReactNode } from "react";
 import { getKeyPair } from "~/__tests__/keyPair";

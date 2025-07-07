@@ -89,7 +89,7 @@ export const getBIP322Hash = (
 			return getBIP322HashP2TR(message, publicKey);
 		case AddressType.P2WPKH:
 			return getBIP322HashP2WPKH(message, publicKey);
-		case AddressType.P2SH:
+		case AddressType.P2SH_P2WPKH:
 			return getBIP322HashP2SHP2WPKH(message, publicKey);
 		default:
 			throw new Error(`Unsupported address type: ${addressType}`);

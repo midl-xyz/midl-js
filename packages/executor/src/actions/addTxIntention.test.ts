@@ -1,11 +1,10 @@
 import {
 	AddressPurpose,
-	KeyPairConnector,
 	connect,
 	createConfig,
-	keyPairConnector,
 	regtest,
 } from "@midl-xyz/midl-js-core";
+import { keyPairConnector } from "@midl-xyz/midl-js-node";
 import type { MidlContextState } from "@midl-xyz/midl-js-react";
 import * as bitcoin from "bitcoinjs-lib";
 import { zeroAddress } from "viem";

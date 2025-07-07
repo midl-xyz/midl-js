@@ -5,7 +5,7 @@ import { broadcastTransaction } from "~/actions/broadcastTransaction";
 import { WalletConnectionError, connect } from "~/actions/connect";
 import { getDefaultAccount } from "~/actions/getDefaultAccount";
 import { signPSBT } from "~/actions/signPSBT";
-import { type Account, KeyPairConnector, keyPairConnector } from "~/connectors";
+import { type Account, keyPairConnector } from "~/connectors";
 import { AddressPurpose } from "~/constants";
 import { createConfig } from "~/createConfig";
 import { regtest } from "~/networks";

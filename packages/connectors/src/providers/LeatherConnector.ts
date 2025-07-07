@@ -1,21 +1,18 @@
-import { Psbt, networks } from "bitcoinjs-lib";
 import {
+	type Account,
+	AddressType,
+	type BitcoinNetwork,
+	type Connector,
+	type ConnectorConnectParams,
 	type SignMessageParams,
 	SignMessageProtocol,
 	type SignMessageResponse,
-} from "~/actions";
-import type { SignPSBTParams, SignPSBTResponse } from "~/actions/signPSBT";
-import {
-	type Account,
-	type Connector,
-	type ConnectorConnectParams,
-	type CreateConnectorFn,
-	createConnector,
-} from "~/connectors/createConnector";
-import { AddressType } from "~/constants";
-import type { BitcoinNetwork } from "~/createConfig";
-import { getAddressType } from "~/utils";
-import { getAddressPurpose } from "~/utils/getAddressPurpose";
+	type SignPSBTParams,
+	type SignPSBTResponse,
+	getAddressPurpose,
+	getAddressType,
+} from "@midl-xyz/midl-js-core";
+import { Psbt, networks } from "bitcoinjs-lib";
 
 export class LeatherConnector implements Connector {
 	public readonly id = "leather";
@@ -137,14 +134,3 @@ export class LeatherConnector implements Connector {
 		};
 	}
 }
-
-export const leatherConnector: CreateConnectorFn = ({ metadata } = {}) =>
-	createConnector(
-		{
-			metadata: {
-				name: "Leather",
-			},
-			create: () => new LeatherConnector(),
-		},
-		metadata,
-	);
