@@ -135,6 +135,12 @@ export class MidlHardhatEnvironment {
 
 			this.chain = {
 				id: chainId,
+				name: "MIDL",
+				nativeCurrency: {
+					name: "MIDL",
+					symbol: "MIDL",
+					decimals: 18,
+				},
 				rpcUrls: {
 					default: {
 						http: [url],
