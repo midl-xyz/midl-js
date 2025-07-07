@@ -1,3 +1,5 @@
+import { Chain as ViemChain } from "viem";
+
 /**
  * Wagmi compatible chain configuration
  */
@@ -11,12 +13,12 @@ export type Chain = {
 			http: string[];
 		};
 	};
-	nativeCurrency?: {
+	nativeCurrency: {
 		name: string;
 		symbol: string;
 		decimals: number;
 	};
-	name?: string;
+	name: string;
 	blockExplorers?: {
 		default: {
 			name: string;
