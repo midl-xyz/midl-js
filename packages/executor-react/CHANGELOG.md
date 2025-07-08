@@ -1,5 +1,17 @@
 # @midl-xyz/midl-js-executor-react
 
+## 2.0.0-next.12
+
+### Patch Changes
+
+- 5d1e6be: feat: update connectors
+- 15f2a89: feat(executor): provide built-in wagmi
+- Updated dependencies [5d1e6be]
+- Updated dependencies [15f2a89]
+  - @midl-xyz/midl-js-executor@2.0.0-next.12
+  - @midl-xyz/midl-js-react@2.0.0-next.12
+  - @midl-xyz/midl-js-core@2.0.0-next.12
+
 ## 2.0.0-next.11
 
 ### Patch Changes

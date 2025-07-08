@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 2.0.0-next.12
+
+### Patch Changes
+
+- 5d1e6be: feat: update connectors
+
 ## 2.0.0-next.10
 
 ### Patch Changes
