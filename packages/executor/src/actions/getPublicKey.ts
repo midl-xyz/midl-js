@@ -7,6 +7,9 @@ import {
 import { initEccLib, networks, payments } from "bitcoinjs-lib";
 import { toHex } from "viem";
 
+/**
+ * Return the public key to use for passing along to the EVM network.
+ */
 export const getPublicKey = (
 	config: Config,
 	publicKey: string,
