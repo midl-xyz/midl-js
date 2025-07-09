@@ -48,6 +48,8 @@ type FinalizeBTCTransactionOptions = {
 	 * If true skips estimate gas for EVM transactions
 	 */
 	skipEstimateGasMulti?: boolean;
+
+	multisigAddress?: string;
 };
 
 /**
@@ -125,7 +127,7 @@ export const finalizeBTCTransaction = async (
 
 	const transfers: EdictRuneParams["transfers"] = [
 		{
-			receiver: multisigAddress[network.id],
+			receiver: options.multisigAddress ?? multisigAddress[network.id],
 			amount: ensureMoreThanDust(Math.ceil(Number(totalCost) + btcTransfer)),
 		},
 	];
@@ -169,7 +171,7 @@ export const finalizeBTCTransaction = async (
 
 	for (const rune of runes) {
 		transfers.push({
-			receiver: multisigAddress[network.id],
+			receiver: options.multisigAddress ?? multisigAddress[network.id],
 			amount: rune.value,
 			runeId: rune.id,
 		});

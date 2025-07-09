@@ -1,10 +1,10 @@
-import deployment from "@midl-xyz/contracts/deployments/0.0.10/Executor.json";
+import deployment from "@midl-xyz/contracts/deployments/0.1.1/Executor.json";
+import type { Config } from "@midl-xyz/midl-js-core";
+import { executorAbi } from "@midl-xyz/midl-js-executor";
+import { bytes32toRuneId } from "@midl-xyz/midl-js-executor";
 import { useRune } from "@midl-xyz/midl-js-react";
 import type { Address } from "viem";
 import { type UseReadContractParameters, useReadContract } from "wagmi";
-import { executorAbi } from "@midl-xyz/midl-js-executor";
-import { bytes32toRuneId } from "@midl-xyz/midl-js-executor";
-import type { Config } from "@midl-xyz/midl-js-core";
 
 type UseERC20Params = {
 	query?: NonNullable<
