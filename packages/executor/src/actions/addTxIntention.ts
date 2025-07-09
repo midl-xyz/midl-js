@@ -2,7 +2,6 @@ import type { Config } from "@midl-xyz/midl-js-core";
 import type { MidlContextState } from "@midl-xyz/midl-js-react";
 import type { TransactionSerializableBTC } from "viem";
 import type { StoreApi } from "zustand";
-import { getPublicKeyForAccount } from "~/actions/getPublicKeyForAccount";
 import type { TransactionIntention } from "~/types/intention";
 import { getEVMAddress } from "~/utils";
 
@@ -32,8 +31,16 @@ export const addTxIntention = async (
 	reset = false,
 	publicKey?: string,
 ): Promise<TransactionIntention> => {
-	const pk = await getPublicKeyForAccount(config, publicKey);
-	const evmAddress = getEVMAddress(pk);
+	const { accounts } = config.getState();
+
+	const account =
+		accounts?.find((it) => it.publicKey === publicKey) || accounts?.[0];
+
+	if (!account) {
+		throw new Error("No account found for public key");
+	}
+
+	const evmAddress = getEVMAddress(config, account);
 	const { intentions = [] } = store.getState();
 
 	if (intentions?.length === 10) {

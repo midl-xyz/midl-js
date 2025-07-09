@@ -59,16 +59,14 @@ export const signIntention = async (
 	const publicKey = await getPublicKeyForAccount(config, options.publicKey);
 
 	const account = accounts?.find(
-		async (it) =>
-			(await getPublicKeyForAccount(config, it.publicKey)) ===
-			options.publicKey,
+		async (it) => it.publicKey === options.publicKey,
 	);
 
 	if (!account) {
 		throw new Error("No public key set");
 	}
 
-	const evmAddress = getEVMAddress(publicKey);
+	const evmAddress = getEVMAddress(config, account);
 
 	const nonce =
 		options.nonce ??

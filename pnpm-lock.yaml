@@ -12580,11 +12580,11 @@ snapshots:
 
   '@types/bn.js@4.11.6':
     dependencies:
-      '@types/node': 20.17.16
+      '@types/node': 22.12.0
 
   '@types/bn.js@5.1.6':
     dependencies:
-      '@types/node': 20.17.16
+      '@types/node': 22.12.0
 
   '@types/conventional-commits-parser@5.0.1':
     dependencies:
@@ -12639,7 +12639,7 @@ snapshots:
 
   '@types/pbkdf2@3.1.2':
     dependencies:
-      '@types/node': 20.17.16
+      '@types/node': 22.12.0
 
   '@types/prop-types@15.7.14': {}
 
@@ -12656,7 +12656,7 @@ snapshots:
 
   '@types/secp256k1@4.0.6':
     dependencies:
-      '@types/node': 20.17.16
+      '@types/node': 22.12.0
 
   '@types/seedrandom@3.0.8': {}
 
@@ -16669,7 +16669,7 @@ snapshots:
 
   hardhat@2.22.18(bufferutil@4.0.9)(ts-node@10.9.2(@swc/core@1.10.11(@swc/helpers@0.5.15))(@types/node@22.12.0)(typescript@5.7.2))(typescript@5.7.2)(utf-8-validate@5.0.10):
     dependencies:
-      '@ethersproject/abi': 5.7.0
+      '@ethersproject/abi': 5.8.0
       '@metamask/eth-sig-util': 4.0.1
       '@nomicfoundation/edr': 0.7.0
       '@nomicfoundation/ethereumjs-common': 4.0.4
