@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor
 
+## 2.0.0-next.14
+
+### Patch Changes
+
+- f18068b: fix(executor): evm address p2wpkh
+
 ## 2.0.0-next.13
 
 ### Patch Changes
