@@ -1,4 +1,4 @@
-import type { Config } from "@midl-xyz/midl-js-core";
+import { type Config, getDefaultAccount } from "@midl-xyz/midl-js-core";
 import type { MidlContextState } from "@midl-xyz/midl-js-react";
 import type { TransactionSerializableBTC } from "viem";
 import type { StoreApi } from "zustand";
@@ -31,10 +31,10 @@ export const addTxIntention = async (
 	reset = false,
 	publicKey?: string,
 ): Promise<TransactionIntention> => {
-	const { accounts } = config.getState();
-
-	const account =
-		accounts?.find((it) => it.publicKey === publicKey) || accounts?.[0];
+	const account = getDefaultAccount(
+		config,
+		publicKey ? (it) => it.publicKey === publicKey : undefined,
+	);
 
 	if (!account) {
 		throw new Error("No account found for public key");

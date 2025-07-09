@@ -32,7 +32,7 @@ export const signTransaction = async (
 		throw new Error("No network set");
 	}
 
-	const account = await getDefaultAccount(
+	const account = getDefaultAccount(
 		config,
 		customPublicKey ? (it) => it.publicKey === customPublicKey : undefined,
 	);

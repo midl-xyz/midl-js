@@ -1,6 +1,7 @@
 import * as ecc from "@bitcoinerlab/secp256k1";
 import {
 	type BitcoinNetwork,
+	type Config,
 	extractXCoordinate,
 } from "@midl-xyz/midl-js-core";
 import { getEVMAddress } from "@midl-xyz/midl-js-executor";
@@ -37,20 +38,5 @@ export class Wallet {
 	getAccount(index = 0) {
 		const child = this.root.derivePath(`${this.derivationPath}/${index}`);
 		return ECPair.fromWIF(child.toWIF(), this.network);
-	}
-
-	getEVMAddress(index = 0) {
-		const account = this.getAccount(index);
-
-		const p2tr = bitcoin.payments.p2tr({
-			internalPubkey: Buffer.from(
-				extractXCoordinate(account.publicKey.toString("hex")),
-				"hex",
-			),
-			network: this.network,
-		});
-
-		// biome-ignore lint/style/noNonNullAssertion: Output is guaranteed to be defined
-		return getEVMAddress(toHex(p2tr.output!.slice(2)));
 	}
 }

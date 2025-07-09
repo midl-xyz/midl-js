@@ -8,6 +8,7 @@ import {
 	broadcastTransaction,
 	connect,
 	createConfig,
+	getDefaultAccount,
 	mainnet,
 	regtest,
 	testnet,
@@ -332,7 +333,8 @@ export class MidlHardhatEnvironment {
 		}
 
 		const walletClient = await this.getWalletClient();
-		const publicKey = await getPublicKeyForAccount(this.config);
+
+		const account = getDefaultAccount(this.config);
 
 		if (shouldComplete) {
 			await addCompleteTxIntention(this.config, this.store, assetsToWithdraw);
@@ -345,7 +347,7 @@ export class MidlHardhatEnvironment {
 			{
 				stateOverride: stateOverride ?? [
 					{
-						address: getEVMAddress(publicKey),
+						address: getEVMAddress(this.config, account),
 						balance: intentions.reduce((acc, it) => acc + (it.value ?? 0n), 0n),
 					},
 				],
@@ -379,7 +381,7 @@ export class MidlHardhatEnvironment {
 
 			if (intention.meta?.contractName) {
 				const contractAddress = getContractAddress({
-					from: getEVMAddress(publicKey),
+					from: getEVMAddress(this.config, account),
 					nonce: BigInt(intention.evmTransaction.nonce ?? 0),
 				});
 
@@ -470,5 +472,19 @@ export class MidlHardhatEnvironment {
 
 	public getConfig() {
 		return this.config;
+	}
+
+	public getEVMAddress() {
+		if (!this.config) {
+			throw new Error("MidlHardhatEnvironment not initialized");
+		}
+
+		const account = getDefaultAccount(this.config);
+
+		if (!account) {
+			throw new Error("No default account set");
+		}
+
+		return getEVMAddress(this.config, account);
 	}
 }

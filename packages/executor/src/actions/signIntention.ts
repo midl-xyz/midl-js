@@ -1,4 +1,8 @@
-import type { Config, SignMessageProtocol } from "@midl-xyz/midl-js-core";
+import {
+	type Config,
+	type SignMessageProtocol,
+	getDefaultAccount,
+} from "@midl-xyz/midl-js-core";
 import type { MidlContextState } from "@midl-xyz/midl-js-react";
 import { type Client, isHex } from "viem";
 import { getTransactionCount } from "viem/actions";
@@ -58,8 +62,9 @@ export const signIntention = async (
 
 	const publicKey = await getPublicKeyForAccount(config, options.publicKey);
 
-	const account = accounts?.find(
-		async (it) => it.publicKey === options.publicKey,
+	const account = getDefaultAccount(
+		config,
+		options.publicKey ? (it) => it.publicKey === options.publicKey : undefined,
 	);
 
 	if (!account) {

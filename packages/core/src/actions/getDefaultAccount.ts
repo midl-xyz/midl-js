@@ -20,7 +20,7 @@ class PredicateError extends Error {
  * @param predicate A search function to find the account
  * @returns The account
  */
-export const getDefaultAccount = async (
+export const getDefaultAccount = (
 	config: Config,
 	predicate?: (account: Account) => boolean,
 ) => {
