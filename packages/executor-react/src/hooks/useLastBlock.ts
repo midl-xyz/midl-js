@@ -1,6 +1,6 @@
-import deployment from "@midl-xyz/contracts/deployments/0.0.10/Executor.json";
-import { type UseReadContractParameters, useReadContract } from "wagmi";
+import deployment from "@midl-xyz/contracts/deployments/0.1.1/Executor.json";
 import { executorAbi } from "@midl-xyz/midl-js-executor";
+import { type UseReadContractParameters, useReadContract } from "wagmi";
 
 type UseLastBlockParams = {
 	query?: NonNullable<

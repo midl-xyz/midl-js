@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor
 
+## 2.0.0-next.13
+
+### Patch Changes
+
+- feat: upgrade midl contracts
+
 ## 2.0.0-next.12
 
 ### Patch Changes

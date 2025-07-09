@@ -1,5 +1,13 @@
 # @midl-xyz/midl-js-executor-react
 
+## 2.0.0-next.13
+
+### Patch Changes
+
+- feat: upgrade midl contracts
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@2.0.0-next.13
+
 ## 2.0.0-next.12
 
 ### Patch Changes
