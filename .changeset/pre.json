@@ -17,6 +17,7 @@
 		"@midl-xyz/midl-js-node": "0.0.1"
 	},
 	"changesets": [
+		"chatty-planets-punch",
 		"fluffy-seals-fly",
 		"green-boxes-repair",
 		"heavy-dancers-build",

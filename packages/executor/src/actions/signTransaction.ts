@@ -32,7 +32,7 @@ export const signTransaction = async (
 		throw new Error("No network set");
 	}
 
-	const account = await getDefaultAccount(
+	const account = getDefaultAccount(
 		config,
 		customPublicKey ? (it) => it.publicKey === customPublicKey : undefined,
 	);
@@ -52,7 +52,7 @@ export const signTransaction = async (
 	const lastNonce =
 		nonce ??
 		(await getTransactionCount(client, {
-			address: getEVMAddress(publicKey),
+			address: getEVMAddress(config, account),
 		}));
 
 	const serialized = serializeTransaction({

@@ -6,6 +6,7 @@ import {
 	type TransferBTCResponse,
 	edictRune,
 	ensureMoreThanDust,
+	getDefaultAccount,
 	transferBTC,
 } from "@midl-xyz/midl-js-core";
 import type { MidlContextState } from "@midl-xyz/midl-js-react";
@@ -68,7 +69,7 @@ export const finalizeBTCTransaction = async (
 	client: Client,
 	options: FinalizeBTCTransactionOptions = {},
 ) => {
-	const { network } = config.getState();
+	const { network, accounts } = config.getState();
 
 	if (!network) {
 		throw new Error("No network set");
@@ -80,8 +81,16 @@ export const finalizeBTCTransaction = async (
 		throw new Error("Cannot finalize BTC transaction without intentions");
 	}
 
-	const pk = await getPublicKeyForAccount(config, options.publicKey);
-	const evmAddress = getEVMAddress(pk);
+	const account = getDefaultAccount(
+		config,
+		options.publicKey ? (it) => it.publicKey === options.publicKey : undefined,
+	);
+
+	if (!account) {
+		throw new Error("No account found for public key");
+	}
+
+	const evmAddress = getEVMAddress(config, account);
 	const evmIntentions = intentions.filter((it) => Boolean(it.evmTransaction));
 	const evmTransactions = evmIntentions.map((it) => it.evmTransaction);
 

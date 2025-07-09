@@ -159,7 +159,7 @@ describe("extractEVMSignature", () => {
 			purposes: [AddressPurpose.Payment],
 		});
 
-		const account = await getDefaultAccount(midlConfig);
+		const account = getDefaultAccount(midlConfig);
 
 		const message = keccak256(new TextEncoder().encode("test"));
 
