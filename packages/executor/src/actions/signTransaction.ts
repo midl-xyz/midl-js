@@ -52,7 +52,7 @@ export const signTransaction = async (
 	const lastNonce =
 		nonce ??
 		(await getTransactionCount(client, {
-			address: getEVMAddress(publicKey),
+			address: getEVMAddress(config, account),
 		}));
 
 	const serialized = serializeTransaction({
