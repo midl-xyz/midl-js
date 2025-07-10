@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor
 
+## 2.0.0-next.16
+
+### Patch Changes
+
+- feat: add p2sh-p2wpkh support
+
 ## 2.0.0-next.15
 
 ### Patch Changes
