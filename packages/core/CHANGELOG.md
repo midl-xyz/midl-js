@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 2.0.0-next.18
+
+### Patch Changes
+
+- feat: disable rune edict limit
+
 ## 2.0.0-next.15
 
 ### Patch Changes
