@@ -30,4 +30,10 @@ export type Chain = {
 		};
 	};
 	testnet?: boolean;
+	contracts?: {
+		multicall3?: {
+			address: string;
+			blockCreated?: number;
+		};
+	};
 };
