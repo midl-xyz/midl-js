@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor
 
+## 2.0.0-next.17
+
+### Patch Changes
+
+- feat: add multicall3
+
 ## 2.0.0-next.16
 
 ### Patch Changes
