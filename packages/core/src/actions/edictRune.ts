@@ -1,3 +1,4 @@
+import ecc from "@bitcoinerlab/secp256k1";
 import { Psbt, initEccLib, networks, payments } from "bitcoinjs-lib";
 import coinSelect from "bitcoinselect";
 import { Edict, RuneId, Runestone, none, some } from "runelib";
@@ -5,11 +6,10 @@ import { broadcastTransaction } from "~/actions/broadcastTransaction";
 import { getFeeRate } from "~/actions/getFeeRate";
 import { getRuneUTXO } from "~/actions/getRuneUTXO";
 import { getUTXOs } from "~/actions/getUTXOs";
-import type { Config } from "~/createConfig";
-import { extractXCoordinate, makePSBTInputs, runeUTXOSelect } from "~/utils";
-import ecc from "@bitcoinerlab/secp256k1";
 import { AddressPurpose } from "~/constants";
+import type { Config } from "~/createConfig";
 import type { RuneUTXO } from "~/providers";
+import { extractXCoordinate, makePSBTInputs, runeUTXOSelect } from "~/utils";
 
 initEccLib(ecc);
 
@@ -265,10 +265,6 @@ export const edictRune = async (
 	);
 
 	const mintStone = new Runestone(edicts, none(), none(), some(changeIndex));
-
-	if (mintStone.edicts.length > 2) {
-		throw new Error("Only two edicts per transaction is allowed");
-	}
 
 	psbt.addOutput({
 		script: mintStone.encipher(),
