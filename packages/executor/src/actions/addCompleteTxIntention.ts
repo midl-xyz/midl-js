@@ -60,23 +60,40 @@ export const addCompleteTxIntention = async (
 	let receiverBTC = padHex("0x0", { size: 32 });
 
 	if (btcReceiver.address !== runesReceiver?.address) {
-		if (btcReceiver.addressType !== AddressType.P2WPKH) {
-			throw new Error(
-				`Unsupported address type for BTC receiver: ${btcReceiver.addressType}`,
-			);
+		switch (btcReceiver.addressType) {
+			case AddressType.P2SH_P2WPKH: {
+				const p2wpkh = bitcoin.payments.p2wpkh({
+					pubkey: Buffer.from(btcReceiver.publicKey, "hex"),
+					network: bitcoin.networks[network.network],
+				});
+				const p2sh = bitcoin.payments.p2sh({
+					redeem: p2wpkh,
+					network: bitcoin.networks[network.network],
+				});
+
+				receiverBTC = toHex(
+					// biome-ignore lint/style/noNonNullAssertion: <explanation>
+					padBytes(p2sh.output!, {
+						size: 32,
+					}),
+				);
+
+				break;
+			}
+			case AddressType.P2WPKH: {
+				const p2wpkh = bitcoin.payments.p2wpkh({
+					address: btcReceiver.address,
+					network: bitcoin.networks[network.network],
+				});
+
+				receiverBTC = toHex(
+					// biome-ignore lint/style/noNonNullAssertion: <explanation>
+					padBytes(p2wpkh.output!, {
+						size: 32,
+					}),
+				);
+			}
 		}
-
-		const p2wpkh = bitcoin.payments.p2wpkh({
-			address: btcReceiver.address,
-			network: bitcoin.networks[network.network],
-		});
-
-		receiverBTC = toHex(
-			// biome-ignore lint/style/noNonNullAssertion: <explanation>
-			padBytes(p2wpkh.output!, {
-				size: 32,
-			}),
-		);
 	}
 
 	return addTxIntention(config, store, {
