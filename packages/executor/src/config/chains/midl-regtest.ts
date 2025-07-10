@@ -16,7 +16,7 @@ export const midlRegtest: Chain = {
 	},
 	contracts: {
 		multicall3: {
-			address: deployment.address,
+			address: deployment.address as `0x${string}`,
 		},
 	},
 };

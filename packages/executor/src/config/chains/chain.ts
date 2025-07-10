@@ -1,5 +1,3 @@
-import { Chain as ViemChain } from "viem";
-
 /**
  * Wagmi compatible chain configuration
  */
@@ -32,7 +30,7 @@ export type Chain = {
 	testnet?: boolean;
 	contracts?: {
 		multicall3?: {
-			address: string;
+			address: `0x${string}`;
 			blockCreated?: number;
 		};
 	};
