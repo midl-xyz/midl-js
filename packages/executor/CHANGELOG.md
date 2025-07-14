@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor
 
+## 2.0.0-next.19
+
+### Patch Changes
+
+- feat: update executor address
+
 ## 2.0.0-next.18
 
 ### Patch Changes

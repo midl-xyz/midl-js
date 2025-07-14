@@ -1,3 +1,4 @@
+import deployment from "@midl-xyz/contracts/deployments/0.1.1/Executor.json";
 import { regtest, testnet, testnet4 } from "@midl-xyz/midl-js-core";
 
 export const multisigAddress = {
@@ -7,5 +8,5 @@ export const multisigAddress = {
 };
 
 export const executorAddress = {
-	[regtest.id]: "0x3B335fD04C51e3f5b55c881b9B45e4052Fa120eB",
+	[regtest.id]: deployment.address,
 };
