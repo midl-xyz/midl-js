@@ -1,5 +1,11 @@
 # @midl-xyz/satoshi-kit
 
+## 2.0.0-next.20
+
+### Patch Changes
+
+- d31eea0: feat: isolate satoshi kit
+
 ## 2.0.0-next.18
 
 ### Patch Changes
