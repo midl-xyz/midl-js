@@ -3,15 +3,17 @@
 	"version": "2.0.0-next.18",
 	"type": "module",
 	"scripts": {
-		"build": "pnpm run build:lib && pnpm run build:styles",
-		"dev": "concurrently \"pnpm run dev:lib\" \"pnpm run dev:styles\"",
+		"build": "pnpm run build:lib && pnpm run build:styles && pnpm run build:postcss",
+		"dev": "concurrently \"pnpm run dev:lib\" \"pnpm run dev:styles\" && pnpm run dev:postcss",
 		"build:lib": "pnpm run clean && tspc --project tsconfig.esm.json",
 		"dev:lib": "concurrently \"tspc --watch --preserveWatchOutput --project tsconfig.esm.json\"",
 		"clean": "rm -rf dist",
 		"test": "vitest",
 		"prepare": "panda codegen",
 		"build:styles": "panda cssgen --outfile dist/styles.css --polyfill",
-		"dev:styles": "panda cssgen --watch --outfile dist/styles.css --polyfill"
+		"dev:styles": "panda cssgen --watch --outfile dist/styles.css --polyfill",
+		"dev:postcss": "chokidar 'dist/styles.css' -c 'pnpm run build:postcss'",
+		"build:postcss": "postcss -o dist/styles.css dist/styles.css"
 	},
 	"main": "./dist/esm/index.js",
 	"module": "./dist/esm/index.js",
@@ -40,6 +42,9 @@
 		"@park-ui/panda-preset": "^0.43.1",
 		"@tanstack/react-query": "^5.69.0",
 		"@types/react": "^18.3.11",
+		"chokidar-cli": "^3.0.0",
+		"postcss": "^8.4.47",
+		"postcss-cli": "^11.0.1",
 		"react": "^18.3.1",
 		"react-dom": "^18.3.1"
 	},
@@ -47,10 +52,10 @@
 		"@midl-xyz/midl-js-connectors": "workspace:^",
 		"@midl-xyz/midl-js-core": "workspace:^",
 		"@midl-xyz/midl-js-react": "workspace:^",
-		"@tanstack/react-query": "^5.69.0",
-		"@types/react": "^18.3.11",
-		"react": "^18.3.1",
-		"react-dom": "^18.3.1"
+		"@tanstack/react-query": "^5",
+		"@types/react": "*",
+		"react": "*",
+		"react-dom": "*"
 	},
 	"dependencies": {
 		"@appbak3r/sushi-identicon": "^3.0.0",
