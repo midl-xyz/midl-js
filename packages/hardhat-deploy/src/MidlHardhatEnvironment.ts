@@ -30,7 +30,6 @@ import {
 	type Libraries,
 	resolveBytecodeWithLinkedLibraries,
 } from "@nomicfoundation/hardhat-viem/internal/bytecode";
-import * as bitcoin from "bitcoinjs-lib";
 import type {
 	HardhatRuntimeEnvironment,
 	HttpNetworkConfig,

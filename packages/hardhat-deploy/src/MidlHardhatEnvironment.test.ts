@@ -1,5 +1,4 @@
-import { getEVMAddress } from "@midl-xyz/midl-js-executor";
-import { type Address, getAddress, zeroAddress } from "viem";
+import { getAddress } from "viem";
 import { getTransactionReceipt, readContract } from "viem/actions";
 import { describe, expect, it } from "vitest";
 import { useEnvironment } from "../tests/useEnvironment";
