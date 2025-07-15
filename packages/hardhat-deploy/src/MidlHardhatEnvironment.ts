@@ -5,7 +5,6 @@ import {
 	type BitcoinNetwork,
 	type Config,
 	SignMessageProtocol,
-	broadcastTransaction,
 	connect,
 	createConfig,
 	getDefaultAccount,
@@ -23,7 +22,6 @@ import {
 	finalizeBTCTransaction,
 	getEVMAddress,
 	getEVMFromBitcoinNetwork,
-	getPublicKeyForAccount,
 	signIntention,
 } from "@midl-xyz/midl-js-executor";
 import { keyPairConnector } from "@midl-xyz/midl-js-node";
@@ -47,8 +45,9 @@ import {
 	encodeDeployData,
 	encodeFunctionData,
 	getContractAddress,
+	keccak256,
 } from "viem";
-import { waitForTransactionReceipt } from "viem/actions";
+import { sendBTCTransactions, waitForTransactionReceipt } from "viem/actions";
 import { type StoreApi, createStore } from "zustand";
 import "~/types/context";
 import { Wallet } from "~/Wallet";
@@ -362,6 +361,8 @@ export class MidlHardhatEnvironment {
 		// biome-ignore lint/style/noNonNullAssertion: reload intentions in case of shouldComplete equal true
 		intentions = this.store.getState().intentions!;
 
+		const txs: `0x${string}`[] = [];
+
 		for (const intention of intentions) {
 			const signed = await signIntention(
 				this.config,
@@ -375,9 +376,9 @@ export class MidlHardhatEnvironment {
 				},
 			);
 
-			const txId = await walletClient.sendRawTransaction({
-				serializedTransaction: signed,
-			});
+			const txId = keccak256(signed);
+
+			txs.push(signed);
 
 			if (intention.meta?.contractName) {
 				const contractAddress = getContractAddress({
@@ -401,8 +402,19 @@ export class MidlHardhatEnvironment {
 			console.log("Transaction sent", txId);
 		}
 
-		const txId = await broadcastTransaction(this.config, tx.tx.hex);
-		await waitForTransaction(this.config, txId, this.btcConfirmationsRequired);
+		await sendBTCTransactions(walletClient, {
+			serializedTransactions: txs,
+			btcTransaction: tx.tx.hex,
+		});
+
+		console.log("BTC transaction sent", tx.tx.id);
+
+		await waitForTransaction(
+			this.config,
+			tx.tx.id,
+			this.btcConfirmationsRequired,
+		);
+
 		await Promise.all(
 			evmTXHashes.map((hash) =>
 				waitForTransactionReceipt(walletClient, {
@@ -412,7 +424,7 @@ export class MidlHardhatEnvironment {
 			),
 		);
 
-		console.log("Transaction confirmed", txId);
+		console.log("Transaction confirmed", tx.tx.id);
 
 		clearTxIntentions(this.store);
 	}
