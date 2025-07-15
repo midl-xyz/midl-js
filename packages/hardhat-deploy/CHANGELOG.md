@@ -1,5 +1,11 @@
 # @midl-xyz/hardhat-deploy
 
+## 2.0.0-next.21
+
+### Patch Changes
+
+- feat(hardhat-deploy): send btc midl pack
+
 ## 2.0.0-next.19
 
 ### Patch Changes
