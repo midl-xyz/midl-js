@@ -1,3 +1,4 @@
+import "./global.css";
 import "@midl-xyz/satoshi-kit/styles.css";
 import { AddressPurpose, regtest } from "@midl-xyz/midl-js-core";
 import { WagmiMidlProvider } from "@midl-xyz/midl-js-executor-react";
@@ -8,6 +9,7 @@ import {
 	createMidlConfig,
 } from "@midl-xyz/satoshi-kit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { DarkModeToggle } from "./DarkModeToggle";
 
 const midlConfig = createMidlConfig({
 	networks: [regtest],
@@ -23,6 +25,7 @@ export function App() {
 				<SatoshiKitProvider purposes={[AddressPurpose.Ordinals]}>
 					<WagmiMidlProvider>
 						<ConnectButton />
+						<DarkModeToggle />
 					</WagmiMidlProvider>
 				</SatoshiKitProvider>
 			</MidlProvider>

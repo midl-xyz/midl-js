@@ -20,6 +20,13 @@ export default defineConfig({
 	exclude: [],
 	theme: {
 		extend: {
+			tokens: {
+				fonts: {
+					body: {
+						value: "Inter, sans-serif",
+					},
+				},
+			},
 			textStyles,
 		},
 	},
