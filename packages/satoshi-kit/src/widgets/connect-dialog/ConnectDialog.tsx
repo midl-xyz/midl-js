@@ -128,7 +128,9 @@ export const ConnectDialog = ({ open, onClose }: ConnectDialogProps) => {
 						{!isPending && !isAuthenticating && (
 							<Stack gap="8" p="6">
 								<Stack gap="1">
-									<Dialog.Title>Connect Wallet</Dialog.Title>
+									<Dialog.Title textStyle="subtitle">
+										Connect Wallet
+									</Dialog.Title>
 								</Stack>
 								<Stack gap={2} direction="column" width="full">
 									{connectors.map((it) => (

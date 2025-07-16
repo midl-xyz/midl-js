@@ -3,17 +3,16 @@
 	"version": "2.0.0-next.20",
 	"type": "module",
 	"scripts": {
-		"build": "pnpm run build:lib && pnpm run build:styles && pnpm run build:postcss",
-		"dev": "concurrently \"pnpm run dev:lib\" \"pnpm run dev:styles\" && pnpm run dev:postcss",
+		"build": "pnpm run build:lib && pnpm run build:styles",
+		"dev": "concurrently \"pnpm run dev:lib\" \"pnpm run dev:styles\"",
 		"build:lib": "pnpm run clean && tspc --project tsconfig.esm.json",
-		"dev:lib": "concurrently \"tspc --watch --preserveWatchOutput --project tsconfig.esm.json\"",
+		"dev:lib": "tspc --watch --preserveWatchOutput --project tsconfig.esm.json",
 		"clean": "rm -rf dist",
 		"test": "vitest",
 		"prepare": "panda codegen",
 		"build:styles": "panda cssgen --outfile dist/styles.css --polyfill",
-		"dev:styles": "panda cssgen --watch --outfile dist/styles.css --polyfill",
-		"dev:postcss": "chokidar 'dist/styles.css' -c 'pnpm run build:postcss'",
-		"build:postcss": "postcss -o dist/styles.css dist/styles.css"
+		"dev:styles": "chokidar \"src/**/*.{ts,tsx}\" -c \"pnpm run build:styles\"",
+		"dev:vite": "vite ./app -c vite.config.ts"
 	},
 	"main": "./dist/esm/index.js",
 	"module": "./dist/esm/index.js",
@@ -42,11 +41,13 @@
 		"@park-ui/panda-preset": "^0.43.1",
 		"@tanstack/react-query": "^5.69.0",
 		"@types/react": "^18.3.11",
+		"@vitejs/plugin-react": "^4.6.0",
 		"chokidar-cli": "^3.0.0",
-		"postcss": "^8.4.47",
+		"postcss": "8.4.3",
 		"postcss-cli": "^11.0.1",
 		"react": "^18.3.1",
-		"react-dom": "^18.3.1"
+		"react-dom": "^18.3.1",
+		"vite": "^5.4.10"
 	},
 	"peerDependencies": {
 		"@midl-xyz/midl-js-connectors": "workspace:^",
