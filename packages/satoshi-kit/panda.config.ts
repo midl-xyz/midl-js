@@ -1,33 +1,28 @@
 import { defineConfig } from "@pandacss/dev";
-import { createPreset } from "@park-ui/panda-preset";
-import amber from "@park-ui/panda-preset/colors/amber";
-import sand from "@park-ui/panda-preset/colors/sand";
 import postcss from "postcss";
 const prefixKeyframes = require("./plugins/postcss-prefix-keyframes.cjs");
 const removeStyles = require("./plugins/postcss-remove-global-resets.cjs");
 const prefixGlobals = require("./plugins/postcss-prefix-globals.cjs");
 
-import { textStyles } from "./src/theme";
+import { conditions, keyframes, textStyles } from "./src/theme";
+import * as recipes from "./src/theme/recipes";
+import * as semanticTokens from "./src/theme/semantic-tokens";
+import * as tokens from "./src/theme/tokens";
 
 export default defineConfig({
 	preflight: true,
 	prefix: "satoshi-kit-",
 	jsxFramework: "react",
-	presets: [
-		createPreset({ accentColor: amber, grayColor: sand, radius: "sm" }),
-	],
 	include: ["./src/**/*.{js,jsx,ts,tsx}", "./pages/**/*.{js,jsx,ts,tsx}"],
 	exclude: [],
+	conditions,
 	theme: {
 		extend: {
-			tokens: {
-				fonts: {
-					body: {
-						value: "Inter, sans-serif",
-					},
-				},
-			},
+			keyframes,
+			tokens,
 			textStyles,
+			semanticTokens,
+			recipes,
 		},
 	},
 	hooks: {

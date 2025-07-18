@@ -2,13 +2,25 @@ import { defineTextStyles } from "@pandacss/dev";
 
 export const textStyles = defineTextStyles({
 	subtitle: {
-		description: "Subtitle text style",
 		value: {
-			fontSize: "2xl",
+			fontSize: "xl",
 			fontFamily: "body",
+			fontWeight: "medium",
 		},
 	},
-	sm: {},
-	md: {},
+	sm: {
+		value: {
+			fontSize: "sm",
+			fontFamily: "body",
+			fontWeight: "normal",
+		},
+	},
+	md: {
+		value: {
+			fontFamily: "body",
+			fontSize: "sm",
+			fontWeight: "medium",
+		},
+	},
 	lg: {},
 });

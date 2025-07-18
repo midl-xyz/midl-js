@@ -79,7 +79,7 @@ export const ConnectButton = ({
 						onClick={() => {
 							toggleConnectDialog(true);
 						}}
-						variant="subtle"
+						variant="solid"
 						disabled={isConnecting}
 						loading={isConnecting}
 					>

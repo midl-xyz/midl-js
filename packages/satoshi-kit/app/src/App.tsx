@@ -22,7 +22,7 @@ export function App() {
 	return (
 		<QueryClientProvider client={client}>
 			<MidlProvider config={midlConfig}>
-				<SatoshiKitProvider purposes={[AddressPurpose.Ordinals]}>
+				<SatoshiKitProvider>
 					<WagmiMidlProvider>
 						<ConnectButton />
 						<DarkModeToggle />

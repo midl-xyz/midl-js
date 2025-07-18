@@ -4,7 +4,7 @@ import { Portal } from "@ark-ui/react";
 import { useConnect, useDisconnect } from "@midl-xyz/midl-js-react";
 import { ArrowRightIcon, XIcon } from "lucide-react";
 import { css } from "styled-system/css";
-import { Stack } from "styled-system/jsx";
+import { Box, Flex, Stack } from "styled-system/jsx";
 import { useSatoshiKit } from "~/app";
 import { useAuthentication } from "~/features/auth/api";
 import { useToaster } from "~/shared";
@@ -13,6 +13,7 @@ import { Dialog } from "~/shared/ui/dialog";
 import { IconButton } from "~/shared/ui/icon-button";
 import { Spinner } from "~/shared/ui/spinner";
 import { WalletIcon } from "~/shared/ui/wallet-icons";
+import { About } from "~/widgets/about";
 
 type ConnectDialogProps = {
 	open: boolean;
@@ -83,99 +84,109 @@ export const ConnectDialog = ({ open, onClose }: ConnectDialogProps) => {
 				<Dialog.Backdrop />
 				<Dialog.Positioner>
 					<Dialog.Content>
-						{isAuthenticating && (
-							<Stack
-								gap={8}
-								p={6}
-								direction="column"
-								width="full"
-								alignItems="center"
-								pt={12}
-							>
-								<Spinner
-									width="12"
-									height="12"
-									borderWidth="1.5px"
-									borderTopColor="fg.disabled"
-									borderRightColor="fg.disabled"
-								/>
-
-								<p>Waiting for authentication...</p>
-							</Stack>
-						)}
-
-						{isPending && (
-							<Stack
-								gap={8}
-								p={6}
-								direction="column"
-								width="full"
-								alignItems="center"
-								pt={12}
-							>
-								<Spinner
-									width="12"
-									height="12"
-									borderWidth="1.5px"
-									borderTopColor="fg.disabled"
-									borderRightColor="fg.disabled"
-								/>
-
-								<p>Waiting for wallet connection...</p>
-							</Stack>
-						)}
-
-						{!isPending && !isAuthenticating && (
-							<Stack gap="8" p="6">
-								<Stack gap="1">
+						<Flex>
+							<Stack>
+								<Flex gap="1" justifyContent="space-between" px={6} py={6}>
 									<Dialog.Title textStyle="subtitle">
 										Connect Wallet
 									</Dialog.Title>
-								</Stack>
-								<Stack gap={2} direction="column" width="full">
-									{connectors.map((it) => (
-										<Button
-											width="full"
+									<Dialog.CloseTrigger asChild>
+										<IconButton
+											aria-label="Close Dialog"
 											variant="ghost"
-											key={it.id}
-											onClick={() =>
-												connect({
-													id: it.id,
-												})
-											}
-											className={css({
-												display: "flex",
-												justifyContent: "flex-start",
-												px: 4,
-												py: 8,
-											})}
+											size="sm"
 										>
-											<WalletIcon
-												connectorId={it.id}
-												size={8}
-												className={css({
-													width: 8,
-													height: 8,
-												})}
-											/>
+											<XIcon />
+										</IconButton>
+									</Dialog.CloseTrigger>
+								</Flex>
+								{isAuthenticating && (
+									<Stack
+										gap={8}
+										p={6}
+										direction="column"
+										width="full"
+										alignItems="center"
+										pt={12}
+									>
+										<Spinner
+											width="12"
+											height="12"
+											borderWidth="1.5px"
+											borderTopColor="fg.disabled"
+											borderRightColor="fg.disabled"
+										/>
 
-											{it.metadata.name}
+										<p>Waiting for authentication...</p>
+									</Stack>
+								)}
 
-											<ArrowRightIcon
+								{isPending && (
+									<Stack
+										gap={8}
+										p={6}
+										direction="column"
+										width="full"
+										alignItems="center"
+										pt={12}
+									>
+										<Spinner
+											width="12"
+											height="12"
+											borderWidth="1.5px"
+											borderTopColor="fg.disabled"
+											borderRightColor="fg.disabled"
+										/>
+
+										<p>Waiting for wallet connection...</p>
+									</Stack>
+								)}
+
+								{!isPending && !isAuthenticating && (
+									<Stack gap={2} direction="column" width="full">
+										{connectors.map((it) => (
+											<Button
+												width="full"
+												variant="ghost"
+												minW="xs"
+												key={it.id}
+												onClick={() =>
+													connect({
+														id: it.id,
+													})
+												}
 												className={css({
-													marginLeft: "auto",
+													display: "flex",
+													justifyContent: "flex-start",
+													px: 4,
+													py: 8,
 												})}
-											/>
-										</Button>
-									))}
-								</Stack>
+											>
+												<WalletIcon
+													connectorId={it.id}
+													size={8}
+													className={css({
+														width: 10,
+														height: 10,
+													})}
+												/>
+
+												{it.metadata.name}
+
+												<ArrowRightIcon
+													className={css({
+														marginLeft: "auto",
+													})}
+												/>
+											</Button>
+										))}
+									</Stack>
+								)}
 							</Stack>
-						)}
-						<Dialog.CloseTrigger asChild position="absolute" top="2" right="2">
-							<IconButton aria-label="Close Dialog" variant="ghost" size="sm">
-								<XIcon />
-							</IconButton>
-						</Dialog.CloseTrigger>
+							<Flex maxW="sm">
+								<About />
+							</Flex>
+						</Flex>
 					</Dialog.Content>
 				</Dialog.Positioner>
 			</Portal>
