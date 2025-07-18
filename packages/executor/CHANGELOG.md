@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor
 
+## 2.0.0-next.22
+
+### Patch Changes
+
+- fix: etna to regtest
+
 ## 2.0.0-next.19
 
 ### Patch Changes
