@@ -1,6 +1,7 @@
 import { createJSONStorage, persist } from "zustand/middleware";
 import { createStore } from "zustand/vanilla";
 import type { Account, Connector, ConnectorWithMetadata } from "~/connectors";
+import type { AddressPurpose } from "~/constants";
 import { type AbstractProvider, MempoolSpaceProvider } from "~/providers";
 
 export type BitcoinNetwork = {
@@ -43,6 +44,11 @@ type ConfigParams = {
 	 * @default MempoolSpaceProvider
 	 */
 	provider?: AbstractProvider;
+
+	/**
+	 * The default address to use for signing transactions, etc.
+	 */
+	defaultPurpose?: AddressPurpose;
 };
 
 export type ConfigState = {
@@ -52,6 +58,7 @@ export type ConfigState = {
 	readonly accounts?: Account[];
 	readonly connectors: ConnectorWithMetadata[];
 	readonly provider: AbstractProvider;
+	readonly defaultPurpose?: AddressPurpose;
 };
 
 export type Config = ReturnType<typeof createConfig>;
@@ -118,6 +125,10 @@ export const createConfig = (params: ConfigParams) => {
 			},
 		),
 	);
+
+	if (params.defaultPurpose) {
+		configStore.setState({ defaultPurpose: params.defaultPurpose });
+	}
 
 	return configStore;
 };
