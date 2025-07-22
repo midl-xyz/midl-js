@@ -82,8 +82,10 @@ export const button = defineRecipe({
 					outlineOffset: "2px",
 				},
 			},
+			link: {},
 		},
 		size: {
+			sm: {},
 			md: {
 				h: "11",
 				minW: "10",
