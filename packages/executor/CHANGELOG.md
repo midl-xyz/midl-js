@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor
 
+## 2.0.0-next.26
+
+### Patch Changes
+
+- ccc957e: feat: use btc fee rate from midl
+
 ## 2.0.0-next.25
 
 ### Patch Changes
