@@ -3,10 +3,10 @@ import {
 	type SignMessageParams,
 	SignMessageProtocol,
 	type SignMessageResponse,
+	getDefaultAccount,
 	signMessage,
 } from "@midl-xyz/midl-js-core";
 import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
-import { useAccounts } from "~/hooks/useAccounts";
 import { useConfig } from "~/hooks/useConfig";
 import { useConfigInternal } from "~/hooks/useConfigInternal";
 
@@ -47,8 +47,6 @@ export const useSignMessage = ({
 	const { connection } = useConfig(customConfig);
 	const config = useConfigInternal(customConfig);
 
-	const { paymentAccount, ordinalsAccount } = useAccounts();
-
 	const { mutate, mutateAsync, ...rest } = useMutation<
 		SignMessageData,
 		SignMessageError,
@@ -66,11 +64,9 @@ export const useSignMessage = ({
 					throw new Error("No connection");
 				}
 
-				if (!paymentAccount || !ordinalsAccount) {
-					throw new Error("No accounts");
-				}
+				const account = getDefaultAccount(config);
 
-				signingAddress = paymentAccount.address ?? ordinalsAccount?.address;
+				signingAddress = account.address;
 			}
 
 			return signMessage(config, {

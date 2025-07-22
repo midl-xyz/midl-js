@@ -1,10 +1,6 @@
+import { type Config, getDefaultAccount } from "@midl-xyz/midl-js-core";
 import { getPublicKey } from "@midl-xyz/midl-js-executor";
-import {
-	useAccounts,
-	useConfigInternal,
-	useMidlContext,
-} from "@midl-xyz/midl-js-react";
-import type { Config } from "@midl-xyz/midl-js-core";
+import { useConfigInternal } from "@midl-xyz/midl-js-react";
 
 type UsePublicKeyParams = {
 	/**
@@ -30,14 +26,11 @@ export const usePublicKey = ({
 	publicKey,
 	config: customConfig,
 }: UsePublicKeyParams = {}) => {
-	const { ordinalsAccount, paymentAccount } = useAccounts({
-		config: customConfig,
-	});
 	const config = useConfigInternal(customConfig);
+	const account = getDefaultAccount(config);
 
 	try {
-		const pk =
-			publicKey || paymentAccount?.publicKey || ordinalsAccount?.publicKey;
+		const pk = publicKey || account.publicKey;
 
 		if (!pk) {
 			return null;
