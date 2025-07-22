@@ -13,7 +13,7 @@ import type { MidlContextState } from "@midl-xyz/midl-js-react";
 import type { Client, StateOverride } from "viem";
 import { estimateGasMulti } from "viem/actions";
 import type { StoreApi } from "zustand";
-import { getPublicKeyForAccount } from "~/actions/getPublicKeyForAccount";
+import { getBTCFeeRate } from "~/actions/getBTCFeeRate";
 import { multisigAddress } from "~/config";
 import {
 	calculateTransactionsCost,
@@ -36,9 +36,9 @@ type FinalizeBTCTransactionOptions = {
 	gasPrice?: bigint;
 
 	/**
-	 * Fee rate multiplier for the transaction
+	 * Custom fee rate
 	 */
-	feeRateMultiplier?: number;
+	feeRate?: number;
 
 	/**
 	 * Number of assets to withdraw
@@ -67,9 +67,9 @@ export const finalizeBTCTransaction = async (
 	config: Config,
 	store: StoreApi<MidlContextState>,
 	client: Client,
-	options: FinalizeBTCTransactionOptions = {},
+	{ feeRate: customFeeRate, ...options }: FinalizeBTCTransactionOptions = {},
 ) => {
-	const { network, accounts } = config.getState();
+	const { network } = config.getState();
 
 	if (!network) {
 		throw new Error("No network set");
@@ -114,19 +114,17 @@ export const finalizeBTCTransaction = async (
 	const hasWithdraw = intentions.some((it) => it.hasWithdraw);
 	const hasRunesWithdraw = intentions.some((it) => it.hasRunesWithdraw);
 
-	const totalCost = await calculateTransactionsCost(
-		[...evmTransactions],
-		config,
-		{
-			feeRateMultiplier: options.feeRateMultiplier,
-			gasPrice: options.gasPrice,
-			hasDeposit: intentions.some((it) => it.hasDeposit),
-			hasWithdraw: hasWithdraw,
-			hasRunesDeposit: intentions.some((it) => it.hasRunesDeposit),
-			hasRunesWithdraw: hasRunesWithdraw,
-			assetsToWithdrawSize: options.assetsToWithdrawSize ?? 0,
-		},
-	);
+	const feeRate = customFeeRate ?? Number(await getBTCFeeRate(config, client));
+
+	const totalCost = calculateTransactionsCost([...evmTransactions], {
+		feeRate,
+		gasPrice: options.gasPrice,
+		hasDeposit: intentions.some((it) => it.hasDeposit),
+		hasWithdraw: hasWithdraw,
+		hasRunesDeposit: intentions.some((it) => it.hasRunesDeposit),
+		hasRunesWithdraw: hasRunesWithdraw,
+		assetsToWithdrawSize: options.assetsToWithdrawSize ?? 0,
+	});
 
 	const btcTransfer = convertETHtoBTC(
 		intentions.reduce((acc, it) => {
@@ -192,11 +190,13 @@ export const finalizeBTCTransaction = async (
 		btcTx = await edictRune(config, {
 			transfers,
 			publish: false,
+			feeRate,
 		});
 	} else {
 		btcTx = await transferBTC(config, {
 			transfers: transfers as TransferBTCParams["transfers"],
 			publish: false,
+			feeRate,
 		});
 	}
 

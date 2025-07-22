@@ -21,7 +21,7 @@ type FinalizeMutationVariables = {
 
 	assetsToWithdrawSize?: number;
 
-	feeRateMultiplier?: number;
+	feeRate?: number;
 
 	/**
 	 * If true, skip the gas estimation for EVM transactions
@@ -73,7 +73,7 @@ export const useFinalizeBTCTransaction = ({
 		mutationFn: async ({
 			stateOverride,
 			assetsToWithdrawSize,
-			feeRateMultiplier,
+			feeRate,
 			skipEstimateGasMulti,
 		} = {}) => {
 			if (!publicClient) {
@@ -83,7 +83,7 @@ export const useFinalizeBTCTransaction = ({
 			return finalizeBTCTransaction(config, store, publicClient, {
 				stateOverride,
 				assetsToWithdrawSize,
-				feeRateMultiplier,
+				feeRate,
 				skipEstimateGasMulti,
 			});
 		},

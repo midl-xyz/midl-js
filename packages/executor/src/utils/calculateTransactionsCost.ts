@@ -1,4 +1,3 @@
-import { type Config, getFeeRate } from "@midl-xyz/midl-js-core";
 import { type TransactionSerializableBTC, parseUnits } from "viem";
 
 export const ONE_SATOSHI = parseUnits("1", 10);
@@ -14,23 +13,22 @@ export const RUNES_MAGIC_VALUE = 546n;
  *
  * @param transactions - Transactions to calculate cost for
  * @param config - Configuration object
- * @param feeRateMultiplier - Multiplier for fee rate, default is 2 (double the fee rate)
+ * @param feeRate - Multiplier for fee rate, default is 2 (double the fee rate)
  * @returns Cost of transactions in satoshis
  */
-export const calculateTransactionsCost = async (
+export const calculateTransactionsCost = (
 	transactions: Pick<TransactionSerializableBTC, "gas">[],
-	config: Config,
 	{
 		gasPrice = parseUnits("10", 3),
-		feeRateMultiplier = 2,
+		feeRate,
 		hasRunesDeposit,
 		hasDeposit,
 		hasWithdraw,
 		hasRunesWithdraw,
 		assetsToWithdrawSize = 0,
 	}: {
+		feeRate: number;
 		gasPrice?: bigint;
-		feeRateMultiplier?: number;
 		hasRunesDeposit?: boolean;
 		hasDeposit?: boolean;
 		hasWithdraw?: boolean;
@@ -38,7 +36,6 @@ export const calculateTransactionsCost = async (
 		assetsToWithdrawSize?: number;
 	},
 ) => {
-	const feeRate = await getFeeRate(config);
 	const totalGas = transactions.reduce((acc, it) => acc + (it.gas ?? 0n), 0n);
 
 	const btcWithdrawSize =
@@ -60,7 +57,7 @@ export const calculateTransactionsCost = async (
 			btcDepositSize +
 			btcWithdrawSize +
 			BigInt(assetsToWithdrawSize) * RUNES_MAGIC_VALUE) *
-			BigInt(feeRate.halfHourFee * feeRateMultiplier);
+			BigInt(feeRate);
 
 	return fees;
 };

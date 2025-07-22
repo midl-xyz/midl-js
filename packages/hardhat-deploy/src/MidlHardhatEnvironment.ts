@@ -301,13 +301,13 @@ export class MidlHardhatEnvironment {
 
 	public async execute({
 		stateOverride,
-		feeRateMultiplier = 4,
+		feeRate,
 		skipEstimateGasMulti = false,
 		shouldComplete = false,
 		assetsToWithdraw,
 	}: {
 		stateOverride?: StateOverride;
-		feeRateMultiplier?: number;
+		feeRate?: number;
 		skipEstimateGasMulti?: boolean;
 	} & (
 		| {
@@ -350,7 +350,7 @@ export class MidlHardhatEnvironment {
 						balance: intentions.reduce((acc, it) => acc + (it.value ?? 0n), 0n),
 					},
 				],
-				feeRateMultiplier,
+				feeRate,
 				skipEstimateGasMulti,
 				assetsToWithdrawSize: assetsToWithdraw?.length ?? 0,
 			},
@@ -461,6 +461,16 @@ export class MidlHardhatEnvironment {
 				abi: abi,
 			}),
 		);
+	}
+
+	public async deleteDeployment(name: string) {
+		const filePath = path.join(this.deploymentsPath, `${name}.json`);
+
+		if (!fs.existsSync(filePath)) {
+			throw new Error(`No deployment file found for "${name}" at ${filePath}`);
+		}
+
+		fs.unlinkSync(filePath);
 	}
 
 	private async saveDeployment(

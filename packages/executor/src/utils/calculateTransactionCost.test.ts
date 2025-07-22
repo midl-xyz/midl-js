@@ -7,19 +7,20 @@ import { calculateTransactionsCost } from "~/utils/calculateTransactionsCost";
 describe("calculateTransactionCost", () => {
 	it("deposit", async () => {
 		expect(
-			await calculateTransactionsCost([], midlConfig, { hasDeposit: true }),
+			calculateTransactionsCost([], { feeRate: 2, hasDeposit: true }),
 		).toBe(792n);
 	});
 
 	it("withdraw", async () => {
 		expect(
-			await calculateTransactionsCost([], midlConfig, { hasWithdraw: true }),
+			calculateTransactionsCost([], { feeRate: 2, hasWithdraw: true }),
 		).toBe(742n);
 	});
 
 	it("runes deposit", async () => {
 		expect(
-			await calculateTransactionsCost([], midlConfig, {
+			calculateTransactionsCost([], {
+				feeRate: 2,
 				hasRunesDeposit: true,
 			}),
 		).toBe(1318n);
@@ -27,13 +28,18 @@ describe("calculateTransactionCost", () => {
 
 	it("runes withdraw", async () => {
 		expect(
-			await calculateTransactionsCost([], midlConfig, {
+			calculateTransactionsCost([], {
+				feeRate: 2,
 				hasRunesWithdraw: true,
 			}),
 		).toBe(1218n);
 	});
 
 	it("no deposit or withdraw", async () => {
-		expect(await calculateTransactionsCost([], midlConfig, {})).toBe(412n);
+		expect(
+			calculateTransactionsCost([], {
+				feeRate: 2,
+			}),
+		).toBe(412n);
 	});
 });

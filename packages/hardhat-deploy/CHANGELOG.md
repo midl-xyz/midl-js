@@ -1,5 +1,22 @@
 # @midl-xyz/hardhat-deploy
 
+## 2.0.0-next.26
+
+### Patch Changes
+
+- e001121: feat: add deployment delete
+- ccc957e: feat: use btc fee rate from midl
+- Updated dependencies [ccc957e]
+  - @midl-xyz/midl-js-executor@2.0.0-next.26
+
+## 2.0.0-next.25
+
+### Patch Changes
+
+- fix(executor): fee rate multiplier
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@2.0.0-next.25
+
 ## 2.0.0-next.24
 
 ### Patch Changes
