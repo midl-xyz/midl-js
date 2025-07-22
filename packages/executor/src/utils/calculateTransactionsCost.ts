@@ -1,11 +1,12 @@
 import { type TransactionSerializableBTC, parseUnits } from "viem";
 
 export const ONE_SATOSHI = parseUnits("1", 10);
+export const KEYGEN_TX_SIZE = 15n;
 export const MIDL_SCRIPT_SIZE = 206n;
-export const RUNES_DEPOSIT_SIZE = 453n;
+export const RUNES_DEPOSIT_SIZE = 496n;
 export const DEPOSIT_SIZE = 190n;
-export const WITHDRAW_SIZE = 165n;
-export const RUNES_WITHDRAW_SIZE = 403n;
+export const WITHDRAW_SIZE = 233n;
+export const RUNES_WITHDRAW_SIZE = 471n;
 export const RUNES_MAGIC_VALUE = 546n;
 
 /**
@@ -54,6 +55,7 @@ export const calculateTransactionsCost = (
 	const fees =
 		(gasPrice * totalGas) / ONE_SATOSHI +
 		(MIDL_SCRIPT_SIZE +
+			KEYGEN_TX_SIZE +
 			btcDepositSize +
 			btcWithdrawSize +
 			BigInt(assetsToWithdrawSize) * RUNES_MAGIC_VALUE) *

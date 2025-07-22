@@ -8,13 +8,13 @@ describe("calculateTransactionCost", () => {
 	it("deposit", async () => {
 		expect(
 			calculateTransactionsCost([], { feeRate: 2, hasDeposit: true }),
-		).toBe(792n);
+		).toBe(822n);
 	});
 
 	it("withdraw", async () => {
 		expect(
 			calculateTransactionsCost([], { feeRate: 2, hasWithdraw: true }),
-		).toBe(742n);
+		).toBe(908n);
 	});
 
 	it("runes deposit", async () => {
@@ -23,7 +23,7 @@ describe("calculateTransactionCost", () => {
 				feeRate: 2,
 				hasRunesDeposit: true,
 			}),
-		).toBe(1318n);
+		).toBe(1434n);
 	});
 
 	it("runes withdraw", async () => {
@@ -32,7 +32,7 @@ describe("calculateTransactionCost", () => {
 				feeRate: 2,
 				hasRunesWithdraw: true,
 			}),
-		).toBe(1218n);
+		).toBe(1384n);
 	});
 
 	it("no deposit or withdraw", async () => {
@@ -40,6 +40,6 @@ describe("calculateTransactionCost", () => {
 			calculateTransactionsCost([], {
 				feeRate: 2,
 			}),
-		).toBe(412n);
+		).toBe(442n);
 	});
 });
