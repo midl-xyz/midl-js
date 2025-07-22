@@ -1,3 +1,4 @@
+import * as bitcoin from "bitcoinjs-lib";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { getKeyPair } from "~/__tests__/keyPair";
 import { mockServer } from "~/__tests__/mockServer";
