@@ -301,7 +301,7 @@ export class MidlHardhatEnvironment {
 
 	public async execute({
 		stateOverride,
-		feeRateMultiplier = 4,
+		feeRateMultiplier,
 		skipEstimateGasMulti = false,
 		shouldComplete = false,
 		assetsToWithdraw,
