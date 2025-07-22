@@ -301,13 +301,13 @@ export class MidlHardhatEnvironment {
 
 	public async execute({
 		stateOverride,
-		feeRateMultiplier,
+		feeRate,
 		skipEstimateGasMulti = false,
 		shouldComplete = false,
 		assetsToWithdraw,
 	}: {
 		stateOverride?: StateOverride;
-		feeRateMultiplier?: number;
+		feeRate?: number;
 		skipEstimateGasMulti?: boolean;
 	} & (
 		| {
@@ -350,7 +350,7 @@ export class MidlHardhatEnvironment {
 						balance: intentions.reduce((acc, it) => acc + (it.value ?? 0n), 0n),
 					},
 				],
-				feeRateMultiplier,
+				feeRate,
 				skipEstimateGasMulti,
 				assetsToWithdrawSize: assetsToWithdraw?.length ?? 0,
 			},

@@ -7,13 +7,13 @@ import {
 	edictRune,
 	ensureMoreThanDust,
 	getDefaultAccount,
-	getFeeRate,
 	transferBTC,
 } from "@midl-xyz/midl-js-core";
 import type { MidlContextState } from "@midl-xyz/midl-js-react";
 import type { Client, StateOverride } from "viem";
 import { estimateGasMulti } from "viem/actions";
 import type { StoreApi } from "zustand";
+import { getBTCFeeRate } from "~/actions/getBTCFeeRate";
 import { multisigAddress } from "~/config";
 import {
 	calculateTransactionsCost,
@@ -36,9 +36,9 @@ type FinalizeBTCTransactionOptions = {
 	gasPrice?: bigint;
 
 	/**
-	 * Fee rate multiplier for the transaction
+	 * Custom fee rate
 	 */
-	feeRateMultiplier?: number;
+	feeRate?: number;
 
 	/**
 	 * Number of assets to withdraw
@@ -67,7 +67,7 @@ export const finalizeBTCTransaction = async (
 	config: Config,
 	store: StoreApi<MidlContextState>,
 	client: Client,
-	{ feeRateMultiplier = 2, ...options }: FinalizeBTCTransactionOptions = {},
+	{ feeRate: customFeeRate, ...options }: FinalizeBTCTransactionOptions = {},
 ) => {
 	const { network } = config.getState();
 
@@ -114,19 +114,17 @@ export const finalizeBTCTransaction = async (
 	const hasWithdraw = intentions.some((it) => it.hasWithdraw);
 	const hasRunesWithdraw = intentions.some((it) => it.hasRunesWithdraw);
 
-	const totalCost = await calculateTransactionsCost(
-		[...evmTransactions],
-		config,
-		{
-			feeRateMultiplier,
-			gasPrice: options.gasPrice,
-			hasDeposit: intentions.some((it) => it.hasDeposit),
-			hasWithdraw: hasWithdraw,
-			hasRunesDeposit: intentions.some((it) => it.hasRunesDeposit),
-			hasRunesWithdraw: hasRunesWithdraw,
-			assetsToWithdrawSize: options.assetsToWithdrawSize ?? 0,
-		},
-	);
+	const feeRate = customFeeRate ?? Number(await getBTCFeeRate(config, client));
+
+	const totalCost = calculateTransactionsCost([...evmTransactions], {
+		feeRate,
+		gasPrice: options.gasPrice,
+		hasDeposit: intentions.some((it) => it.hasDeposit),
+		hasWithdraw: hasWithdraw,
+		hasRunesDeposit: intentions.some((it) => it.hasRunesDeposit),
+		hasRunesWithdraw: hasRunesWithdraw,
+		assetsToWithdrawSize: options.assetsToWithdrawSize ?? 0,
+	});
 
 	const btcTransfer = convertETHtoBTC(
 		intentions.reduce((acc, it) => {
@@ -188,19 +186,17 @@ export const finalizeBTCTransaction = async (
 
 	let btcTx: EdictRuneResponse | TransferBTCResponse;
 
-	const feeRate = await getFeeRate(config);
-
 	if (runes.length > 0) {
 		btcTx = await edictRune(config, {
 			transfers,
 			publish: false,
-			feeRate: Math.ceil(feeRate.halfHourFee * feeRateMultiplier),
+			feeRate,
 		});
 	} else {
 		btcTx = await transferBTC(config, {
 			transfers: transfers as TransferBTCParams["transfers"],
 			publish: false,
-			feeRate: Math.ceil(feeRate.halfHourFee * feeRateMultiplier),
+			feeRate,
 		});
 	}
 
