@@ -1,5 +1,31 @@
 # @midl-xyz/midl-js-executor-react
 
+## 2.0.0-next.24
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-react@2.0.0-next.24
+  - @midl-xyz/midl-js-executor@2.0.0-next.24
+
+## 2.0.0-next.23
+
+### Patch Changes
+
+- fix(executor-react): fix evm address no connection"
+- 5197f61: feat(core): define default account
+- Updated dependencies [5197f61]
+  - @midl-xyz/midl-js-executor@2.0.0-next.23
+  - @midl-xyz/midl-js-react@2.0.0-next.23
+  - @midl-xyz/midl-js-core@2.0.0-next.23
+
+## 2.0.0-next.22
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@2.0.0-next.22
+
 ## 2.0.0-next.19
 
 ### Patch Changes

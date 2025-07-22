@@ -24,7 +24,7 @@ export const getDefaultAccount = (
 	config: Config,
 	predicate?: (account: Account) => boolean,
 ) => {
-	const { connection, accounts } = config.getState();
+	const { connection, accounts, defaultPurpose } = config.getState();
 
 	if (!connection) {
 		throw new WalletConnectionError();
@@ -42,9 +42,15 @@ export const getDefaultAccount = (
 		(it) => it.purpose === AddressPurpose.Ordinals,
 	);
 
-	const account = predicate
-		? accounts.find(predicate)
-		: paymentAccount || ordinalsAccount;
+	let account = paymentAccount || ordinalsAccount;
+
+	if (defaultPurpose) {
+		account = accounts.find((it) => it.purpose === defaultPurpose);
+	}
+
+	if (predicate) {
+		account = accounts.find(predicate);
+	}
 
 	if (!account && predicate) {
 		throw new PredicateError("No account found matching the predicate");

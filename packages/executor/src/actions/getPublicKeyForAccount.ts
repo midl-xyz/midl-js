@@ -1,23 +1,13 @@
-import { AddressPurpose, type Config } from "@midl-xyz/midl-js-core";
+import { type Config, getDefaultAccount } from "@midl-xyz/midl-js-core";
 import { getPublicKey } from "~/actions";
 
 export const getPublicKeyForAccount = async (
 	config: Config,
 	publicKey?: string,
 ) => {
-	const { accounts } = config.getState();
+	const account = getDefaultAccount(config);
 
-	const ordinalsAccount = accounts?.find(
-		(it) => it.purpose === AddressPurpose.Ordinals,
-	);
-	const paymentAccount = accounts?.find(
-		(it) => it.purpose === AddressPurpose.Payment,
-	);
-
-	const pk = getPublicKey(
-		config,
-		publicKey ?? paymentAccount?.publicKey ?? ordinalsAccount?.publicKey ?? "",
-	);
+	const pk = getPublicKey(config, publicKey ?? account.publicKey);
 
 	if (!pk) {
 		throw new Error("No public key found");

@@ -16,19 +16,19 @@ module.exports = {
 				btcConfirmationsRequired: 1,
 				hardhatNetwork: "default",
 				network: {
-					explorerUrl: "https://mempool.etna.midl.xyz",
+					explorerUrl: "https://mempool.regtest.midl.xyz",
 					id: "regtest",
 					network: "regtest",
 				},
 				provider: new MempoolSpaceProvider({
-					regtest: "https://mempool.etna.midl.xyz",
+					regtest: "https://mempool.regtest.midl.xyz",
 				}),
 			},
 		},
 	},
 	networks: {
 		default: {
-			url: "https://rpc.etna.midl.xyz",
+			url: "https://rpc.regtest.midl.xyz",
 			chainId: 777,
 		},
 	},
