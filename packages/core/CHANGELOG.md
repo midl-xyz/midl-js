@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 2.0.0-next.23
+
+### Patch Changes
+
+- 5197f61: feat(core): define default account
+
 ## 2.0.0-next.18
 
 ### Patch Changes

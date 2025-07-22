@@ -1,5 +1,14 @@
 # @midl-xyz/midl-js-executor
 
+## 2.0.0-next.23
+
+### Patch Changes
+
+- 5197f61: feat(core): define default account
+- Updated dependencies [5197f61]
+  - @midl-xyz/midl-js-react@2.0.0-next.23
+  - @midl-xyz/midl-js-core@2.0.0-next.23
+
 ## 2.0.0-next.22
 
 ### Patch Changes
