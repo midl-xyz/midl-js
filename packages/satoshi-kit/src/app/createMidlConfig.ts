@@ -15,8 +15,17 @@ export const createMidlConfig = (params: ConfigParams) => {
 	return createConfig({
 		...params,
 		connectors: [
-			leatherConnector(),
-			xverseConnector(),
+			leatherConnector({
+				metadata: {
+					group: "popular",
+				},
+			}),
+			xverseConnector({
+				metadata: {
+					isPartner: true,
+					group: "popular",
+				},
+			}),
 			bitgetConnector(),
 			unisatConnector(),
 			phantomConnector(),

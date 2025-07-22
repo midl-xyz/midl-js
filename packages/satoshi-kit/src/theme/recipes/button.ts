@@ -82,10 +82,29 @@ export const button = defineRecipe({
 					outlineOffset: "2px",
 				},
 			},
-			link: {},
+			outline: {
+				background: "transparent",
+				color: "fg.default",
+				border: "1px solid",
+				borderColor: "currentColor",
+			},
+			link: {
+				background: "transparent",
+				color: "fg.default",
+
+				_hover: {
+					color: "fg.hover",
+				},
+			},
 		},
 		size: {
-			sm: {},
+			sm: {
+				h: "8",
+				minW: "8",
+				textStyle: "sm",
+				px: "4",
+				gap: "2",
+			},
 			md: {
 				h: "11",
 				minW: "10",

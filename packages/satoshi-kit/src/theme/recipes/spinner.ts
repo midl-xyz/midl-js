@@ -4,14 +4,11 @@ export const spinner = defineRecipe({
 	className: "spinner",
 	base: {
 		display: "inline-block",
-		borderWidth: "2px",
-		borderColor: "colorPalette.default",
-		borderStyle: "solid",
-		borderRadius: "full",
+		color: "colorPalette.default",
 		width: "var(--size)",
 		height: "var(--size)",
 		animation: "spin",
-		animationDuration: "slowest",
+		animationDuration: "1s",
 	},
 	defaultVariants: {
 		size: "md",

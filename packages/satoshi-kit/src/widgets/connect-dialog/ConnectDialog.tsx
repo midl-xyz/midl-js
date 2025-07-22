@@ -4,14 +4,15 @@ import { Portal } from "@ark-ui/react";
 import { useConnect, useDisconnect } from "@midl-xyz/midl-js-react";
 import { ArrowRightIcon, XIcon } from "lucide-react";
 import { css } from "styled-system/css";
-import { Box, Flex, Stack } from "styled-system/jsx";
+import { Flex, Grid, Stack } from "styled-system/jsx";
 import { useSatoshiKit } from "~/app";
 import { useAuthentication } from "~/features/auth/api";
-import { useToaster } from "~/shared";
 import { Button } from "~/shared/ui/button";
 import { Dialog } from "~/shared/ui/dialog";
 import { IconButton } from "~/shared/ui/icon-button";
 import { Spinner } from "~/shared/ui/spinner";
+import { Text } from "~/shared/ui/text";
+import { VerifiedIcon } from "~/shared/ui/verified-icon";
 import { WalletIcon } from "~/shared/ui/wallet-icons";
 import { About } from "~/widgets/about";
 
@@ -23,48 +24,34 @@ type ConnectDialogProps = {
 export const ConnectDialog = ({ open, onClose }: ConnectDialogProps) => {
 	const { purposes, config } = useSatoshiKit();
 	const { disconnect } = useDisconnect({ config });
-	const toaster = useToaster();
 
 	const { adapter, signInAsync, signInState, signOutState } = useAuthentication(
 		{
 			signInMutation: {
 				onSuccess: onClose,
-				onError: (error) => {
-					toaster.error({
-						title: "Authentication failed",
-						description: error.message,
-					});
-					console.error(error);
-
+				onError: () => {
 					disconnect();
-					onClose();
 				},
 			},
 		},
 	);
 
-	const { connect, connectors, isPending, isSuccess, reset } = useConnect({
-		purposes,
-		config,
-		mutation: {
-			onSuccess: async (accounts) => {
-				if (!adapter) {
-					return onClose();
-				}
+	const { connect, variables, connectors, isPending, isSuccess, reset, error } =
+		useConnect({
+			purposes,
+			config,
+			mutation: {
+				onSuccess: async (accounts) => {
+					if (!adapter) {
+						return onClose();
+					}
 
-				const [account] = accounts;
+					const [account] = accounts;
 
-				await signInAsync(account.address);
+					await signInAsync(account.address);
+				},
 			},
-			onError: (error) => {
-				toaster.error({
-					title: "Authentication failed",
-					description: error.message,
-				});
-				console.error(error);
-			},
-		},
-	});
+		});
 
 	const isAuthenticating = (isSuccess && adapter) || signInState.isPending;
 
@@ -83,10 +70,10 @@ export const ConnectDialog = ({ open, onClose }: ConnectDialogProps) => {
 			<Portal>
 				<Dialog.Backdrop />
 				<Dialog.Positioner>
-					<Dialog.Content>
-						<Flex>
+					<Dialog.Content overflow="hidden" maxW="600px">
+						<Grid gridTemplateColumns="1fr 1fr" gap={0}>
 							<Stack>
-								<Flex gap="1" justifyContent="space-between" px={6} py={6}>
+								<Flex gap="1" justifyContent="space-between" px={4} py={6}>
 									<Dialog.Title textStyle="subtitle">
 										Connect Wallet
 									</Dialog.Title>
@@ -100,7 +87,8 @@ export const ConnectDialog = ({ open, onClose }: ConnectDialogProps) => {
 										</IconButton>
 									</Dialog.CloseTrigger>
 								</Flex>
-								{isAuthenticating && (
+
+								{(isPending || isAuthenticating) && (
 									<Stack
 										gap={8}
 										p={6}
@@ -109,46 +97,36 @@ export const ConnectDialog = ({ open, onClose }: ConnectDialogProps) => {
 										alignItems="center"
 										pt={12}
 									>
-										<Spinner
-											width="12"
-											height="12"
-											borderWidth="1.5px"
-											borderTopColor="fg.disabled"
-											borderRightColor="fg.disabled"
-										/>
+										{variables?.id && (
+											<WalletIcon
+												connectorId={variables.id}
+												size={8}
+												className={css({
+													width: 10,
+													height: 10,
+												})}
+											/>
+										)}
 
-										<p>Waiting for authentication...</p>
-									</Stack>
-								)}
+										<Flex>
+											<Text textStyle="md">
+												{isAuthenticating
+													? "Authenticating..."
+													: "Waiting for wallet connection..."}
+											</Text>
+										</Flex>
 
-								{isPending && (
-									<Stack
-										gap={8}
-										p={6}
-										direction="column"
-										width="full"
-										alignItems="center"
-										pt={12}
-									>
-										<Spinner
-											width="12"
-											height="12"
-											borderWidth="1.5px"
-											borderTopColor="fg.disabled"
-											borderRightColor="fg.disabled"
-										/>
-
-										<p>Waiting for wallet connection...</p>
+										<Spinner width="6" height="6" />
 									</Stack>
 								)}
 
 								{!isPending && !isAuthenticating && (
-									<Stack gap={2} direction="column" width="full">
+									<Stack gap={2} direction="column">
 										{connectors.map((it) => (
 											<Button
 												width="full"
 												variant="ghost"
-												minW="xs"
+												borderRadius="0"
 												key={it.id}
 												onClick={() =>
 													connect({
@@ -171,7 +149,27 @@ export const ConnectDialog = ({ open, onClose }: ConnectDialogProps) => {
 													})}
 												/>
 
-												{it.metadata.name}
+												<span
+													className={css({
+														display: "flex",
+														alignItems: "center",
+														flexDirection: "column",
+													})}
+												>
+													{it.metadata.name}
+
+													{it.metadata.isPartner && (
+														<span
+															className={css({
+																display: "flex",
+																alignItems: "center",
+															})}
+														>
+															<VerifiedIcon />
+															Partner
+														</span>
+													)}
+												</span>
 
 												<ArrowRightIcon
 													className={css({
@@ -183,10 +181,10 @@ export const ConnectDialog = ({ open, onClose }: ConnectDialogProps) => {
 									</Stack>
 								)}
 							</Stack>
-							<Flex maxW="sm">
+							<Flex width="full">
 								<About />
 							</Flex>
-						</Flex>
+						</Grid>
 					</Dialog.Content>
 				</Dialog.Positioner>
 			</Portal>

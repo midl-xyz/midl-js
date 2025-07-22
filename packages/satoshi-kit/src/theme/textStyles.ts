@@ -20,6 +20,14 @@ export const textStyles = defineTextStyles({
 			fontFamily: "body",
 			fontSize: "sm",
 			fontWeight: "medium",
+			lineHeight: "normal",
+		},
+	},
+	xs: {
+		value: {
+			fontSize: "xs",
+			fontFamily: "body",
+			fontWeight: "normal",
 		},
 	},
 	lg: {},
