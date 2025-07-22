@@ -30,7 +30,7 @@ export const useEVMAddress = ({
 	const configInternal = useConfigInternal(customConfig);
 
 	try {
-		if (!config.network) {
+		if (!config.connection) {
 			return zeroAddress;
 		}
 
