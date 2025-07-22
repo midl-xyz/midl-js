@@ -1,4 +1,8 @@
-import { type Config, getBalance } from "@midl-xyz/midl-js-core";
+import {
+	type Config,
+	getBalance,
+	getDefaultAccount,
+} from "@midl-xyz/midl-js-core";
 import { type UseQueryOptions, useQuery } from "@tanstack/react-query";
 import { useConfigInternal } from "~/hooks/useConfigInternal";
 
@@ -7,7 +11,7 @@ type QueryOptions = Omit<UseQueryOptions<number>, "queryFn" | "queryKey"> & {
 };
 
 type UseBalanceParams = {
-	address: string;
+	address?: string;
 	query?: QueryOptions;
 	config?: Config;
 };
@@ -25,7 +29,9 @@ export const useBalance = ({
 	const { data, ...rest } = useQuery({
 		queryKey: ["balance", address, ...(query.queryKey ?? [])],
 		queryFn: async () => {
-			return getBalance(config, address);
+			const account = getDefaultAccount(config);
+
+			return getBalance(config, address ?? account.address);
 		},
 		retry: false,
 		...query,

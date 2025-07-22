@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-react
 
+## 2.0.0-next.24
+
+### Patch Changes
+
+- feat(react): use balance default account
+
 ## 2.0.0-next.23
 
 ### Patch Changes
