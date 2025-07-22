@@ -463,6 +463,16 @@ export class MidlHardhatEnvironment {
 		);
 	}
 
+	public async deleteDeployment(name: string) {
+		const filePath = path.join(this.deploymentsPath, `${name}.json`);
+
+		if (!fs.existsSync(filePath)) {
+			throw new Error(`No deployment file found for "${name}" at ${filePath}`);
+		}
+
+		fs.unlinkSync(filePath);
+	}
+
 	private async saveDeployment(
 		name: string,
 		{
