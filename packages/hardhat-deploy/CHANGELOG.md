@@ -1,11 +1,5 @@
 # @midl-xyz/hardhat-deploy
 
-## 2.0.0-next.26
-
-### Patch Changes
-
-- feat: add deployment delete function to hh-deploy
-
 ## 2.0.0-next.25
 
 ### Patch Changes
