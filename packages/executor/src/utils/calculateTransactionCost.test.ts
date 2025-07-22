@@ -1,7 +1,6 @@
 // @vitest-environment node
 
 import { describe, expect, it } from "vitest";
-import { midlConfig } from "~/__tests__/midlConfig";
 import { calculateTransactionsCost } from "~/utils/calculateTransactionsCost";
 
 describe("calculateTransactionCost", () => {
