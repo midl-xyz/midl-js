@@ -1,6 +1,7 @@
 import {
 	bitgetConnector,
 	leatherConnector,
+	magicEdenConnector,
 	phantomConnector,
 	unisatConnector,
 	xverseConnector,
@@ -26,6 +27,7 @@ export const createMidlConfig = (params: ConfigParams) => {
 					group: "popular",
 				},
 			}),
+			magicEdenConnector(),
 			bitgetConnector(),
 			unisatConnector(),
 			phantomConnector(),

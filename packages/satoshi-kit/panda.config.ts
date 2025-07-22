@@ -1,9 +1,8 @@
 import { defineConfig } from "@pandacss/dev";
 import postcss from "postcss";
-const prefixKeyframes = require("./plugins/postcss-prefix-keyframes.cjs");
-const removeStyles = require("./plugins/postcss-remove-global-resets.cjs");
-const prefixGlobals = require("./plugins/postcss-prefix-globals.cjs");
-
+import prefixGlobals from "./plugins/postcss-prefix-globals.cjs";
+import prefixKeyframes from "./plugins/postcss-prefix-keyframes.cjs";
+import removeStyles from "./plugins/postcss-remove-global-resets.cjs";
 import { conditions, keyframes, textStyles } from "./src/theme";
 import * as recipes from "./src/theme/recipes";
 import * as semanticTokens from "./src/theme/semantic-tokens";
@@ -25,6 +24,7 @@ export default defineConfig({
 			recipes,
 		},
 	},
+
 	hooks: {
 		"cssgen:done": ({ artifact, content }) => {
 			if (artifact === "styles.css") {

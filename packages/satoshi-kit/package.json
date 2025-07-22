@@ -4,7 +4,7 @@
 	"type": "module",
 	"scripts": {
 		"build": "pnpm run build:lib && pnpm run build:styles",
-		"dev": "concurrently \"pnpm run dev:lib\" \"pnpm run dev:styles\"",
+		"dev": "concurrently \"pnpm run dev:lib\" \"pnpm run dev:styles\" \"pnpm run dev:vite\"",
 		"build:lib": "pnpm run clean && tspc --project tsconfig.esm.json",
 		"dev:lib": "tspc --watch --preserveWatchOutput --project tsconfig.esm.json",
 		"clean": "rm -rf dist",
@@ -59,8 +59,8 @@
 		"react-dom": "*"
 	},
 	"dependencies": {
-		"@appbak3r/sushi-identicon": "^3.0.0",
 		"@ark-ui/react": "^5.0.1",
+		"boring-avatars": "^2.0.0",
 		"lucide-react": "^0.453.0"
 	}
 }
