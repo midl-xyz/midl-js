@@ -65,11 +65,23 @@ export const About = () => {
 						target="_blank"
 						rel="noreferrer"
 					>
-						Integrate SatoshiKit
+						Build with SatoshiKit
 					</a>
 				</Button>
-				<Button variant="link" size="sm" color="text.onEmphasized.default">
-					Add Wallet
+				<Button
+					variant="link"
+					size="sm"
+					color="text.onEmphasized.muted"
+					textDecoration="none"
+					asChild
+				>
+					<a
+						href="https://github.com/midl-xyz/midl-js/issues/new/choose"
+						target="_blank"
+						rel="noreferrer"
+					>
+						Missing Wallet?
+					</a>
 				</Button>
 			</Stack>
 		</Stack>

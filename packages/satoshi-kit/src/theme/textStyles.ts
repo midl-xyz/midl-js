@@ -30,5 +30,12 @@ export const textStyles = defineTextStyles({
 			fontWeight: "normal",
 		},
 	},
-	lg: {},
+	lg: {
+		value: {
+			fontSize: "md",
+			fontFamily: "body",
+			fontWeight: "semibold",
+			lineHeight: "normal",
+		},
+	},
 });

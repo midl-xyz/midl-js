@@ -42,6 +42,12 @@ export const colors = defineSemanticTokens.colors({
 		},
 	},
 	text: {
+		muted: {
+			value: {
+				_light: "{colors.neutral.500}",
+				_dark: "{colors.neutral.400}",
+			},
+		},
 		onEmphasized: {
 			default: {
 				value: {

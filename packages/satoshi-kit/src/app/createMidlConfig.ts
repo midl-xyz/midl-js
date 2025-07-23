@@ -27,10 +27,10 @@ export const createMidlConfig = (params: ConfigParams) => {
 					group: "popular",
 				},
 			}),
-			magicEdenConnector(),
 			bitgetConnector(),
 			unisatConnector(),
 			phantomConnector(),
+			magicEdenConnector(),
 		],
 	});
 };
