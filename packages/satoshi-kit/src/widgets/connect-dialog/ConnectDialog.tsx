@@ -2,17 +2,20 @@
 
 import { Portal } from "@ark-ui/react";
 import { useConnect, useDisconnect } from "@midl-xyz/midl-js-react";
-import { ArrowRightIcon, XIcon } from "lucide-react";
+import { ArrowLeftIcon, XIcon } from "lucide-react";
 import { css } from "styled-system/css";
-import { Stack } from "styled-system/jsx";
+import { Flex, Grid, Stack } from "styled-system/jsx";
 import { useSatoshiKit } from "~/app";
 import { useAuthentication } from "~/features/auth/api";
-import { useToaster } from "~/shared";
 import { Button } from "~/shared/ui/button";
 import { Dialog } from "~/shared/ui/dialog";
+import { ErrorIcon } from "~/shared/ui/error-icon";
 import { IconButton } from "~/shared/ui/icon-button";
 import { Spinner } from "~/shared/ui/spinner";
+import { Text } from "~/shared/ui/text";
 import { WalletIcon } from "~/shared/ui/wallet-icons";
+import { About } from "~/widgets/about";
+import { ConnectorList } from "~/widgets/connector-list";
 
 type ConnectDialogProps = {
 	open: boolean;
@@ -22,48 +25,34 @@ type ConnectDialogProps = {
 export const ConnectDialog = ({ open, onClose }: ConnectDialogProps) => {
 	const { purposes, config } = useSatoshiKit();
 	const { disconnect } = useDisconnect({ config });
-	const toaster = useToaster();
 
 	const { adapter, signInAsync, signInState, signOutState } = useAuthentication(
 		{
 			signInMutation: {
 				onSuccess: onClose,
-				onError: (error) => {
-					toaster.error({
-						title: "Authentication failed",
-						description: error.message,
-					});
-					console.error(error);
-
+				onError: () => {
 					disconnect();
-					onClose();
 				},
 			},
 		},
 	);
 
-	const { connect, connectors, isPending, isSuccess, reset } = useConnect({
-		purposes,
-		config,
-		mutation: {
-			onSuccess: async (accounts) => {
-				if (!adapter) {
-					return onClose();
-				}
+	const { connect, variables, connectors, isPending, isSuccess, reset, error } =
+		useConnect({
+			purposes,
+			config,
+			mutation: {
+				onSuccess: async (accounts) => {
+					if (!adapter) {
+						return onClose();
+					}
 
-				const [account] = accounts;
+					const [account] = accounts;
 
-				await signInAsync(account.address);
+					await signInAsync(account.address);
+				},
 			},
-			onError: (error) => {
-				toaster.error({
-					title: "Authentication failed",
-					description: error.message,
-				});
-				console.error(error);
-			},
-		},
-	});
+		});
 
 	const isAuthenticating = (isSuccess && adapter) || signInState.isPending;
 
@@ -82,98 +71,163 @@ export const ConnectDialog = ({ open, onClose }: ConnectDialogProps) => {
 			<Portal>
 				<Dialog.Backdrop />
 				<Dialog.Positioner>
-					<Dialog.Content>
-						{isAuthenticating && (
-							<Stack
-								gap={8}
-								p={6}
-								direction="column"
-								width="full"
-								alignItems="center"
-								pt={12}
-							>
-								<Spinner
-									width="12"
-									height="12"
-									borderWidth="1.5px"
-									borderTopColor="fg.disabled"
-									borderRightColor="fg.disabled"
-								/>
-
-								<p>Waiting for authentication...</p>
-							</Stack>
-						)}
-
-						{isPending && (
-							<Stack
-								gap={8}
-								p={6}
-								direction="column"
-								width="full"
-								alignItems="center"
-								pt={12}
-							>
-								<Spinner
-									width="12"
-									height="12"
-									borderWidth="1.5px"
-									borderTopColor="fg.disabled"
-									borderRightColor="fg.disabled"
-								/>
-
-								<p>Waiting for wallet connection...</p>
-							</Stack>
-						)}
-
-						{!isPending && !isAuthenticating && (
-							<Stack gap="8" p="6">
-								<Stack gap="1">
-									<Dialog.Title>Connect Wallet</Dialog.Title>
-								</Stack>
-								<Stack gap={2} direction="column" width="full">
-									{connectors.map((it) => (
-										<Button
-											width="full"
+					<Dialog.Content maxW="600px" display="flex" overflow="hidden">
+						<Grid
+							gridTemplateColumns="1fr 1fr"
+							gap={0}
+							w="full"
+							height="100vh"
+							maxH="460px"
+						>
+							<Stack h="full" overflow="hidden">
+								<Flex
+									gap="1"
+									justifyContent="space-between"
+									flexShrink={0}
+									p={4}
+								>
+									<Dialog.Title textStyle="subtitle">
+										Connect Wallet
+									</Dialog.Title>
+									<Dialog.CloseTrigger asChild>
+										<IconButton
+											aria-label="Close Dialog"
 											variant="ghost"
-											key={it.id}
-											onClick={() =>
-												connect({
-													id: it.id,
-												})
-											}
-											className={css({
-												display: "flex",
-												justifyContent: "flex-start",
-												px: 4,
-												py: 8,
-											})}
+											size="sm"
 										>
-											<WalletIcon
-												connectorId={it.id}
-												size={8}
-												className={css({
-													width: 8,
-													height: 8,
-												})}
-											/>
+											<XIcon />
+										</IconButton>
+									</Dialog.CloseTrigger>
+								</Flex>
 
-											{it.metadata.name}
+								<Flex
+									flexGrow={1}
+									overflowY="auto"
+									height="full"
+									className={css({
+										containerType: "inline-size",
+									})}
+								>
+									{!error && !isPending && !isAuthenticating && (
+										<ConnectorList onClick={(id) => connect({ id })} />
+									)}
 
-											<ArrowRightIcon
-												className={css({
-													marginLeft: "auto",
-												})}
-											/>
-										</Button>
-									))}
-								</Stack>
+									{(isPending || isAuthenticating) && (
+										<Stack
+											gap={2}
+											px={4}
+											direction="column"
+											width="full"
+											alignItems="center"
+										>
+											<IconButton
+												variant="ghost"
+												onClick={() => reset()}
+												alignSelf="start"
+												size="sm"
+											>
+												<ArrowLeftIcon />
+											</IconButton>
+
+											<Stack
+												alignItems={"center"}
+												justifyContent={"center"}
+												paddingTop={14}
+											>
+												{variables?.id && (
+													<WalletIcon
+														connectorId={variables.id}
+														size={8}
+														className={css({
+															width: 10,
+															height: 10,
+														})}
+													/>
+												)}
+
+												<Text textStyle="lg" textAlign="center">
+													Opening{" "}
+													{
+														connectors?.find((it) => it.id === variables?.id)
+															?.metadata.name
+													}
+													...
+												</Text>
+											</Stack>
+
+											<Flex px={12} textAlign="center">
+												<Text textStyle="md">
+													{isAuthenticating
+														? "Confirm signature in your wallet"
+														: "Confirm connection in your wallet"}
+												</Text>
+											</Flex>
+
+											<Spinner width="6" height="6" />
+										</Stack>
+									)}
+
+									{error && !isPending && !isAuthenticating && (
+										<Stack
+											gap={4}
+											px={4}
+											direction="column"
+											width="full"
+											alignItems="center"
+										>
+											<IconButton
+												variant="ghost"
+												onClick={() => reset()}
+												alignSelf="start"
+												size="sm"
+											>
+												<ArrowLeftIcon />
+											</IconButton>
+
+											<Stack
+												alignItems={"center"}
+												justifyContent={"center"}
+												paddingTop={14}
+												gap={0}
+											>
+												<ErrorIcon
+													className={css({
+														width: "4em",
+														height: "4em",
+													})}
+												/>
+
+												<Text textStyle="md" textAlign="center">
+													Failed to connect to{" "}
+													{
+														connectors?.find((it) => it.id === variables?.id)
+															?.metadata.name
+													}
+												</Text>
+												<Text textStyle="xs" px={3} textAlign="center">
+													{error.message ||
+														"Please try again or choose another wallet"}
+												</Text>
+											</Stack>
+
+											<Button
+												variant="solid"
+												size="sm"
+												onClick={() => {
+													reset();
+													connect({ id: variables?.id });
+												}}
+											>
+												Retry
+											</Button>
+										</Stack>
+									)}
+								</Flex>
 							</Stack>
-						)}
-						<Dialog.CloseTrigger asChild position="absolute" top="2" right="2">
-							<IconButton aria-label="Close Dialog" variant="ghost" size="sm">
-								<XIcon />
-							</IconButton>
-						</Dialog.CloseTrigger>
+							<Flex width="full">
+								<About />
+							</Flex>
+						</Grid>
 					</Dialog.Content>
 				</Dialog.Positioner>
 			</Portal>

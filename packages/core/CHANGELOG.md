@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 2.0.0-next.28
+
+### Patch Changes
+
+- 75d24ae: feat(satoshi-kit): new look satoshi kit
+
 ## 2.0.0-next.27
 
 ### Patch Changes
