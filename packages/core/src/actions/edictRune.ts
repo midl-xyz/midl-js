@@ -2,6 +2,7 @@ import ecc from "@bitcoinerlab/secp256k1";
 import { Psbt, initEccLib, networks, payments } from "bitcoinjs-lib";
 import coinSelect from "bitcoinselect";
 import { Edict, RuneId, Runestone, none, some } from "runelib";
+import { getDefaultAccount } from "~/actions";
 import { broadcastTransaction } from "~/actions/broadcastTransaction";
 import { getFeeRate } from "~/actions/getFeeRate";
 import { getRuneUTXO } from "~/actions/getRuneUTXO";
@@ -128,9 +129,10 @@ export const edictRune = async (
 		throw new Error("No ordinals account");
 	}
 
-	const account = from
-		? accounts?.find((account) => account.address === from)
-		: accounts?.[0];
+	const account = getDefaultAccount(
+		config,
+		from ? (account) => account.address === from : undefined,
+	);
 
 	if (!account) {
 		throw new Error("No transfer account");

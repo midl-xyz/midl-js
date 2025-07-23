@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 2.0.0-next.27
+
+### Patch Changes
+
+- feat: edict rune default account
+
 ## 2.0.0-next.23
 
 ### Patch Changes
