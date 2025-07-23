@@ -10,7 +10,6 @@ const WITHDRAW_BTC = 1 << 2;
 const WITHDRAW_RUNES = 1 << 3;
 
 const scriptSizeMap = new Map<number, bigint>([
-	[0, 0n],
 	[DEPOSIT_BTC, 190n],
 	[DEPOSIT_BTC | DEPOSIT_RUNES, 453n],
 	[DEPOSIT_BTC | WITHDRAW_BTC, 233n],
