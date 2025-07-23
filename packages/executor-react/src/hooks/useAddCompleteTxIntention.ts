@@ -3,7 +3,6 @@ import { addCompleteTxIntention } from "@midl-xyz/midl-js-executor";
 import {
 	type MidlContextStore,
 	useConfigInternal,
-	useStoreInternal,
 } from "@midl-xyz/midl-js-react";
 import { useMutation } from "@tanstack/react-query";
 import type { Address } from "viem";
@@ -33,19 +32,13 @@ type AddCompleteTxIntentionVariables = {
  * ```
  */
 export const useAddCompleteTxIntention = ({
-	store: customStore,
 	config: customConfig,
 }: UseAddCompleteTxIntentionParams = {}) => {
-	const store = useStoreInternal(customStore);
 	const config = useConfigInternal(customConfig);
 
 	const { mutate, mutateAsync, ...rest } = useMutation({
 		mutationFn: ({ assetsToWithdraw }: AddCompleteTxIntentionVariables) => {
-			return addCompleteTxIntention(
-				config,
-				store.getState().intentions ?? [],
-				assetsToWithdraw,
-			);
+			return addCompleteTxIntention(config, assetsToWithdraw);
 		},
 	});
 
