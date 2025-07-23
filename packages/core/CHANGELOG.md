@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 2.0.0-next.32
+
+### Patch Changes
+
+- feat: pass satoshis to tx
+
 ## 2.0.0-next.28
 
 ### Patch Changes

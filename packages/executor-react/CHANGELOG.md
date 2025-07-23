@@ -1,5 +1,15 @@
 # @midl-xyz/midl-js-executor-react
 
+## 2.0.0-next.32
+
+### Patch Changes
+
+- feat: pass satoshis to tx
+- Updated dependencies
+  - @midl-xyz/midl-js-core@2.0.0-next.32
+  - @midl-xyz/midl-js-executor@2.0.0-next.32
+  - @midl-xyz/midl-js-react@2.0.0-next.32
+
 ## 2.0.0-next.31
 
 ### Patch Changes
