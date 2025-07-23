@@ -354,6 +354,9 @@ importers:
       '@midl-xyz/midl-js-react':
         specifier: workspace:^
         version: link:../react
+      '@midl-xyz/midl-viem':
+        specifier: '*'
+        version: 2.21.37(bufferutil@4.0.9)(typescript@5.7.2)(utf-8-validate@5.0.10)(zod@3.24.1)
       '@noble/secp256k1':
         specifier: 1.7.1
         version: 1.7.1
@@ -406,6 +409,9 @@ importers:
       '@midl-xyz/midl-js-executor':
         specifier: workspace:^
         version: link:../executor
+      '@midl-xyz/midl-viem':
+        specifier: '*'
+        version: 2.21.37(bufferutil@4.0.9)(typescript@5.7.2)(utf-8-validate@5.0.10)(zod@3.24.1)
     devDependencies:
       '@bitcoinerlab/secp256k1':
         specifier: ^1.2.0
@@ -2513,7 +2519,7 @@ packages:
     resolution: {integrity: sha512-Pl5pvYK5VYKflfoUk4fVBESqKMNBtAIGPIT4j+Q8KNFueAe1vB2PsbRESeNJyW5YLL9pqKaD1RVqLmgIa1yvDg==}
     peerDependencies:
       hardhat: ^2.17.0
-      viem: npm:@midl-xyz/midl-viem@2.21.37
+      viem: ^2.7.6
 
   '@nomicfoundation/solidity-analyzer-darwin-arm64@0.1.2':
     resolution: {integrity: sha512-JaqcWPDZENCvm++lFFGjrDd8mxtf+CtLd2MiXvMNTBD33dContTZ9TWETwNFwg7JTJT5Q9HEecH7FA+HTSsIUw==}
@@ -3787,7 +3793,7 @@ packages:
     peerDependencies:
       '@wagmi/core': 2.16.3
       typescript: '>=5.0.4'
-      viem: npm:@midl-xyz/midl-viem@2.21.37
+      viem: 2.x
     peerDependenciesMeta:
       typescript:
         optional: true
@@ -3797,7 +3803,7 @@ packages:
     peerDependencies:
       '@tanstack/query-core': '>=5.0.0'
       typescript: '>=5.0.4'
-      viem: npm:@midl-xyz/midl-viem@2.21.37
+      viem: 2.x
     peerDependenciesMeta:
       '@tanstack/query-core':
         optional: true
@@ -9168,7 +9174,7 @@ packages:
       '@tanstack/react-query': 5.69.0
       react: '>=18'
       typescript: '>=5.0.4'
-      viem: npm:@midl-xyz/midl-viem@2.21.37
+      viem: 2.x
     peerDependenciesMeta:
       typescript:
         optional: true

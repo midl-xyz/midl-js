@@ -2,7 +2,7 @@
 	"name": "@midl-xyz/midl-js",
 	"private": true,
 	"description": "",
-	"packageManager": "pnpm@9.1.4",
+	"packageManager": "pnpm@10.13.1",
 	"scripts": {
 		"ci:publish": "pnpm publish -r",
 		"build:packages": "turbo run build --filter='./packages/*'",

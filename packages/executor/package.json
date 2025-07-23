@@ -48,6 +48,6 @@
 	},
 	"peerDependencies": {
 		"bitcoinjs-lib": "7.0.0-rc.0",
-		"viem": "npm:@midl-xyz/midl-viem"
+		"@midl-xyz/midl-viem": "*"
 	}
 }
