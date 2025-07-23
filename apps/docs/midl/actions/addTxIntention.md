@@ -19,7 +19,6 @@ const intention = await addTxIntention(config, store, {
     data: "0x...",
   },
   value: 100n,
-  hasDeposit: true,
 });
 console.log(intention);
 ```
@@ -52,5 +51,4 @@ Defined in [packages/executor/src/actions/addTxIntention.ts](https://github.com/
 | rune?                 | `{ id: string; value: bigint; }` | Rune id and value to transfer to Midl               |
 | hasRunesWithdraw?     | `boolean`                        | If true, the intention contains runes to withdraw   |
 | hasWithdraw?          | `boolean`                        | If true, the intention contains Bitcoin to withdraw |
-| hasDeposit?           | `boolean`                        | If true, the intention contains a Bitcoin deposit   |
 | hasRunesDeposit?      | `boolean`                        | If true, the intention contains a Rune deposit      |

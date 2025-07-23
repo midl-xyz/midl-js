@@ -178,12 +178,7 @@ export class MidlHardhatEnvironment {
 		> & { args?: any; libraries?: Libraries<Address> },
 		intentionOptions: Pick<
 			TransactionIntention,
-			| "value"
-			| "hasDeposit"
-			| "hasRunesDeposit"
-			| "hasRunesWithdraw"
-			| "hasWithdraw"
-			| "rune"
+			"value" | "hasRunesDeposit" | "hasRunesWithdraw" | "hasWithdraw" | "rune"
 		> = {},
 	) {
 		if (!this.config) {
@@ -284,7 +279,6 @@ export class MidlHardhatEnvironment {
 		});
 
 		await addTxIntention(this.config, this.store, {
-			hasDeposit: Boolean(options.value && options.value > 0n),
 			evmTransaction: {
 				type: "btc",
 				chainId: this.walletClient?.chain?.id,

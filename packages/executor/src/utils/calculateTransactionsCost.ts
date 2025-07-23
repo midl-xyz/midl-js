@@ -2,13 +2,23 @@ import { type TransactionSerializableBTC, parseUnits } from "viem";
 
 export const ONE_SATOSHI = parseUnits("1", 10);
 export const KEYGEN_TX_SIZE = 15n;
-export const MIDL_SCRIPT_SIZE = 206n;
-export const RUNES_DEPOSIT_SIZE = 496n;
-export const DEPOSIT_SIZE = 190n;
-export const WITHDRAW_SIZE = 233n;
-export const RUNES_WITHDRAW_SIZE = 471n;
 export const RUNES_MAGIC_VALUE = 546n;
 
+const DEPOSIT_BTC = 1 << 0;
+const DEPOSIT_RUNES = 1 << 1;
+const WITHDRAW_BTC = 1 << 2;
+const WITHDRAW_RUNES = 1 << 3;
+
+const scriptSizeMap = new Map<number, bigint>([
+	[0, 0n],
+	[DEPOSIT_BTC, 190n],
+	[DEPOSIT_BTC | DEPOSIT_RUNES, 453n],
+	[DEPOSIT_BTC | WITHDRAW_BTC, 233n],
+	[DEPOSIT_BTC | DEPOSIT_RUNES | WITHDRAW_BTC, 496n],
+	[DEPOSIT_BTC | WITHDRAW_RUNES, 428n],
+	[DEPOSIT_BTC | WITHDRAW_BTC | WITHDRAW_RUNES, 471n],
+	[DEPOSIT_BTC | DEPOSIT_RUNES | WITHDRAW_BTC | WITHDRAW_RUNES, 539n],
+]);
 /**
  * Calculate the cost of transactions batch
  *
@@ -23,7 +33,6 @@ export const calculateTransactionsCost = (
 		gasPrice = parseUnits("10", 3),
 		feeRate,
 		hasRunesDeposit,
-		hasDeposit,
 		hasWithdraw,
 		hasRunesWithdraw,
 		assetsToWithdrawSize = 0,
@@ -31,7 +40,6 @@ export const calculateTransactionsCost = (
 		feeRate: number;
 		gasPrice?: bigint;
 		hasRunesDeposit?: boolean;
-		hasDeposit?: boolean;
 		hasWithdraw?: boolean;
 		hasRunesWithdraw?: boolean;
 		assetsToWithdrawSize?: number;
@@ -39,25 +47,18 @@ export const calculateTransactionsCost = (
 ) => {
 	const totalGas = transactions.reduce((acc, it) => acc + (it.gas ?? 0n), 0n);
 
-	const btcWithdrawSize =
-		hasWithdraw || hasRunesWithdraw
-			? hasRunesWithdraw
-				? RUNES_WITHDRAW_SIZE
-				: WITHDRAW_SIZE
-			: 0n;
-	const btcDepositSize =
-		hasDeposit || hasRunesDeposit
-			? hasRunesDeposit
-				? RUNES_DEPOSIT_SIZE
-				: DEPOSIT_SIZE
-			: 0n;
+	let scriptSizeKey = DEPOSIT_BTC;
+
+	if (hasRunesDeposit) scriptSizeKey |= DEPOSIT_RUNES;
+	if (hasWithdraw) scriptSizeKey |= WITHDRAW_BTC;
+	if (hasRunesWithdraw) scriptSizeKey |= WITHDRAW_RUNES;
+
+	const scriptSize = scriptSizeMap.get(scriptSizeKey) as bigint;
 
 	const fees =
 		(gasPrice * totalGas) / ONE_SATOSHI +
-		(MIDL_SCRIPT_SIZE +
-			KEYGEN_TX_SIZE +
-			btcDepositSize +
-			btcWithdrawSize +
+		(KEYGEN_TX_SIZE +
+			scriptSize +
 			BigInt(assetsToWithdrawSize) * RUNES_MAGIC_VALUE) *
 			BigInt(feeRate);
 

@@ -119,7 +119,6 @@ export const finalizeBTCTransaction = async (
 	const totalCost = calculateTransactionsCost([...evmTransactions], {
 		feeRate,
 		gasPrice: options.gasPrice,
-		hasDeposit: intentions.some((it) => it.hasDeposit),
 		hasWithdraw: hasWithdraw,
 		hasRunesDeposit: intentions.some((it) => it.hasRunesDeposit),
 		hasRunesWithdraw: hasRunesWithdraw,
