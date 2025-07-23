@@ -17,7 +17,6 @@ import {
 import type { Chain, TransactionIntention } from "@midl-xyz/midl-js-executor";
 import {
 	addCompleteTxIntention,
-	addTxIntention,
 	convertBTCtoETH,
 	convertETHtoBTC,
 	finalizeBTCTransaction,
@@ -214,7 +213,7 @@ export class MidlHardhatEnvironment {
 			bytecode: bytecode as `0x${string}`,
 		});
 
-		const intention = await addTxIntention(this.config, {
+		const intention: TransactionIntention = {
 			evmTransaction: {
 				type: "btc",
 				chainId: this.walletClient?.chain?.id,
@@ -228,7 +227,7 @@ export class MidlHardhatEnvironment {
 				contractName: name,
 			},
 			...intentionOptions,
-		});
+		};
 
 		this.store.setState((state) => ({
 			intentions: [...state.intentions, intention],
@@ -290,10 +289,9 @@ export class MidlHardhatEnvironment {
 			functionName: methodName,
 		});
 
-		const intention = await addTxIntention(this.config, {
+		const intention: TransactionIntention = {
 			evmTransaction: {
 				type: "btc",
-				chainId: this.walletClient?.chain?.id,
 				data,
 				to: options.to ?? (address as Address),
 				value: options.value,
@@ -301,7 +299,7 @@ export class MidlHardhatEnvironment {
 				gas: options.gas,
 			},
 			satoshis: convertETHtoBTC(options.value ?? 0n),
-		});
+		};
 
 		this.store.setState((state) => ({
 			intentions: [...state.intentions, intention],

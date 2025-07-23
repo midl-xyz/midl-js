@@ -114,7 +114,7 @@ describe("MidlHardhatEnvironment", () => {
 		await midl.execute();
 	});
 
-	it.skip("deploys Foo", async () => {
+	it("deploys Foo", async () => {
 		const {
 			hre: { midl },
 		} = globalThis;
