@@ -20,7 +20,6 @@ import type { TransactionIntention } from "~/types";
 
 export const addCompleteTxIntention = async (
 	config: Config,
-	intentions: TransactionIntention[],
 	assetsToWithdraw?: [Address] | [Address, Address],
 ): Promise<TransactionIntention> => {
 	const { network, accounts } = config.getState();
@@ -30,9 +29,7 @@ export const addCompleteTxIntention = async (
 	}
 
 	const hasWithdraw = true;
-	const hasRunesWithdraw =
-		intentions.some((it) => it.hasRunesWithdraw) ||
-		(assetsToWithdraw?.length ?? 0) > 0;
+	const hasRunesWithdraw = (assetsToWithdraw?.length ?? 0) > 0;
 
 	const runesReceiver = accounts?.find(
 		(it) => it.purpose === AddressPurpose.Ordinals,

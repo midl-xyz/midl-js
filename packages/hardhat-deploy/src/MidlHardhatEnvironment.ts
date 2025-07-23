@@ -341,11 +341,7 @@ export class MidlHardhatEnvironment {
 		const account = getDefaultAccount(this.config);
 
 		if (shouldComplete) {
-			await addCompleteTxIntention(
-				this.config,
-				this.store.getState().intentions,
-				assetsToWithdraw,
-			);
+			await addCompleteTxIntention(this.config, assetsToWithdraw);
 		}
 
 		const tx = await finalizeBTCTransaction(

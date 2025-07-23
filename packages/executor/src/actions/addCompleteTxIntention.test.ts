@@ -15,7 +15,7 @@ describe("executor | actions | addCompleteTxIntention", () => {
 			purposes: [AddressPurpose.Ordinals],
 		});
 
-		const intention = await addCompleteTxIntention(midlConfig, []);
+		const intention = await addCompleteTxIntention(midlConfig);
 
 		const txData = decodeFunctionData({
 			abi: executorAbi,
@@ -32,11 +32,9 @@ describe("executor | actions | addCompleteTxIntention", () => {
 		await connect(midlConfig, {
 			purposes: [AddressPurpose.Ordinals],
 		});
-		const intention = await addCompleteTxIntention(
-			midlConfig,
-			[],
-			["0x17C646bad1Ee22e6945E3fC5D9732077ED211560"],
-		);
+		const intention = await addCompleteTxIntention(midlConfig, [
+			"0x17C646bad1Ee22e6945E3fC5D9732077ED211560",
+		]);
 
 		const txData = decodeFunctionData({
 			abi: executorAbi,
@@ -56,7 +54,7 @@ describe("executor | actions | addCompleteTxIntention", () => {
 			purposes: [AddressPurpose.Payment, AddressPurpose.Ordinals],
 		});
 
-		const intention = await addCompleteTxIntention(midlConfig, []);
+		const intention = await addCompleteTxIntention(midlConfig);
 		const txData = decodeFunctionData({
 			abi: executorAbi,
 			// biome-ignore lint/style/noNonNullAssertion: Data is guaranteed to be present
@@ -73,7 +71,7 @@ describe("executor | actions | addCompleteTxIntention", () => {
 			purposes: [AddressPurpose.Payment, AddressPurpose.Ordinals],
 		});
 
-		const intention = await addCompleteTxIntention(midlConfigP2SH, []);
+		const intention = await addCompleteTxIntention(midlConfigP2SH);
 
 		const txData = decodeFunctionData({
 			abi: executorAbi,
