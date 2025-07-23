@@ -29,10 +29,6 @@ type FinalizeBTCTransactionOptions = {
 	 * Public key of the account to use for signing
 	 */
 	publicKey?: string;
-	/**
-	 * Gas price for EVM transactions
-	 */
-	gasPrice?: bigint;
 
 	/**
 	 * Custom fee rate
@@ -121,7 +117,6 @@ export const finalizeBTCTransaction = async (
 
 	const totalCost = calculateTransactionsCost([...evmTransactions], {
 		feeRate,
-		gasPrice: options.gasPrice,
 		hasWithdraw: hasWithdraw,
 		hasRunesDeposit: intentions.some((it) => it.hasRunesDeposit),
 		hasRunesWithdraw: hasRunesWithdraw,
@@ -130,7 +125,7 @@ export const finalizeBTCTransaction = async (
 
 	const btcTransfer = convertETHtoBTC(
 		intentions.reduce((acc, it) => {
-			return acc + (it.evmTransaction?.value ?? 0n);
+			return acc + (it?.value ?? 0n);
 		}, 0n),
 	);
 

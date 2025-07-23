@@ -176,7 +176,7 @@ export class MidlHardhatEnvironment {
 		name: string,
 		options?: Pick<
 			TransactionSerializableBTC,
-			"to" | "value" | "gasPrice" | "gas" | "nonce"
+			"to" | "value" | "gas" | "nonce"
 			// biome-ignore lint/suspicious/noExplicitAny: Allow any args
 		> & { args?: any; libraries?: Libraries<Address> },
 		intentionOptions: Pick<
@@ -214,7 +214,6 @@ export class MidlHardhatEnvironment {
 				chainId: this.walletClient?.chain?.id,
 				data: deployData,
 				gas: options?.gas,
-				gasPrice: options?.gasPrice,
 				to: options?.to,
 				value: options?.value,
 				nonce: options?.nonce,
@@ -257,7 +256,7 @@ export class MidlHardhatEnvironment {
 		methodName: string,
 		options: Pick<
 			TransactionSerializableBTC,
-			"to" | "value" | "gasPrice" | "gas" | "nonce"
+			"to" | "value" | "gas" | "nonce"
 			// biome-ignore lint/suspicious/noExplicitAny: Allow any args
 		> & { args: any },
 	) {
@@ -293,7 +292,6 @@ export class MidlHardhatEnvironment {
 				to: options.to ?? (address as Address),
 				value: options.value,
 				nonce: options.nonce,
-				gasPrice: options.gasPrice,
 				gas: options.gas,
 			},
 			value: options.value,
@@ -375,7 +373,6 @@ export class MidlHardhatEnvironment {
 				intention,
 				this.store.getState().intentions ?? [],
 				{
-					gasPrice: 1000n,
 					txId: tx.tx.id,
 					protocol: SignMessageProtocol.Bip322,
 				},

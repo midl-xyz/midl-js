@@ -7,10 +7,9 @@ import {
 	type MidlContextStore,
 	useConfigInternal,
 	useStore,
-	useStoreInternal,
 } from "@midl-xyz/midl-js-react";
 import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
-import { useGasPrice, useWalletClient } from "wagmi";
+import { useWalletClient } from "wagmi";
 import { useLastNonce } from "~/hooks";
 
 type SignIntentionVariables = {
@@ -53,8 +52,6 @@ export const useSignIntention = ({
 	},
 }: UseSignIntentionParams = {}) => {
 	const nonce = useLastNonce();
-	const { data: gasPrice } = useGasPrice();
-	const store = useStoreInternal(customStore);
 	const config = useConfigInternal(customConfig);
 	const { intentions = [] } = useStore(customStore);
 	const { data: publicClient } = useWalletClient();
@@ -73,7 +70,6 @@ export const useSignIntention = ({
 
 			return signIntention(config, publicClient, intention, intentions, {
 				txId,
-				gasPrice,
 				nonce,
 				publicKey: options.publicKey,
 				protocol: options.protocol,

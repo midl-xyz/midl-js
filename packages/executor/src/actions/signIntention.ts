@@ -7,6 +7,7 @@ import { type Client, isHex } from "viem";
 import { getTransactionCount } from "viem/actions";
 import { getPublicKeyForAccount } from "~/actions/getPublicKeyForAccount";
 import { signTransaction } from "~/actions/signTransaction";
+import { GAS_PRICE } from "~/config";
 import type { TransactionIntention } from "~/types/intention";
 import { getBTCAddressByte, getEVMAddress } from "~/utils";
 
@@ -19,11 +20,6 @@ type SignIntentionOptions = {
 	 * Next nonce of registered in EVM network, nonce is incremented by 1 for each transaction intention
 	 */
 	nonce?: number;
-
-	/**
-	 * Gas price for EVM transactions
-	 */
-	gasPrice?: bigint;
 
 	/**
 	 * Transaction hash of the BTC transaction
@@ -98,7 +94,7 @@ export const signIntention = async (
 			intentions
 				.filter((it) => Boolean(it.evmTransaction))
 				.findIndex((it) => it === intention),
-		gasPrice: options.gasPrice,
+		gasPrice: GAS_PRICE,
 		publicKey,
 		btcAddressByte: getBTCAddressByte(account),
 		btcTxHash: isHex(options.txId, { strict: false })
