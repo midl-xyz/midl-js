@@ -14,9 +14,9 @@ export interface TransactionIntention {
 	signedEvmTransaction?: `0x${string}`;
 
 	/**
-	 * Native token value to transfer to Midl
+	 * BTC amount to transfer to MIDL in satoshis
 	 */
-	value?: bigint;
+	satoshis?: number;
 	/**
 	 * Rune id and value to transfer to Midl
 	 */

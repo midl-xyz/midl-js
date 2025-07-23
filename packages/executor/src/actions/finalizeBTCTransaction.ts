@@ -123,11 +123,9 @@ export const finalizeBTCTransaction = async (
 		assetsToWithdrawSize: options.assetsToWithdrawSize ?? 0,
 	});
 
-	const btcTransfer = convertETHtoBTC(
-		intentions.reduce((acc, it) => {
-			return acc + (it?.value ?? 0n);
-		}, 0n),
-	);
+	const btcTransfer = intentions.reduce((acc, it) => {
+		return acc + (it?.satoshis ?? 0);
+	}, 0);
 
 	const transfers: EdictRuneParams["transfers"] = [
 		{
