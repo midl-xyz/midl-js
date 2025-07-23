@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor
 
+## 2.0.0-next.30
+
+### Patch Changes
+
+- 19599b9: fix(executor): remove tx intention on complete
+
 ## 2.0.0-next.29
 
 ### Patch Changes
