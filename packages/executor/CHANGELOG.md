@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor
 
+## 2.0.0-next.33
+
+### Patch Changes
+
+- fix: gas price
+
 ## 2.0.0-next.32
 
 ### Patch Changes
