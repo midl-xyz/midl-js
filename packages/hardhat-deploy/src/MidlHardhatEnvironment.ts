@@ -18,14 +18,12 @@ import type { Chain, TransactionIntention } from "@midl-xyz/midl-js-executor";
 import {
 	addCompleteTxIntention,
 	addTxIntention,
-	clearTxIntentions,
 	finalizeBTCTransaction,
 	getEVMAddress,
 	getEVMFromBitcoinNetwork,
 	signIntention,
 } from "@midl-xyz/midl-js-executor";
 import { keyPairConnector } from "@midl-xyz/midl-js-node";
-import type { MidlContextState } from "@midl-xyz/midl-js-react";
 import {
 	type Libraries,
 	resolveBytecodeWithLinkedLibraries,
@@ -53,10 +51,13 @@ import "~/types/context";
 import { Wallet } from "~/Wallet";
 
 export class MidlHardhatEnvironment {
-	private readonly store: StoreApi<MidlContextState> =
-		createStore<MidlContextState>()(() => ({
-			intentions: [],
-		}));
+	private readonly store: StoreApi<{
+		intentions: TransactionIntention[];
+	}> = createStore<{
+		intentions: TransactionIntention[];
+	}>()(() => ({
+		intentions: [],
+	}));
 
 	private readonly deploymentsPath: string;
 	private readonly confirmationsRequired;
@@ -166,7 +167,9 @@ export class MidlHardhatEnvironment {
 			purposes: [AddressPurpose.Ordinals],
 		});
 
-		clearTxIntentions(this.store);
+		this.store.setState({
+			intentions: [],
+		});
 	}
 
 	public async deploy(
@@ -205,7 +208,7 @@ export class MidlHardhatEnvironment {
 			bytecode: bytecode as `0x${string}`,
 		});
 
-		await addTxIntention(this.config, this.store, {
+		const intention = await addTxIntention(this.config, {
 			evmTransaction: {
 				type: "btc",
 				chainId: this.walletClient?.chain?.id,
@@ -221,6 +224,10 @@ export class MidlHardhatEnvironment {
 			},
 			...intentionOptions,
 		});
+
+		this.store.setState((state) => ({
+			intentions: [...state.intentions, intention],
+		}));
 	}
 
 	public async getDeployment(name: string) {
@@ -278,7 +285,7 @@ export class MidlHardhatEnvironment {
 			functionName: methodName,
 		});
 
-		await addTxIntention(this.config, this.store, {
+		const intention = await addTxIntention(this.config, {
 			evmTransaction: {
 				type: "btc",
 				chainId: this.walletClient?.chain?.id,
@@ -291,6 +298,10 @@ export class MidlHardhatEnvironment {
 			},
 			value: options.value,
 		});
+
+		this.store.setState((state) => ({
+			intentions: [...state.intentions, intention],
+		}));
 	}
 
 	public async execute({
@@ -330,12 +341,16 @@ export class MidlHardhatEnvironment {
 		const account = getDefaultAccount(this.config);
 
 		if (shouldComplete) {
-			await addCompleteTxIntention(this.config, this.store, assetsToWithdraw);
+			await addCompleteTxIntention(
+				this.config,
+				this.store.getState().intentions,
+				assetsToWithdraw,
+			);
 		}
 
 		const tx = await finalizeBTCTransaction(
 			this.config,
-			this.store,
+			this.store.getState().intentions ?? [],
 			walletClient,
 			{
 				stateOverride: stateOverride ?? [
@@ -360,9 +375,9 @@ export class MidlHardhatEnvironment {
 		for (const intention of intentions) {
 			const signed = await signIntention(
 				this.config,
-				this.store,
 				walletClient,
 				intention,
+				this.store.getState().intentions ?? [],
 				{
 					gasPrice: 1000n,
 					txId: tx.tx.id,
@@ -420,7 +435,10 @@ export class MidlHardhatEnvironment {
 
 		console.log("Transaction confirmed", tx.tx.id);
 
-		clearTxIntentions(this.store);
+		this.store.setState((state) => ({
+			...state,
+			intentions: [],
+		}));
 	}
 
 	public async getWalletClient(): Promise<WalletClient> {
