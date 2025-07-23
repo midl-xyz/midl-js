@@ -18,6 +18,8 @@ import type { Chain, TransactionIntention } from "@midl-xyz/midl-js-executor";
 import {
 	addCompleteTxIntention,
 	addTxIntention,
+	convertBTCtoETH,
+	convertETHtoBTC,
 	finalizeBTCTransaction,
 	getEVMAddress,
 	getEVMFromBitcoinNetwork,
@@ -181,7 +183,11 @@ export class MidlHardhatEnvironment {
 		> & { args?: any; libraries?: Libraries<Address> },
 		intentionOptions: Pick<
 			TransactionIntention,
-			"value" | "hasRunesDeposit" | "hasRunesWithdraw" | "hasWithdraw" | "rune"
+			| "satoshis"
+			| "hasRunesDeposit"
+			| "hasRunesWithdraw"
+			| "hasWithdraw"
+			| "rune"
 		> = {},
 	) {
 		if (!this.config) {
@@ -294,7 +300,7 @@ export class MidlHardhatEnvironment {
 				nonce: options.nonce,
 				gas: options.gas,
 			},
-			value: options.value,
+			satoshis: convertETHtoBTC(options.value ?? 0n),
 		});
 
 		this.store.setState((state) => ({
@@ -350,7 +356,10 @@ export class MidlHardhatEnvironment {
 				stateOverride: stateOverride ?? [
 					{
 						address: getEVMAddress(this.config, account),
-						balance: intentions.reduce((acc, it) => acc + (it.value ?? 0n), 0n),
+						balance: intentions.reduce(
+							(acc, it) => acc + convertBTCtoETH(it.satoshis ?? 0),
+							0n,
+						),
 					},
 				],
 				feeRate,
