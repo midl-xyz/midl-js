@@ -13,6 +13,7 @@ export const IdentIcon = ({ hash, size = 6, className }: IdentIconProps) => {
 			name={hash}
 			colors={["#5b1d99", "#0074b4", "#00b34c", "#ffd41f", "#fc6e3d"]}
 			variant="marble"
+			className={className}
 			style={{
 				width: token.var(`sizes.${size}` as Token) ?? size,
 				height: token.var(`sizes.${size}` as Token) ?? size,
