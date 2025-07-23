@@ -125,7 +125,7 @@ export const finalizeBTCTransaction = async (
 
 	const btcTransfer = convertETHtoBTC(
 		intentions.reduce((acc, it) => {
-			return acc + (it.evmTransaction?.value ?? 0n);
+			return acc + (it?.value ?? 0n);
 		}, 0n),
 	);
 
