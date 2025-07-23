@@ -4,8 +4,9 @@ export interface TransactionIntention {
 	/**
 	 * EVM transaction to execute
 	 */
-	evmTransaction: TransactionSerializableBTC & {
+	evmTransaction: Omit<TransactionSerializableBTC, "chainId"> & {
 		from?: Address;
+		chainId?: TransactionSerializableBTC["chainId"];
 	};
 
 	/**

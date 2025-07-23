@@ -1,28 +1,21 @@
-import type { Config } from "@midl-xyz/midl-js-core";
-import {
-	type PartialIntention,
-	addTxIntention,
-} from "@midl-xyz/midl-js-executor";
+import type { TransactionIntention } from "@midl-xyz/midl-js-executor";
 import {
 	type MidlContextStore,
-	useConfigInternal,
 	useStore,
 	useStoreInternal,
 } from "@midl-xyz/midl-js-react";
 import { useMutation } from "@tanstack/react-query";
 
 type UseAddTxIntentionParams = {
-	config?: Config;
 	store?: MidlContextStore;
 };
 
 type AddTxIntentionVariables = {
-	intention: PartialIntention;
+	intention: TransactionIntention;
 	/**
 	 * If true, the array of intentions will be cleared before adding the new one
 	 */
 	reset?: boolean;
-	publicKey?: string;
 };
 
 /**
@@ -47,27 +40,21 @@ type AddTxIntentionVariables = {
  */
 export const useAddTxIntention = ({
 	store: customStore,
-	config: customConfig,
 }: UseAddTxIntentionParams = {}) => {
 	const store = useStoreInternal(customStore);
-	const config = useConfigInternal(customConfig);
 	const { intentions = [] } = useStore(customStore);
 
 	const { mutate, mutateAsync, ...rest } = useMutation({
-		mutationFn: async ({
-			reset,
-			publicKey,
-			intention,
-		}: AddTxIntentionVariables) => {
-			const int = await addTxIntention(config, intention, publicKey);
-
+		mutationFn: async ({ reset, intention }: AddTxIntentionVariables) => {
 			store.setState((state) => {
 				return {
-					intentions: reset ? [int] : [...(state.intentions || []), int],
+					intentions: reset
+						? [intention]
+						: [...(state.intentions || []), intention],
 				};
 			});
 
-			return int;
+			return intention;
 		},
 	});
 

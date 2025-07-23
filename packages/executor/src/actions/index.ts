@@ -1,4 +1,3 @@
-export * from "./addTxIntention";
 export * from "./finalizeBTCTransaction";
 export * from "./getBTCFeeRate";
 export * from "./getPublicKey";

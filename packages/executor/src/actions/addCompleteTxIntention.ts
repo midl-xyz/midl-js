@@ -13,7 +13,6 @@ import {
 	zeroAddress,
 } from "viem";
 import { getPublicKey } from "~/actions";
-import { addTxIntention } from "~/actions/addTxIntention";
 import { executorAddress } from "~/config";
 import { executorAbi } from "~/contracts/abi";
 import type { TransactionIntention } from "~/types";
@@ -90,7 +89,7 @@ export const addCompleteTxIntention = async (
 		}
 	}
 
-	return addTxIntention(config, {
+	return {
 		hasWithdraw,
 		hasRunesWithdraw,
 		evmTransaction: {
@@ -106,5 +105,5 @@ export const addCompleteTxIntention = async (
 				],
 			}),
 		},
-	});
+	};
 };

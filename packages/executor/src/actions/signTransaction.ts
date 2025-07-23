@@ -4,14 +4,10 @@ import {
 	getDefaultAccount,
 	signMessage,
 } from "@midl-xyz/midl-js-core";
-import {
-	type Client,
-	type TransactionSerializableBTC,
-	keccak256,
-	serializeTransaction,
-} from "viem";
+import { type Client, keccak256, serializeTransaction } from "viem";
 import { getTransactionCount } from "viem/actions";
 import { getPublicKey } from "~/actions/getPublicKey";
+import type { TransactionIntention } from "~/types";
 import { extractEVMSignature, getEVMAddress } from "~/utils";
 
 type SignTransactionOptions = {
@@ -22,7 +18,7 @@ type SignTransactionOptions = {
 
 export const signTransaction = async (
 	config: Config,
-	{ chainId, ...tx }: TransactionSerializableBTC,
+	{ chainId, ...tx }: TransactionIntention["evmTransaction"],
 	client: Client,
 	{ publicKey: customPublicKey, protocol, nonce }: SignTransactionOptions = {},
 ) => {
