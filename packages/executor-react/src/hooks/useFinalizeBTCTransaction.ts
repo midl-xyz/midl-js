@@ -80,12 +80,17 @@ export const useFinalizeBTCTransaction = ({
 				throw new Error("No public client set");
 			}
 
-			return finalizeBTCTransaction(config, store, publicClient, {
-				stateOverride,
-				assetsToWithdrawSize,
-				feeRate,
-				skipEstimateGasMulti,
-			});
+			return finalizeBTCTransaction(
+				config,
+				store.getState().intentions ?? [],
+				publicClient,
+				{
+					stateOverride,
+					assetsToWithdrawSize,
+					feeRate,
+					skipEstimateGasMulti,
+				},
+			);
 		},
 		...mutation,
 	});

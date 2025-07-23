@@ -104,40 +104,4 @@ describe("useAddTxIntention", () => {
 
 		await waitFor(() => expect(result.current.txIntentions.length).toBe(1));
 	});
-
-	it("should throw if intentions queue is longer than 10 transactions", async () => {
-		const { result } = renderHook(() => useAddTxIntention(), {
-			wrapper,
-		});
-
-		const { addTxIntention } = result.current;
-
-		for (let i = 0; i < 10; i++) {
-			addTxIntention({
-				intention: {
-					evmTransaction: {
-						to: zeroAddress,
-						value: 1n,
-						chainId: 1,
-					},
-				},
-			});
-		}
-
-		addTxIntention({
-			intention: {
-				evmTransaction: {
-					to: zeroAddress,
-					value: 1n,
-					chainId: 1,
-				},
-			},
-		});
-
-		await waitFor(() => expect(result.current.isError).toBe(true));
-
-		expect(result.current.error?.message).toBe(
-			"Maximum number of intentions reached",
-		);
-	});
 });

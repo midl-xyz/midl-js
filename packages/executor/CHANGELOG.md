@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor
 
+## 2.0.0-next.29
+
+### Patch Changes
+
+- feat(executor): declarative api
+
 ## 2.0.0-next.28
 
 ### Patch Changes

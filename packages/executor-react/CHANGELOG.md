@@ -1,5 +1,13 @@
 # @midl-xyz/midl-js-executor-react
 
+## 2.0.0-next.29
+
+### Patch Changes
+
+- feat(executor): declarative api
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@2.0.0-next.29
+
 ## 2.0.0-next.28
 
 ### Patch Changes

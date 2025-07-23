@@ -3,10 +3,8 @@ import {
 	type SignMessageProtocol,
 	getDefaultAccount,
 } from "@midl-xyz/midl-js-core";
-import type { MidlContextState } from "@midl-xyz/midl-js-react";
 import { type Client, isHex } from "viem";
 import { getTransactionCount } from "viem/actions";
-import type { StoreApi } from "zustand";
 import { getPublicKeyForAccount } from "~/actions/getPublicKeyForAccount";
 import { signTransaction } from "~/actions/signTransaction";
 import type { TransactionIntention } from "~/types/intention";
@@ -41,20 +39,20 @@ type SignIntentionOptions = {
  * Signs the intention with the given options. The intentions is signed as generic Bitcoin message.
  *
  * @param config The configuration object
- * @param store The store object
  * @param client EVM client or provider
  * @param intention The intention to sign
+ * @param intentions The list of intentions to sign
  * @param options The options for signing
  * @returns
  */
 export const signIntention = async (
 	config: Config,
-	store: StoreApi<MidlContextState>,
 	client: Client,
 	intention: TransactionIntention,
+	intentions: TransactionIntention[],
 	options: SignIntentionOptions,
 ) => {
-	const { network, accounts } = config.getState();
+	const { network } = config.getState();
 
 	if (!network) {
 		throw new Error("No network set");
@@ -78,8 +76,6 @@ export const signIntention = async (
 		(await getTransactionCount(client, {
 			address: evmAddress,
 		}));
-
-	const intentions = store.getState().intentions;
 
 	if (!intentions) {
 		throw new Error("No intentions found");
@@ -120,19 +116,6 @@ export const signIntention = async (
 			publicKey: options.publicKey,
 		},
 	);
-
-	store.setState({
-		intentions: intentions.map((it) => {
-			if (it === intention) {
-				return {
-					...it,
-					signedEvmTransaction: signed,
-				};
-			}
-
-			return it;
-		}),
-	});
 
 	return signed;
 };

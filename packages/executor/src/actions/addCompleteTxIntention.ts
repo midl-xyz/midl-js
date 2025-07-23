@@ -3,7 +3,6 @@ import {
 	AddressType,
 	type Config,
 } from "@midl-xyz/midl-js-core";
-import type { MidlContextState } from "@midl-xyz/midl-js-react";
 import * as bitcoin from "bitcoinjs-lib";
 import {
 	type Address,
@@ -13,7 +12,6 @@ import {
 	toHex,
 	zeroAddress,
 } from "viem";
-import type { StoreApi } from "zustand";
 import { getPublicKey } from "~/actions";
 import { addTxIntention } from "~/actions/addTxIntention";
 import { executorAddress } from "~/config";
@@ -22,11 +20,10 @@ import type { TransactionIntention } from "~/types";
 
 export const addCompleteTxIntention = async (
 	config: Config,
-	store: StoreApi<MidlContextState>,
+	intentions: TransactionIntention[],
 	assetsToWithdraw?: [Address] | [Address, Address],
 ): Promise<TransactionIntention> => {
 	const { network, accounts } = config.getState();
-	const { intentions = [] } = store.getState();
 
 	if (!network) {
 		throw new Error("No network set");
@@ -96,7 +93,7 @@ export const addCompleteTxIntention = async (
 		}
 	}
 
-	return addTxIntention(config, store, {
+	return addTxIntention(config, {
 		hasWithdraw,
 		hasRunesWithdraw,
 		evmTransaction: {

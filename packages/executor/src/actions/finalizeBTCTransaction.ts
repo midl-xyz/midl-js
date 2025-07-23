@@ -9,12 +9,11 @@ import {
 	getDefaultAccount,
 	transferBTC,
 } from "@midl-xyz/midl-js-core";
-import type { MidlContextState } from "@midl-xyz/midl-js-react";
 import type { Client, StateOverride } from "viem";
 import { estimateGasMulti } from "viem/actions";
-import type { StoreApi } from "zustand";
 import { getBTCFeeRate } from "~/actions/getBTCFeeRate";
 import { multisigAddress } from "~/config";
+import type { TransactionIntention } from "~/types";
 import {
 	calculateTransactionsCost,
 	convertETHtoBTC,
@@ -65,7 +64,7 @@ type FinalizeBTCTransactionOptions = {
  */
 export const finalizeBTCTransaction = async (
 	config: Config,
-	store: StoreApi<MidlContextState>,
+	intentions: TransactionIntention[],
 	client: Client,
 	{ feeRate: customFeeRate, ...options }: FinalizeBTCTransactionOptions = {},
 ) => {
@@ -75,10 +74,14 @@ export const finalizeBTCTransaction = async (
 		throw new Error("No network set");
 	}
 
-	const { intentions = [] } = store.getState();
-
 	if (intentions.length === 0) {
 		throw new Error("Cannot finalize BTC transaction without intentions");
+	}
+
+	if (intentions.length > 10) {
+		throw new Error(
+			"Cannot finalize BTC transaction with more than 10 intentions",
+		);
 	}
 
 	const account = getDefaultAccount(
