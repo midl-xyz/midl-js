@@ -1,4 +1,5 @@
 import { type TransactionSerializableBTC, parseUnits } from "viem";
+import { GAS_PRICE } from "~/config";
 
 export const ONE_SATOSHI = parseUnits("1", 10);
 export const KEYGEN_TX_SIZE = 15n;
@@ -29,7 +30,6 @@ const scriptSizeMap = new Map<number, bigint>([
 export const calculateTransactionsCost = (
 	transactions: Pick<TransactionSerializableBTC, "gas">[],
 	{
-		gasPrice = parseUnits("10", 3),
 		feeRate,
 		hasRunesDeposit,
 		hasWithdraw,
@@ -37,7 +37,6 @@ export const calculateTransactionsCost = (
 		assetsToWithdrawSize = 0,
 	}: {
 		feeRate: number;
-		gasPrice?: bigint;
 		hasRunesDeposit?: boolean;
 		hasWithdraw?: boolean;
 		hasRunesWithdraw?: boolean;
@@ -55,7 +54,7 @@ export const calculateTransactionsCost = (
 	const scriptSize = scriptSizeMap.get(scriptSizeKey) as bigint;
 
 	const fees =
-		(gasPrice * totalGas) / ONE_SATOSHI +
+		(GAS_PRICE * totalGas) / ONE_SATOSHI +
 		(KEYGEN_TX_SIZE +
 			scriptSize +
 			BigInt(assetsToWithdrawSize) * RUNES_MAGIC_VALUE) *

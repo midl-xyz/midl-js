@@ -14,10 +14,6 @@ export interface TransactionIntention {
 	signedEvmTransaction?: `0x${string}`;
 
 	/**
-	 * Native token value to transfer to Midl
-	 */
-	value?: bigint;
-	/**
 	 * Rune id and value to transfer to Midl
 	 */
 	rune?: {

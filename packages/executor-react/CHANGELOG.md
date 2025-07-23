@@ -1,5 +1,13 @@
 # @midl-xyz/midl-js-executor-react
 
+## 2.0.0-next.31
+
+### Patch Changes
+
+- feat: fix gas price to 1000n
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@2.0.0-next.31
+
 ## 2.0.0-next.30
 
 ### Patch Changes
