@@ -1,5 +1,5 @@
+import type { TransactionIntention } from "@midl-xyz/midl-js-executor";
 import "@midl-xyz/midl-js-react";
-import type { TransactionIntention } from "~/types/intention";
 
 declare module "@midl-xyz/midl-js-react" {
 	type State = {

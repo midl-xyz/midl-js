@@ -39,7 +39,6 @@
 		"@bitcoinerlab/secp256k1": "^1.2.0",
 		"@midl-xyz/contracts": "^0.1.1",
 		"@midl-xyz/midl-js-core": "workspace:^",
-		"@midl-xyz/midl-js-react": "workspace:^",
 		"@noble/secp256k1": "1.7.1",
 		"@scure/btc-signer": "1.4.0",
 		"bip322-js": "^2.0.0",

@@ -1,4 +1,3 @@
-import { clearTxIntentions } from "@midl-xyz/midl-js-executor";
 import {
 	type MidlContextStore,
 	useStoreInternal,
@@ -26,6 +25,6 @@ export const useClearTxIntentions = ({
 	const store = useStoreInternal(customStore);
 
 	return () => {
-		clearTxIntentions(store);
+		store.setState({ intentions: [] });
 	};
 };

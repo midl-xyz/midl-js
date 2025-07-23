@@ -71,7 +71,7 @@ export const useSignIntention = ({
 				throw new Error("No public client set");
 			}
 
-			return signIntention(config, store, publicClient, intention, {
+			return signIntention(config, publicClient, intention, intentions, {
 				txId,
 				gasPrice,
 				nonce,
