@@ -17,9 +17,11 @@
 		"@midl-xyz/midl-js-node": "0.0.1"
 	},
 	"changesets": [
+		"calm-kids-nail",
 		"chatty-planets-punch",
 		"dirty-chairs-attack",
 		"fluffy-seals-fly",
+		"fresh-baboons-share",
 		"green-boxes-repair",
 		"heavy-dancers-build",
 		"hungry-glasses-listen",

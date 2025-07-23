@@ -1,5 +1,14 @@
 # @midl-xyz/midl-js-executor
 
+## 2.0.0-next.27
+
+### Patch Changes
+
+- 9200384: feat(executor): update tx costs
+- Updated dependencies
+  - @midl-xyz/midl-js-core@2.0.0-next.27
+  - @midl-xyz/midl-js-react@2.0.0-next.27
+
 ## 2.0.0-next.26
 
 ### Patch Changes
