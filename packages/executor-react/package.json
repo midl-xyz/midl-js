@@ -52,7 +52,7 @@
 		"@types/react": "^18",
 		"bitcoinjs-lib": "7.0.0-rc.0",
 		"react": "^18.*",
-		"viem": "npm:@midl-xyz/midl-viem",
+		"@midl-xyz/midl-viem": "*",
 		"wagmi": "^2.*",
 		"zustand": "^5.0.1"
 	}
