@@ -33,10 +33,6 @@ export interface TransactionIntention {
 	 */
 	hasWithdraw?: boolean;
 	/**
-	 * If true, the intention contains a Bitcoin deposit
-	 */
-	hasDeposit?: boolean;
-	/**
 	 * If true, the intention contains a Rune deposit
 	 */
 	hasRunesDeposit?: boolean;
