@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor-react
 
+## 2.0.0-next.41
+
+### Patch Changes
+
+- fix(executor-react): re-export hooks
+
 ## 2.0.0-next.40
 
 ### Patch Changes
