@@ -95,7 +95,7 @@ export const finalizeBTCTransaction = async (
 			options.stateOverride ??
 			(await createStateOverride(config, client, intentions));
 
-		const gasLimits = await estimateGasMulti(client as Client, {
+		let gasLimits = await estimateGasMulti(client as Client, {
 			transactions: evmTransactions,
 			stateOverride,
 			account: evmAddress,
@@ -104,7 +104,7 @@ export const finalizeBTCTransaction = async (
 			const totalGasFees =
 				gasLimits.reduce((acc, gas) => acc + gas, 0n) * GAS_PRICE;
 
-			await estimateGasMulti(client as Client, {
+			gasLimits = await estimateGasMulti(client as Client, {
 				transactions: evmTransactions,
 				stateOverride: await createStateOverride(
 					config,
