@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor
 
+## 2.0.0-next.37
+
+### Patch Changes
+
+- feat: re-estimate with state override
+
 ## 2.0.0-next.36
 
 ### Patch Changes
