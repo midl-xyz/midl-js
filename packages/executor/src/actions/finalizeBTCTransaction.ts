@@ -13,7 +13,7 @@ import type { Client, StateOverride } from "viem";
 import { estimateGasMulti } from "viem/actions";
 import { createStateOverride } from "~/actions/createStateOverride";
 import { getBTCFeeRate } from "~/actions/getBTCFeeRate";
-import { multisigAddress } from "~/config";
+import { GAS_PRICE, multisigAddress } from "~/config";
 import type { TransactionIntention } from "~/types";
 import { calculateTransactionsCost, getEVMAddress } from "~/utils";
 
@@ -77,10 +77,6 @@ export const finalizeBTCTransaction = async (
 		);
 	}
 
-	const stateOverride =
-		options.stateOverride ??
-		(await createStateOverride(config, client, intentions));
-
 	const account = getDefaultAccount(
 		config,
 		options.publicKey ? (it) => it.publicKey === options.publicKey : undefined,
@@ -95,13 +91,30 @@ export const finalizeBTCTransaction = async (
 	const evmTransactions = evmIntentions.map((it) => it.evmTransaction);
 
 	if (!options.skipEstimateGasMulti) {
-		let gasLimits: bigint[];
+		const stateOverride =
+			options.stateOverride ??
+			(await createStateOverride(config, client, intentions));
 
-		gasLimits = await estimateGasMulti(client as Client, {
+		let gasLimits = await estimateGasMulti(client as Client, {
 			transactions: evmTransactions,
 			stateOverride,
 			account: evmAddress,
 		});
+		if (!options.stateOverride) {
+			const totalGasFees =
+				gasLimits.reduce((acc, gas) => acc + gas, 0n) * GAS_PRICE;
+
+			gasLimits = await estimateGasMulti(client as Client, {
+				transactions: evmTransactions,
+				stateOverride: await createStateOverride(
+					config,
+					client,
+					intentions,
+					totalGasFees,
+				),
+				account: evmAddress,
+			});
+		}
 
 		for (const [i, intention] of evmIntentions.entries()) {
 			intention.evmTransaction.gas = BigInt(
