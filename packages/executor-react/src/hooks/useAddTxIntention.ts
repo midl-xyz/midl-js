@@ -59,15 +59,17 @@ export const useAddTxIntention = ({
 			publicKey,
 			intention,
 		}: AddTxIntentionVariables) => {
-			const int = await addTxIntention(config, intention, publicKey);
+			const intentionToAdd = await addTxIntention(config, intention, publicKey);
 
 			store.setState((state) => {
 				return {
-					intentions: reset ? [int] : [...(state.intentions || []), int],
+					intentions: reset
+						? [intentionToAdd]
+						: [...(state.intentions || []), intentionToAdd],
 				};
 			});
 
-			return int;
+			return intentionToAdd;
 		},
 	});
 
