@@ -17,6 +17,7 @@
 		"@midl-xyz/midl-js-node": "0.0.1"
 	},
 	"changesets": [
+		"afraid-monkeys-confess",
 		"calm-kids-nail",
 		"chatty-planets-punch",
 		"dirty-chairs-attack",
