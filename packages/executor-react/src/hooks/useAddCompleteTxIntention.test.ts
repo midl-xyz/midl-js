@@ -13,7 +13,9 @@ import { useAddCompleteTxIntention } from "~/hooks/useAddCompleteTxIntention";
 
 describe("executor-react | hooks | useAddCompleteTxIntention", () => {
 	beforeEach(async () => {
-		await connect(midlConfig, { purposes: [AddressPurpose.Ordinals] });
+		await connect(midlConfig, {
+			purposes: [AddressPurpose.Payment, AddressPurpose.Ordinals],
+		});
 	});
 
 	afterEach(async () => {

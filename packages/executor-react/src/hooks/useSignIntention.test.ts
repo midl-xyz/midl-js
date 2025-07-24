@@ -1,8 +1,5 @@
 import { AddressPurpose, connect, disconnect } from "@midl-xyz/midl-js-core";
-import {
-	type TransactionIntention,
-	executorAddress,
-} from "@midl-xyz/midl-js-executor";
+import type { TransactionIntention } from "@midl-xyz/midl-js-executor";
 import { createStore } from "@midl-xyz/midl-js-react";
 import { renderHook } from "@testing-library/react";
 import { zeroAddress } from "viem";
@@ -11,24 +8,19 @@ import { wrapper } from "~/__tests__";
 import { midlConfig } from "~/__tests__/midlConfig";
 import { useSignIntention } from "~/hooks/useSignIntention";
 
-const origFetch = global.fetch;
-global.fetch = (...args) => {
-	console.log("HAPPYDOM fetch:", args);
-	return origFetch(...args);
-};
-
 vi.mock("~/hooks/useLastNonce", async () => {
 	const actual = await vi.importActual("~/hooks");
 	return {
 		...actual,
-		useLastNonce: vi.fn(() => 12345), // your mock
-		// do NOT remove anything else
+		useLastNonce: vi.fn(() => 1),
 	};
 });
 
 describe("executor-react | hooks | useSignIntention", () => {
 	beforeEach(async () => {
-		await connect(midlConfig, { purposes: [AddressPurpose.Ordinals] });
+		await connect(midlConfig, {
+			purposes: [AddressPurpose.Payment, AddressPurpose.Ordinals],
+		});
 	});
 
 	afterEach(async () => {

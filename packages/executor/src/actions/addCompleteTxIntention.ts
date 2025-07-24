@@ -86,6 +86,8 @@ export const addCompleteTxIntention = async (
 						size: 32,
 					}),
 				);
+
+				break;
 			}
 		}
 	}
