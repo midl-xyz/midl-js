@@ -16,6 +16,7 @@ export const createStateOverride = async (
 	config: Config,
 	client: Client,
 	intentions: TransactionIntention[],
+	fees: bigint = convertBTCtoETH(100000000), // 1 BTC
 ): Promise<StateOverride> => {
 	const evmAddress = getEVMAddress(config, getDefaultAccount(config));
 
@@ -29,7 +30,7 @@ export const createStateOverride = async (
 
 	const balanceOverride: StateOverride[number] = {
 		address: evmAddress,
-		balance: convertBTCtoETH(satoshis) + userBalance,
+		balance: convertBTCtoETH(satoshis) + userBalance + fees,
 	};
 
 	const overrides: StateOverride = [balanceOverride];
