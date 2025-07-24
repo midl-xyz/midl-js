@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor-react
 
+## 2.0.0-next.35
+
+### Patch Changes
+
+- fix(executor-react): fix add complete tx intention store
+
 ## 2.0.0-next.34
 
 ### Patch Changes
