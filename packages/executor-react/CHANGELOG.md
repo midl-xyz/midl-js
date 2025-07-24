@@ -1,5 +1,13 @@
 # @midl-xyz/midl-js-executor-react
 
+## 2.0.0-next.42
+
+### Patch Changes
+
+- 6979a7f: fix(executor): btc fee rate response type
+- Updated dependencies [6979a7f]
+  - @midl-xyz/midl-js-executor@2.0.0-next.42
+
 ## 2.0.0-next.41
 
 ### Patch Changes
