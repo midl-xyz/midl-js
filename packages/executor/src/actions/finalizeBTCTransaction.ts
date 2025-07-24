@@ -99,7 +99,7 @@ export const finalizeBTCTransaction = async (
 			(await createStateOverride(config, client, intentions));
 
 		const emvTransactionsWithoutGas = evmTransactions.filter(
-			(it) => it.gas !== undefined,
+			(it) => it.gas === undefined,
 		);
 
 		let gasLimits = await estimateGasMulti(client as Client, {

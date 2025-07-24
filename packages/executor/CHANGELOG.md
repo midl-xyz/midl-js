@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor
 
+## 2.0.0-next.40
+
+### Patch Changes
+
+- fix: select txs without gas only
+
 ## 2.0.0-next.39
 
 ### Patch Changes
