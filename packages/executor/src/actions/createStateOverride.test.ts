@@ -32,7 +32,12 @@ describe("executor | actions | createStateOverride", async () => {
 			satoshis: 1000,
 		});
 
-		const override = await createStateOverride(midlConfig, client, [intention]);
+		const override = await createStateOverride(
+			midlConfig,
+			client,
+			[intention],
+			0n,
+		);
 
 		expect(override).toEqual([
 			{
@@ -50,10 +55,12 @@ describe("executor | actions | createStateOverride", async () => {
 			satoshis: 2000,
 		});
 
-		const override = await createStateOverride(midlConfig, client, [
-			intention1,
-			intention2,
-		]);
+		const override = await createStateOverride(
+			midlConfig,
+			client,
+			[intention1, intention2],
+			0n,
+		);
 
 		expect(override).toEqual([
 			{
@@ -74,7 +81,12 @@ describe("executor | actions | createStateOverride", async () => {
 			],
 		});
 
-		const override = await createStateOverride(midlConfig, client, [intention]);
+		const override = await createStateOverride(
+			midlConfig,
+			client,
+			[intention],
+			0n,
+		);
 
 		expect(override).toEqual([
 			{
@@ -109,7 +121,12 @@ describe("executor | actions | createStateOverride", async () => {
 			],
 		});
 
-		const override = await createStateOverride(midlConfig, client, [intention]);
+		const override = await createStateOverride(
+			midlConfig,
+			client,
+			[intention],
+			0n,
+		);
 
 		expect(override).toEqual([
 			{
@@ -157,10 +174,12 @@ describe("executor | actions | createStateOverride", async () => {
 			],
 		});
 
-		const override = await createStateOverride(midlConfig, client, [
-			intention1,
-			intention2,
-		]);
+		const override = await createStateOverride(
+			midlConfig,
+			client,
+			[intention1, intention2],
+			0n,
+		);
 
 		expect(override).toEqual([
 			{
