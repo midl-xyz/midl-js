@@ -1,5 +1,13 @@
 # @midl-xyz/hardhat-deploy
 
+## 2.0.0-next.34
+
+### Patch Changes
+
+- feat: add default state override
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@2.0.0-next.34
+
 ## 2.0.0-next.33
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 {
 	"name": "@midl-xyz/midl-js-executor",
-	"version": "2.0.0-next.33",
+	"version": "2.0.0-next.34",
 	"scripts": {
 		"build": "pnpm run clean && tspc --project tsconfig.esm.json && tspc --project tsconfig.cjs.json",
 		"dev": "concurrently \"tspc --watch --preserveWatchOutput --project tsconfig.esm.json\" \"tspc --watch --preserveWatchOutput --project tsconfig.cjs.json\"",
@@ -33,6 +33,7 @@
 		"bitcoinjs-lib": "7.0.0-rc.0",
 		"bitcoinjs-message": "^2.2.0",
 		"ecpair": "^2.1.0",
+		"msw": "^2.7.0",
 		"viem": "npm:@midl-xyz/midl-viem"
 	},
 	"dependencies": {
@@ -46,7 +47,7 @@
 		"zustand": "^5.0.1"
 	},
 	"peerDependencies": {
-		"bitcoinjs-lib": "7.0.0-rc.0",
-		"@midl-xyz/midl-viem": "*"
+		"@midl-xyz/midl-viem": "*",
+		"bitcoinjs-lib": "7.0.0-rc.0"
 	}
 }
