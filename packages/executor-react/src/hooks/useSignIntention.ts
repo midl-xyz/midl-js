@@ -10,7 +10,7 @@ import {
 	useStoreInternal,
 } from "@midl-xyz/midl-js-react";
 import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
-import { useWalletClient } from "wagmi";
+import { usePublicClient } from "wagmi";
 import { useLastNonce } from "~/hooks";
 
 type SignIntentionVariables = {
@@ -56,7 +56,7 @@ export const useSignIntention = ({
 	const config = useConfigInternal(customConfig);
 	const store = useStoreInternal(customStore);
 	const { intentions = [] } = useStore(customStore);
-	const { data: publicClient } = useWalletClient();
+	const publicClient = usePublicClient();
 
 	const { mutate, mutateAsync, ...rest } = useMutation({
 		mutationFn: async ({
