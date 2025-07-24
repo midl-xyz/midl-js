@@ -1,4 +1,4 @@
-import { type TransactionSerializableBTC, parseUnits } from "viem";
+import { parseUnits } from "viem";
 import { GAS_PRICE } from "~/config";
 
 export const ONE_SATOSHI = parseUnits("1", 10);
@@ -28,7 +28,7 @@ const scriptSizeMap = new Map<number, bigint>([
  * @returns Cost of transactions in satoshis
  */
 export const calculateTransactionsCost = (
-	transactions: Pick<TransactionSerializableBTC, "gas">[],
+	totalGas: bigint,
 	{
 		feeRate,
 		hasRunesDeposit,
@@ -43,8 +43,6 @@ export const calculateTransactionsCost = (
 		assetsToWithdrawSize?: number;
 	},
 ) => {
-	const totalGas = transactions.reduce((acc, it) => acc + (it.gas ?? 0n), 0n);
-
 	let scriptSizeKey = DEPOSIT_BTC;
 
 	if (hasRunesDeposit) scriptSizeKey |= DEPOSIT_RUNES;
