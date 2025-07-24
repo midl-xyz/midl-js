@@ -11,14 +11,11 @@ import {
 } from "@midl-xyz/midl-js-core";
 import type { Client, StateOverride } from "viem";
 import { estimateGasMulti } from "viem/actions";
+import { createStateOverride } from "~/actions/createStateOverride";
 import { getBTCFeeRate } from "~/actions/getBTCFeeRate";
 import { multisigAddress } from "~/config";
 import type { TransactionIntention } from "~/types";
-import {
-	calculateTransactionsCost,
-	convertETHtoBTC,
-	getEVMAddress,
-} from "~/utils";
+import { calculateTransactionsCost, getEVMAddress } from "~/utils";
 
 type FinalizeBTCTransactionOptions = {
 	/**
@@ -80,6 +77,10 @@ export const finalizeBTCTransaction = async (
 		);
 	}
 
+	const stateOverride =
+		options.stateOverride ??
+		(await createStateOverride(config, client, intentions));
+
 	const account = getDefaultAccount(
 		config,
 		options.publicKey ? (it) => it.publicKey === options.publicKey : undefined,
@@ -98,7 +99,7 @@ export const finalizeBTCTransaction = async (
 
 		gasLimits = await estimateGasMulti(client as Client, {
 			transactions: evmTransactions,
-			stateOverride: options.stateOverride,
+			stateOverride,
 			account: evmAddress,
 		});
 
@@ -137,12 +138,12 @@ export const finalizeBTCTransaction = async (
 	const runes = Array.from(
 		intentions
 			.filter((it) => it.hasRunesDeposit)
-			.map((it) => {
-				if (!it.rune) {
+			.flatMap((it) => {
+				if (!it.runes || it.runes.length === 0) {
 					throw new Error("No rune set");
 				}
 
-				return it.rune;
+				return it.runes;
 			})
 			.reduce(
 				(acc, rune) => {

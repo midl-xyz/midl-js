@@ -187,7 +187,7 @@ export class MidlHardhatEnvironment {
 			| "hasRunesDeposit"
 			| "hasRunesWithdraw"
 			| "hasWithdraw"
-			| "rune"
+			| "runes"
 		> = {},
 	) {
 		if (!this.config) {
@@ -353,15 +353,7 @@ export class MidlHardhatEnvironment {
 			this.store.getState().intentions ?? [],
 			walletClient,
 			{
-				stateOverride: stateOverride ?? [
-					{
-						address: getEVMAddress(this.config, account),
-						balance: intentions.reduce(
-							(acc, it) => acc + convertBTCtoETH(it.satoshis ?? 0),
-							0n,
-						),
-					},
-				],
+				stateOverride,
 				feeRate,
 				skipEstimateGasMulti,
 				assetsToWithdrawSize: assetsToWithdraw?.length ?? 0,
