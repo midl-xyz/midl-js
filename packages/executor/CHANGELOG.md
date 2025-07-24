@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor
 
+## 2.0.0-next.39
+
+### Patch Changes
+
+- feat: set complete tx gas cost
+
 ## 2.0.0-next.38
 
 ### Patch Changes

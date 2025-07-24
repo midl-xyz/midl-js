@@ -13,7 +13,7 @@ import type { Client, StateOverride } from "viem";
 import { estimateGasMulti } from "viem/actions";
 import { createStateOverride } from "~/actions/createStateOverride";
 import { getBTCFeeRate } from "~/actions/getBTCFeeRate";
-import { GAS_PRICE, multisigAddress } from "~/config";
+import { multisigAddress } from "~/config";
 import type { TransactionIntention } from "~/types";
 import { calculateTransactionsCost, getEVMAddress } from "~/utils";
 
@@ -98,8 +98,12 @@ export const finalizeBTCTransaction = async (
 			options.stateOverride ??
 			(await createStateOverride(config, client, intentions));
 
+		const emvTransactionsWithoutGas = evmTransactions.filter(
+			(it) => it.gas !== undefined,
+		);
+
 		let gasLimits = await estimateGasMulti(client as Client, {
-			transactions: evmTransactions,
+			transactions: emvTransactionsWithoutGas,
 			stateOverride,
 			account: evmAddress,
 		});
@@ -115,7 +119,7 @@ export const finalizeBTCTransaction = async (
 			});
 
 			gasLimits = await estimateGasMulti(client as Client, {
-				transactions: evmTransactions,
+				transactions: emvTransactionsWithoutGas,
 				stateOverride: await createStateOverride(
 					config,
 					client,
@@ -127,6 +131,10 @@ export const finalizeBTCTransaction = async (
 		}
 
 		for (const [i, intention] of evmIntentions.entries()) {
+			if (intention.evmTransaction.gas !== undefined) {
+				continue;
+			}
+
 			intention.evmTransaction.gas = BigInt(
 				// Increase gas limit by 20% to account for potential fluctuations
 				Math.ceil(Number(gasLimits[i]) * 1.2),
