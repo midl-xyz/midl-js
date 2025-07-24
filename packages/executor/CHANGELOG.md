@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor
 
+## 2.0.0-next.38
+
+### Patch Changes
+
+- fix: estiamte gas total cost
+
 ## 2.0.0-next.37
 
 ### Patch Changes
