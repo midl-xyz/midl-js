@@ -18,6 +18,8 @@ import { executorAddress } from "~/config";
 import { executorAbi } from "~/contracts/abi";
 import type { TransactionIntention } from "~/types";
 
+export const COMPLETE_TX_GAS = 200_000n;
+
 export const addCompleteTxIntention = async (
 	config: Config,
 	assetsToWithdraw?: [Address] | [Address, Address],
@@ -97,6 +99,8 @@ export const addCompleteTxIntention = async (
 		hasRunesWithdraw,
 		evmTransaction: {
 			to: executorAddress[network.id] as Address,
+			// We set the gas limit to a high value to ensure the transaction goes through
+			gas: COMPLETE_TX_GAS,
 			data: encodeFunctionData({
 				abi: executorAbi,
 				functionName: "completeTx",
