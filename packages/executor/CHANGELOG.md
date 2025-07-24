@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor
 
+## 2.0.0-next.36
+
+### Patch Changes
+
+- fix: use sign intention
+
 ## 2.0.0-next.34
 
 ### Patch Changes

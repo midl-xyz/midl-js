@@ -7,9 +7,10 @@ import {
 	type MidlContextStore,
 	useConfigInternal,
 	useStore,
+	useStoreInternal,
 } from "@midl-xyz/midl-js-react";
 import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
-import { useWalletClient } from "wagmi";
+import { usePublicClient } from "wagmi";
 import { useLastNonce } from "~/hooks";
 
 type SignIntentionVariables = {
@@ -53,8 +54,9 @@ export const useSignIntention = ({
 }: UseSignIntentionParams = {}) => {
 	const nonce = useLastNonce();
 	const config = useConfigInternal(customConfig);
+	const store = useStoreInternal(customStore);
 	const { intentions = [] } = useStore(customStore);
-	const { data: publicClient } = useWalletClient();
+	const publicClient = usePublicClient();
 
 	const { mutate, mutateAsync, ...rest } = useMutation({
 		mutationFn: async ({
@@ -68,12 +70,33 @@ export const useSignIntention = ({
 				throw new Error("No public client set");
 			}
 
-			return signIntention(config, publicClient, intention, intentions, {
-				txId,
-				nonce,
-				publicKey: options.publicKey,
-				protocol: options.protocol,
+			const signed = await signIntention(
+				config,
+				publicClient,
+				intention,
+				intentions,
+				{
+					txId,
+					nonce,
+					publicKey: options.publicKey,
+					protocol: options.protocol,
+				},
+			);
+
+			store.setState((state) => {
+				return {
+					intentions: state.intentions?.map((it) =>
+						it === intention
+							? {
+									...it,
+									signedEvmTransaction: signed,
+								}
+							: it,
+					),
+				};
 			});
+
+			return signed;
 		},
 		...mutation,
 	});

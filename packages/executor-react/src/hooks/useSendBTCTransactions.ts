@@ -3,7 +3,7 @@ import type {
 	SendBTCTransactionsParameter,
 	SendBTCTransactionsReturnType,
 } from "viem";
-import { useWalletClient } from "wagmi";
+import { usePublicClient } from "wagmi";
 
 type SendBTCTransactionsData = Awaited<SendBTCTransactionsReturnType>;
 type SendBTCTransactionsError = Error;
@@ -23,7 +23,7 @@ type useSendBTCTransactionsParams = {
 export const useSendBTCTransactions = ({
 	mutation: mutationParams,
 }: useSendBTCTransactionsParams = {}) => {
-	const { data: walletClient } = useWalletClient();
+	const publicClient = usePublicClient();
 
 	const mutation = useMutation<
 		SendBTCTransactionsData,
@@ -31,11 +31,11 @@ export const useSendBTCTransactions = ({
 		SendBTCTransactionsVariables
 	>({
 		mutationFn: (params) => {
-			if (!walletClient) {
+			if (!publicClient) {
 				throw new Error("Wallet client is not available");
 			}
 
-			return walletClient.sendBTCTransactions({
+			return publicClient.sendBTCTransactions({
 				serializedTransactions: params.serializedTransactions,
 				btcTransaction: params.btcTransaction,
 			});
