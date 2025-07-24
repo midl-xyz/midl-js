@@ -4,7 +4,7 @@ import { readContract } from "viem/actions";
 import { executorAddress } from "~/config";
 import { executorAbi } from "~/contracts/abi";
 
-export type GetBTCFeeRateResponse = ReturnType<typeof getBTCFeeRateViem>;
+export type GetBTCFeeRateResponse = bigint;
 
 const getBTCFeeRateViem = (config: Config, client: Client) => {
 	const { network } = config.getState();

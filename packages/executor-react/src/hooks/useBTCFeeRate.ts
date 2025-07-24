@@ -3,11 +3,7 @@ import {
 	type GetBTCFeeRateResponse,
 	getBTCFeeRate,
 } from "@midl-xyz/midl-js-executor";
-import {
-	useConfig,
-	useConfigInternal,
-	useMidlContext,
-} from "@midl-xyz/midl-js-react";
+import { useConfig, useConfigInternal } from "@midl-xyz/midl-js-react";
 import { type UseQueryOptions, useQuery } from "@tanstack/react-query";
 import { usePublicClient } from "wagmi";
 
