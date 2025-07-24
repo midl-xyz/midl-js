@@ -1,5 +1,13 @@
 # @midl-xyz/midl-js-executor-react
 
+## 2.0.0-next.36
+
+### Patch Changes
+
+- fix: use sign intention
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@2.0.0-next.36
+
 ## 2.0.0-next.35
 
 ### Patch Changes
