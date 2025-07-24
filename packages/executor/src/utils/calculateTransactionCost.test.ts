@@ -5,18 +5,18 @@ import { calculateTransactionsCost } from "~/utils/calculateTransactionsCost";
 
 describe("calculateTransactionCost", () => {
 	it("deposit", async () => {
-		expect(calculateTransactionsCost([], { feeRate: 2 })).toBe(410n);
+		expect(calculateTransactionsCost(0n, { feeRate: 2 })).toBe(410n);
 	});
 
 	it("withdraw", async () => {
 		expect(
-			calculateTransactionsCost([], { feeRate: 2, hasWithdraw: true }),
+			calculateTransactionsCost(0n, { feeRate: 2, hasWithdraw: true }),
 		).toBe(496n);
 	});
 
 	it("runes deposit", async () => {
 		expect(
-			calculateTransactionsCost([], {
+			calculateTransactionsCost(0n, {
 				feeRate: 2,
 				hasRunesDeposit: true,
 			}),
@@ -25,7 +25,7 @@ describe("calculateTransactionCost", () => {
 
 	it("runes withdraw", async () => {
 		expect(
-			calculateTransactionsCost([], {
+			calculateTransactionsCost(0n, {
 				feeRate: 2,
 				hasRunesWithdraw: true,
 				assetsToWithdrawSize: 1,
