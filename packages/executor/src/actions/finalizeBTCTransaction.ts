@@ -89,6 +89,9 @@ export const finalizeBTCTransaction = async (
 	const evmAddress = getEVMAddress(config, account);
 	const evmIntentions = intentions.filter((it) => Boolean(it.evmTransaction));
 	const evmTransactions = evmIntentions.map((it) => it.evmTransaction);
+	const hasWithdraw = intentions.some((it) => it.hasWithdraw);
+	const hasRunesWithdraw = intentions.some((it) => it.hasRunesWithdraw);
+	const feeRate = customFeeRate ?? Number(await getBTCFeeRate(config, client));
 
 	if (!options.skipEstimateGasMulti) {
 		const stateOverride =
@@ -101,8 +104,15 @@ export const finalizeBTCTransaction = async (
 			account: evmAddress,
 		});
 		if (!options.stateOverride) {
-			const totalGasFees =
-				gasLimits.reduce((acc, gas) => acc + gas, 0n) * GAS_PRICE;
+			const totalGas = gasLimits.reduce((acc, gas) => acc + gas, 0n);
+
+			const totalCost = calculateTransactionsCost(totalGas, {
+				feeRate,
+				hasWithdraw: hasWithdraw,
+				hasRunesDeposit: intentions.some((it) => it.hasRunesDeposit),
+				hasRunesWithdraw: hasRunesWithdraw,
+				assetsToWithdrawSize: options.assetsToWithdrawSize ?? 0,
+			});
 
 			gasLimits = await estimateGasMulti(client as Client, {
 				transactions: evmTransactions,
@@ -110,7 +120,7 @@ export const finalizeBTCTransaction = async (
 					config,
 					client,
 					intentions,
-					totalGasFees,
+					totalCost,
 				),
 				account: evmAddress,
 			});
@@ -124,12 +134,12 @@ export const finalizeBTCTransaction = async (
 		}
 	}
 
-	const hasWithdraw = intentions.some((it) => it.hasWithdraw);
-	const hasRunesWithdraw = intentions.some((it) => it.hasRunesWithdraw);
+	const totalGas = evmTransactions.reduce(
+		(acc, tx) => acc + (tx.gas ?? 0n),
+		0n,
+	);
 
-	const feeRate = customFeeRate ?? Number(await getBTCFeeRate(config, client));
-
-	const totalCost = calculateTransactionsCost([...evmTransactions], {
+	const totalCost = calculateTransactionsCost(totalGas, {
 		feeRate,
 		hasWithdraw: hasWithdraw,
 		hasRunesDeposit: intentions.some((it) => it.hasRunesDeposit),
