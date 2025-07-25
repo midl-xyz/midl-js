@@ -1,5 +1,12 @@
 # @midl-xyz/midl-js-node
 
+## 2.0.0-next.43
+
+### Patch Changes
+
+- Updated dependencies [d2518df]
+  - @midl-xyz/midl-js-core@2.0.0-next.43
+
 ## 2.0.0-next.32
 
 ### Patch Changes

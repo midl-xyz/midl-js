@@ -1,5 +1,15 @@
 # @midl-xyz/satoshi-kit
 
+## 2.0.0-next.43
+
+### Patch Changes
+
+- d2518df: feat: add signet support
+- Updated dependencies [d2518df]
+  - @midl-xyz/midl-js-connectors@2.0.0-next.43
+  - @midl-xyz/midl-js-core@2.0.0-next.43
+  - @midl-xyz/midl-js-react@2.0.0-next.43
+
 ## 2.0.0-next.32
 
 ### Patch Changes

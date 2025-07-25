@@ -3,7 +3,6 @@
 import {
 	type Chain,
 	getEVMFromBitcoinNetwork,
-	midlRegtest,
 } from "@midl-xyz/midl-js-executor";
 import { useConfig } from "@midl-xyz/midl-js-react";
 import { useEffect, useMemo } from "react";
@@ -75,7 +74,7 @@ export const WagmiMidlProvider = ({
 			customConfig ?? {
 				chains: [evmChain],
 				transports: {
-					[midlRegtest.id]: http(evmChain.rpcUrls.default.http[0]),
+					[evmChain.id]: http(evmChain.rpcUrls.default.http[0]),
 				},
 				multiInjectedProviderDiscovery: false,
 				ssr: false,
