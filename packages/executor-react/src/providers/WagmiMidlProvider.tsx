@@ -74,7 +74,7 @@ export const WagmiMidlProvider = ({
 			customConfig ?? {
 				chains: [evmChain],
 				transports: {
-					[network.id]: http(evmChain.rpcUrls.default.http[0]),
+					[evmChain.id]: http(evmChain.rpcUrls.default.http[0]),
 				},
 				multiInjectedProviderDiscovery: false,
 				ssr: false,

@@ -104,7 +104,7 @@ export class MidlHardhatEnvironment {
 		const { network, hardhatNetwork } = this.userConfig;
 
 		if (!network) {
-			this.bitcoinNetwork = signet;
+			this.bitcoinNetwork = regtest;
 			return;
 		}
 
