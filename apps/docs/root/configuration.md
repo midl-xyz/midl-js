@@ -37,6 +37,7 @@ export const config = createConfig({
 MIDL.js supports the following networks:
 
 - `mainnet`
+- `signet`
 - `testnet`
 - `regtest`
 - `testnet4`
@@ -44,7 +45,7 @@ MIDL.js supports the following networks:
 #### Importing Networks
 
 ```ts
-import { mainnet, testnet, regtest, testnet4 } from "@midl-xyz/midl-js-core";
+import { mainnet, testnet, regtest, testnet4, signet } from "@midl-xyz/midl-js-core";
 ```
 
 ### Supported Connectors (Wallets)

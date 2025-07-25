@@ -56,11 +56,18 @@ export class LeatherConnector implements Connector {
 	}
 
 	private getNetworkName(network: BitcoinNetwork) {
-		switch (network.network) {
-			case "bitcoin":
+		switch (network.id) {
+			case "mainnet":
 				return "mainnet";
+			case "testnet":
+				return "testnet";
+			case "testnet4":
+				return "testnet";
 			case "regtest":
 				return "devnet";
+			case "signet": {
+				return "signet";
+			}
 
 			default:
 				return network.network;

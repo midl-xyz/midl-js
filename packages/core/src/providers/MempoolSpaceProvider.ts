@@ -4,8 +4,8 @@ import type {
 	FeeRateResponse,
 	RuneBalanceResponse,
 	RuneResponse,
-	RunesResponse,
 	RuneUTXO,
+	RunesResponse,
 	TransactionStatusResponse,
 	UTXO,
 } from "~/providers/AbstractProvider";
@@ -15,6 +15,7 @@ export const mempoolSpaceRPC: Record<BitcoinNetwork["id"], string> = {
 	testnet: "https://mempool.space/testnet",
 	testnet4: "https://mempool.space/testnet4",
 	regtest: "https://mempool.regtest.midl.xyz",
+	signet: "https://mempool.space/signet",
 };
 
 export class MempoolSpaceProvider implements AbstractProvider {

@@ -1,13 +1,19 @@
 "use client";
 
-import { mainnet, regtest, testnet, testnet4 } from "@midl-xyz/midl-js-core";
+import {
+	mainnet,
+	regtest,
+	signet,
+	testnet,
+	testnet4,
+} from "@midl-xyz/midl-js-core";
 import { MidlProvider } from "@midl-xyz/midl-js-react";
 import { SatoshiKitProvider, createMidlConfig } from "@midl-xyz/satoshi-kit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
 
 const config = createMidlConfig({
-	networks: [testnet, testnet4, mainnet, regtest],
+	networks: [testnet, testnet4, signet, mainnet, regtest],
 	persist: true,
 });
 

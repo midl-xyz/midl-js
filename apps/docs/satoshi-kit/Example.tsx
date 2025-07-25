@@ -1,4 +1,4 @@
-import { regtest } from "@midl-xyz/midl-js-core";
+import { signet } from "@midl-xyz/midl-js-core";
 import { MidlProvider } from "@midl-xyz/midl-js-react";
 import {
 	ConnectButton,
@@ -9,7 +9,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React from "react";
 
 const config = createMidlConfig({
-	networks: [regtest],
+	networks: [signet],
 	persist: true,
 });
 

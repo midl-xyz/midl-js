@@ -10,6 +10,7 @@ import {
 	getDefaultAccount,
 	mainnet,
 	regtest,
+	signet,
 	testnet,
 	testnet4,
 	waitForTransaction,
@@ -99,11 +100,11 @@ export class MidlHardhatEnvironment {
 	}
 
 	private initializeNetwork() {
-		const networks = { regtest, mainnet, testnet4, testnet } as const;
+		const networks = { regtest, mainnet, testnet4, testnet, signet } as const;
 		const { network, hardhatNetwork } = this.userConfig;
 
 		if (!network) {
-			this.bitcoinNetwork = regtest;
+			this.bitcoinNetwork = signet;
 			return;
 		}
 
