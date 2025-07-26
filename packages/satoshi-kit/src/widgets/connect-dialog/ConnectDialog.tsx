@@ -56,6 +56,8 @@ export const ConnectDialog = ({ open, onClose }: ConnectDialogProps) => {
 
 	const isAuthenticating = (isSuccess && adapter) || signInState.isPending;
 
+	console.error("ConnectDialog error:", error);
+
 	return (
 		<Dialog.Root
 			open={open}
