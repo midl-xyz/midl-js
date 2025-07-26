@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 2.0.0-next.44
+
+### Patch Changes
+
+- feat: xverse midl regtest
+
 ## 2.0.0-next.43
 
 ### Patch Changes

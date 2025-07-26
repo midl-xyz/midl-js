@@ -109,7 +109,7 @@ importers:
         version: 5.69.0(react@18.3.1)
       vite-plugin-vitepress-auto-sidebar:
         specifier: ^1.7.1
-        version: 1.7.1(@typescript-eslint/parser@8.22.0(eslint@9.19.0(jiti@2.4.2))(typescript@5.7.2))(eslint@9.19.0(jiti@2.4.2))(typescript@5.7.2)(vite@5.4.14(@types/node@22.12.0)(lightningcss@1.25.1))(vitepress@1.6.3(@algolia/client-search@5.20.0)(@types/node@22.12.0)(@types/react@18.3.18)(axios@1.7.9)(change-case@5.4.4)(idb-keyval@6.2.1)(lightningcss@1.25.1)(postcss@8.5.1)(qrcode@1.5.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(search-insights@2.17.3)(typescript@5.7.2))
+        version: 1.7.1(@typescript-eslint/parser@8.22.0(eslint@9.19.0(jiti@2.4.2))(typescript@5.7.2))(eslint@9.19.0(jiti@2.4.2))(typescript@5.7.2)(vite@5.4.14(@types/node@22.12.0)(lightningcss@1.25.1))(vitepress@1.6.3(@algolia/client-search@5.20.0)(@types/node@22.12.0)(@types/react@18.3.18)(axios@1.8.4)(change-case@5.4.4)(idb-keyval@6.2.1)(lightningcss@1.25.1)(postcss@8.5.1)(qrcode@1.5.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(search-insights@2.17.3)(typescript@5.7.2))
       vitepress-plugin-auto-sidebar:
         specifier: ^1.2.0
         version: 1.2.0
@@ -119,7 +119,7 @@ importers:
     devDependencies:
       vitepress:
         specifier: ^1.6.3
-        version: 1.6.3(@algolia/client-search@5.20.0)(@types/node@22.12.0)(@types/react@18.3.18)(axios@1.7.9)(change-case@5.4.4)(idb-keyval@6.2.1)(lightningcss@1.25.1)(postcss@8.5.1)(qrcode@1.5.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(search-insights@2.17.3)(typescript@5.7.2)
+        version: 1.6.3(@algolia/client-search@5.20.0)(@types/node@22.12.0)(@types/react@18.3.18)(axios@1.8.4)(change-case@5.4.4)(idb-keyval@6.2.1)(lightningcss@1.25.1)(postcss@8.5.1)(qrcode@1.5.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(search-insights@2.17.3)(typescript@5.7.2)
 
   apps/e2e:
     dependencies:
@@ -278,8 +278,8 @@ importers:
         specifier: 7.0.0-rc.0
         version: 7.0.0-rc.0(typescript@5.7.2)
       sats-connect:
-        specifier: ^3.3.0
-        version: 3.3.0(typescript@5.7.2)
+        specifier: ^3.5.0
+        version: 3.5.0(typescript@5.7.2)
     devDependencies:
       '@leather.io/rpc':
         specifier: 2.1.12
@@ -3279,8 +3279,8 @@ packages:
     resolution: {integrity: sha512-7ojVK/crhOaGowEO8uYWaopZzcr5rR76emgllGIfjCLR70aY4PbASpi9Pbs+7jIRzPDBBkM0RBo+zYx5UduX8Q==}
     engines: {node: '>=16'}
 
-  '@sats-connect/core@0.5.8':
-    resolution: {integrity: sha512-jT+Hp7ERko2PWElprbDME0IPBx1abEQHHLf9+f+VDBi+NRKQsfAOWnLGY8geaEgRp51tnqPHZ7v9o8zDcnfyIQ==}
+  '@sats-connect/core@0.6.5':
+    resolution: {integrity: sha512-jltPdG3RzY6NPSp/ldoVTu7hOmMiuXr90osTHFPoQzprxcOs/1U4sZt/qAyGhfOM6B+ZXb7DF686BmFkUpPCJA==}
 
   '@sats-connect/make-default-provider-config@0.0.10':
     resolution: {integrity: sha512-BBot3Ofa2J7OwXprgYPD4C8dppX4nnPxj4FXWq1H7fDsvwJmW4sAnfmnAIzwmyWZJOR2uZqtTkXAA08sVkoN5g==}
@@ -4683,11 +4683,8 @@ packages:
   axios@0.21.4:
     resolution: {integrity: sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==}
 
-  axios@1.7.7:
-    resolution: {integrity: sha512-S4kL7XrjgBmvdGut0sN3yJxqYzrDOnivkBiN0OFs6hLiUam3UPvswUo0kqGyhqUZGEOytHyumEdXsAkgCOUf3Q==}
-
-  axios@1.7.9:
-    resolution: {integrity: sha512-LhLcE7Hbiryz8oMDdDptSrWowmB4Bl6RCt6sIJKpRB4XtVf0iEgewX3au/pJqm+Py1kCASkb/FFKjxQaLtxJvw==}
+  axios@1.8.4:
+    resolution: {integrity: sha512-eBSYY4Y68NNlHbHBMdeDmKNtDgXWhQsJcGqzO3iLUM0GraQFSS9cVgPX5I9b3lbdFKyYoAEGAZF1DwhTaljNAw==}
 
   babel-code-frame@6.26.0:
     resolution: {integrity: sha512-XqYMR2dfdGMW+hd0IUZ2PwK+fGeFkOxZJ0wY+JaQAHzt1Zx8LcvpiZD2NiGkEG8qx0CfkAOr5xt76d1e8vG90g==}
@@ -8182,8 +8179,8 @@ packages:
   safer-buffer@2.1.2:
     resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
 
-  sats-connect@3.3.0:
-    resolution: {integrity: sha512-rzWhSVzCeYAGYs2+RrVtU/jGdnobx83JuVdjN3fGSOa3s/6FIKXtV84nRlH111sE7yaUcTcqWy8K7UQ7uIOUvQ==}
+  sats-connect@3.5.0:
+    resolution: {integrity: sha512-/Czx9XcBV57ubAMrII3WaQG4kq7imdgGUOU9IRg0/8AWdjFczOq9wu1i7vCnxENm8MoRLuCfhMIHbekxUn23HA==}
 
   saxes@6.0.0:
     resolution: {integrity: sha512-xAg7SOnEhrm5zI3puOOKyy1OMcMlIJZYNJY7xLBwSze0UjhPLnWfj2GF2EpT0jmzaJKIWKHLsaSSajf35bcYnA==}
@@ -12611,9 +12608,9 @@ snapshots:
 
   '@safe-global/safe-gateway-typescript-sdk@3.22.9': {}
 
-  '@sats-connect/core@0.5.8(typescript@5.7.2)':
+  '@sats-connect/core@0.6.5(typescript@5.7.2)':
     dependencies:
-      axios: 1.7.7
+      axios: 1.8.4
       bitcoin-address-validation: 2.2.3
       buffer: 6.0.3
       jsontokens: 4.0.1
@@ -12622,9 +12619,9 @@ snapshots:
       - debug
       - typescript
 
-  '@sats-connect/make-default-provider-config@0.0.10(@sats-connect/core@0.5.8(typescript@5.7.2))(typescript@5.7.2)':
+  '@sats-connect/make-default-provider-config@0.0.10(@sats-connect/core@0.6.5(typescript@5.7.2))(typescript@5.7.2)':
     dependencies:
-      '@sats-connect/core': 0.5.8(typescript@5.7.2)
+      '@sats-connect/core': 0.6.5(typescript@5.7.2)
       '@sats-connect/ui': 0.0.6
       bowser: 2.11.0
       typescript: 5.7.2
@@ -13356,13 +13353,13 @@ snapshots:
     transitivePeerDependencies:
       - typescript
 
-  '@vueuse/integrations@12.5.0(axios@1.7.9)(change-case@5.4.4)(focus-trap@7.6.4)(idb-keyval@6.2.1)(qrcode@1.5.3)(typescript@5.7.2)':
+  '@vueuse/integrations@12.5.0(axios@1.8.4)(change-case@5.4.4)(focus-trap@7.6.4)(idb-keyval@6.2.1)(qrcode@1.5.3)(typescript@5.7.2)':
     dependencies:
       '@vueuse/core': 12.5.0(typescript@5.7.2)
       '@vueuse/shared': 12.5.0(typescript@5.7.2)
       vue: 3.5.13(typescript@5.7.2)
     optionalDependencies:
-      axios: 1.7.9
+      axios: 1.8.4
       change-case: 5.4.4
       focus-trap: 7.6.4
       idb-keyval: 6.2.1
@@ -15022,22 +15019,13 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  axios@1.7.7:
+  axios@1.8.4:
     dependencies:
       follow-redirects: 1.15.9(debug@4.4.0)
       form-data: 4.0.1
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
       - debug
-
-  axios@1.7.9:
-    dependencies:
-      follow-redirects: 1.15.9(debug@4.4.0)
-      form-data: 4.0.1
-      proxy-from-env: 1.1.0
-    transitivePeerDependencies:
-      - debug
-    optional: true
 
   babel-code-frame@6.26.0:
     dependencies:
@@ -19204,10 +19192,10 @@ snapshots:
 
   safer-buffer@2.1.2: {}
 
-  sats-connect@3.3.0(typescript@5.7.2):
+  sats-connect@3.5.0(typescript@5.7.2):
     dependencies:
-      '@sats-connect/core': 0.5.8(typescript@5.7.2)
-      '@sats-connect/make-default-provider-config': 0.0.10(@sats-connect/core@0.5.8(typescript@5.7.2))(typescript@5.7.2)
+      '@sats-connect/core': 0.6.5(typescript@5.7.2)
+      '@sats-connect/make-default-provider-config': 0.0.10(@sats-connect/core@0.6.5(typescript@5.7.2))(typescript@5.7.2)
       '@sats-connect/ui': 0.0.7
     transitivePeerDependencies:
       - debug
@@ -20322,7 +20310,7 @@ snapshots:
     transitivePeerDependencies:
       - typescript
 
-  vite-plugin-vitepress-auto-sidebar@1.7.1(@typescript-eslint/parser@8.22.0(eslint@9.19.0(jiti@2.4.2))(typescript@5.7.2))(eslint@9.19.0(jiti@2.4.2))(typescript@5.7.2)(vite@5.4.14(@types/node@22.12.0)(lightningcss@1.25.1))(vitepress@1.6.3(@algolia/client-search@5.20.0)(@types/node@22.12.0)(@types/react@18.3.18)(axios@1.7.9)(change-case@5.4.4)(idb-keyval@6.2.1)(lightningcss@1.25.1)(postcss@8.5.1)(qrcode@1.5.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(search-insights@2.17.3)(typescript@5.7.2)):
+  vite-plugin-vitepress-auto-sidebar@1.7.1(@typescript-eslint/parser@8.22.0(eslint@9.19.0(jiti@2.4.2))(typescript@5.7.2))(eslint@9.19.0(jiti@2.4.2))(typescript@5.7.2)(vite@5.4.14(@types/node@22.12.0)(lightningcss@1.25.1))(vitepress@1.6.3(@algolia/client-search@5.20.0)(@types/node@22.12.0)(@types/react@18.3.18)(axios@1.8.4)(change-case@5.4.4)(idb-keyval@6.2.1)(lightningcss@1.25.1)(postcss@8.5.1)(qrcode@1.5.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(search-insights@2.17.3)(typescript@5.7.2)):
     dependencies:
       eslint-config-love: 110.0.0(@typescript-eslint/parser@8.22.0(eslint@9.19.0(jiti@2.4.2))(typescript@5.7.2))(eslint@9.19.0(jiti@2.4.2))(typescript@5.7.2)
       front-matter: 4.0.2
@@ -20330,7 +20318,7 @@ snapshots:
       picocolors: 1.1.1
       typescript-eslint: 8.22.0(eslint@9.19.0(jiti@2.4.2))(typescript@5.7.2)
       vite: 5.4.14(@types/node@22.12.0)(lightningcss@1.25.1)
-      vitepress: 1.6.3(@algolia/client-search@5.20.0)(@types/node@22.12.0)(@types/react@18.3.18)(axios@1.7.9)(change-case@5.4.4)(idb-keyval@6.2.1)(lightningcss@1.25.1)(postcss@8.5.1)(qrcode@1.5.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(search-insights@2.17.3)(typescript@5.7.2)
+      vitepress: 1.6.3(@algolia/client-search@5.20.0)(@types/node@22.12.0)(@types/react@18.3.18)(axios@1.8.4)(change-case@5.4.4)(idb-keyval@6.2.1)(lightningcss@1.25.1)(postcss@8.5.1)(qrcode@1.5.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(search-insights@2.17.3)(typescript@5.7.2)
     transitivePeerDependencies:
       - '@typescript-eslint/parser'
       - eslint
@@ -20369,7 +20357,7 @@ snapshots:
       glob: 10.4.5
       gray-matter: 4.0.3
 
-  vitepress@1.6.3(@algolia/client-search@5.20.0)(@types/node@22.12.0)(@types/react@18.3.18)(axios@1.7.9)(change-case@5.4.4)(idb-keyval@6.2.1)(lightningcss@1.25.1)(postcss@8.5.1)(qrcode@1.5.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(search-insights@2.17.3)(typescript@5.7.2):
+  vitepress@1.6.3(@algolia/client-search@5.20.0)(@types/node@22.12.0)(@types/react@18.3.18)(axios@1.8.4)(change-case@5.4.4)(idb-keyval@6.2.1)(lightningcss@1.25.1)(postcss@8.5.1)(qrcode@1.5.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(search-insights@2.17.3)(typescript@5.7.2):
     dependencies:
       '@docsearch/css': 3.8.2
       '@docsearch/js': 3.8.2(@algolia/client-search@5.20.0)(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(search-insights@2.17.3)
@@ -20382,7 +20370,7 @@ snapshots:
       '@vue/devtools-api': 7.7.1
       '@vue/shared': 3.5.13
       '@vueuse/core': 12.5.0(typescript@5.7.2)
-      '@vueuse/integrations': 12.5.0(axios@1.7.9)(change-case@5.4.4)(focus-trap@7.6.4)(idb-keyval@6.2.1)(qrcode@1.5.3)(typescript@5.7.2)
+      '@vueuse/integrations': 12.5.0(axios@1.8.4)(change-case@5.4.4)(focus-trap@7.6.4)(idb-keyval@6.2.1)(qrcode@1.5.3)(typescript@5.7.2)
       focus-trap: 7.6.4
       mark.js: 8.11.1
       minisearch: 7.1.1
