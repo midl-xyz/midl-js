@@ -1,5 +1,13 @@
 # @midl-xyz/midl-js-connectors
 
+## 2.0.0-next.45
+
+### Patch Changes
+
+- feat: add network abstraction
+- Updated dependencies
+  - @midl-xyz/midl-js-core@2.0.0-next.45
+
 ## 2.0.0-next.44
 
 ### Patch Changes
