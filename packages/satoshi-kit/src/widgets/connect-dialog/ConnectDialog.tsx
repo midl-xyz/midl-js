@@ -2,6 +2,7 @@
 
 import { Portal } from "@ark-ui/react";
 import { useConnect, useDisconnect } from "@midl-xyz/midl-js-react";
+import { useMutation } from "@tanstack/react-query";
 import { ArrowLeftIcon, XIcon } from "lucide-react";
 import { css } from "styled-system/css";
 import { Flex, Grid, Stack } from "styled-system/jsx";
@@ -20,11 +21,26 @@ import { ConnectorList } from "~/widgets/connector-list";
 type ConnectDialogProps = {
 	open: boolean;
 	onClose: () => void;
+	beforeConnect?: (id: string) => Promise<void> | void;
 };
 
-export const ConnectDialog = ({ open, onClose }: ConnectDialogProps) => {
+export const ConnectDialog = ({
+	open,
+	onClose,
+	beforeConnect,
+}: ConnectDialogProps) => {
 	const { purposes, config } = useSatoshiKit();
 	const { disconnect } = useDisconnect({ config });
+	const { mutateAsync: mutateBeforeConnect, ...beforeConnectState } =
+		useMutation({
+			mutationFn: async (id: string) => {
+				if (beforeConnect) {
+					return beforeConnect(id);
+				}
+
+				return true;
+			},
+		});
 
 	const { adapter, signInAsync, signInState, signOutState } = useAuthentication(
 		{
@@ -37,26 +53,49 @@ export const ConnectDialog = ({ open, onClose }: ConnectDialogProps) => {
 		},
 	);
 
-	const { connect, variables, connectors, isPending, isSuccess, reset, error } =
-		useConnect({
-			purposes,
-			config,
-			mutation: {
-				onSuccess: async (accounts) => {
-					if (!adapter) {
-						return onClose();
-					}
+	const {
+		connect,
+		variables,
+		connectors,
+		isPending,
+		isSuccess,
+		reset,
+		error: connectError,
+	} = useConnect({
+		purposes,
+		config,
 
-					const [account] = accounts;
+		mutation: {
+			onSuccess: async (accounts) => {
+				if (!adapter) {
+					return onClose();
+				}
 
-					await signInAsync(account.address);
-				},
+				const [account] = accounts;
+
+				await signInAsync(account.address);
 			},
-		});
+		},
+	});
+
+	const handleConnect = async (id: string) => {
+		try {
+			if (beforeConnect) {
+				await mutateBeforeConnect(id);
+			}
+			connect({ id });
+		} catch {}
+	};
 
 	const isAuthenticating = (isSuccess && adapter) || signInState.isPending;
 
-	console.error("ConnectDialog error:", error);
+	const error = signInState.error || beforeConnectState.error || connectError;
+
+	if (error) {
+		console.error("ConnectDialog error:", error);
+	}
+
+	const connectorId = beforeConnectState?.variables || variables?.id;
 
 	return (
 		<Dialog.Root
@@ -66,6 +105,7 @@ export const ConnectDialog = ({ open, onClose }: ConnectDialogProps) => {
 			lazyMount
 			onExitComplete={() => {
 				reset();
+				beforeConnectState.reset();
 				signInState.reset();
 				signOutState.reset();
 			}}
@@ -110,11 +150,19 @@ export const ConnectDialog = ({ open, onClose }: ConnectDialogProps) => {
 										containerType: "inline-size",
 									})}
 								>
-									{!error && !isPending && !isAuthenticating && (
-										<ConnectorList onClick={(id) => connect({ id })} />
-									)}
+									{!error &&
+										!isPending &&
+										!isAuthenticating &&
+										!beforeConnectState.isPending && (
+											<ConnectorList
+												onClick={handleConnect}
+												connectors={connectors}
+											/>
+										)}
 
-									{(isPending || isAuthenticating) && (
+									{(isPending ||
+										isAuthenticating ||
+										beforeConnectState.isPending) && (
 										<Stack
 											gap={2}
 											px={4}
@@ -124,7 +172,11 @@ export const ConnectDialog = ({ open, onClose }: ConnectDialogProps) => {
 										>
 											<IconButton
 												variant="ghost"
-												onClick={() => reset()}
+												onClick={() => {
+													signInState.reset();
+													beforeConnectState.reset();
+													reset();
+												}}
 												alignSelf="start"
 												size="sm"
 											>
@@ -136,9 +188,9 @@ export const ConnectDialog = ({ open, onClose }: ConnectDialogProps) => {
 												justifyContent={"center"}
 												paddingTop={14}
 											>
-												{variables?.id && (
+												{connectorId && (
 													<WalletIcon
-														connectorId={variables.id}
+														connectorId={connectorId}
 														size={8}
 														className={css({
 															width: 10,
@@ -150,7 +202,7 @@ export const ConnectDialog = ({ open, onClose }: ConnectDialogProps) => {
 												<Text textStyle="lg" textAlign="center">
 													Opening{" "}
 													{
-														connectors?.find((it) => it.id === variables?.id)
+														connectors?.find((it) => it.id === connectorId)
 															?.metadata.name
 													}
 													...
@@ -169,61 +221,71 @@ export const ConnectDialog = ({ open, onClose }: ConnectDialogProps) => {
 										</Stack>
 									)}
 
-									{error && !isPending && !isAuthenticating && (
-										<Stack
-											gap={4}
-											px={4}
-											direction="column"
-											width="full"
-											alignItems="center"
-										>
-											<IconButton
-												variant="ghost"
-												onClick={() => reset()}
-												alignSelf="start"
-												size="sm"
-											>
-												<ArrowLeftIcon />
-											</IconButton>
-
+									{error &&
+										!isPending &&
+										!isAuthenticating &&
+										!beforeConnectState.isPending && (
 											<Stack
-												alignItems={"center"}
-												justifyContent={"center"}
-												paddingTop={14}
-												gap={0}
+												gap={4}
+												px={4}
+												direction="column"
+												width="full"
+												alignItems="center"
 											>
-												<ErrorIcon
-													className={css({
-														width: "4em",
-														height: "4em",
-													})}
-												/>
+												<IconButton
+													variant="ghost"
+													onClick={() => {
+														signInState.reset();
+														beforeConnectState.reset();
+														reset();
+													}}
+													alignSelf="start"
+													size="sm"
+												>
+													<ArrowLeftIcon />
+												</IconButton>
 
-												<Text textStyle="md" textAlign="center">
-													Failed to connect to{" "}
-													{
-														connectors?.find((it) => it.id === variables?.id)
-															?.metadata.name
-													}
-												</Text>
-												<Text textStyle="xs" px={3} textAlign="center">
-													{error.message ||
-														"Please try again or choose another wallet"}
-												</Text>
+												<Stack
+													alignItems={"center"}
+													justifyContent={"center"}
+													paddingTop={14}
+													gap={0}
+												>
+													<ErrorIcon
+														className={css({
+															width: "4em",
+															height: "4em",
+														})}
+													/>
+
+													<Text textStyle="md" textAlign="center">
+														Failed to connect to{" "}
+														{
+															connectors?.find((it) => it.id === connectorId)
+																?.metadata.name
+														}
+													</Text>
+													<Text textStyle="xs" px={3} textAlign="center">
+														{error.message ||
+															"Please try again or choose another wallet"}
+													</Text>
+												</Stack>
+
+												<Button
+													variant="solid"
+													size="sm"
+													onClick={() => {
+														beforeConnectState.reset();
+														reset();
+														if (connectorId) {
+															handleConnect(connectorId);
+														}
+													}}
+												>
+													Retry
+												</Button>
 											</Stack>
-
-											<Button
-												variant="solid"
-												size="sm"
-												onClick={() => {
-													reset();
-													connect({ id: variables?.id });
-												}}
-											>
-												Retry
-											</Button>
-										</Stack>
-									)}
+										)}
 								</Flex>
 							</Stack>
 							<Flex width="full">

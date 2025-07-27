@@ -1,5 +1,12 @@
 # @midl-xyz/midl-js-executor
 
+## 2.0.0-next.45
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-core@2.0.0-next.45
+
 ## 2.0.0-next.44
 
 ### Patch Changes

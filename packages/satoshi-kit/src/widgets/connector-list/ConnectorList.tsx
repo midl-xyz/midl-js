@@ -1,3 +1,4 @@
+import type { ConnectorWithMetadata } from "@midl-xyz/midl-js-core";
 import { useConfig, useConnect } from "@midl-xyz/midl-js-react";
 import { ArrowRightIcon } from "lucide-react";
 import { css } from "styled-system/css";
@@ -10,11 +11,10 @@ import { WalletIcon } from "~/shared/ui/wallet-icons";
 
 type Props = {
 	onClick: (id: string) => void;
+	connectors: ConnectorWithMetadata[];
 };
 
-export const ConnectorList = ({ onClick }: Props) => {
-	const { connectors } = useConfig();
-
+export const ConnectorList = ({ onClick, connectors }: Props) => {
 	const groupedConnectors = connectors.reduce(
 		(acc, connector) => {
 			const group = connector.metadata.group || "more";

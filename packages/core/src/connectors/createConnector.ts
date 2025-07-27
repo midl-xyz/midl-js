@@ -11,6 +11,13 @@ export type Account = {
 	readonly addressType: AddressType;
 };
 
+export type NetworkConfig = {
+	name: string;
+	network: BitcoinNetwork["id"];
+	rpcUrl: string;
+	indexerUrl: string;
+};
+
 export type ConnectorConnectParams = {
 	purposes: AddressPurpose[];
 	network: BitcoinNetwork;
@@ -30,6 +37,7 @@ export interface Connector {
 
 	beforeDisconnect?(): Promise<void>;
 	switchNetwork?(network: BitcoinNetwork): Promise<Account[]>;
+	addNetwork?(networkConfig: NetworkConfig): Promise<void>;
 }
 
 // biome-ignore lint/suspicious/noEmptyInterface: To allow for user-defined metadata

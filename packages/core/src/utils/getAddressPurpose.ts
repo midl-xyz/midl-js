@@ -6,6 +6,7 @@ export class AddressNetworkMismatch extends Error {
 	constructor() {
 		super();
 		this.name = "AddressNetworkMismatch";
+		this.message = "The address does not match the network configuration.";
 	}
 }
 
