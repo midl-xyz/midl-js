@@ -37,11 +37,14 @@ type ConnectButtonProps = {
 		isConnected: boolean;
 		isConnecting: boolean;
 	}) => React.ReactNode;
+
+	beforeConnect?: (id: string) => Promise<void> | void;
 };
 
 export const ConnectButton = ({
 	hideAddress = false,
 	hideBalance = false,
+	beforeConnect,
 	hideAvatar = false,
 	children,
 }: ConnectButtonProps) => {
@@ -54,6 +57,7 @@ export const ConnectButton = ({
 		<>
 			<ConnectDialog
 				open={isConnectDialogOpen}
+				beforeConnect={beforeConnect}
 				onClose={() => toggleConnectDialog(false)}
 			/>
 
