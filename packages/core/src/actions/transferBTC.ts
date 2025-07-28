@@ -1,6 +1,7 @@
 import ecc from "@bitcoinerlab/secp256k1";
 import { Psbt, initEccLib, networks } from "bitcoinjs-lib";
 import coinSelect, { type Target } from "bitcoinselect";
+import { getDefaultAccount } from "~/actions";
 import { broadcastTransaction } from "~/actions/broadcastTransaction";
 import { WalletConnectionError } from "~/actions/connect";
 import { getFeeRate } from "~/actions/getFeeRate";
@@ -92,11 +93,9 @@ export const transferBTC = async (
 	}
 
 	const { accounts } = config.getState();
-
 	const account = from
 		? accounts?.find((account) => account.address === from)
-		: accounts?.find((account) => account.purpose === AddressPurpose.Payment) ||
-			accounts?.[0];
+		: getDefaultAccount(config);
 
 	if (!account) {
 		throw new Error("No account found for the specified address.");
