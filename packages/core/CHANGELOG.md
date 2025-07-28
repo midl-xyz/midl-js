@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 2.0.0-next.46
+
+### Patch Changes
+
+- c5d7f73: feat: call switchNetwork connector
+
 ## 2.0.0-next.45
 
 ### Patch Changes
