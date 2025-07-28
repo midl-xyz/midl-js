@@ -1,5 +1,6 @@
 "use client";
 
+import { type Account, AddressPurpose } from "@midl-xyz/midl-js-core";
 import { useAccounts, useBalance } from "@midl-xyz/midl-js-react";
 import { useSatoshiKit } from "~/app";
 import { formatBTC, shortenAddress } from "~/shared";
@@ -30,7 +31,10 @@ export const AccountButton = ({
 }: AccountButtonProps) => {
 	const { config } = useSatoshiKit();
 	const { accounts } = useAccounts({ config });
-	const [primaryAccount] = accounts ?? [];
+	const primaryAccount =
+		accounts?.find((account) => account.purpose === AddressPurpose.Payment) ||
+		(accounts?.[0] as Account);
+
 	const { balance, isLoading } = useBalance({
 		address: primaryAccount.address,
 		config,
