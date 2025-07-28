@@ -28,7 +28,7 @@ describe("useDefaultAccount", () => {
 		expect(result.current).toBe(null);
 	});
 
-	it("should return taproot account if payment was found", async () => {
+	it("should return taproot account if payment was not found", async () => {
 		await connect(midlConfig, {
 			purposes: [AddressPurpose.Ordinals],
 		});
