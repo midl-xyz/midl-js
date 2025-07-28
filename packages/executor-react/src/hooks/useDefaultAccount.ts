@@ -16,7 +16,6 @@ type UseEVMAddressParams = {
 export const useDefaultAccount = ({
 	config: customConfig,
 }: UseEVMAddressParams = {}) => {
-	const config = useConfig(customConfig);
 	const configInternal = useConfigInternal(customConfig);
 
 	try {
