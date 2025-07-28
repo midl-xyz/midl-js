@@ -20,10 +20,6 @@ export const useDefaultAccount = ({
 	const configInternal = useConfigInternal(customConfig);
 
 	try {
-		if (!config.connection) {
-			return null;
-		}
-
 		return getDefaultAccount(configInternal);
 	} catch (e) {
 		console.error("Error getting default BTC account:", e);

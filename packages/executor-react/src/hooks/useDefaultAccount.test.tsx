@@ -15,7 +15,7 @@ describe("useDefaultAccount", () => {
 			wrapper: Wrapper,
 		});
 
-		expect(result.current?.purpose).toBe("payment");
+		expect(result.current?.purpose).toBe(AddressPurpose.Payment);
 
 		await disconnect(midlConfig);
 	});
@@ -37,7 +37,7 @@ describe("useDefaultAccount", () => {
 			wrapper: Wrapper,
 		});
 
-		expect(result.current?.purpose).toBe("ordinals");
+		expect(result.current?.purpose).toBe(AddressPurpose.Ordinals);
 
 		await disconnect(midlConfig);
 	});
