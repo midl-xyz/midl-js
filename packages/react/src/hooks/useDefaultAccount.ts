@@ -6,7 +6,7 @@ type UseEVMAddressParams = {
 };
 
 /**
- * Gets the default BTC account. Otherwise returns first one found
+ * Gets the default BTC account
  *
  * @example
  * ```ts
