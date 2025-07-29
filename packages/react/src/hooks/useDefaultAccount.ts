@@ -1,5 +1,5 @@
 import { type Config, getDefaultAccount } from "@midl-xyz/midl-js-core";
-import { useConfigInternal } from "~/index";
+import { useConfigInternal } from "~/hooks/useConfigInternal";
 
 type useDefaultAccountParams = {
 	config?: Config;
