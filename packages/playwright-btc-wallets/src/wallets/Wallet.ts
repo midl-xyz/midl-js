@@ -1,4 +1,10 @@
-import { mainnet, regtest, testnet, testnet4 } from "@midl-xyz/midl-js-core";
+import {
+	mainnet,
+	regtest,
+	signet,
+	testnet,
+	testnet4,
+} from "@midl-xyz/midl-js-core";
 import type { BrowserContext, Page } from "@playwright/test";
 
 export const supportedNetworks = {
@@ -6,6 +12,7 @@ export const supportedNetworks = {
 	regtest,
 	testnet,
 	testnet4,
+	signet,
 } as const;
 
 export type NetworkName = keyof typeof supportedNetworks;
@@ -21,6 +28,7 @@ export abstract class Wallet {
 			regtest: "https://mempool.regtest.midl.xyz/api",
 			testnet: "https://mempool.testnet.midl.xyz/api",
 			testnet4: "https://mempool.testnet4.midl.xyz/api",
+			signet: "https://mempool.space/signet/api",
 		},
 	) {}
 

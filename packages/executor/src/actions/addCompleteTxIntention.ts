@@ -3,7 +3,6 @@ import {
 	AddressType,
 	type Config,
 } from "@midl-xyz/midl-js-core";
-import type { MidlContextState } from "@midl-xyz/midl-js-react";
 import * as bitcoin from "bitcoinjs-lib";
 import {
 	type Address,
@@ -13,29 +12,26 @@ import {
 	toHex,
 	zeroAddress,
 } from "viem";
-import type { StoreApi } from "zustand";
 import { getPublicKey } from "~/actions";
 import { addTxIntention } from "~/actions/addTxIntention";
 import { executorAddress } from "~/config";
 import { executorAbi } from "~/contracts/abi";
 import type { TransactionIntention } from "~/types";
 
+export const COMPLETE_TX_GAS = 200_000n;
+
 export const addCompleteTxIntention = async (
 	config: Config,
-	store: StoreApi<MidlContextState>,
 	assetsToWithdraw?: [Address] | [Address, Address],
 ): Promise<TransactionIntention> => {
 	const { network, accounts } = config.getState();
-	const { intentions = [] } = store.getState();
 
 	if (!network) {
 		throw new Error("No network set");
 	}
 
 	const hasWithdraw = true;
-	const hasRunesWithdraw =
-		intentions.some((it) => it.hasRunesWithdraw) ||
-		(assetsToWithdraw?.length ?? 0) > 0;
+	const hasRunesWithdraw = (assetsToWithdraw?.length ?? 0) > 0;
 
 	const runesReceiver = accounts?.find(
 		(it) => it.purpose === AddressPurpose.Ordinals,
@@ -92,15 +88,19 @@ export const addCompleteTxIntention = async (
 						size: 32,
 					}),
 				);
+
+				break;
 			}
 		}
 	}
 
-	return addTxIntention(config, store, {
+	return addTxIntention(config, {
 		hasWithdraw,
 		hasRunesWithdraw,
 		evmTransaction: {
 			to: executorAddress[network.id] as Address,
+			// We set the gas limit to a high value to ensure the transaction goes through
+			gas: COMPLETE_TX_GAS,
 			data: encodeFunctionData({
 				abi: executorAbi,
 				functionName: "completeTx",

@@ -40,8 +40,18 @@ export const useAddCompleteTxIntention = ({
 	const config = useConfigInternal(customConfig);
 
 	const { mutate, mutateAsync, ...rest } = useMutation({
-		mutationFn: ({ assetsToWithdraw }: AddCompleteTxIntentionVariables) => {
-			return addCompleteTxIntention(config, store, assetsToWithdraw);
+		mutationFn: async ({
+			assetsToWithdraw,
+		}: AddCompleteTxIntentionVariables) => {
+			const intention = await addCompleteTxIntention(config, assetsToWithdraw);
+
+			store.setState((state) => {
+				return {
+					intentions: [...(state.intentions || []), intention],
+				};
+			});
+
+			return intention;
 		},
 	});
 

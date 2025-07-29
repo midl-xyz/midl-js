@@ -1,5 +1,115 @@
 # @midl-xyz/midl-js-executor
 
+## 2.0.0-next.47
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-core@2.0.0-next.47
+
+## 2.0.0-next.46
+
+### Patch Changes
+
+- Updated dependencies [c5d7f73]
+  - @midl-xyz/midl-js-core@2.0.0-next.46
+
+## 2.0.0-next.45
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-core@2.0.0-next.45
+
+## 2.0.0-next.44
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-core@2.0.0-next.44
+
+## 2.0.0-next.43
+
+### Patch Changes
+
+- d2518df: feat: add signet support
+- Updated dependencies [d2518df]
+  - @midl-xyz/midl-js-core@2.0.0-next.43
+
+## 2.0.0-next.42
+
+### Patch Changes
+
+- 6979a7f: fix(executor): btc fee rate response type
+
+## 2.0.0-next.40
+
+### Patch Changes
+
+- fix: select txs without gas only
+
+## 2.0.0-next.39
+
+### Patch Changes
+
+- feat: set complete tx gas cost
+
+## 2.0.0-next.38
+
+### Patch Changes
+
+- fix: estiamte gas total cost
+
+## 2.0.0-next.37
+
+### Patch Changes
+
+- feat: re-estimate with state override
+
+## 2.0.0-next.36
+
+### Patch Changes
+
+- fix: use sign intention
+
+## 2.0.0-next.34
+
+### Patch Changes
+
+- feat: add default state override
+
+## 2.0.0-next.33
+
+### Patch Changes
+
+- fix: gas price
+
+## 2.0.0-next.32
+
+### Patch Changes
+
+- feat: pass satoshis to tx
+- Updated dependencies
+  - @midl-xyz/midl-js-core@2.0.0-next.32
+
+## 2.0.0-next.31
+
+### Patch Changes
+
+- feat: fix gas price to 1000n
+
+## 2.0.0-next.30
+
+### Patch Changes
+
+- 19599b9: fix(executor): remove tx intention on complete
+
+## 2.0.0-next.29
+
+### Patch Changes
+
+- feat(executor): declarative api
+
 ## 2.0.0-next.28
 
 ### Patch Changes

@@ -80,7 +80,7 @@ import {
   useWaitForTransaction,
 } from "@midl-xyz/midl-js-react";
 import { encodeFunctionData } from "viem";
-import { useReadContract, useWalletClient } from "wagmi";
+import { useReadContract, usePublicClient } from "wagmi";
 import { SimpleStorage } from "./SimpleStorage";
 
 export function WriteContract() {
@@ -89,7 +89,7 @@ export function WriteContract() {
     useFinalizeTxIntentions();
 
   const { broadcastTransaction } = useBroadcastTransaction();
-  const { data: walletClient } = useWalletClient();
+  const publicClient = usePublicClient();
   const { waitForTransaction } = useWaitForTransaction({
     mutation: {
       onSuccess: () => {

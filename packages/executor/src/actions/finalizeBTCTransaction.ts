@@ -9,17 +9,13 @@ import {
 	getDefaultAccount,
 	transferBTC,
 } from "@midl-xyz/midl-js-core";
-import type { MidlContextState } from "@midl-xyz/midl-js-react";
 import type { Client, StateOverride } from "viem";
 import { estimateGasMulti } from "viem/actions";
-import type { StoreApi } from "zustand";
+import { createStateOverride } from "~/actions/createStateOverride";
 import { getBTCFeeRate } from "~/actions/getBTCFeeRate";
 import { multisigAddress } from "~/config";
-import {
-	calculateTransactionsCost,
-	convertETHtoBTC,
-	getEVMAddress,
-} from "~/utils";
+import type { TransactionIntention } from "~/types";
+import { calculateTransactionsCost, getEVMAddress } from "~/utils";
 
 type FinalizeBTCTransactionOptions = {
 	/**
@@ -30,10 +26,6 @@ type FinalizeBTCTransactionOptions = {
 	 * Public key of the account to use for signing
 	 */
 	publicKey?: string;
-	/**
-	 * Gas price for EVM transactions
-	 */
-	gasPrice?: bigint;
 
 	/**
 	 * Custom fee rate
@@ -65,7 +57,7 @@ type FinalizeBTCTransactionOptions = {
  */
 export const finalizeBTCTransaction = async (
 	config: Config,
-	store: StoreApi<MidlContextState>,
+	intentions: TransactionIntention[],
 	client: Client,
 	{ feeRate: customFeeRate, ...options }: FinalizeBTCTransactionOptions = {},
 ) => {
@@ -75,10 +67,14 @@ export const finalizeBTCTransaction = async (
 		throw new Error("No network set");
 	}
 
-	const { intentions = [] } = store.getState();
-
 	if (intentions.length === 0) {
 		throw new Error("Cannot finalize BTC transaction without intentions");
+	}
+
+	if (intentions.length > 10) {
+		throw new Error(
+			"Cannot finalize BTC transaction with more than 10 intentions",
+		);
 	}
 
 	const account = getDefaultAccount(
@@ -93,17 +89,52 @@ export const finalizeBTCTransaction = async (
 	const evmAddress = getEVMAddress(config, account);
 	const evmIntentions = intentions.filter((it) => Boolean(it.evmTransaction));
 	const evmTransactions = evmIntentions.map((it) => it.evmTransaction);
+	const hasWithdraw = intentions.some((it) => it.hasWithdraw);
+	const hasRunesWithdraw = intentions.some((it) => it.hasRunesWithdraw);
+	const feeRate = customFeeRate ?? Number(await getBTCFeeRate(config, client));
 
 	if (!options.skipEstimateGasMulti) {
-		let gasLimits: bigint[];
+		const stateOverride =
+			options.stateOverride ??
+			(await createStateOverride(config, client, intentions));
 
-		gasLimits = await estimateGasMulti(client as Client, {
-			transactions: evmTransactions,
-			stateOverride: options.stateOverride,
+		const emvTransactionsWithoutGas = evmTransactions.filter(
+			(it) => it.gas === undefined,
+		);
+
+		let gasLimits = await estimateGasMulti(client as Client, {
+			transactions: emvTransactionsWithoutGas,
+			stateOverride,
 			account: evmAddress,
 		});
+		if (!options.stateOverride) {
+			const totalGas = gasLimits.reduce((acc, gas) => acc + gas, 0n);
+
+			const totalCost = calculateTransactionsCost(totalGas, {
+				feeRate,
+				hasWithdraw: hasWithdraw,
+				hasRunesDeposit: intentions.some((it) => it.hasRunesDeposit),
+				hasRunesWithdraw: hasRunesWithdraw,
+				assetsToWithdrawSize: options.assetsToWithdrawSize ?? 0,
+			});
+
+			gasLimits = await estimateGasMulti(client as Client, {
+				transactions: emvTransactionsWithoutGas,
+				stateOverride: await createStateOverride(
+					config,
+					client,
+					intentions,
+					totalCost,
+				),
+				account: evmAddress,
+			});
+		}
 
 		for (const [i, intention] of evmIntentions.entries()) {
+			if (intention.evmTransaction.gas !== undefined) {
+				continue;
+			}
+
 			intention.evmTransaction.gas = BigInt(
 				// Increase gas limit by 20% to account for potential fluctuations
 				Math.ceil(Number(gasLimits[i]) * 1.2),
@@ -111,25 +142,22 @@ export const finalizeBTCTransaction = async (
 		}
 	}
 
-	const hasWithdraw = intentions.some((it) => it.hasWithdraw);
-	const hasRunesWithdraw = intentions.some((it) => it.hasRunesWithdraw);
+	const totalGas = evmTransactions.reduce(
+		(acc, tx) => acc + (tx.gas ?? 0n),
+		0n,
+	);
 
-	const feeRate = customFeeRate ?? Number(await getBTCFeeRate(config, client));
-
-	const totalCost = calculateTransactionsCost([...evmTransactions], {
+	const totalCost = calculateTransactionsCost(totalGas, {
 		feeRate,
-		gasPrice: options.gasPrice,
 		hasWithdraw: hasWithdraw,
 		hasRunesDeposit: intentions.some((it) => it.hasRunesDeposit),
 		hasRunesWithdraw: hasRunesWithdraw,
 		assetsToWithdrawSize: options.assetsToWithdrawSize ?? 0,
 	});
 
-	const btcTransfer = convertETHtoBTC(
-		intentions.reduce((acc, it) => {
-			return acc + (it.evmTransaction?.value ?? 0n);
-		}, 0n),
-	);
+	const btcTransfer = intentions.reduce((acc, it) => {
+		return acc + (it?.satoshis ?? 0);
+	}, 0);
 
 	const transfers: EdictRuneParams["transfers"] = [
 		{
@@ -141,12 +169,12 @@ export const finalizeBTCTransaction = async (
 	const runes = Array.from(
 		intentions
 			.filter((it) => it.hasRunesDeposit)
-			.map((it) => {
-				if (!it.rune) {
+			.flatMap((it) => {
+				if (!it.runes || it.runes.length === 0) {
 					throw new Error("No rune set");
 				}
 
-				return it.rune;
+				return it.runes;
 			})
 			.reduce(
 				(acc, rune) => {

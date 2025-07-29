@@ -10,8 +10,8 @@ import {
 	useStoreInternal,
 } from "@midl-xyz/midl-js-react";
 import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
-import type { Address, StateOverride } from "viem";
-import { useWalletClient } from "wagmi";
+import type { StateOverride } from "viem";
+import { usePublicClient } from "wagmi";
 
 type FinalizeMutationVariables = {
 	/**
@@ -63,7 +63,7 @@ export const useFinalizeBTCTransaction = ({
 }: UseFinalizeBTCTransactionParams = {}) => {
 	const store = useStoreInternal(customStore);
 	const config = useConfigInternal(customConfig);
-	const { data: publicClient } = useWalletClient();
+	const publicClient = usePublicClient();
 
 	const { mutate, mutateAsync, ...rest } = useMutation<
 		UseFinalizeBTCTransactionResponse,
@@ -80,12 +80,17 @@ export const useFinalizeBTCTransaction = ({
 				throw new Error("No public client set");
 			}
 
-			return finalizeBTCTransaction(config, store, publicClient, {
-				stateOverride,
-				assetsToWithdrawSize,
-				feeRate,
-				skipEstimateGasMulti,
-			});
+			return finalizeBTCTransaction(
+				config,
+				store.getState().intentions ?? [],
+				publicClient,
+				{
+					stateOverride,
+					assetsToWithdrawSize,
+					feeRate,
+					skipEstimateGasMulti,
+				},
+			);
 		},
 		...mutation,
 	});

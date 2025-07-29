@@ -1,25 +1,11 @@
-import {
-	AddressPurpose,
-	connect,
-	disconnect,
-	getDefaultAccount,
-} from "@midl-xyz/midl-js-core";
-import type { MidlContextState } from "@midl-xyz/midl-js-react";
+import { AddressPurpose, connect, disconnect } from "@midl-xyz/midl-js-core";
 import { decodeFunctionData } from "viem";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { createStore } from "zustand";
+import { afterEach, describe, expect, it } from "vitest";
 import { midlConfig, midlConfigP2SH } from "~/__tests__/midlConfig";
 import { addCompleteTxIntention } from "~/actions/addCompleteTxIntention";
-import { clearTxIntentions } from "~/actions/clearTxIntentions";
 import { executorAbi } from "~/contracts";
 
 describe("executor | actions | addCompleteTxIntention", () => {
-	const store = createStore<MidlContextState>()(() => ({}));
-
-	beforeEach(() => {
-		clearTxIntentions(store);
-	});
-
 	afterEach(async () => {
 		await disconnect(midlConfig);
 	});
@@ -29,7 +15,7 @@ describe("executor | actions | addCompleteTxIntention", () => {
 			purposes: [AddressPurpose.Ordinals],
 		});
 
-		const intention = await addCompleteTxIntention(midlConfig, store);
+		const intention = await addCompleteTxIntention(midlConfig);
 
 		const txData = decodeFunctionData({
 			abi: executorAbi,
@@ -46,7 +32,7 @@ describe("executor | actions | addCompleteTxIntention", () => {
 		await connect(midlConfig, {
 			purposes: [AddressPurpose.Ordinals],
 		});
-		const intention = await addCompleteTxIntention(midlConfig, store, [
+		const intention = await addCompleteTxIntention(midlConfig, [
 			"0x17C646bad1Ee22e6945E3fC5D9732077ED211560",
 		]);
 
@@ -68,7 +54,7 @@ describe("executor | actions | addCompleteTxIntention", () => {
 			purposes: [AddressPurpose.Payment, AddressPurpose.Ordinals],
 		});
 
-		const intention = await addCompleteTxIntention(midlConfig, store);
+		const intention = await addCompleteTxIntention(midlConfig);
 		const txData = decodeFunctionData({
 			abi: executorAbi,
 			// biome-ignore lint/style/noNonNullAssertion: Data is guaranteed to be present
@@ -85,7 +71,7 @@ describe("executor | actions | addCompleteTxIntention", () => {
 			purposes: [AddressPurpose.Payment, AddressPurpose.Ordinals],
 		});
 
-		const intention = await addCompleteTxIntention(midlConfigP2SH, store);
+		const intention = await addCompleteTxIntention(midlConfigP2SH);
 
 		const txData = decodeFunctionData({
 			abi: executorAbi,

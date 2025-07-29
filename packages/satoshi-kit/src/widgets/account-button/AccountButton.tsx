@@ -1,6 +1,6 @@
 "use client";
 
-import { useAccounts, useBalance } from "@midl-xyz/midl-js-react";
+import { useBalance, useDefaultAccount } from "@midl-xyz/midl-js-react";
 import { useSatoshiKit } from "~/app";
 import { formatBTC, shortenAddress } from "~/shared";
 import { Button } from "~/shared/ui/button";
@@ -17,7 +17,7 @@ type AccountButtonProps = {
 		address,
 	}: {
 		balance: number;
-		address: string;
+		address?: string;
 	}) => React.ReactNode;
 };
 
@@ -29,22 +29,24 @@ export const AccountButton = ({
 	children,
 }: AccountButtonProps) => {
 	const { config } = useSatoshiKit();
-	const { accounts } = useAccounts({ config });
-	const [primaryAccount] = accounts ?? [];
+	const primaryAccount = useDefaultAccount();
+
 	const { balance, isLoading } = useBalance({
-		address: primaryAccount.address,
+		address: primaryAccount?.address,
 		config,
 		query: {
-			enabled: Boolean(primaryAccount.address) && !hideBalance,
+			enabled: Boolean(primaryAccount?.address) && !hideBalance,
 		},
 	});
 
 	if (children) {
 		return children({
 			balance,
-			address: primaryAccount.address,
+			address: primaryAccount?.address,
 		});
 	}
+
+	if (!primaryAccount) return null;
 
 	return (
 		<Button type="button" onClick={onClick} variant="solid">

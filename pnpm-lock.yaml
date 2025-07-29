@@ -55,7 +55,7 @@ importers:
         version: 2.6.1(typescript@5.6.3)
       ts-node:
         specifier: ^10.9.2
-        version: 10.9.2(@swc/core@1.10.11)(@types/node@22.12.0)(typescript@5.6.3)
+        version: 10.9.2(@swc/core@1.10.11(@swc/helpers@0.5.15))(@types/node@22.12.0)(typescript@5.6.3)
       ts-patch:
         specifier: ^3.3.0
         version: 3.3.0
@@ -109,7 +109,7 @@ importers:
         version: 5.69.0(react@18.3.1)
       vite-plugin-vitepress-auto-sidebar:
         specifier: ^1.7.1
-        version: 1.7.1(@typescript-eslint/parser@8.22.0(eslint@9.19.0(jiti@2.4.2))(typescript@5.7.2))(eslint@9.19.0(jiti@2.4.2))(typescript@5.7.2)(vite@5.4.14(@types/node@22.12.0)(lightningcss@1.25.1))(vitepress@1.6.3(@algolia/client-search@5.20.0)(@types/node@22.12.0)(@types/react@18.3.18)(axios@1.7.9)(change-case@5.4.4)(idb-keyval@6.2.1)(lightningcss@1.25.1)(postcss@8.5.1)(qrcode@1.5.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(search-insights@2.17.3)(typescript@5.7.2))
+        version: 1.7.1(@typescript-eslint/parser@8.22.0(eslint@9.19.0(jiti@2.4.2))(typescript@5.7.2))(eslint@9.19.0(jiti@2.4.2))(typescript@5.7.2)(vite@5.4.14(@types/node@22.12.0)(lightningcss@1.25.1))(vitepress@1.6.3(@algolia/client-search@5.20.0)(@types/node@22.12.0)(@types/react@18.3.18)(axios@1.8.4)(change-case@5.4.4)(idb-keyval@6.2.1)(lightningcss@1.25.1)(postcss@8.5.1)(qrcode@1.5.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(search-insights@2.17.3)(typescript@5.7.2))
       vitepress-plugin-auto-sidebar:
         specifier: ^1.2.0
         version: 1.2.0
@@ -119,7 +119,7 @@ importers:
     devDependencies:
       vitepress:
         specifier: ^1.6.3
-        version: 1.6.3(@algolia/client-search@5.20.0)(@types/node@22.12.0)(@types/react@18.3.18)(axios@1.7.9)(change-case@5.4.4)(idb-keyval@6.2.1)(lightningcss@1.25.1)(postcss@8.5.1)(qrcode@1.5.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(search-insights@2.17.3)(typescript@5.7.2)
+        version: 1.6.3(@algolia/client-search@5.20.0)(@types/node@22.12.0)(@types/react@18.3.18)(axios@1.8.4)(change-case@5.4.4)(idb-keyval@6.2.1)(lightningcss@1.25.1)(postcss@8.5.1)(qrcode@1.5.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(search-insights@2.17.3)(typescript@5.7.2)
 
   apps/e2e:
     dependencies:
@@ -243,7 +243,7 @@ importers:
         version: 2.6.0
       tailwindcss-animate:
         specifier: ^1.0.7
-        version: 1.0.7(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.10.11)(@types/node@20.17.16)(typescript@5.6.3)))
+        version: 1.0.7(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.10.11(@swc/helpers@0.5.15))(@types/node@20.17.16)(typescript@5.6.3)))
       zod:
         specifier: ^3.23.8
         version: 3.24.1
@@ -265,7 +265,7 @@ importers:
         version: 8.5.1
       tailwindcss:
         specifier: ^3.4.14
-        version: 3.4.17(ts-node@10.9.2(@swc/core@1.10.11)(@types/node@20.17.16)(typescript@5.6.3))
+        version: 3.4.17(ts-node@10.9.2(@swc/core@1.10.11(@swc/helpers@0.5.15))(@types/node@20.17.16)(typescript@5.6.3))
       typescript:
         specifier: ^5
         version: 5.6.3
@@ -278,8 +278,8 @@ importers:
         specifier: 7.0.0-rc.0
         version: 7.0.0-rc.0(typescript@5.7.2)
       sats-connect:
-        specifier: ^3.3.0
-        version: 3.3.0(typescript@5.7.2)
+        specifier: ^3.5.0
+        version: 3.5.0(typescript@5.7.2)
     devDependencies:
       '@leather.io/rpc':
         specifier: 2.1.12
@@ -347,13 +347,10 @@ importers:
         version: 1.2.0
       '@midl-xyz/contracts':
         specifier: ^0.1.1
-        version: 0.1.1(hardhat@2.22.18(bufferutil@4.0.9)(ts-node@10.9.2(@swc/core@1.10.11)(@types/node@22.12.0)(typescript@5.7.2))(typescript@5.7.2)(utf-8-validate@5.0.10))
+        version: 0.1.1(hardhat@2.22.18(bufferutil@4.0.9)(ts-node@10.9.2(@swc/core@1.10.11(@swc/helpers@0.5.15))(@types/node@22.12.0)(typescript@5.7.2))(typescript@5.7.2)(utf-8-validate@5.0.10))
       '@midl-xyz/midl-js-core':
         specifier: workspace:^
         version: link:../core
-      '@midl-xyz/midl-js-react':
-        specifier: workspace:^
-        version: link:../react
       '@midl-xyz/midl-viem':
         specifier: '*'
         version: 2.21.37(bufferutil@4.0.9)(typescript@5.7.2)(utf-8-validate@5.0.10)(zod@3.24.1)
@@ -394,6 +391,9 @@ importers:
       ecpair:
         specifier: ^2.1.0
         version: 2.1.0
+      msw:
+        specifier: ^2.7.0
+        version: 2.7.0(@types/node@22.12.0)(typescript@5.7.2)
       viem:
         specifier: npm:@midl-xyz/midl-viem@2.21.37
         version: '@midl-xyz/midl-viem@2.21.37(bufferutil@4.0.9)(typescript@5.7.2)(utf-8-validate@5.0.10)(zod@3.24.1)'
@@ -402,7 +402,7 @@ importers:
     dependencies:
       '@midl-xyz/contracts':
         specifier: ^0.1.1
-        version: 0.1.1(hardhat@2.22.18(bufferutil@4.0.9)(ts-node@10.9.2(@swc/core@1.10.11)(@types/node@22.12.0)(typescript@5.7.2))(typescript@5.7.2)(utf-8-validate@5.0.10))
+        version: 0.1.1(hardhat@2.22.18(bufferutil@4.0.9)(ts-node@10.9.2(@swc/core@1.10.11(@swc/helpers@0.5.15))(@types/node@22.12.0)(typescript@5.7.2))(typescript@5.7.2)(utf-8-validate@5.0.10))
       '@midl-xyz/midl-js-core':
         specifier: workspace:^
         version: link:../core
@@ -478,7 +478,7 @@ importers:
         version: link:../react
       '@nomicfoundation/hardhat-viem':
         specifier: ^2.0.6
-        version: 2.0.6(@midl-xyz/midl-viem@2.21.37(bufferutil@4.0.9)(typescript@5.7.2)(utf-8-validate@5.0.10)(zod@3.24.1))(hardhat@2.22.18(bufferutil@4.0.9)(ts-node@10.9.2(@swc/core@1.10.11)(@types/node@22.12.0)(typescript@5.7.2))(typescript@5.7.2)(utf-8-validate@5.0.10))(typescript@5.7.2)(zod@3.24.1)
+        version: 2.0.6(@midl-xyz/midl-viem@2.21.37(bufferutil@4.0.9)(typescript@5.7.2)(utf-8-validate@5.0.10)(zod@3.24.1))(hardhat@2.22.18(bufferutil@4.0.9)(ts-node@10.9.2(@swc/core@1.10.11(@swc/helpers@0.5.15))(@types/node@22.12.0)(typescript@5.7.2))(typescript@5.7.2)(utf-8-validate@5.0.10))(typescript@5.7.2)(zod@3.24.1)
       bip32:
         specifier: 5.0.0-rc.0
         version: 5.0.0-rc.0(typescript@5.7.2)
@@ -503,7 +503,7 @@ importers:
         version: link:../config
       hardhat:
         specifier: ^2.22.17
-        version: 2.22.18(bufferutil@4.0.9)(ts-node@10.9.2(@swc/core@1.10.11)(@types/node@22.12.0)(typescript@5.7.2))(typescript@5.7.2)(utf-8-validate@5.0.10)
+        version: 2.22.18(bufferutil@4.0.9)(ts-node@10.9.2(@swc/core@1.10.11(@swc/helpers@0.5.15))(@types/node@22.12.0)(typescript@5.7.2))(typescript@5.7.2)(utf-8-validate@5.0.10)
       hardhat-deploy:
         specifier: ^1.0.3
         version: 1.0.3(bufferutil@4.0.9)(utf-8-validate@5.0.10)
@@ -630,10 +630,10 @@ importers:
         version: link:../react
       '@pandacss/dev':
         specifier: ^0.53.1
-        version: 0.53.1(jsdom@24.1.3)(typescript@5.7.2)
+        version: 0.53.1(jsdom@24.1.3(bufferutil@4.0.9)(utf-8-validate@5.0.10))(typescript@5.7.2)
       '@park-ui/panda-preset':
         specifier: ^0.43.1
-        version: 0.43.1(@internationalized/date@3.7.0)(@pandacss/dev@0.53.1(jsdom@24.1.3)(typescript@5.7.2))
+        version: 0.43.1(@internationalized/date@3.7.0)(@pandacss/dev@0.53.1(jsdom@24.1.3(bufferutil@4.0.9)(utf-8-validate@5.0.10))(typescript@5.7.2))
       '@tanstack/react-query':
         specifier: 5.69.0
         version: 5.69.0(react@18.3.1)
@@ -753,6 +753,7 @@ packages:
 
   '@ark-ui/anatomy@3.5.0':
     resolution: {integrity: sha512-KoROLVVT23BvFHcye/GYhG8NJ2CH0C+CaoJhXrkEjvk8pbEx80Xk5NIUy5gL7xmX+LDD7kY5t3NotBqCu+2L2w==}
+    deprecated: This package is deprecated. Please import directly from @ark-ui/<framework>
 
   '@ark-ui/react@5.0.1':
     resolution: {integrity: sha512-8yhzHi3/LEh1H8euPF9Wp52TGqIbzH02nCdpydaJ42umgPpS+h1/09XtgtJ34GR7YXeo2bUEgXovdZxd+pUJrA==}
@@ -3278,8 +3279,8 @@ packages:
     resolution: {integrity: sha512-7ojVK/crhOaGowEO8uYWaopZzcr5rR76emgllGIfjCLR70aY4PbASpi9Pbs+7jIRzPDBBkM0RBo+zYx5UduX8Q==}
     engines: {node: '>=16'}
 
-  '@sats-connect/core@0.5.8':
-    resolution: {integrity: sha512-jT+Hp7ERko2PWElprbDME0IPBx1abEQHHLf9+f+VDBi+NRKQsfAOWnLGY8geaEgRp51tnqPHZ7v9o8zDcnfyIQ==}
+  '@sats-connect/core@0.6.5':
+    resolution: {integrity: sha512-jltPdG3RzY6NPSp/ldoVTu7hOmMiuXr90osTHFPoQzprxcOs/1U4sZt/qAyGhfOM6B+ZXb7DF686BmFkUpPCJA==}
 
   '@sats-connect/make-default-provider-config@0.0.10':
     resolution: {integrity: sha512-BBot3Ofa2J7OwXprgYPD4C8dppX4nnPxj4FXWq1H7fDsvwJmW4sAnfmnAIzwmyWZJOR2uZqtTkXAA08sVkoN5g==}
@@ -3965,6 +3966,7 @@ packages:
 
   '@walletconnect/modal@2.7.0':
     resolution: {integrity: sha512-RQVt58oJ+rwqnPcIvRFeMGKuXb9qkgSmwz4noF8JZGUym3gUAzVs+uW2NQ1Owm9XOJAV+sANrtJ+VoVq1ftElw==}
+    deprecated: Please follow the migration guide on https://docs.reown.com/appkit/upgrade/wcm
 
   '@walletconnect/relay-api@1.0.11':
     resolution: {integrity: sha512-tLPErkze/HmC9aCmdZOhtVmYZq1wKfWTJtygQHoWtgg722Jd4homo54Cs4ak2RUFUZIGO2RsOpIcWipaua5D5Q==}
@@ -4681,11 +4683,8 @@ packages:
   axios@0.21.4:
     resolution: {integrity: sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==}
 
-  axios@1.7.7:
-    resolution: {integrity: sha512-S4kL7XrjgBmvdGut0sN3yJxqYzrDOnivkBiN0OFs6hLiUam3UPvswUo0kqGyhqUZGEOytHyumEdXsAkgCOUf3Q==}
-
-  axios@1.7.9:
-    resolution: {integrity: sha512-LhLcE7Hbiryz8oMDdDptSrWowmB4Bl6RCt6sIJKpRB4XtVf0iEgewX3au/pJqm+Py1kCASkb/FFKjxQaLtxJvw==}
+  axios@1.8.4:
+    resolution: {integrity: sha512-eBSYY4Y68NNlHbHBMdeDmKNtDgXWhQsJcGqzO3iLUM0GraQFSS9cVgPX5I9b3lbdFKyYoAEGAZF1DwhTaljNAw==}
 
   babel-code-frame@6.26.0:
     resolution: {integrity: sha512-XqYMR2dfdGMW+hd0IUZ2PwK+fGeFkOxZJ0wY+JaQAHzt1Zx8LcvpiZD2NiGkEG8qx0CfkAOr5xt76d1e8vG90g==}
@@ -8180,8 +8179,8 @@ packages:
   safer-buffer@2.1.2:
     resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
 
-  sats-connect@3.3.0:
-    resolution: {integrity: sha512-rzWhSVzCeYAGYs2+RrVtU/jGdnobx83JuVdjN3fGSOa3s/6FIKXtV84nRlH111sE7yaUcTcqWy8K7UQ7uIOUvQ==}
+  sats-connect@3.5.0:
+    resolution: {integrity: sha512-/Czx9XcBV57ubAMrII3WaQG4kq7imdgGUOU9IRg0/8AWdjFczOq9wu1i7vCnxENm8MoRLuCfhMIHbekxUn23HA==}
 
   saxes@6.0.0:
     resolution: {integrity: sha512-xAg7SOnEhrm5zI3puOOKyy1OMcMlIJZYNJY7xLBwSze0UjhPLnWfj2GF2EpT0jmzaJKIWKHLsaSSajf35bcYnA==}
@@ -9844,7 +9843,7 @@ snapshots:
       '@babel/traverse': 7.28.0
       '@babel/types': 7.28.1
       convert-source-map: 2.0.0
-      debug: 4.4.0
+      debug: 4.4.0(supports-color@8.1.1)
       gensync: 1.0.0-beta.2
       json5: 2.2.3
       semver: 6.3.1
@@ -9938,7 +9937,7 @@ snapshots:
       '@babel/parser': 7.28.0
       '@babel/template': 7.27.2
       '@babel/types': 7.28.1
-      debug: 4.4.0
+      debug: 4.4.0(supports-color@8.1.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -11637,9 +11636,9 @@ snapshots:
 
   '@microsoft/tsdoc@0.15.1': {}
 
-  '@midl-xyz/contracts@0.1.1(hardhat@2.22.18(bufferutil@4.0.9)(ts-node@10.9.2(@swc/core@1.10.11)(@types/node@22.12.0)(typescript@5.7.2))(typescript@5.7.2)(utf-8-validate@5.0.10))':
+  '@midl-xyz/contracts@0.1.1(hardhat@2.22.18(bufferutil@4.0.9)(ts-node@10.9.2(@swc/core@1.10.11(@swc/helpers@0.5.15))(@types/node@22.12.0)(typescript@5.7.2))(typescript@5.7.2)(utf-8-validate@5.0.10))':
     dependencies:
-      hardhat-abi-exporter: 2.11.0(hardhat@2.22.18(bufferutil@4.0.9)(ts-node@10.9.2(@swc/core@1.10.11)(@types/node@22.12.0)(typescript@5.7.2))(typescript@5.7.2)(utf-8-validate@5.0.10))
+      hardhat-abi-exporter: 2.11.0(hardhat@2.22.18(bufferutil@4.0.9)(ts-node@10.9.2(@swc/core@1.10.11(@swc/helpers@0.5.15))(@types/node@22.12.0)(typescript@5.7.2))(typescript@5.7.2)(utf-8-validate@5.0.10))
     transitivePeerDependencies:
       - hardhat
 
@@ -11843,10 +11842,10 @@ snapshots:
       '@nomicfoundation/ethereumjs-rlp': 5.0.4
       ethereum-cryptography: 0.1.3
 
-  '@nomicfoundation/hardhat-viem@2.0.6(@midl-xyz/midl-viem@2.21.37(bufferutil@4.0.9)(typescript@5.7.2)(utf-8-validate@5.0.10)(zod@3.24.1))(hardhat@2.22.18(bufferutil@4.0.9)(ts-node@10.9.2(@swc/core@1.10.11)(@types/node@22.12.0)(typescript@5.7.2))(typescript@5.7.2)(utf-8-validate@5.0.10))(typescript@5.7.2)(zod@3.24.1)':
+  '@nomicfoundation/hardhat-viem@2.0.6(@midl-xyz/midl-viem@2.21.37(bufferutil@4.0.9)(typescript@5.7.2)(utf-8-validate@5.0.10)(zod@3.24.1))(hardhat@2.22.18(bufferutil@4.0.9)(ts-node@10.9.2(@swc/core@1.10.11(@swc/helpers@0.5.15))(@types/node@22.12.0)(typescript@5.7.2))(typescript@5.7.2)(utf-8-validate@5.0.10))(typescript@5.7.2)(zod@3.24.1)':
     dependencies:
       abitype: 0.9.10(typescript@5.7.2)(zod@3.24.1)
-      hardhat: 2.22.18(bufferutil@4.0.9)(ts-node@10.9.2(@swc/core@1.10.11)(@types/node@22.12.0)(typescript@5.7.2))(typescript@5.7.2)(utf-8-validate@5.0.10)
+      hardhat: 2.22.18(bufferutil@4.0.9)(ts-node@10.9.2(@swc/core@1.10.11(@swc/helpers@0.5.15))(@types/node@22.12.0)(typescript@5.7.2))(typescript@5.7.2)(utf-8-validate@5.0.10)
       lodash.memoize: 4.1.2
       viem: '@midl-xyz/midl-viem@2.21.37(bufferutil@4.0.9)(typescript@5.7.2)(utf-8-validate@5.0.10)(zod@3.24.1)'
     transitivePeerDependencies:
@@ -11929,13 +11928,13 @@ snapshots:
       postcss-selector-parser: 6.1.2
       ts-pattern: 5.0.8
 
-  '@pandacss/dev@0.53.1(jsdom@24.1.3)(typescript@5.7.2)':
+  '@pandacss/dev@0.53.1(jsdom@24.1.3(bufferutil@4.0.9)(utf-8-validate@5.0.10))(typescript@5.7.2)':
     dependencies:
       '@clack/prompts': 0.9.1
       '@pandacss/config': 0.53.1
       '@pandacss/logger': 0.53.1
-      '@pandacss/node': 0.53.1(jsdom@24.1.3)(typescript@5.7.2)
-      '@pandacss/postcss': 0.53.1(jsdom@24.1.3)(typescript@5.7.2)
+      '@pandacss/node': 0.53.1(jsdom@24.1.3(bufferutil@4.0.9)(utf-8-validate@5.0.10))(typescript@5.7.2)
+      '@pandacss/postcss': 0.53.1(jsdom@24.1.3(bufferutil@4.0.9)(utf-8-validate@5.0.10))(typescript@5.7.2)
       '@pandacss/preset-panda': 0.53.1
       '@pandacss/shared': 0.53.1
       '@pandacss/token-dictionary': 0.53.1
@@ -11945,10 +11944,10 @@ snapshots:
       - jsdom
       - typescript
 
-  '@pandacss/extractor@0.53.1(jsdom@24.1.3)(typescript@5.7.2)':
+  '@pandacss/extractor@0.53.1(jsdom@24.1.3(bufferutil@4.0.9)(utf-8-validate@5.0.10))(typescript@5.7.2)':
     dependencies:
       '@pandacss/shared': 0.53.1
-      ts-evaluator: 1.2.0(jsdom@24.1.3)(typescript@5.7.2)
+      ts-evaluator: 1.2.0(jsdom@24.1.3(bufferutil@4.0.9)(utf-8-validate@5.0.10))(typescript@5.7.2)
       ts-morph: 24.0.0
     transitivePeerDependencies:
       - jsdom
@@ -11975,13 +11974,13 @@ snapshots:
       '@pandacss/types': 0.53.1
       kleur: 4.1.5
 
-  '@pandacss/node@0.53.1(jsdom@24.1.3)(typescript@5.7.2)':
+  '@pandacss/node@0.53.1(jsdom@24.1.3(bufferutil@4.0.9)(utf-8-validate@5.0.10))(typescript@5.7.2)':
     dependencies:
       '@pandacss/config': 0.53.1
       '@pandacss/core': 0.53.1
       '@pandacss/generator': 0.53.1
       '@pandacss/logger': 0.53.1
-      '@pandacss/parser': 0.53.1(jsdom@24.1.3)(typescript@5.7.2)
+      '@pandacss/parser': 0.53.1(jsdom@24.1.3(bufferutil@4.0.9)(utf-8-validate@5.0.10))(typescript@5.7.2)
       '@pandacss/reporter': 0.53.1
       '@pandacss/shared': 0.53.1
       '@pandacss/token-dictionary': 0.53.1
@@ -12009,11 +12008,11 @@ snapshots:
       - jsdom
       - typescript
 
-  '@pandacss/parser@0.53.1(jsdom@24.1.3)(typescript@5.7.2)':
+  '@pandacss/parser@0.53.1(jsdom@24.1.3(bufferutil@4.0.9)(utf-8-validate@5.0.10))(typescript@5.7.2)':
     dependencies:
       '@pandacss/config': 0.53.1
       '@pandacss/core': 0.53.1
-      '@pandacss/extractor': 0.53.1(jsdom@24.1.3)(typescript@5.7.2)
+      '@pandacss/extractor': 0.53.1(jsdom@24.1.3(bufferutil@4.0.9)(utf-8-validate@5.0.10))(typescript@5.7.2)
       '@pandacss/logger': 0.53.1
       '@pandacss/shared': 0.53.1
       '@pandacss/types': 0.53.1
@@ -12025,9 +12024,9 @@ snapshots:
       - jsdom
       - typescript
 
-  '@pandacss/postcss@0.53.1(jsdom@24.1.3)(typescript@5.7.2)':
+  '@pandacss/postcss@0.53.1(jsdom@24.1.3(bufferutil@4.0.9)(utf-8-validate@5.0.10))(typescript@5.7.2)':
     dependencies:
-      '@pandacss/node': 0.53.1(jsdom@24.1.3)(typescript@5.7.2)
+      '@pandacss/node': 0.53.1(jsdom@24.1.3(bufferutil@4.0.9)(utf-8-validate@5.0.10))(typescript@5.7.2)
       postcss: 8.4.49
     transitivePeerDependencies:
       - jsdom
@@ -12062,10 +12061,10 @@ snapshots:
 
   '@pandacss/types@0.53.1': {}
 
-  '@park-ui/panda-preset@0.43.1(@internationalized/date@3.7.0)(@pandacss/dev@0.53.1(jsdom@24.1.3)(typescript@5.7.2))':
+  '@park-ui/panda-preset@0.43.1(@internationalized/date@3.7.0)(@pandacss/dev@0.53.1(jsdom@24.1.3(bufferutil@4.0.9)(utf-8-validate@5.0.10))(typescript@5.7.2))':
     dependencies:
       '@ark-ui/anatomy': 3.5.0(@internationalized/date@3.7.0)
-      '@pandacss/dev': 0.53.1(jsdom@24.1.3)(typescript@5.7.2)
+      '@pandacss/dev': 0.53.1(jsdom@24.1.3(bufferutil@4.0.9)(utf-8-validate@5.0.10))(typescript@5.7.2)
       effect: 3.10.15
     transitivePeerDependencies:
       - '@internationalized/date'
@@ -12609,9 +12608,9 @@ snapshots:
 
   '@safe-global/safe-gateway-typescript-sdk@3.22.9': {}
 
-  '@sats-connect/core@0.5.8(typescript@5.7.2)':
+  '@sats-connect/core@0.6.5(typescript@5.7.2)':
     dependencies:
-      axios: 1.7.7
+      axios: 1.8.4
       bitcoin-address-validation: 2.2.3
       buffer: 6.0.3
       jsontokens: 4.0.1
@@ -12620,9 +12619,9 @@ snapshots:
       - debug
       - typescript
 
-  '@sats-connect/make-default-provider-config@0.0.10(@sats-connect/core@0.5.8(typescript@5.7.2))(typescript@5.7.2)':
+  '@sats-connect/make-default-provider-config@0.0.10(@sats-connect/core@0.6.5(typescript@5.7.2))(typescript@5.7.2)':
     dependencies:
-      '@sats-connect/core': 0.5.8(typescript@5.7.2)
+      '@sats-connect/core': 0.6.5(typescript@5.7.2)
       '@sats-connect/ui': 0.0.6
       bowser: 2.11.0
       typescript: 5.7.2
@@ -12872,7 +12871,7 @@ snapshots:
   '@swc/core-win32-x64-msvc@1.10.11':
     optional: true
 
-  '@swc/core@1.10.11':
+  '@swc/core@1.10.11(@swc/helpers@0.5.15)':
     dependencies:
       '@swc/counter': 0.1.3
       '@swc/types': 0.1.17
@@ -12887,6 +12886,7 @@ snapshots:
       '@swc/core-win32-arm64-msvc': 1.10.11
       '@swc/core-win32-ia32-msvc': 1.10.11
       '@swc/core-win32-x64-msvc': 1.10.11
+      '@swc/helpers': 0.5.15
     optional: true
 
   '@swc/counter@0.1.3': {}
@@ -13353,13 +13353,13 @@ snapshots:
     transitivePeerDependencies:
       - typescript
 
-  '@vueuse/integrations@12.5.0(axios@1.7.9)(change-case@5.4.4)(focus-trap@7.6.4)(idb-keyval@6.2.1)(qrcode@1.5.3)(typescript@5.7.2)':
+  '@vueuse/integrations@12.5.0(axios@1.8.4)(change-case@5.4.4)(focus-trap@7.6.4)(idb-keyval@6.2.1)(qrcode@1.5.3)(typescript@5.7.2)':
     dependencies:
       '@vueuse/core': 12.5.0(typescript@5.7.2)
       '@vueuse/shared': 12.5.0(typescript@5.7.2)
       vue: 3.5.13(typescript@5.7.2)
     optionalDependencies:
-      axios: 1.7.9
+      axios: 1.8.4
       change-case: 5.4.4
       focus-trap: 7.6.4
       idb-keyval: 6.2.1
@@ -15019,22 +15019,13 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  axios@1.7.7:
+  axios@1.8.4:
     dependencies:
       follow-redirects: 1.15.9(debug@4.4.0)
       form-data: 4.0.1
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
       - debug
-
-  axios@1.7.9:
-    dependencies:
-      follow-redirects: 1.15.9(debug@4.4.0)
-      form-data: 4.0.1
-      proxy-from-env: 1.1.0
-    transitivePeerDependencies:
-      - debug
-    optional: true
 
   babel-code-frame@6.26.0:
     dependencies:
@@ -15863,10 +15854,6 @@ snapshots:
       ms: 2.1.3
 
   debug@4.3.7:
-    dependencies:
-      ms: 2.1.3
-
-  debug@4.4.0:
     dependencies:
       ms: 2.1.3
 
@@ -17072,11 +17059,11 @@ snapshots:
       webidl-conversions: 7.0.0
       whatwg-mimetype: 3.0.0
 
-  hardhat-abi-exporter@2.11.0(hardhat@2.22.18(bufferutil@4.0.9)(ts-node@10.9.2(@swc/core@1.10.11)(@types/node@22.12.0)(typescript@5.7.2))(typescript@5.7.2)(utf-8-validate@5.0.10)):
+  hardhat-abi-exporter@2.11.0(hardhat@2.22.18(bufferutil@4.0.9)(ts-node@10.9.2(@swc/core@1.10.11(@swc/helpers@0.5.15))(@types/node@22.12.0)(typescript@5.7.2))(typescript@5.7.2)(utf-8-validate@5.0.10)):
     dependencies:
       '@ethersproject/abi': 5.8.0
       delete-empty: 3.0.0
-      hardhat: 2.22.18(bufferutil@4.0.9)(ts-node@10.9.2(@swc/core@1.10.11)(@types/node@22.12.0)(typescript@5.7.2))(typescript@5.7.2)(utf-8-validate@5.0.10)
+      hardhat: 2.22.18(bufferutil@4.0.9)(ts-node@10.9.2(@swc/core@1.10.11(@swc/helpers@0.5.15))(@types/node@22.12.0)(typescript@5.7.2))(typescript@5.7.2)(utf-8-validate@5.0.10)
 
   hardhat-deploy@1.0.3(bufferutil@4.0.9)(utf-8-validate@5.0.10):
     dependencies:
@@ -17108,7 +17095,7 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  hardhat@2.22.18(bufferutil@4.0.9)(ts-node@10.9.2(@swc/core@1.10.11)(@types/node@22.12.0)(typescript@5.7.2))(typescript@5.7.2)(utf-8-validate@5.0.10):
+  hardhat@2.22.18(bufferutil@4.0.9)(ts-node@10.9.2(@swc/core@1.10.11(@swc/helpers@0.5.15))(@types/node@22.12.0)(typescript@5.7.2))(typescript@5.7.2)(utf-8-validate@5.0.10):
     dependencies:
       '@ethersproject/abi': 5.8.0
       '@metamask/eth-sig-util': 4.0.1
@@ -17155,7 +17142,7 @@ snapshots:
       uuid: 8.3.2
       ws: 7.5.10(bufferutil@4.0.9)(utf-8-validate@5.0.10)
     optionalDependencies:
-      ts-node: 10.9.2(@swc/core@1.10.11)(@types/node@22.12.0)(typescript@5.7.2)
+      ts-node: 10.9.2(@swc/core@1.10.11(@swc/helpers@0.5.15))(@types/node@22.12.0)(typescript@5.7.2)
       typescript: 5.7.2
     transitivePeerDependencies:
       - bufferutil
@@ -17279,7 +17266,7 @@ snapshots:
   http-proxy-agent@7.0.2:
     dependencies:
       agent-base: 7.1.3
-      debug: 4.4.0
+      debug: 4.4.0(supports-color@8.1.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -17293,7 +17280,7 @@ snapshots:
   https-proxy-agent@7.0.6:
     dependencies:
       agent-base: 7.1.3
-      debug: 4.4.0
+      debug: 4.4.0(supports-color@8.1.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -17672,35 +17659,6 @@ snapshots:
   js-yaml@4.1.0:
     dependencies:
       argparse: 2.0.1
-
-  jsdom@24.1.3:
-    dependencies:
-      cssstyle: 4.2.1
-      data-urls: 5.0.0
-      decimal.js: 10.5.0
-      form-data: 4.0.1
-      html-encoding-sniffer: 4.0.0
-      http-proxy-agent: 7.0.2
-      https-proxy-agent: 7.0.6
-      is-potential-custom-element-name: 1.0.1
-      nwsapi: 2.2.16
-      parse5: 7.2.1
-      rrweb-cssom: 0.7.1
-      saxes: 6.0.0
-      symbol-tree: 3.2.4
-      tough-cookie: 4.1.4
-      w3c-xmlserializer: 5.0.0
-      webidl-conversions: 7.0.0
-      whatwg-encoding: 3.1.1
-      whatwg-mimetype: 4.0.0
-      whatwg-url: 14.1.0
-      ws: 8.18.0
-      xml-name-validator: 5.0.0
-    transitivePeerDependencies:
-      - bufferutil
-      - supports-color
-      - utf-8-validate
-    optional: true
 
   jsdom@24.1.3(bufferutil@4.0.9)(utf-8-validate@5.0.10):
     dependencies:
@@ -18776,13 +18734,13 @@ snapshots:
       camelcase-css: 2.0.1
       postcss: 8.5.1
 
-  postcss-load-config@4.0.2(postcss@8.5.1)(ts-node@10.9.2(@swc/core@1.10.11)(@types/node@20.17.16)(typescript@5.6.3)):
+  postcss-load-config@4.0.2(postcss@8.5.1)(ts-node@10.9.2(@swc/core@1.10.11(@swc/helpers@0.5.15))(@types/node@20.17.16)(typescript@5.6.3)):
     dependencies:
       lilconfig: 3.1.3
       yaml: 2.7.0
     optionalDependencies:
       postcss: 8.5.1
-      ts-node: 10.9.2(@swc/core@1.10.11)(@types/node@20.17.16)(typescript@5.6.3)
+      ts-node: 10.9.2(@swc/core@1.10.11(@swc/helpers@0.5.15))(@types/node@20.17.16)(typescript@5.6.3)
 
   postcss-load-config@5.1.0(jiti@2.4.2)(postcss@8.4.3)(tsx@4.19.2):
     dependencies:
@@ -19234,10 +19192,10 @@ snapshots:
 
   safer-buffer@2.1.2: {}
 
-  sats-connect@3.3.0(typescript@5.7.2):
+  sats-connect@3.5.0(typescript@5.7.2):
     dependencies:
-      '@sats-connect/core': 0.5.8(typescript@5.7.2)
-      '@sats-connect/make-default-provider-config': 0.0.10(@sats-connect/core@0.5.8(typescript@5.7.2))(typescript@5.7.2)
+      '@sats-connect/core': 0.6.5(typescript@5.7.2)
+      '@sats-connect/make-default-provider-config': 0.0.10(@sats-connect/core@0.6.5(typescript@5.7.2))(typescript@5.7.2)
       '@sats-connect/ui': 0.0.7
     transitivePeerDependencies:
       - debug
@@ -19716,11 +19674,11 @@ snapshots:
 
   tailwind-merge@2.6.0: {}
 
-  tailwindcss-animate@1.0.7(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.10.11)(@types/node@20.17.16)(typescript@5.6.3))):
+  tailwindcss-animate@1.0.7(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.10.11(@swc/helpers@0.5.15))(@types/node@20.17.16)(typescript@5.6.3))):
     dependencies:
-      tailwindcss: 3.4.17(ts-node@10.9.2(@swc/core@1.10.11)(@types/node@20.17.16)(typescript@5.6.3))
+      tailwindcss: 3.4.17(ts-node@10.9.2(@swc/core@1.10.11(@swc/helpers@0.5.15))(@types/node@20.17.16)(typescript@5.6.3))
 
-  tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.10.11)(@types/node@20.17.16)(typescript@5.6.3)):
+  tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.10.11(@swc/helpers@0.5.15))(@types/node@20.17.16)(typescript@5.6.3)):
     dependencies:
       '@alloc/quick-lru': 5.2.0
       arg: 5.0.2
@@ -19739,7 +19697,7 @@ snapshots:
       postcss: 8.5.1
       postcss-import: 15.1.0(postcss@8.5.1)
       postcss-js: 4.0.1(postcss@8.5.1)
-      postcss-load-config: 4.0.2(postcss@8.5.1)(ts-node@10.9.2(@swc/core@1.10.11)(@types/node@20.17.16)(typescript@5.6.3))
+      postcss-load-config: 4.0.2(postcss@8.5.1)(ts-node@10.9.2(@swc/core@1.10.11(@swc/helpers@0.5.15))(@types/node@20.17.16)(typescript@5.6.3))
       postcss-nested: 6.2.0(postcss@8.5.1)
       postcss-selector-parser: 6.1.2
       resolve: 1.22.10
@@ -19854,14 +19812,14 @@ snapshots:
     dependencies:
       typescript: 5.7.2
 
-  ts-evaluator@1.2.0(jsdom@24.1.3)(typescript@5.7.2):
+  ts-evaluator@1.2.0(jsdom@24.1.3(bufferutil@4.0.9)(utf-8-validate@5.0.10))(typescript@5.7.2):
     dependencies:
       ansi-colors: 4.1.3
       crosspath: 2.0.0
       object-path: 0.11.8
       typescript: 5.7.2
     optionalDependencies:
-      jsdom: 24.1.3
+      jsdom: 24.1.3(bufferutil@4.0.9)(utf-8-validate@5.0.10)
 
   ts-interface-checker@0.1.13: {}
 
@@ -19870,7 +19828,7 @@ snapshots:
       '@ts-morph/common': 0.25.0
       code-block-writer: 13.0.3
 
-  ts-node@10.9.2(@swc/core@1.10.11)(@types/node@20.17.16)(typescript@5.6.3):
+  ts-node@10.9.2(@swc/core@1.10.11(@swc/helpers@0.5.15))(@types/node@20.17.16)(typescript@5.6.3):
     dependencies:
       '@cspotcode/source-map-support': 0.8.1
       '@tsconfig/node10': 1.0.11
@@ -19888,10 +19846,10 @@ snapshots:
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
     optionalDependencies:
-      '@swc/core': 1.10.11
+      '@swc/core': 1.10.11(@swc/helpers@0.5.15)
     optional: true
 
-  ts-node@10.9.2(@swc/core@1.10.11)(@types/node@22.12.0)(typescript@5.6.3):
+  ts-node@10.9.2(@swc/core@1.10.11(@swc/helpers@0.5.15))(@types/node@22.12.0)(typescript@5.6.3):
     dependencies:
       '@cspotcode/source-map-support': 0.8.1
       '@tsconfig/node10': 1.0.11
@@ -19909,9 +19867,9 @@ snapshots:
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
     optionalDependencies:
-      '@swc/core': 1.10.11
+      '@swc/core': 1.10.11(@swc/helpers@0.5.15)
 
-  ts-node@10.9.2(@swc/core@1.10.11)(@types/node@22.12.0)(typescript@5.7.2):
+  ts-node@10.9.2(@swc/core@1.10.11(@swc/helpers@0.5.15))(@types/node@22.12.0)(typescript@5.7.2):
     dependencies:
       '@cspotcode/source-map-support': 0.8.1
       '@tsconfig/node10': 1.0.11
@@ -19929,7 +19887,7 @@ snapshots:
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
     optionalDependencies:
-      '@swc/core': 1.10.11
+      '@swc/core': 1.10.11(@swc/helpers@0.5.15)
     optional: true
 
   ts-patch@3.3.0:
@@ -20352,7 +20310,7 @@ snapshots:
     transitivePeerDependencies:
       - typescript
 
-  vite-plugin-vitepress-auto-sidebar@1.7.1(@typescript-eslint/parser@8.22.0(eslint@9.19.0(jiti@2.4.2))(typescript@5.7.2))(eslint@9.19.0(jiti@2.4.2))(typescript@5.7.2)(vite@5.4.14(@types/node@22.12.0)(lightningcss@1.25.1))(vitepress@1.6.3(@algolia/client-search@5.20.0)(@types/node@22.12.0)(@types/react@18.3.18)(axios@1.7.9)(change-case@5.4.4)(idb-keyval@6.2.1)(lightningcss@1.25.1)(postcss@8.5.1)(qrcode@1.5.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(search-insights@2.17.3)(typescript@5.7.2)):
+  vite-plugin-vitepress-auto-sidebar@1.7.1(@typescript-eslint/parser@8.22.0(eslint@9.19.0(jiti@2.4.2))(typescript@5.7.2))(eslint@9.19.0(jiti@2.4.2))(typescript@5.7.2)(vite@5.4.14(@types/node@22.12.0)(lightningcss@1.25.1))(vitepress@1.6.3(@algolia/client-search@5.20.0)(@types/node@22.12.0)(@types/react@18.3.18)(axios@1.8.4)(change-case@5.4.4)(idb-keyval@6.2.1)(lightningcss@1.25.1)(postcss@8.5.1)(qrcode@1.5.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(search-insights@2.17.3)(typescript@5.7.2)):
     dependencies:
       eslint-config-love: 110.0.0(@typescript-eslint/parser@8.22.0(eslint@9.19.0(jiti@2.4.2))(typescript@5.7.2))(eslint@9.19.0(jiti@2.4.2))(typescript@5.7.2)
       front-matter: 4.0.2
@@ -20360,7 +20318,7 @@ snapshots:
       picocolors: 1.1.1
       typescript-eslint: 8.22.0(eslint@9.19.0(jiti@2.4.2))(typescript@5.7.2)
       vite: 5.4.14(@types/node@22.12.0)(lightningcss@1.25.1)
-      vitepress: 1.6.3(@algolia/client-search@5.20.0)(@types/node@22.12.0)(@types/react@18.3.18)(axios@1.7.9)(change-case@5.4.4)(idb-keyval@6.2.1)(lightningcss@1.25.1)(postcss@8.5.1)(qrcode@1.5.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(search-insights@2.17.3)(typescript@5.7.2)
+      vitepress: 1.6.3(@algolia/client-search@5.20.0)(@types/node@22.12.0)(@types/react@18.3.18)(axios@1.8.4)(change-case@5.4.4)(idb-keyval@6.2.1)(lightningcss@1.25.1)(postcss@8.5.1)(qrcode@1.5.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(search-insights@2.17.3)(typescript@5.7.2)
     transitivePeerDependencies:
       - '@typescript-eslint/parser'
       - eslint
@@ -20399,7 +20357,7 @@ snapshots:
       glob: 10.4.5
       gray-matter: 4.0.3
 
-  vitepress@1.6.3(@algolia/client-search@5.20.0)(@types/node@22.12.0)(@types/react@18.3.18)(axios@1.7.9)(change-case@5.4.4)(idb-keyval@6.2.1)(lightningcss@1.25.1)(postcss@8.5.1)(qrcode@1.5.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(search-insights@2.17.3)(typescript@5.7.2):
+  vitepress@1.6.3(@algolia/client-search@5.20.0)(@types/node@22.12.0)(@types/react@18.3.18)(axios@1.8.4)(change-case@5.4.4)(idb-keyval@6.2.1)(lightningcss@1.25.1)(postcss@8.5.1)(qrcode@1.5.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(search-insights@2.17.3)(typescript@5.7.2):
     dependencies:
       '@docsearch/css': 3.8.2
       '@docsearch/js': 3.8.2(@algolia/client-search@5.20.0)(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(search-insights@2.17.3)
@@ -20412,7 +20370,7 @@ snapshots:
       '@vue/devtools-api': 7.7.1
       '@vue/shared': 3.5.13
       '@vueuse/core': 12.5.0(typescript@5.7.2)
-      '@vueuse/integrations': 12.5.0(axios@1.7.9)(change-case@5.4.4)(focus-trap@7.6.4)(idb-keyval@6.2.1)(qrcode@1.5.3)(typescript@5.7.2)
+      '@vueuse/integrations': 12.5.0(axios@1.8.4)(change-case@5.4.4)(focus-trap@7.6.4)(idb-keyval@6.2.1)(qrcode@1.5.3)(typescript@5.7.2)
       focus-trap: 7.6.4
       mark.js: 8.11.1
       minisearch: 7.1.1
@@ -20684,9 +20642,6 @@ snapshots:
     optionalDependencies:
       bufferutil: 4.0.9
       utf-8-validate: 5.0.10
-
-  ws@8.18.0:
-    optional: true
 
   ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10):
     optionalDependencies:

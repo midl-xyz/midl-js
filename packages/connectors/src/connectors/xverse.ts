@@ -2,7 +2,7 @@ import {
 	type CreateConnectorFn,
 	createConnector,
 } from "@midl-xyz/midl-js-core";
-import { SatsConnectConnector } from "~/providers";
+import { XverseConnector } from "~/providers";
 
 export const xverseConnector: CreateConnectorFn = ({ metadata } = {}) =>
 	createConnector(
@@ -18,7 +18,7 @@ export const xverseConnector: CreateConnectorFn = ({ metadata } = {}) =>
 						? window.btc_providers?.find((it) => it.name.includes("Xverse"))?.id
 						: "XverseProviders.BitcoinProvider";
 
-				return new SatsConnectConnector(providerId || defaultProviderId);
+				return new XverseConnector(providerId || defaultProviderId);
 			},
 		},
 		metadata,

@@ -106,6 +106,15 @@ export class LeatherWallet extends Wallet implements Wallet {
 				break;
 			}
 
+			case "signet": {
+				if (currentNetwork?.includes("Signet")) {
+					break;
+				}
+
+				await page.getByText("Signet").click();
+				break;
+			}
+
 			case "regtest": {
 				if (currentNetwork?.includes("Regtest")) {
 					break;

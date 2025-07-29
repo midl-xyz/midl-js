@@ -39,6 +39,5 @@ console.log(signedIntention);
 | ---------- | ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
 | publicKey? | `string`                                                                            | Public key of the account to use for signing                                                      |
 | nonce?     | `number`                                                                            | Next nonce of registered in EVM network, nonce is incremented by 1 for each transaction intention |
-| gasPrice?  | `bigint`                                                                            | Gas price for EVM transactions                                                                    |
 | txId       | `string`                                                                            | Transaction hash of the BTC transaction                                                           |
 | protocol?  | [`SignMessageProtocol`](../../root/actions/signMessage.md#signmessageprotocol-enum) | Protocol for signing the message (optional)                                                       |

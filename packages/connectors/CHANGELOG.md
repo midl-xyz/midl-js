@@ -1,5 +1,51 @@
 # @midl-xyz/midl-js-connectors
 
+## 2.0.0-next.47
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-core@2.0.0-next.47
+
+## 2.0.0-next.46
+
+### Patch Changes
+
+- Updated dependencies [c5d7f73]
+  - @midl-xyz/midl-js-core@2.0.0-next.46
+
+## 2.0.0-next.45
+
+### Patch Changes
+
+- feat: add network abstraction
+- Updated dependencies
+  - @midl-xyz/midl-js-core@2.0.0-next.45
+
+## 2.0.0-next.44
+
+### Patch Changes
+
+- feat: xverse midl regtest
+- Updated dependencies
+  - @midl-xyz/midl-js-core@2.0.0-next.44
+
+## 2.0.0-next.43
+
+### Patch Changes
+
+- d2518df: feat: add signet support
+- Updated dependencies [d2518df]
+  - @midl-xyz/midl-js-core@2.0.0-next.43
+
+## 2.0.0-next.32
+
+### Patch Changes
+
+- feat: pass satoshis to tx
+- Updated dependencies
+  - @midl-xyz/midl-js-core@2.0.0-next.32
+
 ## 2.0.0-next.28
 
 ### Patch Changes

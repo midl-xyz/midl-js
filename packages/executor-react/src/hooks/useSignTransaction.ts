@@ -3,7 +3,7 @@ import { signTransaction } from "@midl-xyz/midl-js-executor";
 import { useConfigInternal } from "@midl-xyz/midl-js-react";
 import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
 import type { TransactionSerializableBTC } from "viem";
-import { useWalletClient } from "wagmi";
+import { usePublicClient, useWalletClient } from "wagmi";
 
 type SignTransactionParams = {
 	tx: TransactionSerializableBTC;
@@ -75,7 +75,7 @@ export const useSignTransaction = (
 		throw new Error("Only BIP322 protocol is supported");
 	}
 
-	const { data: client } = useWalletClient();
+	const client = usePublicClient();
 	const config = useConfigInternal(customConfig);
 
 	const { mutate, mutateAsync, ...rest } = useMutation<

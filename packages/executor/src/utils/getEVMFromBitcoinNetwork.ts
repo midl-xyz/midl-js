@@ -1,10 +1,16 @@
 import {
 	type BitcoinNetwork,
 	regtest,
+	signet,
 	testnet,
 	testnet4,
 } from "@midl-xyz/midl-js-core";
-import { midlRegtest, midlTestnet3, midlTestnet4 } from "~/config/chains";
+import {
+	midlRegtest,
+	midlSignet,
+	midlTestnet3,
+	midlTestnet4,
+} from "~/config/chains";
 
 export const getEVMFromBitcoinNetwork = (network: BitcoinNetwork) => {
 	switch (network.id) {
@@ -18,6 +24,10 @@ export const getEVMFromBitcoinNetwork = (network: BitcoinNetwork) => {
 
 		case testnet.id: {
 			return midlTestnet3;
+		}
+
+		case signet.id: {
+			return midlSignet;
 		}
 
 		default: {

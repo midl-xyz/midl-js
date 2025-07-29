@@ -12,6 +12,7 @@ import {
 	getAddressType,
 	mainnet,
 	regtest,
+	signet,
 	testnet,
 	testnet4,
 } from "@midl-xyz/midl-js-core";
@@ -134,6 +135,11 @@ export class SatsConnectConnector implements Connector {
 
 			case regtest: {
 				networkName = BitcoinNetworkType.Regtest;
+				break;
+			}
+
+			case signet: {
+				networkName = BitcoinNetworkType.Signet;
 				break;
 			}
 

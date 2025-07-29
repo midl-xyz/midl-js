@@ -1,5 +1,147 @@
 # @midl-xyz/hardhat-deploy
 
+## 2.0.0-next.47
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-core@2.0.0-next.47
+  - @midl-xyz/midl-js-react@2.0.0-next.47
+  - @midl-xyz/midl-js-executor@2.0.0-next.47
+  - @midl-xyz/midl-js-node@2.0.0-next.47
+
+## 2.0.0-next.46
+
+### Patch Changes
+
+- Updated dependencies [c5d7f73]
+  - @midl-xyz/midl-js-core@2.0.0-next.46
+  - @midl-xyz/midl-js-executor@2.0.0-next.46
+  - @midl-xyz/midl-js-node@2.0.0-next.46
+  - @midl-xyz/midl-js-react@2.0.0-next.46
+
+## 2.0.0-next.45
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-react@2.0.0-next.45
+  - @midl-xyz/midl-js-core@2.0.0-next.45
+  - @midl-xyz/midl-js-executor@2.0.0-next.45
+  - @midl-xyz/midl-js-node@2.0.0-next.45
+
+## 2.0.0-next.44
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-core@2.0.0-next.44
+  - @midl-xyz/midl-js-executor@2.0.0-next.44
+  - @midl-xyz/midl-js-node@2.0.0-next.44
+  - @midl-xyz/midl-js-react@2.0.0-next.44
+
+## 2.0.0-next.43
+
+### Patch Changes
+
+- d2518df: feat: add signet support
+- Updated dependencies [d2518df]
+  - @midl-xyz/midl-js-executor@2.0.0-next.43
+  - @midl-xyz/midl-js-core@2.0.0-next.43
+  - @midl-xyz/midl-js-node@2.0.0-next.43
+  - @midl-xyz/midl-js-react@2.0.0-next.43
+
+## 2.0.0-next.42
+
+### Patch Changes
+
+- Updated dependencies [6979a7f]
+  - @midl-xyz/midl-js-executor@2.0.0-next.42
+
+## 2.0.0-next.40
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@2.0.0-next.40
+
+## 2.0.0-next.39
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@2.0.0-next.39
+
+## 2.0.0-next.38
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@2.0.0-next.38
+
+## 2.0.0-next.37
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@2.0.0-next.37
+
+## 2.0.0-next.36
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@2.0.0-next.36
+
+## 2.0.0-next.34
+
+### Patch Changes
+
+- feat: add default state override
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@2.0.0-next.34
+
+## 2.0.0-next.33
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@2.0.0-next.33
+
+## 2.0.0-next.32
+
+### Patch Changes
+
+- feat: pass satoshis to tx
+- Updated dependencies
+  - @midl-xyz/midl-js-core@2.0.0-next.32
+  - @midl-xyz/midl-js-executor@2.0.0-next.32
+  - @midl-xyz/midl-js-node@2.0.0-next.32
+  - @midl-xyz/midl-js-react@2.0.0-next.32
+
+## 2.0.0-next.31
+
+### Patch Changes
+
+- feat: fix gas price to 1000n
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@2.0.0-next.31
+
+## 2.0.0-next.30
+
+### Patch Changes
+
+- 19599b9: fix(executor): remove tx intention on complete
+- Updated dependencies [19599b9]
+  - @midl-xyz/midl-js-executor@2.0.0-next.30
+
+## 2.0.0-next.29
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@2.0.0-next.29
+
 ## 2.0.0-next.28
 
 ### Patch Changes

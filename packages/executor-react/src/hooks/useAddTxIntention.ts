@@ -54,8 +54,22 @@ export const useAddTxIntention = ({
 	const { intentions = [] } = useStore(customStore);
 
 	const { mutate, mutateAsync, ...rest } = useMutation({
-		mutationFn: ({ reset, publicKey, intention }: AddTxIntentionVariables) => {
-			return addTxIntention(config, store, intention, reset, publicKey);
+		mutationFn: async ({
+			reset,
+			publicKey,
+			intention,
+		}: AddTxIntentionVariables) => {
+			const intentionToAdd = await addTxIntention(config, intention, publicKey);
+
+			store.setState((state) => {
+				return {
+					intentions: reset
+						? [intentionToAdd]
+						: [...(state.intentions || []), intentionToAdd],
+				};
+			});
+
+			return intentionToAdd;
 		},
 	});
 

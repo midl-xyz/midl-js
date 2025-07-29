@@ -1,5 +1,41 @@
 # @midl-xyz/midl-js-core
 
+## 2.0.0-next.47
+
+### Patch Changes
+
+- feat: useDefaultAccount hook, default account for transfer and etch
+
+## 2.0.0-next.46
+
+### Patch Changes
+
+- c5d7f73: feat: call switchNetwork connector
+
+## 2.0.0-next.45
+
+### Patch Changes
+
+- feat: add network abstraction
+
+## 2.0.0-next.44
+
+### Patch Changes
+
+- feat: xverse midl regtest
+
+## 2.0.0-next.43
+
+### Patch Changes
+
+- d2518df: feat: add signet support
+
+## 2.0.0-next.32
+
+### Patch Changes
+
+- feat: pass satoshis to tx
+
 ## 2.0.0-next.28
 
 ### Patch Changes

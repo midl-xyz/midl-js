@@ -8,7 +8,7 @@ export type BitcoinNetwork = {
 	/**
 	 * The id of the network
 	 */
-	id: "mainnet" | "testnet" | "testnet4" | "regtest";
+	id: "mainnet" | "testnet" | "testnet4" | "regtest" | "signet";
 
 	/**
 	 * Bitcoin API used to generate addresses and sign transactions

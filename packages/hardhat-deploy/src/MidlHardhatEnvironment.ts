@@ -10,6 +10,7 @@ import {
 	getDefaultAccount,
 	mainnet,
 	regtest,
+	signet,
 	testnet,
 	testnet4,
 	waitForTransaction,
@@ -18,14 +19,14 @@ import type { Chain, TransactionIntention } from "@midl-xyz/midl-js-executor";
 import {
 	addCompleteTxIntention,
 	addTxIntention,
-	clearTxIntentions,
+	convertBTCtoETH,
+	convertETHtoBTC,
 	finalizeBTCTransaction,
 	getEVMAddress,
 	getEVMFromBitcoinNetwork,
 	signIntention,
 } from "@midl-xyz/midl-js-executor";
 import { keyPairConnector } from "@midl-xyz/midl-js-node";
-import type { MidlContextState } from "@midl-xyz/midl-js-react";
 import {
 	type Libraries,
 	resolveBytecodeWithLinkedLibraries,
@@ -53,10 +54,13 @@ import "~/types/context";
 import { Wallet } from "~/Wallet";
 
 export class MidlHardhatEnvironment {
-	private readonly store: StoreApi<MidlContextState> =
-		createStore<MidlContextState>()(() => ({
-			intentions: [],
-		}));
+	private readonly store: StoreApi<{
+		intentions: TransactionIntention[];
+	}> = createStore<{
+		intentions: TransactionIntention[];
+	}>()(() => ({
+		intentions: [],
+	}));
 
 	private readonly deploymentsPath: string;
 	private readonly confirmationsRequired;
@@ -96,7 +100,7 @@ export class MidlHardhatEnvironment {
 	}
 
 	private initializeNetwork() {
-		const networks = { regtest, mainnet, testnet4, testnet } as const;
+		const networks = { regtest, mainnet, testnet4, testnet, signet } as const;
 		const { network, hardhatNetwork } = this.userConfig;
 
 		if (!network) {
@@ -166,19 +170,25 @@ export class MidlHardhatEnvironment {
 			purposes: [AddressPurpose.Ordinals],
 		});
 
-		clearTxIntentions(this.store);
+		this.store.setState({
+			intentions: [],
+		});
 	}
 
 	public async deploy(
 		name: string,
 		options?: Pick<
 			TransactionSerializableBTC,
-			"to" | "value" | "gasPrice" | "gas" | "nonce"
+			"to" | "value" | "gas" | "nonce"
 			// biome-ignore lint/suspicious/noExplicitAny: Allow any args
 		> & { args?: any; libraries?: Libraries<Address> },
 		intentionOptions: Pick<
 			TransactionIntention,
-			"value" | "hasRunesDeposit" | "hasRunesWithdraw" | "hasWithdraw" | "rune"
+			| "satoshis"
+			| "hasRunesDeposit"
+			| "hasRunesWithdraw"
+			| "hasWithdraw"
+			| "runes"
 		> = {},
 	) {
 		if (!this.config) {
@@ -205,13 +215,12 @@ export class MidlHardhatEnvironment {
 			bytecode: bytecode as `0x${string}`,
 		});
 
-		await addTxIntention(this.config, this.store, {
+		const intention = await addTxIntention(this.config, {
 			evmTransaction: {
 				type: "btc",
 				chainId: this.walletClient?.chain?.id,
 				data: deployData,
 				gas: options?.gas,
-				gasPrice: options?.gasPrice,
 				to: options?.to,
 				value: options?.value,
 				nonce: options?.nonce,
@@ -221,6 +230,10 @@ export class MidlHardhatEnvironment {
 			},
 			...intentionOptions,
 		});
+
+		this.store.setState((state) => ({
+			intentions: [...state.intentions, intention],
+		}));
 	}
 
 	public async getDeployment(name: string) {
@@ -250,7 +263,7 @@ export class MidlHardhatEnvironment {
 		methodName: string,
 		options: Pick<
 			TransactionSerializableBTC,
-			"to" | "value" | "gasPrice" | "gas" | "nonce"
+			"to" | "value" | "gas" | "nonce"
 			// biome-ignore lint/suspicious/noExplicitAny: Allow any args
 		> & { args: any },
 	) {
@@ -278,7 +291,7 @@ export class MidlHardhatEnvironment {
 			functionName: methodName,
 		});
 
-		await addTxIntention(this.config, this.store, {
+		const intention = await addTxIntention(this.config, {
 			evmTransaction: {
 				type: "btc",
 				chainId: this.walletClient?.chain?.id,
@@ -286,11 +299,14 @@ export class MidlHardhatEnvironment {
 				to: options.to ?? (address as Address),
 				value: options.value,
 				nonce: options.nonce,
-				gasPrice: options.gasPrice,
 				gas: options.gas,
 			},
-			value: options.value,
+			satoshis: convertETHtoBTC(options.value ?? 0n),
 		});
+
+		this.store.setState((state) => ({
+			intentions: [...state.intentions, intention],
+		}));
 	}
 
 	public async execute({
@@ -330,20 +346,15 @@ export class MidlHardhatEnvironment {
 		const account = getDefaultAccount(this.config);
 
 		if (shouldComplete) {
-			await addCompleteTxIntention(this.config, this.store, assetsToWithdraw);
+			await addCompleteTxIntention(this.config, assetsToWithdraw);
 		}
 
 		const tx = await finalizeBTCTransaction(
 			this.config,
-			this.store,
+			this.store.getState().intentions ?? [],
 			walletClient,
 			{
-				stateOverride: stateOverride ?? [
-					{
-						address: getEVMAddress(this.config, account),
-						balance: intentions.reduce((acc, it) => acc + (it.value ?? 0n), 0n),
-					},
-				],
+				stateOverride,
 				feeRate,
 				skipEstimateGasMulti,
 				assetsToWithdrawSize: assetsToWithdraw?.length ?? 0,
@@ -360,11 +371,10 @@ export class MidlHardhatEnvironment {
 		for (const intention of intentions) {
 			const signed = await signIntention(
 				this.config,
-				this.store,
 				walletClient,
 				intention,
+				this.store.getState().intentions ?? [],
 				{
-					gasPrice: 1000n,
 					txId: tx.tx.id,
 					protocol: SignMessageProtocol.Bip322,
 				},
@@ -420,7 +430,10 @@ export class MidlHardhatEnvironment {
 
 		console.log("Transaction confirmed", tx.tx.id);
 
-		clearTxIntentions(this.store);
+		this.store.setState((state) => ({
+			...state,
+			intentions: [],
+		}));
 	}
 
 	public async getWalletClient(): Promise<WalletClient> {

@@ -40,7 +40,6 @@ const tx = await finalizeBTCTransaction(config, store, client);
 | --------------------- | --------------- | ---------------------------------------------- |
 | stateOverride?        | `StateOverride` | State override for EVM transactions            |
 | publicKey?            | `string`        | Public key of the account to use for signing   |
-| gasPrice?             | `bigint`        | Gas price for EVM transactions                 |
 | feeRateMultiplier?    | `number`        | Fee rate multiplier for the transaction        |
 | assetsToWithdrawSize? | `number`        | Number of assets to withdraw                   |
 | skipEstimateGasMulti? | `boolean`       | If true, skip estimating gas multi for EVM txs |
