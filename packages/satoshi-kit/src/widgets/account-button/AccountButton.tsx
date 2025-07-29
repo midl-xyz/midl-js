@@ -1,7 +1,6 @@
 "use client";
 
-import { type Account, AddressPurpose } from "@midl-xyz/midl-js-core";
-import { useAccounts, useBalance } from "@midl-xyz/midl-js-react";
+import { useBalance, useDefaultAccount } from "@midl-xyz/midl-js-react";
 import { useSatoshiKit } from "~/app";
 import { formatBTC, shortenAddress } from "~/shared";
 import { Button } from "~/shared/ui/button";
@@ -30,18 +29,17 @@ export const AccountButton = ({
 	children,
 }: AccountButtonProps) => {
 	const { config } = useSatoshiKit();
-	const { accounts } = useAccounts({ config });
-	const primaryAccount =
-		accounts?.find((account) => account.purpose === AddressPurpose.Payment) ||
-		(accounts?.[0] as Account);
+	const primaryAccount = useDefaultAccount();
 
 	const { balance, isLoading } = useBalance({
-		address: primaryAccount.address,
+		address: primaryAccount?.address,
 		config,
 		query: {
-			enabled: Boolean(primaryAccount.address) && !hideBalance,
+			enabled: Boolean(primaryAccount?.address) && !hideBalance,
 		},
 	});
+
+	if (!primaryAccount) return null;
 
 	if (children) {
 		return children({
@@ -61,7 +59,7 @@ export const AccountButton = ({
 					)}
 				</span>
 			)}
-			{!hideAvatar && <IdentIcon hash={primaryAccount.address} />}
+			{!hideAvatar && <IdentIcon hash={primaryAccount?.address} />}
 
 			{!hideAddress && shortenAddress(primaryAccount.address)}
 		</Button>

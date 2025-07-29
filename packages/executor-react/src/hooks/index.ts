@@ -14,4 +14,3 @@ export * from "./useSerializeTransaction";
 export * from "./useSignIntention";
 export * from "./useSignTransaction";
 export * from "./useToken";
-export * from "./useDefaultAccount";
