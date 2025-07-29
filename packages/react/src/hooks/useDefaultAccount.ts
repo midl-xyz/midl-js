@@ -1,7 +1,7 @@
 import { type Config, getDefaultAccount } from "@midl-xyz/midl-js-core";
-import { useConfig, useConfigInternal } from "@midl-xyz/midl-js-react";
+import { useConfigInternal } from "~/index";
 
-type UseEVMAddressParams = {
+type useDefaultAccountParams = {
 	config?: Config;
 };
 
@@ -15,7 +15,7 @@ type UseEVMAddressParams = {
  */
 export const useDefaultAccount = ({
 	config: customConfig,
-}: UseEVMAddressParams = {}) => {
+}: useDefaultAccountParams = {}) => {
 	const configInternal = useConfigInternal(customConfig);
 
 	try {

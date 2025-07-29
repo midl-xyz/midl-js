@@ -1,3 +1,4 @@
+import ecc from "@bitcoinerlab/secp256k1";
 import { Psbt, initEccLib, networks, payments, script } from "bitcoinjs-lib";
 import coinselect from "bitcoinselect";
 import {
@@ -11,13 +12,13 @@ import {
 	none,
 	some,
 } from "runelib";
+import { getDefaultAccount } from "~/actions/getDefaultAccount";
 import { getFeeRate } from "~/actions/getFeeRate";
 import { getUTXOs } from "~/actions/getUTXOs";
 import { signPSBT } from "~/actions/signPSBT";
 import { AddressPurpose } from "~/constants";
 import type { Config } from "~/createConfig";
 import { extractXCoordinate, formatRuneName, makePSBTInputs } from "~/utils";
-import ecc from "@bitcoinerlab/secp256k1";
 
 initEccLib(ecc);
 
@@ -149,9 +150,7 @@ export const etchRune = async (
 	const network = networks[currentNetwork.network];
 	const { accounts } = config.getState();
 
-	const account = from
-		? accounts?.find((account) => account.address === from)
-		: accounts?.[0];
+	const account = getDefaultAccount(config);
 	const ordinalsAccount = accounts?.find(
 		(account) => account.purpose === AddressPurpose.Ordinals,
 	);
