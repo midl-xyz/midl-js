@@ -150,7 +150,9 @@ export const etchRune = async (
 	const network = networks[currentNetwork.network];
 	const { accounts } = config.getState();
 
-	const account = getDefaultAccount(config);
+	const account = from
+		? accounts?.find((account) => account.address === from)
+		: getDefaultAccount(config);
 	const ordinalsAccount = accounts?.find(
 		(account) => account.purpose === AddressPurpose.Ordinals,
 	);

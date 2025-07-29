@@ -17,7 +17,7 @@ type AccountButtonProps = {
 		address,
 	}: {
 		balance: number;
-		address: string;
+		address?: string;
 	}) => React.ReactNode;
 };
 
@@ -42,7 +42,7 @@ export const AccountButton = ({
 	if (children) {
 		return children({
 			balance,
-			address: primaryAccount?.address || "",
+			address: primaryAccount?.address,
 		});
 	}
 
