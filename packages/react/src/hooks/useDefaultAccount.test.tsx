@@ -1,8 +1,7 @@
 import { AddressPurpose, connect, disconnect } from "@midl-xyz/midl-js-core";
 import { renderHook } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { wrapper as Wrapper } from "~/__tests__";
-import { midlConfig } from "~/__tests__/midlConfig";
+import { midlConfig, wrapper } from "~/__tests__/wrapper";
 import { useDefaultAccount } from "~/hooks/useDefaultAccount";
 
 describe("useDefaultAccount", () => {
@@ -11,9 +10,12 @@ describe("useDefaultAccount", () => {
 			purposes: [AddressPurpose.Ordinals, AddressPurpose.Payment],
 		});
 
-		const { result } = renderHook(() => useDefaultAccount(), {
-			wrapper: Wrapper,
-		});
+		const { result } = renderHook(
+			() => useDefaultAccount({ config: midlConfig }),
+			{
+				wrapper,
+			},
+		);
 
 		expect(result.current?.purpose).toBe(AddressPurpose.Payment);
 
@@ -21,9 +23,12 @@ describe("useDefaultAccount", () => {
 	});
 
 	it("should not throw an error if no connection is available", () => {
-		const { result } = renderHook(() => useDefaultAccount(), {
-			wrapper: ({ children }) => <Wrapper>{children}</Wrapper>,
-		});
+		const { result } = renderHook(
+			() => useDefaultAccount({ config: midlConfig }),
+			{
+				wrapper,
+			},
+		);
 
 		expect(result.current).toBe(null);
 	});
@@ -33,9 +38,12 @@ describe("useDefaultAccount", () => {
 			purposes: [AddressPurpose.Ordinals],
 		});
 
-		const { result } = renderHook(() => useDefaultAccount(), {
-			wrapper: Wrapper,
-		});
+		const { result } = renderHook(
+			() => useDefaultAccount({ config: midlConfig }),
+			{
+				wrapper,
+			},
+		);
 
 		expect(result.current?.purpose).toBe(AddressPurpose.Ordinals);
 

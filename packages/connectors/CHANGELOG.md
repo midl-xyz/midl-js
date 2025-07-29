@@ -1,12 +1,5 @@
 # @midl-xyz/midl-js-connectors
 
-## 2.0.0-next.47
-
-### Patch Changes
-
-- Updated dependencies
-  - @midl-xyz/midl-js-core@2.0.0-next.47
-
 ## 2.0.0-next.46
 
 ### Patch Changes

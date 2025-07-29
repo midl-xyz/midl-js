@@ -6,11 +6,11 @@ type UseEVMAddressParams = {
 };
 
 /**
- * Gets the default BTC account, prioritizing Native Segwit address. Otherwise returns first one found
+ * Gets the default BTC account. Otherwise returns first one found
  *
  * @example
  * ```ts
- * const defaultBTCAddress = useDefaultAccount();
+ * const defaultBTCAccount = useDefaultAccount();
  * ```
  */
 export const useDefaultAccount = ({

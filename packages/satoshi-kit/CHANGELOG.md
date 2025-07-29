@@ -1,15 +1,5 @@
 # @midl-xyz/satoshi-kit
 
-## 2.0.0-next.47
-
-### Patch Changes
-
-- feat: make payment account default in satoshi-kit and transfer btc
-- Updated dependencies
-  - @midl-xyz/midl-js-core@2.0.0-next.47
-  - @midl-xyz/midl-js-connectors@2.0.0-next.47
-  - @midl-xyz/midl-js-react@2.0.0-next.47
-
 ## 2.0.0-next.46
 
 ### Patch Changes
