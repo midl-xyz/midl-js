@@ -39,14 +39,14 @@ export const AccountButton = ({
 		},
 	});
 
-	if (!primaryAccount) return null;
-
 	if (children) {
 		return children({
 			balance,
-			address: primaryAccount.address,
+			address: primaryAccount?.address || "",
 		});
 	}
+
+	if (!primaryAccount) return null;
 
 	return (
 		<Button type="button" onClick={onClick} variant="solid">
@@ -59,7 +59,7 @@ export const AccountButton = ({
 					)}
 				</span>
 			)}
-			{!hideAvatar && <IdentIcon hash={primaryAccount?.address} />}
+			{!hideAvatar && <IdentIcon hash={primaryAccount.address} />}
 
 			{!hideAddress && shortenAddress(primaryAccount.address)}
 		</Button>
