@@ -1,5 +1,12 @@
 # @midl-xyz/satoshi-kit
 
+## 2.0.0-next.48
+
+### Patch Changes
+
+- feat(satoshi-kit): expose account and network to verify and sign message
+  feat(executor): getEVMAddress is now possible to use w/o midl config
+
 ## 2.0.0-next.47
 
 ### Patch Changes
