@@ -1,6 +1,6 @@
 import { type Config, getDefaultAccount } from "@midl-xyz/midl-js-core";
 import { getPublicKey } from "@midl-xyz/midl-js-executor";
-import { useConfigInternal } from "@midl-xyz/midl-js-react";
+import { useConfig, useConfigInternal } from "@midl-xyz/midl-js-react";
 
 type UsePublicKeyParams = {
 	/**
@@ -26,17 +26,15 @@ export const usePublicKey = ({
 	publicKey,
 	config: customConfig,
 }: UsePublicKeyParams = {}) => {
+	const { network } = useConfig(customConfig);
 	const config = useConfigInternal(customConfig);
-	const account = getDefaultAccount(config);
+	const account = getDefaultAccount(
+		config,
+		publicKey ? (it) => it.publicKey === publicKey : undefined,
+	);
 
 	try {
-		const pk = publicKey || account.publicKey;
-
-		if (!pk) {
-			return null;
-		}
-
-		return getPublicKey(config, pk);
+		return getPublicKey(account, network);
 	} catch (e) {
 		console.error(e);
 		return null;

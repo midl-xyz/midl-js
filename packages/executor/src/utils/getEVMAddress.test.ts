@@ -1,7 +1,6 @@
-import { AddressPurpose, AddressType, connect } from "@midl-xyz/midl-js-core";
+import { AddressPurpose, connect } from "@midl-xyz/midl-js-core";
 import { describe, expect, it } from "vitest";
 import { midlConfig } from "~/__tests__/midlConfig";
-import { getPublicKey } from "~/actions";
 import { getEVMAddress } from "~/utils/getEVMAddress";
 
 describe("utils | getEVMAddress", () => {
@@ -12,12 +11,12 @@ describe("utils | getEVMAddress", () => {
 			purposes: [AddressPurpose.Ordinals],
 		});
 
-		const { accounts } = midlConfig.getState();
+		const { accounts, network } = midlConfig.getState();
 
 		if (!accounts || accounts.length === 0) {
 			throw new Error("No accounts found in midlConfig");
 		}
 
-		expect(getEVMAddress(midlConfig, accounts[0])).toBe(expectedEVMAddress);
+		expect(getEVMAddress(accounts[0], network)).toBe(expectedEVMAddress);
 	});
 });

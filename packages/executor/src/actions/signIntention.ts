@@ -5,7 +5,7 @@ import {
 } from "@midl-xyz/midl-js-core";
 import { type Client, isHex } from "viem";
 import { getTransactionCount } from "viem/actions";
-import { getPublicKeyForAccount } from "~/actions/getPublicKeyForAccount";
+import { getPublicKey } from "~/actions/getPublicKey";
 import { signTransaction } from "~/actions/signTransaction";
 import { GAS_PRICE } from "~/config";
 import type { TransactionIntention } from "~/types/intention";
@@ -54,18 +54,18 @@ export const signIntention = async (
 		throw new Error("No network set");
 	}
 
-	const publicKey = await getPublicKeyForAccount(config, options.publicKey);
-
 	const account = getDefaultAccount(
 		config,
 		options.publicKey ? (it) => it.publicKey === options.publicKey : undefined,
 	);
 
-	if (!account) {
+	const publicKey = getPublicKey(account, network);
+
+	if (!account || !publicKey) {
 		throw new Error("No public key set");
 	}
 
-	const evmAddress = getEVMAddress(config, account);
+	const evmAddress = getEVMAddress(account, network);
 
 	const nonce =
 		options.nonce ??
