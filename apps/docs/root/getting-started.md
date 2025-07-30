@@ -4,36 +4,37 @@ title: Getting Started
 
 # Getting Started
 
-Install Midl.js via your package manager of choice.
+Install MIDL.js via your package manager of choice.
 
 ::: code-group
 
 ```bash [pnpm]
-pnpm add @midl-xyz/midl-js-core @midl-xyz/midl-js-react
+pnpm add @midl-xyz/midl-js-core @midl-xyz/midl-js-react @mild-xyz/midl-js-connectors
 ```
 
 ```bash [npm]
-npm install @midl-xyz/midl-js-core @midl-xyz/midl-js-react
+npm install @midl-xyz/midl-js-core @midl-xyz/midl-js-react @mild-xyz/midl-js-connectors
 ```
 
 ```bash [yarn]
-yarn add @midl-xyz/midl-js-core @midl-xyz/midl-js-react
+yarn add @midl-xyz/midl-js-core @midl-xyz/midl-js-react @mild-xyz/midl-js-connectors
 ```
 
 :::
 
 ## Integration
 
-Create and export a new Midl.js config file in your project. And wrap your app with the Midl.js context provider.
+Create and export a new MIDL.js config file in your project. And wrap your app with the Midl.js context provider.
 
 ::: code-group
 
 ```ts [midl.config.ts]
-import { createConfig, regtest, leather } from "@midl-xyz/midl-js-core";
+import { createConfig, regtest } from "@midl-xyz/midl-js-core";
+import { xverseConnector } from "@midl-xyz/midl-js-connectors";
 
 export const config = createConfig({
   networks: [regtest],
-  connectors: [leather()],
+  connectors: [xverseConnector()],
   persist: true,
 });
 ```
@@ -57,7 +58,10 @@ function App() {
 
 ## Usage
 
-Use Midl.js hooks to interact with the blockchain.
+Use MIDL.js hooks to interact with the blockchain.
+
+> [!TIP]
+> Use the [SatoshiKit](./satoshi-kit.md) to have a more complete experience with MIDL.js.
 
 ::: code-group
 

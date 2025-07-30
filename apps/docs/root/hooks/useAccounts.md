@@ -1,6 +1,6 @@
 # useAccounts
 
-Provides access to the connected user's accounts
+Provides access to the connected user's accounts and connection state.
 
 ## Import
 
@@ -8,11 +8,27 @@ Provides access to the connected user's accounts
 import { useAccounts } from "@midl-xyz/midl-js-react";
 ```
 
+## Params
+
+| Name   | Type         | Description                                                      |
+|--------|--------------|------------------------------------------------------------------|
+| config | `Config`     | Optional custom config object to override the context config.     |
+
 ## Example
 
 ```tsx
 function Page() {
-  const { accounts, isConnected } = useAccounts();
+  const {
+    accounts,
+    ordinalsAccount,
+    paymentAccount,
+    connector,
+    isConnecting,
+    isConnected,
+    status,
+    network,
+    ...rest
+  } = useAccounts();
 
   return (
     <div>
@@ -20,8 +36,8 @@ function Page() {
         <div>
           <h2>Accounts</h2>
           <ul>
-            {accounts.map(account => (
-              <li key={account}>{account}</li>
+            {accounts?.map(account => (
+              <li key={account.address}>{account.address}</li>
             ))}
           </ul>
         </div>

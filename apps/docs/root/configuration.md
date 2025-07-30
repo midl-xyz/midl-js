@@ -14,12 +14,12 @@ To create a configuration object, use the `createConfig` function:
 import {
   createConfig,
   regtest,
-  LeatherConnector,
 } from "@midl-xyz/midl-js-core";
+import { xverseConnector } from "@midl-xyz/midl-js-connectors";
 
 export const config = createConfig({
   networks: [regtest],
-  connectors: [new LeatherConnector()],
+  connectors: [xverseConnector()],
   persist: true,
 });
 ```
@@ -52,9 +52,12 @@ import { mainnet, testnet, regtest, testnet4, signet } from "@midl-xyz/midl-js-c
 
 MIDL.js supports the following connectors:
 
-- [`Leather`](https://leather.io)
 - [`XVerse`](https://xverse.app)
+- [`Leather`](https://leather.io)
 - [`Unisat`](https://unisat.io)
+- [`Phantom`](https://phantom.app)
+- [`Bitget`](https://web3.bitget.com/en)
+- [`MagicEden`](https://wallet.magiceden.io/)
 - `keyPair` - ECPair key pair connector
 
 You can also create your own custom connector by implementing the `CreateConnectorFn` interface.
@@ -62,5 +65,14 @@ You can also create your own custom connector by implementing the `CreateConnect
 #### Importing Connectors
 
 ```ts
-import { leather, satsConnect, unisat, keyPair } from "@midl-xyz/midl-js-core";
+import { 
+  xverseConnector,
+  leatherConnector,
+  unisatConnector,
+  phantomConnector,
+  bitgetConnector,
+  magicEdenConnector,
+ } from "@midl-xyz/midl-js-connectors";
+
+ import {  keyPairConnector } from "@midl-xyz/midl-js-node";
 ```
