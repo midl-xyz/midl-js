@@ -19,7 +19,7 @@ import {
 } from "viem";
 import { afterEach, describe, expect, it } from "vitest";
 import { midlConfig, midlConfigP2SH } from "~/__tests__/midlConfig";
-import { getPublicKeyForAccount } from "~/actions";
+import { getPublicKey } from "~/actions";
 import { extractEVMSignature } from "~/utils/extractEVMSignature";
 import { getBIP322Hash } from "~/utils/getBIP322Hash";
 import { getEVMAddress } from "~/utils/getEVMAddress";
@@ -73,8 +73,12 @@ describe("extractEVMSignature", () => {
 			purposes: [AddressPurpose.Payment],
 		});
 
-		const account = await getDefaultAccount(midlConfigP2SH);
-		const pk = await getPublicKeyForAccount(midlConfigP2SH);
+		const account = getDefaultAccount(midlConfigP2SH);
+		const pk = getPublicKey(account, midlConfigP2SH.getState().network);
+
+		if (!pk) {
+			throw new Error("No public key found for account");
+		}
 
 		const message = keccak256(new TextEncoder().encode("test"));
 
@@ -121,7 +125,7 @@ describe("extractEVMSignature", () => {
 			purposes: [AddressPurpose.Payment],
 		});
 
-		const account = await getDefaultAccount(midlConfig);
+		const account = getDefaultAccount(midlConfig);
 
 		const message = keccak256(new TextEncoder().encode("test"));
 
@@ -169,7 +173,13 @@ describe("extractEVMSignature", () => {
 			address: account.address,
 		});
 
-		const pk = await getPublicKeyForAccount(midlConfig);
+		const network = midlConfig.getState().network;
+
+		const pk = getPublicKey(account, network);
+
+		if (!pk) {
+			throw new Error("No public key found for account");
+		}
 
 		const { r, s, v } = await extractEVMSignature(
 			message,
@@ -198,7 +208,7 @@ describe("extractEVMSignature", () => {
 			signature: { r, s, v },
 		});
 
-		const hash = getEVMAddress(midlConfig, account);
+		const hash = getEVMAddress(account, network);
 
 		expect(hash).toEqual(recoveredAddress);
 
@@ -226,7 +236,11 @@ describe("extractEVMSignature", () => {
 			address: account.address,
 		});
 
-		const pk = await getPublicKeyForAccount(midlConfig);
+		const pk = getPublicKey(account, midlConfig.getState().network);
+
+		if (!pk) {
+			throw new Error("No public key found for account");
+		}
 
 		const { r, s } = await extractEVMSignature(
 			message,

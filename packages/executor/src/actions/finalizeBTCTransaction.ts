@@ -86,7 +86,7 @@ export const finalizeBTCTransaction = async (
 		throw new Error("No account found for public key");
 	}
 
-	const evmAddress = getEVMAddress(config, account);
+	const evmAddress = getEVMAddress(account, network);
 	const evmIntentions = intentions.filter((it) => Boolean(it.evmTransaction));
 	const evmTransactions = evmIntentions.map((it) => it.evmTransaction);
 	const hasWithdraw = intentions.some((it) => it.hasWithdraw);

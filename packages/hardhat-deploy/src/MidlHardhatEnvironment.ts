@@ -386,7 +386,7 @@ export class MidlHardhatEnvironment {
 
 			if (intention.meta?.contractName) {
 				const contractAddress = getContractAddress({
-					from: getEVMAddress(this.config, account),
+					from: getEVMAddress(account, this.config.getState().network),
 					nonce: BigInt(intention.evmTransaction.nonce ?? 0),
 				});
 
@@ -514,6 +514,6 @@ export class MidlHardhatEnvironment {
 			throw new Error("No default account set");
 		}
 
-		return getEVMAddress(this.config, account);
+		return getEVMAddress(account, this.config.getState().network);
 	}
 }

@@ -1,14 +1,18 @@
-import { type Account, AddressType, type Config } from "@midl-xyz/midl-js-core";
+import {
+	type Account,
+	AddressType,
+	type BitcoinNetwork,
+} from "@midl-xyz/midl-js-core";
 import { publicKeyConvert } from "secp256k1";
 import { getAddress, keccak256, toHex } from "viem";
 import { getPublicKey } from "~/actions";
 
-export const getEVMAddress = (config: Config, account: Account) => {
+export const getEVMAddress = (account: Account, network: BitcoinNetwork) => {
 	let publicKey: `0x${string}` | null = null;
 
 	switch (account.addressType) {
 		case AddressType.P2TR: {
-			publicKey = getPublicKey(config, account.publicKey);
+			publicKey = getPublicKey(account, network);
 			break;
 		}
 

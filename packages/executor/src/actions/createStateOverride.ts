@@ -18,7 +18,10 @@ export const createStateOverride = async (
 	intentions: TransactionIntention[],
 	fees: bigint = convertBTCtoETH(100000000), // 1 BTC
 ): Promise<StateOverride> => {
-	const evmAddress = getEVMAddress(config, getDefaultAccount(config));
+	const evmAddress = getEVMAddress(
+		getDefaultAccount(config),
+		config.getState().network,
+	);
 
 	const satoshis = intentions.reduce((acc, intention) => {
 		return acc + (intention.satoshis || 0);

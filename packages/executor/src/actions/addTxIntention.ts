@@ -35,7 +35,7 @@ export const addTxIntention = async (
 		throw new Error("No account found for public key");
 	}
 
-	const evmAddress = getEVMAddress(config, account);
+	const evmAddress = getEVMAddress(account, config.getState().network);
 
 	if (intention.evmTransaction) {
 		intention.evmTransaction.from = intention.evmTransaction.from ?? evmAddress;

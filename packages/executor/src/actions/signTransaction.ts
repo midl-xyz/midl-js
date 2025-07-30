@@ -43,7 +43,7 @@ export const signTransaction = async (
 		throw new Error("No chain ID found");
 	}
 
-	const publicKey = getPublicKey(config, account.publicKey);
+	const publicKey = getPublicKey(account, network);
 
 	if (!publicKey) {
 		throw new Error("No public key found");
@@ -52,7 +52,7 @@ export const signTransaction = async (
 	const lastNonce =
 		nonce ??
 		(await getTransactionCount(client, {
-			address: getEVMAddress(config, account),
+			address: getEVMAddress(account, network),
 		}));
 
 	const serialized = serializeTransaction({

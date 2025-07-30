@@ -49,8 +49,8 @@ export const addCompleteTxIntention = async (
 	}
 
 	const receiver = getPublicKey(
-		config,
-		runesReceiver?.publicKey ?? btcReceiver.publicKey,
+		runesReceiver ?? btcReceiver,
+		network,
 	) as `0x${string}`;
 
 	let receiverBTC = padHex("0x0", { size: 32 });

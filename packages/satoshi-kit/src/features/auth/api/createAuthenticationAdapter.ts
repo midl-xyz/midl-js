@@ -1,4 +1,5 @@
 import type {
+	Account,
 	BitcoinNetwork,
 	SignMessageProtocol,
 } from "@midl-xyz/midl-js-core";
@@ -7,9 +8,15 @@ export type AuthenticationAdapter = {
 	verify({
 		message,
 		signature,
-	}: { message: string; signature: string; address: string }): Promise<boolean>;
+		account,
+	}: {
+		message: string;
+		signature: string;
+		network: BitcoinNetwork;
+		account: Account;
+	}): Promise<boolean>;
 	createMessage(
-		address: string,
+		account: Account,
 		network: BitcoinNetwork,
 	): Promise<{
 		message: string;

@@ -1,7 +1,8 @@
 import ecc from "@bitcoinerlab/secp256k1";
 import {
+	type Account,
 	AddressType,
-	type Config,
+	type BitcoinNetwork,
 	extractXCoordinate,
 } from "@midl-xyz/midl-js-core";
 import { initEccLib, networks, payments } from "bitcoinjs-lib";
@@ -11,23 +12,9 @@ import { toHex } from "viem";
  * Return the public key to use for passing along to the EVM network.
  */
 export const getPublicKey = (
-	config: Config,
-	publicKey: string,
+	account: Account,
+	network: BitcoinNetwork,
 ): `0x${string}` | null => {
-	const { network } = config.getState();
-
-	if (!publicKey || !network) {
-		return null;
-	}
-
-	const account = config
-		.getState()
-		.accounts?.find((it) => it.publicKey === publicKey);
-
-	if (!account) {
-		throw new Error(`No account found for public key: ${publicKey}`);
-	}
-
 	const addressType = account.addressType;
 
 	initEccLib(ecc);
@@ -35,7 +22,10 @@ export const getPublicKey = (
 	switch (addressType) {
 		case AddressType.P2TR: {
 			const p2tr = payments.p2tr({
-				internalPubkey: Buffer.from(extractXCoordinate(publicKey), "hex"),
+				internalPubkey: Buffer.from(
+					extractXCoordinate(account.publicKey),
+					"hex",
+				),
 				network: networks[network.network],
 			});
 
@@ -45,7 +35,7 @@ export const getPublicKey = (
 
 		case AddressType.P2WPKH:
 		case AddressType.P2SH_P2WPKH: {
-			return `0x${extractXCoordinate(publicKey)}`;
+			return `0x${extractXCoordinate(account.publicKey)}`;
 		}
 	}
 };

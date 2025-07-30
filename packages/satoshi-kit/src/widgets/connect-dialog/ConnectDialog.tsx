@@ -73,7 +73,7 @@ export const ConnectDialog = ({
 
 				const [account] = accounts;
 
-				await signInAsync(account.address);
+				await signInAsync(account);
 			},
 		},
 	});
