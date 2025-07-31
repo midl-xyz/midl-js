@@ -1,5 +1,13 @@
 # @midl-xyz/midl-js-executor-react
 
+## 2.0.0-next.49
+
+### Patch Changes
+
+- fix: rerenders wagmi auto connect
+- Updated dependencies
+  - @midl-xyz/midl-js-react@2.0.0-next.49
+
 ## 2.0.0-next.48
 
 ### Patch Changes

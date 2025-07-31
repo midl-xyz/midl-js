@@ -31,7 +31,6 @@ export const WagmiAutoConnect = () => {
 	const chain = useEVMChain();
 	const { switchChain } = useSwitchChain();
 	const { connect } = useConnect();
-	const { address } = useAccount();
 
 	const connector = useMemo(() => {
 		return mock({
@@ -40,8 +39,9 @@ export const WagmiAutoConnect = () => {
 		});
 	}, [evmAddress]);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: No need to re-run on function changes
 	useEffect(() => {
-		if (!evmAddress || evmAddress === zeroAddress || evmAddress === address) {
+		if (!evmAddress || evmAddress === zeroAddress) {
 			return;
 		}
 
@@ -55,7 +55,7 @@ export const WagmiAutoConnect = () => {
 		} else {
 			console.error("Chain not found");
 		}
-	}, [evmAddress, connector, address, connect, chain, switchChain]);
+	}, [evmAddress, connector, chain]);
 
 	return null;
 };
