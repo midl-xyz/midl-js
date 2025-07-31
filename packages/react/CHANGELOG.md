@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-react
 
+## 2.0.0-next.49
+
+### Patch Changes
+
+- fix: rerenders wagmi auto connect
+
 ## 2.0.0-next.47
 
 ### Patch Changes
