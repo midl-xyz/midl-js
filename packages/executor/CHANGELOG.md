@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor
 
+## 2.0.0-next.50
+
+### Patch Changes
+
+- fix: gas re-estimate
+
 ## 2.0.0-next.48
 
 ### Patch Changes
