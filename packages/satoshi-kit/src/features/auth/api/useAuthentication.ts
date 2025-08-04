@@ -1,9 +1,10 @@
+import type { Account } from "@midl-xyz/midl-js-core";
 import { useConfig, useSignMessage } from "@midl-xyz/midl-js-react";
 import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
 import { useSatoshiKit } from "~/app";
 
 type UseAuthenticationParams = {
-	signInMutation?: Omit<UseMutationOptions<void, Error, string>, "mutationFn">;
+	signInMutation?: Omit<UseMutationOptions<void, Error, Account>, "mutationFn">;
 	signOutMutation?: Omit<UseMutationOptions<void, Error, void>, "mutationFn">;
 };
 
@@ -20,24 +21,25 @@ export const useAuthentication = ({
 		mutateAsync: signInAsync,
 		...signInState
 	} = useMutation({
-		mutationFn: async (address: string) => {
+		mutationFn: async (account: Account) => {
 			if (!authenticationAdapter) {
 				throw new Error("No authentication adapter provided");
 			}
 
 			const { message, signMessageProtocol } =
-				await authenticationAdapter.createMessage(address, network);
+				await authenticationAdapter.createMessage(account, network);
 
 			const { signature } = await signMessageAsync({
 				message,
-				address,
+				address: account.address,
 				protocol: signMessageProtocol,
 			});
 
 			const isValid = await authenticationAdapter.verify({
 				message,
 				signature,
-				address,
+				network,
+				account,
 			});
 
 			if (!isValid) {

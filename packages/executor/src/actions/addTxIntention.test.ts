@@ -33,7 +33,10 @@ describe("executor | actions | addTxIntention", () => {
 			},
 		});
 
-		const evmAddress = getEVMAddress(config, getDefaultAccount(config));
+		const evmAddress = getEVMAddress(
+			getDefaultAccount(config),
+			config.getState().network,
+		);
 
 		expect(assignedTxIntention.evmTransaction.from).toEqual(evmAddress);
 	});

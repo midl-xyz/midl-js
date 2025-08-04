@@ -39,7 +39,7 @@ export const useEVMAddress = ({
 			publicKey ? (it) => it.publicKey === publicKey : undefined,
 		);
 
-		return getEVMAddress(configInternal, account);
+		return getEVMAddress(account, config.network);
 	} catch (e) {
 		console.error("Error getting EVM address:", e);
 		return zeroAddress;
