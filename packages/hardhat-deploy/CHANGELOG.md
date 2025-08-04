@@ -1,5 +1,11 @@
 # @midl-xyz/hardhat-deploy
 
+## 2.0.0-next.52
+
+### Patch Changes
+
+- feat(hardhat-deploy): allow modify intention options on call contract
+
 ## 2.0.0-next.50
 
 ### Patch Changes

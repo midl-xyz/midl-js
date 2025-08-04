@@ -266,6 +266,14 @@ export class MidlHardhatEnvironment {
 			"to" | "value" | "gas" | "nonce"
 			// biome-ignore lint/suspicious/noExplicitAny: Allow any args
 		> & { args: any },
+		intentionOptions: Pick<
+			TransactionIntention,
+			| "satoshis"
+			| "hasRunesDeposit"
+			| "hasRunesWithdraw"
+			| "hasWithdraw"
+			| "runes"
+		> = {},
 	) {
 		if (!this.config) {
 			throw new Error("MidlHardhatEnvironment not initialized");
@@ -302,6 +310,7 @@ export class MidlHardhatEnvironment {
 				gas: options.gas,
 			},
 			satoshis: convertETHtoBTC(options.value ?? 0n),
+			...intentionOptions,
 		});
 
 		this.store.setState((state) => ({
