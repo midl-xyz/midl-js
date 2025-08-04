@@ -1,7 +1,7 @@
 "use client";
 
 import { Portal } from "@ark-ui/react";
-import { AddressPurpose } from "@midl-xyz/midl-js-core";
+import { getDefaultAccount } from "@midl-xyz/midl-js-core";
 import { useConnect, useDisconnect } from "@midl-xyz/midl-js-react";
 import { useMutation } from "@tanstack/react-query";
 import { ArrowLeftIcon, XIcon } from "lucide-react";
@@ -66,30 +66,12 @@ export const ConnectDialog = ({
 		purposes,
 		config,
 		mutation: {
-			onSuccess: async (accounts) => {
+			onSuccess: async () => {
 				if (!adapter) {
 					return onClose();
 				}
 
-				const { defaultPurpose } = config.getState();
-
-				const paymentAccount = accounts.find(
-					(it) => it.purpose === AddressPurpose.Payment,
-				);
-
-				const ordinalsAccount = accounts.find(
-					(it) => it.purpose === AddressPurpose.Ordinals,
-				);
-
-				let account = paymentAccount || ordinalsAccount;
-
-				if (defaultPurpose) {
-					account = accounts.find((it) => it.purpose === defaultPurpose);
-				}
-
-				if (!account) {
-					throw new Error("No account found");
-				}
+				const account = getDefaultAccount(config);
 
 				await signInAsync(account);
 			},
