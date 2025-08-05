@@ -19,14 +19,24 @@ type FinalizeMutationVariables = {
 	 */
 	stateOverride?: StateOverride;
 
+	/**
+	 * Number of assets to withdraw. This is used to calculate the total fees.
+	 */
 	assetsToWithdrawSize?: number;
 
+	/**
+	 * Custom fee rate in sats/vB
+	 */
 	feeRate?: number;
 
 	/**
 	 * If true, skip the gas estimation for EVM transactions
 	 */
 	skipEstimateGasMulti?: boolean;
+	/**
+	 * BTC address used to sign the transactions
+	 */
+	from?: string;
 };
 
 type UseFinalizeBTCTransactionResponse =
@@ -53,7 +63,7 @@ type UseFinalizeBTCTransactionParams = {
  * @returns
  * - **finalizeBTCTransaction**: `() => void` – Function to initiate finalizing BTC transactions.
  * - **finalizeBTCTransactionAsync**: `() => Promise<EdictRuneResponse>` – Function to asynchronously finalize BTC transactions.
- * - **data**: `EdictRuneResponse` – The finalized BTC transaction.
+ * - **data**: `EdictRuneResponse | TransferBTCResponse` – The finalized BTC transaction.
  * - Other mutation states from `useMutation`.
  */
 export const useFinalizeBTCTransaction = ({
@@ -75,6 +85,7 @@ export const useFinalizeBTCTransaction = ({
 			assetsToWithdrawSize,
 			feeRate,
 			skipEstimateGasMulti,
+			from,
 		} = {}) => {
 			if (!publicClient) {
 				throw new Error("No public client set");
@@ -89,6 +100,7 @@ export const useFinalizeBTCTransaction = ({
 					assetsToWithdrawSize,
 					feeRate,
 					skipEstimateGasMulti,
+					from,
 				},
 			);
 		},
