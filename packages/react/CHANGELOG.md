@@ -1,5 +1,13 @@
 # @midl-xyz/midl-js-react
 
+## 2.0.0-next.54
+
+### Patch Changes
+
+- chore: pre-release clean up
+- Updated dependencies
+  - @midl-xyz/midl-js-core@2.0.0-next.54
+
 ## 2.0.0-next.49
 
 ### Patch Changes
