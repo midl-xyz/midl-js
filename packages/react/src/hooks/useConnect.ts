@@ -26,14 +26,14 @@ type ConnectVariables = {
 
 type UseConnectParams = ConnectParams & {
 	/**
-	 * Optional mutation options for the connect operation.
+	 * Mutation options for the connect operation.
 	 */
 	mutation?: Omit<
 		UseMutationOptions<ConnectData, ConnectError, ConnectVariables>,
 		"mutationFn"
 	>;
 	/**
-	 * Optional custom configuration to override the default.
+	 * Custom configuration to override the default.
 	 */
 	config?: Config;
 };

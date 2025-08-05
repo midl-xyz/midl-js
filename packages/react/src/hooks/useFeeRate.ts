@@ -19,7 +19,7 @@ type UseFeeRateParams = {
 	 */
 	query?: QueryOptions;
 	/**
-	 * Optional custom configuration to override the default.
+	 * Custom configuration to override the default.
 	 */
 	config?: Config;
 };

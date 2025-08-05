@@ -1,7 +1,8 @@
 # useSignMessage
 
-Signs a message with the given address and message.
-Supports ECDSA and BIP322 protocols
+Signs a message with the given address and message. Supports ECDSA and BIP322 protocols.
+
+If `address` is not provided, the default account address will be used. If `protocol` is not provided, BIP322 will be used by default.
 
 ## Import
 
@@ -13,17 +14,17 @@ import { useSignMessage } from "@midl-xyz/midl-js-react";
 
 ```tsx
 function SignMessage() {
-  const { data, signMessage, error, loading } = useSignMessage();
+  const { signMessage, isLoading, error, data } = useSignMessage();
 
-  if (loading) return <p>Loading...</p>;
+  if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
   return (
     <div>
-      <p>{data.signature}</p>
+      <p>{data?.signature}</p>
       <button
         onClick={() =>
-          signMessage({ address: "bc1q...", message: "Hello, world!" })
+          signMessage({ message: "Hello, world!" })
         }
       >
         Sign Message
@@ -32,3 +33,26 @@ function SignMessage() {
   );
 }
 ```
+
+## Parameters
+
+| Name     | Type               | Description                                                    |
+| -------- | ------------------ | -------------------------------------------------------------- |
+| mutation | UseMutationOptions | (optional) Mutation options for react-query.                   |
+| config   | `Config`           | (optional) Custom config to override the default from context. |
+
+### SignMessageVariables
+
+| Name     | Type   | Description                                                                 |
+| -------- | ------ | --------------------------------------------------------------------------- |
+| message  | string | The message to sign.                                                        |
+| address  | string | (optional) The address to sign with. If not provided, uses default account. |
+| protocol | string | (optional) The protocol to use (ECDSA or BIP322). Defaults to BIP322.       |
+
+## Returns
+
+| Name             | Type                                                            | Description                                              |
+| ---------------- | --------------------------------------------------------------- | -------------------------------------------------------- |
+| signMessage      | `(variables: SignMessageVariables) => void`                     | Function to initiate message signing.                    |
+| signMessageAsync | `(variables: SignMessageVariables) => Promise<SignMessageData>` | Function to asynchronously sign the message.             |
+| ...rest          | object                                                          | Additional mutation state (e.g. isLoading, error, etc.). |

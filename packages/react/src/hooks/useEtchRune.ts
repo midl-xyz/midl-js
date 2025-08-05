@@ -12,14 +12,14 @@ type EtchRuneVariables = EtchRuneParams;
 
 type UseEtchRuneParams = {
 	/**
-	 * Optional mutation options for the etch rune operation.
+	 * Mutation options for the etch rune operation.
 	 */
 	mutation?: Omit<
 		UseMutationOptions<EtchRuneData, EtchRuneError, EtchRuneVariables>,
 		"mutationFn"
 	>;
 	/**
-	 * Optional custom configuration to override the default.
+	 * Custom configuration to override the default.
 	 */
 	config?: Config;
 };

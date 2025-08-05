@@ -10,6 +10,26 @@ import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
 import { useConfig } from "~/hooks/useConfig";
 import { useConfigInternal } from "~/hooks/useConfigInternal";
 
+/**
+ * Signs a message with the given address and message. Supports ECDSA and BIP322 protocols.
+ *
+ * If `address` is not provided, the default account address will be used.
+ * If `protocol` is not provided, BIP322 will be used by default.
+ *
+ * @example
+ * ```typescript
+ * const { signMessage, signMessageAsync } = useSignMessage();
+ *
+ * signMessage({ message: 'Hello, World!' });
+ * ```
+ *
+ * @param params Configuration options for the mutation.
+ *
+ * @returns
+ * - `signMessage`: `(variables: SignMessageVariables) => void` – Function to initiate message signing.
+ * - `signMessageAsync`: `(variables: SignMessageVariables) => Promise<SignMessageData>` – Function to asynchronously sign the message.
+ * - `...rest`: Additional mutation state (e.g. isLoading, error, etc.).
+ */
 type SignMessageVariables = Omit<SignMessageParams, "address"> & {
 	address?: string;
 };
@@ -17,10 +37,17 @@ type SignMessageError = Error;
 type SignMessageData = SignMessageResponse;
 
 type UseSignMessageParams = {
-	mutation?: Omit<
-		UseMutationOptions<SignMessageData, SignMessageError, SignMessageVariables>,
-		"mutationFn"
+	/**
+	 * Mutation options for the sign message operation.
+	 */
+	mutation?: UseMutationOptions<
+		SignMessageData,
+		SignMessageError,
+		SignMessageVariables
 	>;
+	/**
+	 * Custom configuration to override the default.
+	 */
 	config?: Config;
 };
 
@@ -55,7 +82,7 @@ export const useSignMessage = ({
 		mutationFn: async ({
 			message,
 			address,
-			protocol = SignMessageProtocol.Ecdsa,
+			protocol = SignMessageProtocol.Bip322,
 		}) => {
 			let signingAddress = address;
 

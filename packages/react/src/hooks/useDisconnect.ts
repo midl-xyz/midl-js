@@ -4,11 +4,11 @@ import { useConfigInternal } from "~/hooks/useConfigInternal";
 
 type UseDisconnectParams = {
 	/**
-	 * Optional mutation options for the disconnect operation.
+	 * Mutation options for the disconnect operation.
 	 */
 	mutation?: Omit<UseMutationOptions, "mutationFn">;
 	/**
-	 * Optional custom configuration to override the default.
+	 * Custom configuration to override the default.
 	 */
 	config?: Config;
 };
