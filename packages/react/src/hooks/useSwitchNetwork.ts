@@ -12,6 +12,9 @@ type SwitchNetworkData = undefined;
 type SwitchNetworkVariables = BitcoinNetwork;
 
 type UseSwitchNetworkParams = {
+	/**
+	 * Mutation options for the switch network operation.
+	 */
 	mutation?: Omit<
 		UseMutationOptions<
 			SwitchNetworkData,
@@ -20,6 +23,9 @@ type UseSwitchNetworkParams = {
 		>,
 		"mutationFn"
 	>;
+	/**
+	 * Custom configuration to override the default.
+	 */
 	config?: Config;
 };
 

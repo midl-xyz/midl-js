@@ -1,6 +1,6 @@
 # useEdictRune
 
-Edicts (transfers) one or more runes to one or more receivers.
+Edicts (transfers) one or more runes to one or more receivers. The transaction will only be broadcast if `publish` is set to `true` in the parameters.
 
 ## Import
 
@@ -23,6 +23,7 @@ function TransferRune() {
           receiver: "bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq",
         },
       ],
+      publish: true, // Set to true to broadcast the transaction
     });
   };
 
