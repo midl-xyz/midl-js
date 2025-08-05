@@ -1,9 +1,8 @@
 # finalizeBTCTransaction
 
-> **finalizeBTCTransaction**(`config`, `store`, `client`, `options`): `Promise`\<[`EdictRuneResponse`](../../root/actions/edictRune.md#edictruneresponse) \| [`TransferBTCResponse`](../../root/actions/transferBTC.md#transferbtcresponse) \>
+> **finalizeBTCTransaction**(`config`, `intentions`, `client`, `options?`): `Promise<EdictRuneResponse | TransferBTCResponse>`
 
-Prepares BTC transaction for the intentions.
-Calculates gas limits for EVM transactions, total fees and transfers.
+Prepares a Bitcoin transaction for the provided intentions. Calculates gas limits for EVM transactions, total fees, and handles both BTC and rune transfers.
 
 
 ## Import
@@ -15,37 +14,32 @@ import { finalizeBTCTransaction } from "@midl-xyz/midl-js-executor";
 ## Example
 
 ```ts
-import { createPublicClient } from "viem";
+import { finalizeBTCTransaction } from "@midl-xyz/midl-js-executor";
 
-const client = createPublicClient({
-  chain, // midl chain
-  transport, // http transport for midl chain
-});
-
-const tx = await finalizeBTCTransaction(config, store, client);
+const btcTx = await finalizeBTCTransaction(config, intentions, client, { feeRate: 10 });
 ```
 
 ## Parameters
 
-| Name    | Type                                                                    | Description                 |
-| ------- | ----------------------------------------------------------------------- | --------------------------- |
-| config  | [`Config`](../../root/configuration.md#creating-a-configuration-object) | The configuration object    |
-| store   | `Store`                                                                 | The store object            |
-| client  | `object`                                                                | EVM client or provider      |
-| options | [`FinalizeBTCTransactionOptions`](#finalizebtctransactionoptions)       | The options for the request |
+| Name         | Type                                                                         | Description                                 |
+| ------------ | ---------------------------------------------------------------------------- | ------------------------------------------- |
+| `config`     | [`Config`](../../reference/Config.md)                                        | The configuration object.                   |
+| `intentions` | `TransactionIntention[]                                                      | Array of transaction intentions to process. |
+| `client`     | `Client`                                                                     | Viem's client instance.                     |
+| `options`    | [`FinalizeBTCTransactionOptions`](#finalizebtctransactionoptions) (optional) | Optional configuration options.             |
 
 ### FinalizeBTCTransactionOptions
 
-| Name                  | Type            | Description                                    |
-| --------------------- | --------------- | ---------------------------------------------- |
-| stateOverride?        | `StateOverride` | State override for EVM transactions            |
-| publicKey?            | `string`        | Public key of the account to use for signing   |
-| feeRateMultiplier?    | `number`        | Fee rate multiplier for the transaction        |
-| assetsToWithdrawSize? | `number`        | Number of assets to withdraw                   |
-| skipEstimateGasMulti? | `boolean`       | If true, skip estimating gas multi for EVM txs |
+| Name                   | Type                       | Description                                         |
+| ---------------------- | -------------------------- | --------------------------------------------------- |
+| `stateOverride`        | `StateOverride` (optional) | State override for EVM transactions.                |
+| `publicKey`            | `string` (optional)        | Public key of the account to use for signing.       |
+| `feeRate`              | `number` (optional)        | Custom fee rate (sats/vB).                          |
+| `assetsToWithdrawSize` | `number` (optional)        | Number of assets to withdraw.                       |
+| `skipEstimateGasMulti` | `boolean` (optional)       | If true, skips gas estimation for EVM transactions. |
+| `multisigAddress`      | `string` (optional)        | Multisig address to use for the transaction.        |
 
 ## Returns
 
-`Promise`\<[`EdictRuneResponse`](../../root/actions/edictRune.md#edictruneresponse) \| [`TransferBTCResponse`](../../root/actions/transferBTC.md#transferbtcresponse) \>
+`Promise<EdictRuneResponse | TransferBTCResponse>` — The BTC transaction response.
 
-BTC transaction response

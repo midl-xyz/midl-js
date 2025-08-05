@@ -42,18 +42,34 @@ type FinalizeBTCTransactionOptions = {
 	 */
 	skipEstimateGasMulti?: boolean;
 
+	/**
+	 * Multisig address to use for the transaction.
+	 * If not provided, the default multisig address for the current network will be used.
+	 */
 	multisigAddress?: string;
 };
 
 /**
- * Prepares BTC transaction for the intentions.
- * Calculates gas limits for EVM transactions, total fees and transfers.
+ * Prepares a Bitcoin transaction for the provided intentions.
  *
- * @param config The configuration object
- * @param store The store object
- * @param client EVM client or provider (viem)
- * @param options Configuration options
- * @returns BTC transaction response
+ * Calculates gas limits for EVM transactions, total fees, and transfers. Handles both BTC and rune transfers.
+ *
+ * @param config - The configuration object.
+ * @param intentions - Array of TransactionIntention objects to process.
+ * @param client - EVM client or provider (viem).
+ * @param options - Optional configuration options:
+ *   - stateOverride: State override for EVM transactions.
+ *   - publicKey: Public key of the account to use for signing.
+ *   - feeRate: Custom fee rate (sats/vB).
+ *   - assetsToWithdrawSize: Number of assets to withdraw.
+ *   - skipEstimateGasMulti: If true, skips gas estimation for EVM transactions.
+ *   - multisigAddress: Multisig address to use for the transaction.
+ * @returns A BTC transaction response: EdictRuneResponse or TransferBTCResponse.
+ *
+ * @throws If no network is set, no account is found, intentions are empty, or more than 10 intentions/runes.
+ *
+ * @example
+ * const btcTx = await finalizeBTCTransaction(config, intentions, client, { feeRate: 10 });
  */
 export const finalizeBTCTransaction = async (
 	config: Config,
