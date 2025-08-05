@@ -37,7 +37,8 @@ type FinalizeMutationVariables = {
 	 * BTC address used to sign the transactions
 	 */
 	from?: string;
-};
+	// biome-ignore lint/suspicious/noConfusingVoidType: This is used to allow the function to be called without parameters.
+} | void;
 
 type UseFinalizeBTCTransactionResponse =
 	| EdictRuneResponse

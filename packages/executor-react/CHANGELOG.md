@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor-react
 
+## 2.0.0-next.55
+
+### Patch Changes
+
+- fix(executor-react): disable wagmi reconnect on mount
+
 ## 2.0.0-next.54
 
 ### Patch Changes
