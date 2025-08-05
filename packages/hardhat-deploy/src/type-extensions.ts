@@ -18,6 +18,7 @@ declare module "hardhat/types/config" {
 					network?: string | BitcoinNetwork;
 					hardhatNetwork?: string;
 					provider?: AbstractProvider;
+					derivationPath?: "xverse" | "leather" | string;
 				}
 			>;
 		};

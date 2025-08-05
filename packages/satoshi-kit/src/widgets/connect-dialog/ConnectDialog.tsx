@@ -1,6 +1,7 @@
 "use client";
 
 import { Portal } from "@ark-ui/react";
+import { getDefaultAccount } from "@midl-xyz/midl-js-core";
 import { useConnect, useDisconnect } from "@midl-xyz/midl-js-react";
 import { useMutation } from "@tanstack/react-query";
 import { ArrowLeftIcon, XIcon } from "lucide-react";
@@ -64,14 +65,13 @@ export const ConnectDialog = ({
 	} = useConnect({
 		purposes,
 		config,
-
 		mutation: {
-			onSuccess: async (accounts) => {
+			onSuccess: async () => {
 				if (!adapter) {
 					return onClose();
 				}
 
-				const [account] = accounts;
+				const account = getDefaultAccount(config);
 
 				await signInAsync(account);
 			},

@@ -51,7 +51,7 @@ import {
 import { sendBTCTransactions, waitForTransactionReceipt } from "viem/actions";
 import { type StoreApi, createStore } from "zustand";
 import "~/types/context";
-import { Wallet } from "~/Wallet";
+import { DerivationPath, Wallet } from "~/Wallet";
 
 export class MidlHardhatEnvironment {
 	private readonly store: StoreApi<{
@@ -96,7 +96,29 @@ export class MidlHardhatEnvironment {
 			fs.mkdirSync(this.deploymentsPath);
 		}
 
-		this.wallet = new Wallet(this.userConfig.mnemonic, this.bitcoinNetwork);
+		let derivationPath: string;
+
+		const testnetOrMainnet =
+			this.bitcoinNetwork.id === "mainnet" ? "mainnet" : "testnet";
+
+		switch (this.userConfig.derivationPath) {
+			case "leather":
+				derivationPath = DerivationPath.Leather[testnetOrMainnet];
+				break;
+			case "xverse":
+				derivationPath = DerivationPath.Xverse[testnetOrMainnet];
+				break;
+			default:
+				derivationPath =
+					this.userConfig.derivationPath ||
+					DerivationPath.Xverse[testnetOrMainnet];
+		}
+
+		this.wallet = new Wallet(
+			this.userConfig.mnemonic,
+			this.bitcoinNetwork,
+			derivationPath,
+		);
 	}
 
 	private initializeNetwork() {
@@ -266,6 +288,14 @@ export class MidlHardhatEnvironment {
 			"to" | "value" | "gas" | "nonce"
 			// biome-ignore lint/suspicious/noExplicitAny: Allow any args
 		> & { args: any },
+		intentionOptions: Pick<
+			TransactionIntention,
+			| "satoshis"
+			| "hasRunesDeposit"
+			| "hasRunesWithdraw"
+			| "hasWithdraw"
+			| "runes"
+		> = {},
 	) {
 		if (!this.config) {
 			throw new Error("MidlHardhatEnvironment not initialized");
@@ -302,6 +332,7 @@ export class MidlHardhatEnvironment {
 				gas: options.gas,
 			},
 			satoshis: convertETHtoBTC(options.value ?? 0n),
+			...intentionOptions,
 		});
 
 		this.store.setState((state) => ({

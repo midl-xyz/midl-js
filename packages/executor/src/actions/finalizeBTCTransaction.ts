@@ -102,43 +102,45 @@ export const finalizeBTCTransaction = async (
 			(it) => it.gas === undefined,
 		);
 
-		let gasLimits = await estimateGasMulti(client as Client, {
-			transactions: emvTransactionsWithoutGas,
-			stateOverride,
-			account: evmAddress,
-		});
-		if (!options.stateOverride) {
-			const totalGas = gasLimits.reduce((acc, gas) => acc + gas, 0n);
-
-			const totalCost = calculateTransactionsCost(totalGas, {
-				feeRate,
-				hasWithdraw: hasWithdraw,
-				hasRunesDeposit: intentions.some((it) => it.hasRunesDeposit),
-				hasRunesWithdraw: hasRunesWithdraw,
-				assetsToWithdrawSize: options.assetsToWithdrawSize ?? 0,
-			});
-
-			gasLimits = await estimateGasMulti(client as Client, {
+		if (emvTransactionsWithoutGas.length > 0) {
+			let gasLimits = await estimateGasMulti(client as Client, {
 				transactions: emvTransactionsWithoutGas,
-				stateOverride: await createStateOverride(
-					config,
-					client,
-					intentions,
-					totalCost,
-				),
+				stateOverride,
 				account: evmAddress,
 			});
-		}
+			if (!options.stateOverride) {
+				const totalGas = gasLimits.reduce((acc, gas) => acc + gas, 0n);
 
-		for (const [i, intention] of evmIntentions.entries()) {
-			if (intention.evmTransaction.gas !== undefined) {
-				continue;
+				const totalCost = calculateTransactionsCost(totalGas, {
+					feeRate,
+					hasWithdraw: hasWithdraw,
+					hasRunesDeposit: intentions.some((it) => it.hasRunesDeposit),
+					hasRunesWithdraw: hasRunesWithdraw,
+					assetsToWithdrawSize: options.assetsToWithdrawSize ?? 0,
+				});
+
+				gasLimits = await estimateGasMulti(client as Client, {
+					transactions: emvTransactionsWithoutGas,
+					stateOverride: await createStateOverride(
+						config,
+						client,
+						intentions,
+						totalCost,
+					),
+					account: evmAddress,
+				});
 			}
 
-			intention.evmTransaction.gas = BigInt(
-				// Increase gas limit by 20% to account for potential fluctuations
-				Math.ceil(Number(gasLimits[i]) * 1.2),
-			);
+			for (const [i, intention] of evmIntentions.entries()) {
+				if (intention.evmTransaction.gas !== undefined) {
+					continue;
+				}
+
+				intention.evmTransaction.gas = BigInt(
+					// Increase gas limit by 20% to account for potential fluctuations
+					Math.ceil(Number(gasLimits[i]) * 1.2),
+				);
+			}
 		}
 	}
 

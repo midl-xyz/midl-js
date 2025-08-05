@@ -1,5 +1,11 @@
 # @midl-xyz/satoshi-kit
 
+## 2.0.0-next.51
+
+### Patch Changes
+
+- fix: use default account sign auth
+
 ## 2.0.0-next.49
 
 ### Patch Changes
