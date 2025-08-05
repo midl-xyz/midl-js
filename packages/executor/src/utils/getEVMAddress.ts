@@ -7,6 +7,13 @@ import { publicKeyConvert } from "secp256k1";
 import { getAddress, keccak256, toHex } from "viem";
 import { getPublicKey } from "~/actions";
 
+/**
+ * Derives the EVM (Ethereum) address from a Bitcoin account and network.
+ *
+ * @param account - The Bitcoin account object.
+ * @param network - The Bitcoin network.
+ * @returns The corresponding EVM address as a string.
+ */
 export const getEVMAddress = (account: Account, network: BitcoinNetwork) => {
 	let publicKey: `0x${string}` | null = null;
 

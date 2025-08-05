@@ -40,6 +40,9 @@ export default withSidebar(
 			"midl/:slug*": ":slug*",
 		},
 		srcExclude: ["./examples"],
+		markdown: {
+			math: true,
+		},
 		vite: {
 			esbuild: {
 				target: "esnext",

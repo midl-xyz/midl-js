@@ -10,7 +10,7 @@ import {
 } from "viem";
 import { getBalance, readContract } from "viem/actions";
 import type { TransactionIntention } from "~/types";
-import { convertBTCtoETH, getEVMAddress } from "~/utils";
+import { getEVMAddress, satoshisToWei } from "~/utils";
 
 /**
  * Creates a state override for EVM simulation based on the provided transaction intentions.
@@ -32,7 +32,7 @@ export const createStateOverride = async (
 	config: Config,
 	client: Client,
 	intentions: TransactionIntention[],
-	fees: bigint = convertBTCtoETH(100000000), // 1 BTC
+	fees: bigint = satoshisToWei(100000000), // 1 BTC
 ): Promise<StateOverride> => {
 	const evmAddress = getEVMAddress(
 		getDefaultAccount(config),
@@ -49,7 +49,7 @@ export const createStateOverride = async (
 
 	const balanceOverride: StateOverride[number] = {
 		address: evmAddress,
-		balance: convertBTCtoETH(satoshis) + userBalance + fees,
+		balance: satoshisToWei(satoshis) + userBalance + fees,
 	};
 
 	const overrides: StateOverride = [balanceOverride];
