@@ -10,9 +10,9 @@ import { useAccounts } from "@midl-xyz/midl-js-react";
 
 ## Params
 
-| Name   | Type         | Description                                                      |
-|--------|--------------|------------------------------------------------------------------|
-| config | `Config`     | Optional custom config object to override the context config.     |
+| Name   | Type     | Description                                                   |
+| ------ | -------- | ------------------------------------------------------------- |
+| config | `Config` | Optional custom config object to override the context config. |
 
 ## Example
 
@@ -57,6 +57,6 @@ function Page() {
 | connector       | `Connector \| undefined`                            | The current connection                           |
 | isConnecting    | `boolean`                                           | Indicates if a connection is in progress         |
 | isConnected     | `boolean`                                           | Indicates if the connection has been established |
-| status          | `string`                                            | The current connection status                    |
+| status          | `"success" \| "pending" \| "disconnected"`          | The current connection status                    |
 | network         | `BitcoinNetwork \| undefined`                       | The connected network                            |
 | ...rest         |                                                     | Additional query state provided by `useQuery`    |

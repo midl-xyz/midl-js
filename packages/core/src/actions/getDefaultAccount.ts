@@ -11,14 +11,25 @@ class PredicateError extends Error {
 }
 /**
  * Gets the default account from the current connection.
- * If no account is found, an error is thrown.
  *
- * If a search function is provided, the first account that matches the search function is returned.
- * In other cases, the first account with the purpose of `Payment` or `Ordinals` is returned.
+ * The selection order is:
+ * 1. If a predicate is provided, returns the first account matching the predicate.
+ * 2. If a defaultPurpose is set, returns the first account with that purpose.
+ * 3. Otherwise, returns the first account with the purpose of `Payment`, or if not found, `Ordinals`.
  *
- * @param config The configuration object
- * @param predicate A search function to find the account
- * @returns The account
+ * @param config - The configuration object.
+ * @param predicate - (Optional) A function to search for a specific account. Receives an account and returns a boolean.
+ *
+ * @returns The selected account.
+ *
+ * @throws {WalletConnectionError} If there is no active connection.
+ * @throws {EmptyAccountsError} If there are no accounts.
+ * @throws {PredicateError} If a predicate is provided and no account matches.
+ *
+ * @example
+ * ```typescript
+ * const account = getDefaultAccount(config, acc => acc.address === 'bcrt1q...');
+ * ```
  */
 export const getDefaultAccount = (
 	config: Config,

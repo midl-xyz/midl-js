@@ -27,6 +27,22 @@ export class WalletConnectionError extends ConnectError {
 	}
 }
 
+/**
+ * Connects to a wallet connector and retrieves user accounts for the specified purposes and network.
+ *
+ * @param config - The configuration object.
+ * @param params - Connection parameters, including address purposes and optional network.
+ * @param connectorId - (Optional) The ID of the connector to use. Defaults to the first connector if not provided.
+ *
+ * @throws {EmptyAccountsError} If the connector returns no accounts.
+ *
+ * @returns A promise that resolves to the list of connected accounts.
+ *
+ * @example
+ * ```typescript
+ * const accounts = await connect(config, { purposes: [AddressPurpose.Payment] });
+ * ```
+ */
 export const connect = async (
 	config: Config,
 	params: ConnectParams,

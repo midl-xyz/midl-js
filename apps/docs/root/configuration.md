@@ -26,21 +26,23 @@ export const config = createConfig({
 
 ## Configuration Options
 
-| Name       | Type                  | Description                                       |
-| ---------- | --------------------- | ------------------------------------------------- |
-| networks   | `BitcoinNetwork[]`    | The bitcoin networks to use                       |
-| connectors | `CreateConnectorFn[]` | The connectors to use                             |
-| persist    | `boolean` (optional)  | If true, the config will persist in local storage |
+| Name           | Type                          | Description                                               |
+| -------------- | ----------------------------- | --------------------------------------------------------- |
+| networks       | `BitcoinNetwork[]`            | The bitcoin networks to use                               |
+| connectors     | `ConnectorWithMetadata[]`     | The connectors to use                                     |
+| persist        | `boolean` (optional)          | If true, the config will persist in local storage         |
+| provider       | `AbstractProvider` (optional) | The provider to use for the network                       |
+| defaultPurpose | `AddressPurpose` (optional)   | The default address to use for signing transactions, etc. |
 
 ### Available Networks
 
 MIDL.js supports the following networks:
 
 - `mainnet`
-- `signet`
 - `testnet`
-- `regtest`
 - `testnet4`
+- `signet`
+- `regtest`
 
 #### Importing Networks
 
@@ -60,7 +62,7 @@ MIDL.js supports the following connectors:
 - [`MagicEden`](https://wallet.magiceden.io/)
 - `keyPair` - ECPair key pair connector
 
-You can also create your own custom connector by implementing the `CreateConnectorFn` interface.
+You can also create your own custom connector by implementing the `CreateConnectorFn` interface. You can find an implementation examples in the `@midl-xyz/midl-js-connectors` package.
 
 #### Importing Connectors
 

@@ -1,6 +1,23 @@
 import type { NetworkConfig } from "~/connectors";
 import type { Config } from "~/createConfig";
 
+/**
+ * Adds a new network configuration to a connector.
+ *
+ * @param config - The configuration object
+ * @param connectorId - The ID of the connector to which the network should be added.
+ * @param networkConfig - The network configuration to add.
+ *
+ * @example
+ * ```typescript
+ * await addNetwork(config, "my-connector", {
+ *   id: "testnet",
+ *   name: "Testnet",
+ *   rpcUrl: "https://...",
+ *   // ...other network config fields
+ * });
+ * ```
+ */
 export const addNetwork = async (
 	config: Config,
 	connectorId: string,
