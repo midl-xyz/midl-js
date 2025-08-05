@@ -13,22 +13,22 @@ export type PartialIntention = Omit<
 };
 
 /**
- * Add a transaction intention to the store
+ * Creates a transaction intention with the provided parameters.
  *
  * @param config The configuration object
  * @param intention The intention to add
  * @param reset If true, the intentions array will be reset
- * @param publicKey Public key to use to sign the transaction
+ * @param from The BTC address to use for the intention
  * @returns The added intention
  */
 export const addTxIntention = async (
 	config: Config,
 	intention: PartialIntention,
-	publicKey?: string,
+	from?: string,
 ): Promise<TransactionIntention> => {
 	const account = getDefaultAccount(
 		config,
-		publicKey ? (it) => it.publicKey === publicKey : undefined,
+		from ? (it) => it.address === from : undefined,
 	);
 
 	if (!account) {

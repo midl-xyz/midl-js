@@ -7,17 +7,23 @@ import type { Address } from "viem";
 import { type UseReadContractParameters, useReadContract } from "wagmi";
 
 type UseERC20Params = {
+	/**
+	 * Custom query options for the read contract call.
+	 */
 	query?: NonNullable<
 		UseReadContractParameters<
 			typeof executorAbi,
 			"getRuneIdByAssetAddress"
 		>["query"]
 	>;
+	/**
+	 * Custom configuration to override the default.
+	 */
 	config?: Config;
 };
 
 /**
- * Get Rune by it's EVM address.
+ * Returns the Rune associated with a given EVM address.
  *
  * @example
  * ```typescript

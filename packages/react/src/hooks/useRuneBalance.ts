@@ -16,8 +16,18 @@ type QueryOptions = Omit<
 };
 
 type UseRuneBalanceParams = Omit<GetRuneBalanceParams, "address"> & {
+	/**
+	 * Optional query options for the rune balance operation.
+	 */
 	query?: QueryOptions;
+	/**
+	 * Custom configuration to override the default.
+	 */
 	config?: Config;
+	/**
+	 * Optional address to fetch the rune balance for.
+	 * If not provided, it will use the address from the ordinals account.
+	 */
 	address?: GetRuneBalanceParams["address"];
 };
 

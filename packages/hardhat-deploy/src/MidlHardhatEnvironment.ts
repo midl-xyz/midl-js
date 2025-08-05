@@ -19,12 +19,11 @@ import type { Chain, TransactionIntention } from "@midl-xyz/midl-js-executor";
 import {
 	addCompleteTxIntention,
 	addTxIntention,
-	convertBTCtoETH,
-	convertETHtoBTC,
 	finalizeBTCTransaction,
 	getEVMAddress,
 	getEVMFromBitcoinNetwork,
 	signIntention,
+	weiToSatoshis,
 } from "@midl-xyz/midl-js-executor";
 import { keyPairConnector } from "@midl-xyz/midl-js-node";
 import {
@@ -331,7 +330,7 @@ export class MidlHardhatEnvironment {
 				nonce: options.nonce,
 				gas: options.gas,
 			},
-			satoshis: convertETHtoBTC(options.value ?? 0n),
+			satoshis: weiToSatoshis(options.value ?? 0n),
 			...intentionOptions,
 		});
 

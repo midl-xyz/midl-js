@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 2.0.0-next.54
+
+### Patch Changes
+
+- chore: pre-release clean up
+
 ## 2.0.0-next.47
 
 ### Patch Changes

@@ -1,5 +1,15 @@
 # @midl-xyz/satoshi-kit
 
+## 2.0.0-next.54
+
+### Patch Changes
+
+- chore: pre-release clean up
+- Updated dependencies
+  - @midl-xyz/midl-js-react@2.0.0-next.54
+  - @midl-xyz/midl-js-core@2.0.0-next.54
+  - @midl-xyz/midl-js-connectors@2.0.0-next.54
+
 ## 2.0.0-next.51
 
 ### Patch Changes

@@ -4,33 +4,36 @@ import { useConfig, useConfigInternal } from "@midl-xyz/midl-js-react";
 
 type UsePublicKeyParams = {
 	/**
-	 * The public key to convert to an EVM address.
+	 * The BTC address of the account to get the public key from.
 	 */
-	publicKey?: string;
+	from?: string;
 
+	/**
+	 * Custom configuration to override the default.
+	 */
 	config?: Config;
 };
 
 /**
- * Custom hook to extract and format the public key into a hexadecimal EVM-compatible format.
+ * Returns the public key to use for passing along to the EVM network.
  *
- * This hook processes the provided public key or defaults to the payment or ordinals account's public key,
- * converting it to a hexadecimal string suitable for EVM interactions.
+ * For P2TR addresses, returns the hex-encoded x-only public key (after removing the first two bytes from the output).
+ * For P2WPKH and P2SH_P2WPKH, returns the hex-encoded x-coordinate of the public key.
  *
  * @example
  * ```typescript
- * const publicKeyHex = usePublicKey({ publicKey: '0xabc123...' });
+ * const publicKeyHex = usePublicKey({ from: 'bcrtq...' });
  * ```
  */
 export const usePublicKey = ({
-	publicKey,
+	from,
 	config: customConfig,
 }: UsePublicKeyParams = {}) => {
 	const { network } = useConfig(customConfig);
 	const config = useConfigInternal(customConfig);
 	const account = getDefaultAccount(
 		config,
-		publicKey ? (it) => it.publicKey === publicKey : undefined,
+		from ? (it) => it.address === from : undefined,
 	);
 
 	try {

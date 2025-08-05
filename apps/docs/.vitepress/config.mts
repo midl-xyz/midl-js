@@ -1,3 +1,4 @@
+import path from "node:path";
 import { defineConfig } from "vitepress";
 import { withSidebar } from "vitepress-sidebar";
 
@@ -21,7 +22,8 @@ export default withSidebar(
 			nav: [
 				{ text: "Home", link: "/" },
 				{ text: "Docs", link: "/docs" },
-				{ text: "Build DApps", link: "/midl/getting-started" },
+				{ text: "SatoshiKit", link: "/satoshi-kit/" },
+				{ text: "Core", link: "/core/" },
 			],
 
 			socialLinks: [
@@ -35,9 +37,12 @@ export default withSidebar(
 		},
 		cleanUrls: true,
 		rewrites: {
-			"root/:slug*": ":slug*",
+			"midl/:slug*": ":slug*",
 		},
 		srcExclude: ["./examples"],
+		markdown: {
+			math: true,
+		},
 		vite: {
 			esbuild: {
 				target: "esnext",
@@ -47,12 +52,12 @@ export default withSidebar(
 	[
 		{
 			useTitleFromFrontmatter: true,
+			folderLinkNotIncludesFileName: true,
 			useFolderTitleFromIndexFile: true,
 			sortMenusByFrontmatterOrder: true,
-			collapseDepth: 3,
+			collapseDepth: 2,
 			useTitleFromFileHeading: true,
-			useFolderLinkFromIndexFile: false,
-			scanStartPath: "root",
+			scanStartPath: "midl",
 			basePath: "/",
 			resolvePath: "/",
 		},
@@ -63,9 +68,23 @@ export default withSidebar(
 			sortMenusByFrontmatterOrder: true,
 			collapseDepth: 2,
 			useTitleFromFileHeading: true,
-			scanStartPath: "midl",
-			basePath: "/midl/",
-			resolvePath: "/midl/",
+			scanStartPath: "core",
+			basePath: "/core/",
+			resolvePath: "/core/",
+			includeRootIndexFile: true,
+		},
+
+		{
+			useTitleFromFrontmatter: true,
+			folderLinkNotIncludesFileName: true,
+			useFolderTitleFromIndexFile: true,
+			sortMenusByFrontmatterOrder: true,
+			collapseDepth: 2,
+			includeRootIndexFile: true,
+			useTitleFromFileHeading: true,
+			scanStartPath: "satoshi-kit",
+			basePath: "/satoshi-kit/",
+			resolvePath: "/satoshi-kit/",
 		},
 	],
 );

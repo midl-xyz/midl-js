@@ -13,9 +13,9 @@ import { getBTCAddressByte, getEVMAddress } from "~/utils";
 
 type SignIntentionOptions = {
 	/**
-	 * Public key of the account to use for signing
+	 * BTC address used to sign the transactions
 	 */
-	publicKey?: string;
+	from?: string;
 	/**
 	 * Next nonce of registered in EVM network, nonce is incremented by 1 for each transaction intention
 	 */
@@ -32,14 +32,21 @@ type SignIntentionOptions = {
 };
 
 /**
- * Signs the intention with the given options. The intentions is signed as generic Bitcoin message.
+ * Signs the intention with the given options. The intention is signed as a generic Bitcoin message.
  *
- * @param config The configuration object
- * @param client EVM client or provider
- * @param intention The intention to sign
- * @param intentions The list of intentions to sign
- * @param options The options for signing
- * @returns
+ * @param config - The configuration object.
+ * @param client - EVM client or provider.
+ * @param intention - The intention to sign.
+ * @param intentions - The list of intentions to sign (used for nonce calculation).
+ * @param options - The options for signing:
+ *   - publicKey: Public key of the account to use for signing.
+ *   - nonce: Next nonce registered in EVM network (optional).
+ *   - txId: Transaction hash of the BTC transaction.
+ *   - protocol: Protocol for signing the message (optional).
+ * @returns The signed EVM transaction object.
+ 
+ * @example
+ * const signed = await signIntention(config, client, intention, intentions, { txId });
  */
 export const signIntention = async (
 	config: Config,
@@ -56,7 +63,7 @@ export const signIntention = async (
 
 	const account = getDefaultAccount(
 		config,
-		options.publicKey ? (it) => it.publicKey === options.publicKey : undefined,
+		options.from ? (it) => it.address === options.from : undefined,
 	);
 
 	const publicKey = getPublicKey(account, network);
@@ -109,7 +116,7 @@ export const signIntention = async (
 		{
 			nonce,
 			protocol: options.protocol,
-			publicKey: options.publicKey,
+			from: options.from,
 		},
 	);
 

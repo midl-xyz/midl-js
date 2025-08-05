@@ -22,10 +22,14 @@ const scriptSizeMap = new Map<number, bigint>([
 /**
  * Calculate the cost of transactions batch
  *
- * @param transactions - Transactions to calculate cost for
- * @param config - Configuration object
- * @param feeRate - Multiplier for fee rate, default is 2 (double the fee rate)
- * @returns Cost of transactions in satoshis
+ * @param totalGas - The total gas used by the transactions.
+ * @param options - Options for transaction cost calculation.
+ *   @param feeRate - The fee rate in satoshis per byte.
+ *   @param hasRunesDeposit - Whether the batch includes a runes deposit.
+ *   @param hasWithdraw - Whether the batch includes a Bitcoin withdrawal.
+ *   @param hasRunesWithdraw - Whether the batch includes a runes withdrawal.
+ *   @param assetsToWithdrawSize - The number of assets to withdraw (default is 0).
+ * @returns Cost of transactions in satoshis.
  */
 export const calculateTransactionsCost = (
 	totalGas: bigint,

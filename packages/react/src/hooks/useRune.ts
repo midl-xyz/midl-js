@@ -14,8 +14,17 @@ type QueryOptions = Omit<
 };
 
 type UseRuneParams = {
+	/**
+	 * The ID of the rune to fetch.
+	 */
 	runeId: string;
+	/**
+	 * Optional query options for the rune operation.
+	 */
 	query?: QueryOptions;
+	/**
+	 * Custom configuration to override the default.
+	 */
 	config?: Config;
 };
 

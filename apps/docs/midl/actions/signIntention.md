@@ -1,8 +1,8 @@
 # signIntention
 
-> **signIntention**(`config`, `store`,`client`, `intention`, `options`): `Promise`\<`0x{string}`\>
+> **signIntention**(`config`, `client`, `intention`, `intentions`, `options`): `Promise<SignedTransaction>`
 
-Signs the intention with the given options. The intentions is signed as generic Bitcoin message.
+Signs the intention with the given options. The intention is signed as a generic Bitcoin message.
 
 ## Import
 
@@ -13,31 +13,29 @@ import { signIntention } from "@midl-xyz/midl-js-executor";
 ## Example
 
 ```ts
-const signedIntention = await signIntention(
-  config,
-  store,
-  client,
-  intention,
-  options
-);
-console.log(signedIntention);
+const signed = await signIntention(config, client, intention, intentions, { txId });
 ```
 
 ## Parameters
 
-| Name      | Type                                                                    | Description                |
-| --------- | ----------------------------------------------------------------------- | -------------------------- |
-| config    | [`Config`](../../root/configuration.md#creating-a-configuration-object) | The configuration object   |
-| store     | `Store`                                                                 | The store object           |
-| client    | `Client` \| 'Provider'                                                  | The EVM client or provider |
-| intention | `Intention`                                                             | The intention to sign      |
-| options   | [`SignIntentionOptions`](#signintentionoptions)                         | The options for signing    |
+| Name         | Type                                            | Description                                                  |
+| ------------ | ----------------------------------------------- | ------------------------------------------------------------ |
+| `config`     | `Config`                                        | The configuration object.                                    |
+| `client`     | `Client`                                        | EVM client or provider.                                      |
+| `intention`  | `TransactionIntention`                          | The intention to sign.                                       |
+| `intentions` | `TransactionIntention[]`                        | The list of intentions to sign (used for nonce calculation). |
+| `options`    | [`SignIntentionOptions`](#signintentionoptions) | The options for signing.                                     |
 
 ### SignIntentionOptions
 
-| Name       | Type                                                                                | Description                                                                                       |
-| ---------- | ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| publicKey? | `string`                                                                            | Public key of the account to use for signing                                                      |
-| nonce?     | `number`                                                                            | Next nonce of registered in EVM network, nonce is incremented by 1 for each transaction intention |
-| txId       | `string`                                                                            | Transaction hash of the BTC transaction                                                           |
-| protocol?  | [`SignMessageProtocol`](../../root/actions/signMessage.md#signmessageprotocol-enum) | Protocol for signing the message (optional)                                                       |
+| Name       | Type                           | Description                                    |
+| ---------- | ------------------------------ | ---------------------------------------------- |
+| `from`     | string (optional)              | BTC address of the account to use for signing. |
+| `nonce`    | number (optional)              | Next nonce registered in EVM network.          |
+| `txId`     | string                         | Transaction hash of the BTC transaction.       |
+| `protocol` | SignMessageProtocol (optional) | Protocol for signing the message.              |
+
+## Returns
+
+`Promise<SignedTransaction>` — The signed EVM transaction object.
+

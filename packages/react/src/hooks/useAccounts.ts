@@ -12,7 +12,7 @@ type UseAccountsParams = {
 
 /**
  * Provides access to the connected user's accounts.
- * *
+ *
  * @example
  * ```typescript
  * const { accounts, ordinalsAccount, paymentAccount, status } = useAccounts();
@@ -25,9 +25,9 @@ type UseAccountsParams = {
  * - **connector**: `Connector | undefined` – The current connection.
  * - **isConnecting**: `boolean` – Indicates if a connection is in progress.
  * - **isConnected**: `boolean` – Indicates if the connection has been established.
- * - **status**: `string` – The current connection status.
+ * - **status**: `"success" | "pending" | "disconnected"` – The current connection status.
  * - **network**: `BitcoinNetwork | undefined` – The connected network.
- * - **...rest**: `any` – Additional query state provided by `useQuery`.
+ * - **...rest**:  Additional query state provided by `useQuery`.
  */
 export const useAccounts = ({ config }: UseAccountsParams = {}) => {
 	const { accounts, connection, network } = useConfig(config);

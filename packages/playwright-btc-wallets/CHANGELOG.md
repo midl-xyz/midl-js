@@ -1,5 +1,12 @@
 # @midl-xyz/playwright-btc-wallets
 
+## 2.0.0-next.54
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-core@2.0.0-next.54
+
 ## 2.0.0-next.47
 
 ### Patch Changes

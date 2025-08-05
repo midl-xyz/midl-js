@@ -9,7 +9,10 @@ type SendBTCTransactionsData = Awaited<SendBTCTransactionsReturnType>;
 type SendBTCTransactionsError = Error;
 type SendBTCTransactionsVariables = SendBTCTransactionsParameter;
 
-type useSendBTCTransactionsParams = {
+type UseSendBTCTransactionsParams = {
+	/**
+	 * Mutation options for React Query.
+	 */
 	mutation?: Omit<
 		UseMutationOptions<
 			SendBTCTransactionsData,
@@ -20,9 +23,18 @@ type useSendBTCTransactionsParams = {
 	>;
 };
 
+/**
+ * Sends batch of MIDL transactions. Expects the `serializedTransactions` to be an array of signed serialized MIDL transactions and `btcTransaction` to be a signed Bitcoin transaction hex.
+ *
+ * @returns An object with `sendBTCTransactions`, `sendBTCTransactionsAsync`, and mutation state from React Query.
+ *
+ * @example
+ * const { sendBTCTransactions } = useSendBTCTransactions();
+ * sendBTCTransactions({ serializedTransactions, btcTransaction });
+ */
 export const useSendBTCTransactions = ({
 	mutation: mutationParams,
-}: useSendBTCTransactionsParams = {}) => {
+}: UseSendBTCTransactionsParams = {}) => {
 	const publicClient = usePublicClient();
 
 	const mutation = useMutation<

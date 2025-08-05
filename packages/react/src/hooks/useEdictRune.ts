@@ -14,21 +14,27 @@ type EdictRuneError = Error;
 type EdictRuneData = EdictRuneResponse;
 
 type UseEdictRuneParams = {
+	/**
+	 * Mutation options for react-query.
+	 */
 	mutation?: Omit<
 		UseMutationOptions<EdictRuneData, EdictRuneError, EdictRuneVariables>,
 		"mutationFn"
 	>;
+	/**
+	 * Config object to use instead of the one from context.
+	 */
 	config?: Config;
 };
 
-/*
- * Edicts (transfers) one or more runes to one or more receivers
- * *
+/**
+ * Edicts (transfers) one or more runes to one or more receivers.
+ *
  * @example
  * ```typescript
  * const { edictRune, edictRuneAsync } = useEdictRune();
  *
- * edictRune({ --parameters-- });
+ * edictRune({ ...parameters });
  * ```
  *
  * @param {UseEdictRuneParams} [params] - Configuration options for the mutation.

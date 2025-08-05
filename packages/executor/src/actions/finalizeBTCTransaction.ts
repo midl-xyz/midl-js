@@ -23,9 +23,9 @@ type FinalizeBTCTransactionOptions = {
 	 */
 	stateOverride?: StateOverride;
 	/**
-	 * Public key of the account to use for signing
+	 * BTC address used to sign the transactions
 	 */
-	publicKey?: string;
+	from?: string;
 
 	/**
 	 * Custom fee rate
@@ -42,18 +42,29 @@ type FinalizeBTCTransactionOptions = {
 	 */
 	skipEstimateGasMulti?: boolean;
 
+	/**
+	 * Multisig address to use for the transaction.
+	 * If not provided, the default multisig address for the current network will be used.
+	 */
 	multisigAddress?: string;
 };
 
 /**
- * Prepares BTC transaction for the intentions.
- * Calculates gas limits for EVM transactions, total fees and transfers.
+ * Prepares a Bitcoin transaction for the provided intentions.
  *
- * @param config The configuration object
- * @param store The store object
- * @param client EVM client or provider (viem)
- * @param options Configuration options
- * @returns BTC transaction response
+ * Calculates gas limits for EVM transactions, total fees, and transfers. Handles both BTC and rune transfers.
+ *
+ * @param config - The configuration object.
+ * @param intentions - Array of TransactionIntention objects to process.
+ * @param client - EVM client or provider (viem).
+ * @param options - Optional configuration options.
+ *
+ * @returns A BTC transaction response: EdictRuneResponse or TransferBTCResponse.
+ *
+ * @throws If no network is set, no account is found, intentions are empty, or more than 10 intentions/runes.
+ *
+ * @example
+ * const btcTx = await finalizeBTCTransaction(config, intentions, client, { feeRate: 10 });
  */
 export const finalizeBTCTransaction = async (
 	config: Config,
@@ -79,7 +90,7 @@ export const finalizeBTCTransaction = async (
 
 	const account = getDefaultAccount(
 		config,
-		options.publicKey ? (it) => it.publicKey === options.publicKey : undefined,
+		options.from ? (it) => it.address === options.from : undefined,
 	);
 
 	if (!account) {

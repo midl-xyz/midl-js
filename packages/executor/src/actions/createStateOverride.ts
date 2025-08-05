@@ -10,13 +10,29 @@ import {
 } from "viem";
 import { getBalance, readContract } from "viem/actions";
 import type { TransactionIntention } from "~/types";
-import { convertBTCtoETH, getEVMAddress } from "~/utils";
+import { getEVMAddress, satoshisToWei } from "~/utils";
 
+/**
+ * Creates a state override for EVM simulation based on the provided transaction intentions.
+ *
+ * This function aggregates BTC and rune balances from the given intentions and prepares a state override array
+ * for use in EVM simulation or testing. It updates the EVM account balance and ERC20 rune balances as needed.
+ *
+ * @param config - The configuration object.
+ * @param client - Viem's EVM client instance.
+ * @param intentions - Array of TransactionIntention objects to aggregate balances from.
+ * @param fees - (Optional) BTC fees in wei (default: 1 BTC, converted to ETH units).
+ * @returns A StateOverride array for EVM simulation.
+ *
+ * @example
+ * const overrides = await createStateOverride(config, client, intentions);
+ * // Use overrides in EVM simulation or testing
+ */
 export const createStateOverride = async (
 	config: Config,
 	client: Client,
 	intentions: TransactionIntention[],
-	fees: bigint = convertBTCtoETH(100000000), // 1 BTC
+	fees: bigint = satoshisToWei(100000000), // 1 BTC
 ): Promise<StateOverride> => {
 	const evmAddress = getEVMAddress(
 		getDefaultAccount(config),
@@ -33,7 +49,7 @@ export const createStateOverride = async (
 
 	const balanceOverride: StateOverride[number] = {
 		address: evmAddress,
-		balance: convertBTCtoETH(satoshis) + userBalance + fees,
+		balance: satoshisToWei(satoshis) + userBalance + fees,
 	};
 
 	const overrides: StateOverride = [balanceOverride];

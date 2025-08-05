@@ -1,3 +1,4 @@
+// TODO: some unused code here, consider removing it
 import type { MidlContextStore } from "@midl-xyz/midl-js-react";
 import type { TransactionSerializableBTC } from "viem";
 import { serializeTransaction } from "viem";

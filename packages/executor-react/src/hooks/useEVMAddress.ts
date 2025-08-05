@@ -2,28 +2,31 @@ import { type Config, getDefaultAccount } from "@midl-xyz/midl-js-core";
 import { getEVMAddress } from "@midl-xyz/midl-js-executor";
 import { useConfig, useConfigInternal } from "@midl-xyz/midl-js-react";
 import { zeroAddress } from "viem";
-import { usePublicKey } from "~/hooks/usePublicKey";
 
 type UseEVMAddressParams = {
 	/**
-	 * The public key to get the EVM address from
+	 * The BTC address of the account to get the EVM address from.
 	 */
-	publicKey?: string;
+	from?: string;
 
+	/**
+	 * Custom configuration to override the default.
+	 */
 	config?: Config;
 };
 
 /**
- * Gets the EVM address from a public key
- * If no public key is provided, it uses the connected payment or ordinals account's public key.
+ * Gets the EVM address from a public key.
+ *
+ * If no public key is provided, it uses the connected payment or ordinals account.
+ *
+ * @returns The EVM address as a string (or zero address if not available).
  *
  * @example
- * ```ts
- * const evmAddress = useEVMAddress({ publicKey: '0xabc123...' });
- * ```
+ * const evmAddress = useEVMAddress({ from: 'bcrt...' });
  */
 export const useEVMAddress = ({
-	publicKey,
+	from,
 	config: customConfig,
 }: UseEVMAddressParams = {}) => {
 	const config = useConfig(customConfig);
@@ -36,7 +39,7 @@ export const useEVMAddress = ({
 
 		const account = getDefaultAccount(
 			configInternal,
-			publicKey ? (it) => it.publicKey === publicKey : undefined,
+			from ? (it) => it.address === from : undefined,
 		);
 
 		return getEVMAddress(account, config.network);

@@ -19,14 +19,24 @@ type FinalizeMutationVariables = {
 	 */
 	stateOverride?: StateOverride;
 
+	/**
+	 * Number of assets to withdraw. This is used to calculate the total fees.
+	 */
 	assetsToWithdrawSize?: number;
 
+	/**
+	 * Custom fee rate in sats/vB
+	 */
 	feeRate?: number;
 
 	/**
 	 * If true, skip the gas estimation for EVM transactions
 	 */
 	skipEstimateGasMulti?: boolean;
+	/**
+	 * BTC address used to sign the transactions
+	 */
+	from?: string;
 };
 
 type UseFinalizeBTCTransactionResponse =
@@ -34,6 +44,9 @@ type UseFinalizeBTCTransactionResponse =
 	| TransferBTCResponse;
 
 type UseFinalizeBTCTransactionParams = {
+	/**
+	 * Mutation options for React Query.
+	 */
 	mutation?: Omit<
 		UseMutationOptions<
 			UseFinalizeBTCTransactionResponse,
@@ -42,19 +55,26 @@ type UseFinalizeBTCTransactionParams = {
 		>,
 		"mutationFn"
 	>;
+	/**
+	 * Custom configuration to override the default.
+	 */
 	config?: Config;
+	/**
+	 * Custom store to override the default.
+	 */
 	store?: MidlContextStore;
 };
 
 /**
- * Prepares BTC transaction for the intentions. Finalizes the transaction.
- * Calculates gas limits for EVM transactions, total fees and transfers.
+ * Prepares a Bitcoin transaction for the provided intentions.
  *
- * @returns
- * - **finalizeBTCTransaction**: `() => void` – Function to initiate finalizing BTC transactions.
- * - **finalizeBTCTransactionAsync**: `() => Promise<EdictRuneResponse>` – Function to asynchronously finalize BTC transactions.
- * - **data**: `EdictRuneResponse` – The finalized BTC transaction.
- * - Other mutation states from `useMutation`.
+ * Calculates gas limits for EVM transactions, total fees, and transfers. Handles both BTC and rune transfers.
+ *
+ * @returns An object with `finalizeBTCTransaction`, `finalizeBTCTransactionAsync`, and mutation state from React Query.
+ *
+ * @example
+ * const { finalizeBTCTransaction } = useFinalizeBTCTransaction();
+ * finalizeBTCTransaction({ feeRate: 10 });
  */
 export const useFinalizeBTCTransaction = ({
 	mutation,
@@ -75,6 +95,7 @@ export const useFinalizeBTCTransaction = ({
 			assetsToWithdrawSize,
 			feeRate,
 			skipEstimateGasMulti,
+			from,
 		} = {}) => {
 			if (!publicClient) {
 				throw new Error("No public client set");
@@ -89,6 +110,7 @@ export const useFinalizeBTCTransaction = ({
 					assetsToWithdrawSize,
 					feeRate,
 					skipEstimateGasMulti,
+					from,
 				},
 			);
 		},

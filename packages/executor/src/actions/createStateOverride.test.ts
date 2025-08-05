@@ -6,7 +6,7 @@ import { midlConfig } from "~/__tests__/midlConfig";
 import { mockServer } from "~/__tests__/mockServer";
 import { addTxIntention } from "~/actions/addTxIntention";
 import { createStateOverride } from "~/actions/createStateOverride";
-import { convertBTCtoETH } from "~/utils";
+import { satoshisToWei } from "~/utils";
 
 describe("executor | actions | createStateOverride", async () => {
 	const client = createTestClient({
@@ -42,7 +42,7 @@ describe("executor | actions | createStateOverride", async () => {
 		expect(override).toEqual([
 			{
 				address: "0x6eA845739F3a623303D3a8d8C735FF8D89216176",
-				balance: convertBTCtoETH(1000),
+				balance: satoshisToWei(1000),
 			},
 		]);
 	});
@@ -65,7 +65,7 @@ describe("executor | actions | createStateOverride", async () => {
 		expect(override).toEqual([
 			{
 				address: "0x6eA845739F3a623303D3a8d8C735FF8D89216176",
-				balance: convertBTCtoETH(3000),
+				balance: satoshisToWei(3000),
 			},
 		]);
 	});
