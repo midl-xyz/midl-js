@@ -2,7 +2,7 @@
 
 > **addCompleteTxIntention**(`config`, `assetsToWithdraw?`): `Promise<TransactionIntention>`
 
-Create a CompleteTx Intention. This prepares an EVM transaction that calls the `completeTx` function on the executor contract. 
+Creates a CompleteTx Intention. This prepares an EVM transaction that calls the `completeTx` function on the Executor contract. The `completeTx` is used to create a transaction to withdraw assets from the MIDL Layer and reflect the execution result to the Bitcoin network.
 
 ## Import
 
