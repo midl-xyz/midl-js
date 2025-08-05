@@ -21,14 +21,29 @@ type SignIntentionVariables = {
 type SignIntentionResponse = `0x07${string}`;
 
 type UseSignIntentionParams = {
+	/**
+	 * Mutation options for the sign intention operation.
+	 */
 	mutation?: Omit<
 		UseMutationOptions<SignIntentionResponse, Error, SignIntentionVariables>,
 		"mutationFn"
 	>;
+	/**
+	 * Custom configuration to override the default.
+	 */
 	config?: Config;
+	/**
+	 * Custom store to override the default.
+	 */
 	store?: MidlContextStore;
 	options?: {
+		/**
+		 * BTC address used to sign the transactions.
+		 */
 		from?: string;
+		/**
+		 * Protocol to use for signing the intention.
+		 */
 		protocol?: SignMessageProtocol;
 	};
 };
@@ -36,13 +51,11 @@ type UseSignIntentionParams = {
 /**
  * Signs a transaction intention.
  *
- * @returns
- * - **signIntention**: `(intention: TransactionIntention) => void` – Function to sign a specific transaction intention.
- * - **signIntentionAsync**: `(intention: TransactionIntention) => Promise<SignTransactionResult>` – Function to asynchronously sign an intention.
- * - **intentions**: `TransactionIntention[]` – The current list of transaction intentions.
- * - **data**: `SignIntentionResponse` – The signed intention response.
- * - **..rest**: `UseMutationState` – The state of the sign intention mutation.
- * - Other mutation states from `useMutation`.
+ * @returns An object with `signIntention`, `signIntentionAsync`, `intentions`, and mutation state from React Query.
+ *
+ * @example
+ * const { signIntention } = useSignIntention();
+ * signIntention({ intention, txId });
  */
 export const useSignIntention = ({
 	config: customConfig,

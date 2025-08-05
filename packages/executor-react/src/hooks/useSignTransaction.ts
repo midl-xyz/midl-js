@@ -1,3 +1,4 @@
+// TODO: UNUSED HOOK - Remove if not needed
 import { type Config, SignMessageProtocol } from "@midl-xyz/midl-js-core";
 import { signTransaction } from "@midl-xyz/midl-js-executor";
 import { useConfigInternal } from "@midl-xyz/midl-js-react";
