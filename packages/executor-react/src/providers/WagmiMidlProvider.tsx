@@ -7,13 +7,7 @@ import {
 import { useConfig } from "@midl-xyz/midl-js-react";
 import { useEffect, useMemo } from "react";
 import { http, zeroAddress } from "viem";
-import {
-	WagmiProvider,
-	createConfig,
-	useAccount,
-	useConnect,
-	useSwitchChain,
-} from "wagmi";
+import { WagmiProvider, createConfig, useConnect, useSwitchChain } from "wagmi";
 import { mock } from "wagmi/connectors";
 import { useEVMAddress, useEVMChain } from "~/hooks";
 
@@ -83,7 +77,7 @@ export const WagmiMidlProvider = ({
 	}, [chain, customConfig, network]);
 
 	return (
-		<WagmiProvider config={config}>
+		<WagmiProvider config={config} reconnectOnMount={false}>
 			<WagmiAutoConnect />
 
 			{children}
