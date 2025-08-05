@@ -32,11 +32,16 @@ function Page() {
 
 ## Parameters
 
-| Name            | Type                            | Description                                                      |
-| --------------- | ------------------------------- | ---------------------------------------------------------------- |
-| params          | `UseBroadcastTransactionParams` | The hook params                                                  |
-| params.config   | `Config`                        | (optional) Config object to use instead of the one from context. |
-| params.mutation | `UseMutationOptions`            | (optional) The mutation options for react-query.                 |
+| Name   | Type                            | Description |
+| ------ | ------------------------------- | ----------- |
+| params | `UseBroadcastTransactionParams` |             |
+
+### UseBroadcastTransactionParams
+
+| Name     | Type                 | Description                                                      |
+| -------- | -------------------- | ---------------------------------------------------------------- |
+| config   | `Config`             | (optional) Config object to use instead of the one from context. |
+| mutation | `UseMutationOptions` | (optional) The mutation options for react-query.                 |
 
 ## Returns
 

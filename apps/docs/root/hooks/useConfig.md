@@ -1,6 +1,6 @@
 # useConfig
 
-Retrieves the current configuration
+Retrieves the current configuration.
 
 ## Import
 
@@ -17,6 +17,12 @@ function Config() {
   return <div>Config: {JSON.stringify(config)}</div>;
 }
 ```
+
+## Parameters
+
+| Name         | Type   | Description                                                    |
+| ------------ | ------ | -------------------------------------------------------------- |
+| customConfig | Config | (optional) Custom config to override the default from context. |
 
 ## Returns
 

@@ -42,10 +42,9 @@ order: 6
 
 ## NetworkConfig
 
-| Name          | Type   | Description                        |
-| ------------- | ------ | ---------------------------------- |
-| id            | string | The unique ID of the network       |
-| name          | string | The display name of the network    |
-| rpcUrl        | string | The RPC URL for the network        |
-| explorer?     | string | (Optional) Block explorer URL      |
-| [key: string] | any    | (Optional) Any additional metadata |
+| Name       | Type                 | Description                          |
+| ---------- | -------------------- | ------------------------------------ |
+| name       | string               | The display name of the network      |
+| network    | BitcoinNetwork["id"] | The network ID (from BitcoinNetwork) |
+| rpcUrl     | string               | The RPC URL for the network          |
+| indexerUrl | string               | The indexer URL for the network      |

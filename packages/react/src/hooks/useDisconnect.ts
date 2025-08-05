@@ -3,7 +3,13 @@ import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
 import { useConfigInternal } from "~/hooks/useConfigInternal";
 
 type UseDisconnectParams = {
+	/**
+	 * Optional mutation options for the disconnect operation.
+	 */
 	mutation?: Omit<UseMutationOptions, "mutationFn">;
+	/**
+	 * Optional custom configuration to override the default.
+	 */
 	config?: Config;
 };
 

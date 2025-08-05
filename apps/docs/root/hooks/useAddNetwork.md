@@ -1,7 +1,5 @@
 # useAddNetwork
 
-> **useAddNetwork**(`params?`): `{ addNetwork, addNetworkAsync, ...rest }`
-
 Adds a new network configuration to a connector.
 
 :::warning
@@ -30,8 +28,17 @@ addNetwork({ connectorId: 'my-connector', networkConfig: { id: 'testnet', name: 
 
 ## Returns
 
-| Name            | Type     | Description                                 |
-| --------------- | -------- | ------------------------------------------- |
-| addNetwork      | function | Function to initiate adding a network.      |
-| addNetworkAsync | function | Function to asynchronously add a network.   |
-| ...rest         | object   | Additional mutation state from useMutation. |
+| Name            | Type                                                   | Description                                 |
+| --------------- | ------------------------------------------------------ | ------------------------------------------- |
+| addNetwork      | `(variables: UseAddNetworkVariables) => void`          | Function to initiate adding a network.      |
+| addNetworkAsync | `(variables: UseAddNetworkVariables) => Promise<void>` | Function to asynchronously add a network.   |
+| ...rest         | object                                                 | Additional mutation state from useMutation. |
+
+### UseAddNetworkVariables
+
+| Name          | Type                                           | Description               |
+| ------------- | ---------------------------------------------- | ------------------------- |
+| connectorId   | string                                         | The connector ID          |
+| networkConfig | [`NetworkConfig`](../reference/#networkconfig) | The network configuration |
+
+

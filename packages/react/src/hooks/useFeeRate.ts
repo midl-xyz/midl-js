@@ -14,7 +14,13 @@ type QueryOptions = Omit<
 };
 
 type UseFeeRateParams = {
+	/**
+	 * Optional query options for the fee rate operation.
+	 */
 	query?: QueryOptions;
+	/**
+	 * Optional custom configuration to override the default.
+	 */
 	config?: Config;
 };
 

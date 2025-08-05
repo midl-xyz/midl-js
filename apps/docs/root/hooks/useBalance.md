@@ -1,7 +1,5 @@
 # useBalance
 
-> **useBalance**(`params`): `{ balance, ...rest }`
-
 Fetches the balance of a given address or the default account if no address is provided.
 
 ## Import

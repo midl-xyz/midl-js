@@ -5,6 +5,8 @@ import { useConfigInternal } from "~/hooks/useConfigInternal";
 /**
  * Retrieves the current configuration
  *
+ * @params customConfig - Optional custom configuration to override the default.
+ *
  * @example
  * ```typescript
  * const config = useConfig();
