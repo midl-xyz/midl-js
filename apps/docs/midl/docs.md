@@ -14,4 +14,3 @@ MIDL.js is a JavaScript library that makes it easy to interact with the Bitcoin 
 - **TypeScript Support**: MIDL.js is written in TypeScript and provides type definitions.
 - **React Hooks**: MIDL.js provides React hooks to interact with the blockchain in your React app.
 
-

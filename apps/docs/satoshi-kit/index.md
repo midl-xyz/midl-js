@@ -1,9 +1,13 @@
 ---
-title: SatoshiKit
-order: 3
+title: Overview
+order: 0
 ---
 
 # SatoshiKit
+
+::: warning
+THE DOCUMENTATION IS OUTDATED AND MAY NOT REFLECT THE CURRENT STATE OF THE PROJECT.
+:::
 
 SatoshiKit provides a simple way to connect your apps with Bitcoin wallets.
 

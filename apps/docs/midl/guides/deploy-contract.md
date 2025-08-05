@@ -1,5 +1,9 @@
 # Deploy Contract
 
+::: warning
+THE DOCUMENTATION IS OUTDATED AND MAY NOT REFLECT THE CURRENT STATE OF THE PROJECT.
+:::
+
 The process of deploying contract to MIDL Protocol is similar to deploying contract to Ethereum. However to get the best experience, we recommend using the `@midl-xyz/hardhat-deploy` plugin alongside with [hardhat-deploy](https://github.com/wighawag/hardhat-deploy).
 
 You can find the example in [apps/docs/examples](https://github.com/midl-xyz/midl-js/tree/main/apps/docs/examples)

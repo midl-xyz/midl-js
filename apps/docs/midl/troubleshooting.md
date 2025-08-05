@@ -1,3 +1,6 @@
+---
+order: 6
+---
 # Troubleshooting
 
 ## Buffer is not defined

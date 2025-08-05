@@ -1,5 +1,9 @@
 # Connect Wallet
 
+::: warning
+THE DOCUMENTATION IS OUTDATED AND MAY NOT REFLECT THE CURRENT STATE OF THE PROJECT.
+:::
+
 The ability to connect a wallet is a crucial part of interacting with the blockchain. MIDL.js provides a simple way to connect to a wallet.
 
 You can find the example in [apps/docs/examples](https://github.com/midl-xyz/midl-js/tree/main/apps/docs/examples)

@@ -1,5 +1,9 @@
 # Send Bitcoin
 
+::: warning
+THE DOCUMENTATION IS OUTDATED AND MAY NOT REFLECT THE CURRENT STATE OF THE PROJECT.
+:::
+
 Midl.js provides a simple way to send Bitcoin and Runes.
 
 ## Usage

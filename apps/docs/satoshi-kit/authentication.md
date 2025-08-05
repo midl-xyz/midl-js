@@ -1,4 +1,5 @@
 ---
-title: Guides
 order: 3
 ---
+
+# Authentication

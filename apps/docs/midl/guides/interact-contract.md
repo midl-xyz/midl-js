@@ -1,4 +1,8 @@
-# Write Contract
+# Interact with Contract
+
+::: warning
+THE DOCUMENTATION IS OUTDATED AND MAY NOT REFLECT THE CURRENT STATE OF THE PROJECT.
+:::
 
 Writing to a contract is a common operation in a dApp. This guide will show you how to write to a contract using MIDL Protocol. Writing a contract in MIDL requires the BTC transaction to cover the fees and the EVM transaction to interact with the contract. You can read more about it [here](../how-it-works.md).
 
