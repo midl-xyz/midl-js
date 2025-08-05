@@ -607,8 +607,8 @@ importers:
         specifier: ^5.0.1
         version: 5.0.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       boring-avatars:
-        specifier: ^2.0.0
-        version: 2.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^2.0.1
+        version: 2.0.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       lucide-react:
         specifier: ^0.453.0
         version: 0.453.0(react@18.3.1)
@@ -2612,7 +2612,7 @@ packages:
     resolution: {integrity: sha512-Pl5pvYK5VYKflfoUk4fVBESqKMNBtAIGPIT4j+Q8KNFueAe1vB2PsbRESeNJyW5YLL9pqKaD1RVqLmgIa1yvDg==}
     peerDependencies:
       hardhat: ^2.17.0
-      viem: ^2.7.6
+      viem: npm:@midl-xyz/midl-viem@2.21.37
 
   '@nomicfoundation/solidity-analyzer-darwin-arm64@0.1.2':
     resolution: {integrity: sha512-JaqcWPDZENCvm++lFFGjrDd8mxtf+CtLd2MiXvMNTBD33dContTZ9TWETwNFwg7JTJT5Q9HEecH7FA+HTSsIUw==}
@@ -3898,7 +3898,7 @@ packages:
     peerDependencies:
       '@wagmi/core': 2.16.3
       typescript: '>=5.0.4'
-      viem: 2.x
+      viem: npm:@midl-xyz/midl-viem@2.21.37
     peerDependenciesMeta:
       typescript:
         optional: true
@@ -3908,7 +3908,7 @@ packages:
     peerDependencies:
       '@tanstack/query-core': '>=5.0.0'
       typescript: '>=5.0.4'
-      viem: 2.x
+      viem: npm:@midl-xyz/midl-viem@2.21.37
     peerDependenciesMeta:
       '@tanstack/query-core':
         optional: true
@@ -4827,8 +4827,8 @@ packages:
   bn.js@5.2.1:
     resolution: {integrity: sha512-eXRvHzWyYPBuB4NBy0cmYQjGitUrtqwbvlzP3G6VFnNRbsZQIxQ10PbKKHt8gZ/HW/D/747aDl+QkDqg3KQLMQ==}
 
-  boring-avatars@2.0.0:
-    resolution: {integrity: sha512-rANFfYatYsbT/c2JRyCjICX05eH4krVWadmW9KcDE2vf3r1w4qfY3s+Y86YQS2b4BdL6trjFE+XQjE5hGmRaeg==}
+  boring-avatars@2.0.1:
+    resolution: {integrity: sha512-TeBnZrp7WxHcQPuLhGQamklgNqaL7eUAUh3E11kFj9rTn0Hari2ZKVTchqNrp62UOHN/XOe5bZGcbzVGwHjHwg==}
     peerDependencies:
       react: '>=18.0.0'
       react-dom: '>=18.0.0'
@@ -9299,7 +9299,7 @@ packages:
       '@tanstack/react-query': 5.69.0
       react: '>=18'
       typescript: '>=5.0.4'
-      viem: 2.x
+      viem: npm:@midl-xyz/midl-viem@2.21.37
     peerDependenciesMeta:
       typescript:
         optional: true
@@ -15289,7 +15289,7 @@ snapshots:
 
   bn.js@5.2.1: {}
 
-  boring-avatars@2.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+  boring-avatars@2.0.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)

@@ -23,7 +23,7 @@ const btcTx = await finalizeBTCTransaction(config, intentions, client, { feeRate
 
 | Name         | Type                                                                         | Description                                 |
 | ------------ | ---------------------------------------------------------------------------- | ------------------------------------------- |
-| `config`     | [`Config`](../../reference/Config.md)                                        | The configuration object.                   |
+| `config`     | `Config`                                                                     | The configuration object.                   |
 | `intentions` | `TransactionIntention[]                                                      | Array of transaction intentions to process. |
 | `client`     | `Client`                                                                     | Viem's client instance.                     |
 | `options`    | [`FinalizeBTCTransactionOptions`](#finalizebtctransactionoptions) (optional) | Optional configuration options.             |

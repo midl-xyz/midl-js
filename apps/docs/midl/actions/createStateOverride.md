@@ -21,12 +21,12 @@ const overrides = await createStateOverride(config, client, intentions);
 
 ## Parameters
 
-| Name         | Type                                  | Description                                                 |
-| ------------ | ------------------------------------- | ----------------------------------------------------------- |
-| `config`     | [`Config`](../../reference/Config.md) | The current config object.                                  |
-| `client`     | `Client`                              | Viem's client instance.                                     |
-| `intentions` | `TransactionIntention[]`              | Array of transaction intentions to aggregate balances from. |
-| `fees`       | `bigint` (optional)                   | BTC fees in wei (default: 1 BTC, converted to ETH units).   |
+| Name         | Type                     | Description                                                 |
+| ------------ | ------------------------ | ----------------------------------------------------------- |
+| `config`     | `Config`                 | The current config object.                                  |
+| `client`     | `Client`                 | Viem's client instance.                                     |
+| `intentions` | `TransactionIntention[]` | Array of transaction intentions to aggregate balances from. |
+| `fees`       | `bigint` (optional)      | BTC fees in wei (default: 1 BTC, converted to ETH units).   |
 
 ## Returns
 

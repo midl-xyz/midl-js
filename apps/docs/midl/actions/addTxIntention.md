@@ -24,7 +24,7 @@ const intention = await addTxIntention(config, {
 
 | Name        | Type                                    | Description                                                                                           |
 | ----------- | --------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| `config`    | [`Config`](../../reference/Config.md)   | The configuration object.                                                                             |
+| `config`    | `Config`                                | The configuration object.                                                                             |
 | `intention` | [`PartialIntention`](#partialintention) | The intention to add.                                                                                 |
 | `from`      | `string` (optional)                     | The BTC Address of the account to sign the transaction with. If omitted, the default account is used. |
 

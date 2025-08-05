@@ -10,7 +10,7 @@ The example below is available in the [examples](https://github.com/midl-xyz/mid
 
 ## 1. Setup the project
 
-Follow the [Connect Wallet guide](../../root/guides/connect-wallet.md) to setup the project.
+Follow the [Connect Wallet guide](../core/guides/connect-wallet.md) to setup the project.
 
 ## 2. Install dependencies
 

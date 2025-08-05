@@ -36,9 +36,9 @@ addNetwork({ connectorId: 'my-connector', networkConfig: { id: 'testnet', name: 
 
 ### UseAddNetworkVariables
 
-| Name          | Type                                           | Description               |
-| ------------- | ---------------------------------------------- | ------------------------- |
-| connectorId   | string                                         | The connector ID          |
-| networkConfig | [`NetworkConfig`](../reference/#networkconfig) | The network configuration |
+| Name          | Type                                             | Description               |
+| ------------- | ------------------------------------------------ | ------------------------- |
+| connectorId   | string                                           | The connector ID          |
+| networkConfig | [`NetworkConfig`](../reference.md#networkconfig) | The network configuration |
 
 

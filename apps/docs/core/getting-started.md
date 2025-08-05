@@ -62,7 +62,7 @@ function App() {
 Use MIDL.js hooks to interact with the blockchain.
 
 > [!TIP]
-> Use the [SatoshiKit](./satoshi-kit.md) to have a more complete experience with MIDL.js.
+> Use the [SatoshiKit](../satoshi-kit/index.md) to have a more complete experience with MIDL.js.
 
 ::: code-group
 

@@ -1,3 +1,4 @@
+import path from "node:path";
 import { defineConfig } from "vitepress";
 import { withSidebar } from "vitepress-sidebar";
 
