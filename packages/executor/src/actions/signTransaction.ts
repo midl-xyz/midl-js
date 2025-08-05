@@ -14,12 +14,36 @@ import { getTransactionCount } from "viem/actions";
 import { getPublicKey } from "~/actions/getPublicKey";
 import { extractEVMSignature, getEVMAddress } from "~/utils";
 
+/**
+ * Options for signing a transaction.
+ */
 type SignTransactionOptions = {
+	/**
+	 * Public key of the account to use for signing.
+	 */
 	publicKey?: string;
+	/**
+	 * Next nonce of registered in EVM network, nonce is incremented by 1 for each transaction intention.
+	 */
 	nonce?: number;
+	/**
+	 * Transaction hash of the BTC transaction.
+	 */
 	protocol?: SignMessageProtocol;
 };
 
+/**
+ * Signs an EVM transaction using the provided configuration and options.
+ *
+ * @param config - The configuration object.
+ * @param tx - The transaction to sign (TransactionSerializableBTC).
+ * @param client - EVM client or provider.
+ * @param options - Options for signing the transaction
+ * @returns The signed and serialized transaction as a hex string.
+ *
+ * @example
+ * const signedTx = await signTransaction(config, tx, client, { publicKey, protocol });
+ */
 export const signTransaction = async (
 	config: Config,
 	{ chainId, ...tx }: TransactionSerializableBTC,

@@ -9,7 +9,17 @@ import { initEccLib, networks, payments } from "bitcoinjs-lib";
 import { toHex } from "viem";
 
 /**
- * Return the public key to use for passing along to the EVM network.
+ * Returns the public key to use for passing along to the EVM network.
+ *
+ * For P2TR addresses, returns the hex-encoded x-only public key (after removing the first two bytes from the output).
+ * For P2WPKH and P2SH_P2WPKH, returns the hex-encoded x-coordinate of the public key.
+ *
+ * @param account - The account object.
+ * @param network - The Bitcoin network.
+ * @returns The public key as a hex string prefixed with 0x, or null if not supported.
+ *
+ * @example
+ * const pubkey = getPublicKey(account, network);
  */
 export const getPublicKey = (
 	account: Account,
