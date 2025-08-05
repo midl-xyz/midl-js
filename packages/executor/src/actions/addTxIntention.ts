@@ -13,7 +13,7 @@ export type PartialIntention = Omit<
 };
 
 /**
- * Add a transaction intention to the store
+ * Creates a transaction intention with the provided parameters.
  *
  * @param config The configuration object
  * @param intention The intention to add
