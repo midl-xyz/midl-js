@@ -5,6 +5,7 @@ import {
 	getRunes,
 } from "@midl-xyz/midl-js-core";
 import { type UseQueryOptions, useQuery } from "@tanstack/react-query";
+import { useAccounts } from "~/hooks/useAccounts";
 import { useConfigInternal } from "~/hooks/useConfigInternal";
 
 type QueryOptions = Omit<
@@ -14,8 +15,19 @@ type QueryOptions = Omit<
 	queryKey?: ReadonlyArray<unknown>;
 };
 
-type UseRunesParams = GetRunesParams & {
+type UseRunesParams = Omit<GetRunesParams, "address"> & {
+	/**
+	 * Optional address to fetch the runes for.
+	 * If not provided, it will use the address from the ordinals account.
+	 */
+	address?: GetRunesParams["address"];
+	/**
+	 * Optional query options for the runes operation.
+	 */
 	query?: QueryOptions;
+	/**
+	 * Optional custom configuration to override the default.
+	 */
 	config?: Config;
 };
 
@@ -41,12 +53,18 @@ export const useRunes = ({
 	config: customConfig,
 }: UseRunesParams) => {
 	const config = useConfigInternal(customConfig);
+	const { ordinalsAccount } = useAccounts({ config });
+	const addressToUse = address ?? ordinalsAccount?.address;
 
 	const { data: runes, ...rest } = useQuery<RunesResponse>({
 		queryKey: ["runes", address, limit, offset, ...(queryKey ?? [])],
 		queryFn: () => {
+			if (!addressToUse) {
+				throw new Error("Address is required to fetch runes");
+			}
+
 			return getRunes(config, {
-				address,
+				address: addressToUse,
 				limit,
 				offset,
 			});
