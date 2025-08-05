@@ -4,9 +4,9 @@ import { useConfig, useConfigInternal } from "@midl-xyz/midl-js-react";
 
 type UsePublicKeyParams = {
 	/**
-	 * The public key to convert to an EVM address.
+	 * The BTC address of the account to get the public key from.
 	 */
-	publicKey?: string;
+	from?: string;
 
 	config?: Config;
 };
@@ -23,14 +23,14 @@ type UsePublicKeyParams = {
  * ```
  */
 export const usePublicKey = ({
-	publicKey,
+	from,
 	config: customConfig,
 }: UsePublicKeyParams = {}) => {
 	const { network } = useConfig(customConfig);
 	const config = useConfigInternal(customConfig);
 	const account = getDefaultAccount(
 		config,
-		publicKey ? (it) => it.publicKey === publicKey : undefined,
+		from ? (it) => it.address === from : undefined,
 	);
 
 	try {

@@ -1,6 +1,6 @@
 # addTxIntention
 
-> **addTxIntention**(`config`, `intention`, `publicKey?`): `Promise<TransactionIntention>`
+> **addTxIntention**(`config`, `intention`, `from?`): `Promise<TransactionIntention>`
 
 Creates a transaction intention with the provided parameters. This is a low-level utility for preparing a transaction intention object, typically used internally by higher-level transaction flows.
 
@@ -22,11 +22,11 @@ const intention = await addTxIntention(config, {
 
 ## Parameters
 
-| Name        | Type                                    | Description                                                                         |
-| ----------- | --------------------------------------- | ----------------------------------------------------------------------------------- |
-| `config`    | [`Config`](../../reference/Config.md)   | The configuration object.                                                           |
-| `intention` | [`PartialIntention`](#partialintention) | The intention to add.                                                               |
-| `publicKey` | `string` (optional)                     | Public key to use to sign the transaction. If omitted, the default account is used. |
+| Name        | Type                                    | Description                                                                                           |
+| ----------- | --------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `config`    | [`Config`](../../reference/Config.md)   | The configuration object.                                                                             |
+| `intention` | [`PartialIntention`](#partialintention) | The intention to add.                                                                                 |
+| `from`      | `string` (optional)                     | The BTC Address of the account to sign the transaction with. If omitted, the default account is used. |
 
 
 ### PartialIntention

@@ -1,7 +1,6 @@
 # useEVMAddress
 
-Gets the EVM address from a public key.
-If no public key is provided, it uses the connected payment or ordinals account's public key.
+Gets the EVM address from a public key. If no public key is provided, it uses the connected payment or ordinals account's public key.
 
 ## Import
 
@@ -12,22 +11,18 @@ import { useEVMAddress } from "@midl-xyz/midl-js-executor-react";
 ## Example
 
 ```ts
-const evmAddress = useEVMAddress({ publicKey: "0xabc123..." });
-console.log(evmAddress);
+const evmAddress = useEVMAddress({ from: 'bcrt...' });
 ```
 
 ## Parameters
 
-| Name   | Type                                          | Description                    |
-| ------ | --------------------------------------------- | ------------------------------ |
-| params | [`UseEVMAddressParams`](#useevmaddressparams) | The parameters for the request |
-
-### UseEVMAddressParams
-
-| Name      | Type     | Description                                |
-| --------- | -------- | ------------------------------------------ |
-| publicKey | `string` | The public key to get the EVM address from |
+| Name     | Type     | Description                                                        |
+| -------- | -------- | ------------------------------------------------------------------ |
+| `from`   | `string` | (optional) BTC address of the account to get the EVM address from. |
+| `config` | `Config` | (optional) Custom configuration to override the default.           |
 
 ## Returns
 
-`string` - The EVM address
+| Name         | Type     | Description                                                     |
+| ------------ | -------- | --------------------------------------------------------------- |
+| `evmAddress` | `string` | The EVM address as a string (or zero address if not available). |

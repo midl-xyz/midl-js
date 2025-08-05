@@ -37,5 +37,5 @@ addTxIntention({ intention });
 | ----------- | -------------------- | --------------------------------------------------------------------------- |
 | `intention` | `PartialIntention`   | The intention to add.                                                       |
 | `reset`     | `boolean` (optional) | If true, the array of intentions will be cleared before adding the new one. |
-| `publicKey` | `string` (optional)  | Public key to use to sign the transaction.                                  |
+| `from`      | `string` (optional)  | BTC address of the account to use to sign the transaction.                  |
 

@@ -28,7 +28,7 @@ type UseSignIntentionParams = {
 	config?: Config;
 	store?: MidlContextStore;
 	options?: {
-		publicKey?: string;
+		from?: string;
 		protocol?: SignMessageProtocol;
 	};
 };
@@ -78,7 +78,7 @@ export const useSignIntention = ({
 				{
 					txId,
 					nonce,
-					publicKey: options.publicKey,
+					from: options.from,
 					protocol: options.protocol,
 				},
 			);

@@ -33,7 +33,7 @@ const btcTx = await finalizeBTCTransaction(config, intentions, client, { feeRate
 | Name                   | Type                       | Description                                         |
 | ---------------------- | -------------------------- | --------------------------------------------------- |
 | `stateOverride`        | `StateOverride` (optional) | State override for EVM transactions.                |
-| `publicKey`            | `string` (optional)        | Public key of the account to use for signing.       |
+| `from`                 | `string` (optional)        | BTC address of the account to use for signing.      |
 | `feeRate`              | `number` (optional)        | Custom fee rate (sats/vB).                          |
 | `assetsToWithdrawSize` | `number` (optional)        | Number of assets to withdraw.                       |
 | `skipEstimateGasMulti` | `boolean` (optional)       | If true, skips gas estimation for EVM transactions. |

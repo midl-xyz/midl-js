@@ -19,9 +19,9 @@ import { extractEVMSignature, getEVMAddress } from "~/utils";
  */
 type SignTransactionOptions = {
 	/**
-	 * Public key of the account to use for signing.
+	 * BTC address used to sign the transactions.
 	 */
-	publicKey?: string;
+	from?: string;
 	/**
 	 * Next nonce of registered in EVM network, nonce is incremented by 1 for each transaction intention.
 	 */
@@ -48,7 +48,7 @@ export const signTransaction = async (
 	config: Config,
 	{ chainId, ...tx }: TransactionSerializableBTC,
 	client: Client,
-	{ publicKey: customPublicKey, protocol, nonce }: SignTransactionOptions = {},
+	{ from, protocol, nonce }: SignTransactionOptions = {},
 ) => {
 	const { network } = config.getState();
 
@@ -58,7 +58,7 @@ export const signTransaction = async (
 
 	const account = getDefaultAccount(
 		config,
-		customPublicKey ? (it) => it.publicKey === customPublicKey : undefined,
+		from ? (it) => it.address === from : undefined,
 	);
 
 	const chainIdToUse = chainId || client.chain?.id;

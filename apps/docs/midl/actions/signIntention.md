@@ -28,12 +28,12 @@ const signed = await signIntention(config, client, intention, intentions, { txId
 
 ### SignIntentionOptions
 
-| Name        | Type                           | Description                                   |
-| ----------- | ------------------------------ | --------------------------------------------- |
-| `publicKey` | string (optional)              | Public key of the account to use for signing. |
-| `nonce`     | number (optional)              | Next nonce registered in EVM network.         |
-| `txId`      | string                         | Transaction hash of the BTC transaction.      |
-| `protocol`  | SignMessageProtocol (optional) | Protocol for signing the message.             |
+| Name       | Type                           | Description                                    |
+| ---------- | ------------------------------ | ---------------------------------------------- |
+| `from`     | string (optional)              | BTC address of the account to use for signing. |
+| `nonce`    | number (optional)              | Next nonce registered in EVM network.          |
+| `txId`     | string                         | Transaction hash of the BTC transaction.       |
+| `protocol` | SignMessageProtocol (optional) | Protocol for signing the message.              |
 
 ## Returns
 

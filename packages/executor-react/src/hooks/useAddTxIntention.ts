@@ -22,7 +22,10 @@ type AddTxIntentionVariables = {
 	 * If true, the array of intentions will be cleared before adding the new one
 	 */
 	reset?: boolean;
-	publicKey?: string;
+	/**
+	 * BTC address to use for the intention
+	 */
+	from?: string;
 };
 
 /**
@@ -46,12 +49,8 @@ export const useAddTxIntention = ({
 	const { intentions = [] } = useStore(customStore);
 
 	const { mutate, mutateAsync, ...rest } = useMutation({
-		mutationFn: async ({
-			reset,
-			publicKey,
-			intention,
-		}: AddTxIntentionVariables) => {
-			const intentionToAdd = await addTxIntention(config, intention, publicKey);
+		mutationFn: async ({ reset, from, intention }: AddTxIntentionVariables) => {
+			const intentionToAdd = await addTxIntention(config, intention, from);
 
 			store.setState((state) => {
 				return {

@@ -15,9 +15,9 @@ type SignTransactionError = Error;
 
 type UseSignTransactionParams = {
 	/**
-	 * The public key to use for signing the transaction.
+	 * The address of the account to sign the transaction with.
 	 */
-	publicKey?: string;
+	from?: string;
 	/**
 	 * The protocol to use for signing the message.
 	 */
@@ -63,7 +63,7 @@ type UseSignTransactionParams = {
 export const useSignTransaction = (
 	{
 		mutation,
-		publicKey,
+		from,
 		protocol = SignMessageProtocol.Bip322,
 		config: customConfig,
 	}: UseSignTransactionParams = {
@@ -89,7 +89,7 @@ export const useSignTransaction = (
 			}
 
 			return await signTransaction(config, tx, client, {
-				publicKey,
+				from,
 			});
 		},
 		...mutation,

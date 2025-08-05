@@ -13,9 +13,9 @@ import { getBTCAddressByte, getEVMAddress } from "~/utils";
 
 type SignIntentionOptions = {
 	/**
-	 * Public key of the account to use for signing
+	 * BTC address used to sign the transactions
 	 */
-	publicKey?: string;
+	from?: string;
 	/**
 	 * Next nonce of registered in EVM network, nonce is incremented by 1 for each transaction intention
 	 */
@@ -63,7 +63,7 @@ export const signIntention = async (
 
 	const account = getDefaultAccount(
 		config,
-		options.publicKey ? (it) => it.publicKey === options.publicKey : undefined,
+		options.from ? (it) => it.address === options.from : undefined,
 	);
 
 	const publicKey = getPublicKey(account, network);
@@ -116,7 +116,7 @@ export const signIntention = async (
 		{
 			nonce,
 			protocol: options.protocol,
-			publicKey: options.publicKey,
+			from: options.from,
 		},
 	);
 

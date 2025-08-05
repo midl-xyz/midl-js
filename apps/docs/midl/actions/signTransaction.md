@@ -13,7 +13,7 @@ import { signTransaction } from "@midl-xyz/midl-js-executor";
 ## Example
 
 ```ts
-const signedTx = await signTransaction(config, tx, client, { publicKey, protocol });
+const signedTx = await signTransaction(config, tx, client, { from, protocol });
 ```
 
 ## Parameters
@@ -27,11 +27,11 @@ const signedTx = await signTransaction(config, tx, client, { publicKey, protocol
 
 ### SignTransactionOptions
 
-| Name        | Type                           | Description                                   |
-| ----------- | ------------------------------ | --------------------------------------------- |
-| `publicKey` | string (optional)              | Public key of the account to use for signing. |
-| `nonce`     | number (optional)              | Nonce to use for the transaction.             |
-| `protocol`  | SignMessageProtocol (optional) | Protocol for signing the message.             |
+| Name       | Type                           | Description                                    |
+| ---------- | ------------------------------ | ---------------------------------------------- |
+| `from`     | string (optional)              | BTC address of the account to use for signing. |
+| `nonce`    | number (optional)              | Nonce to use for the transaction.              |
+| `protocol` | SignMessageProtocol (optional) | Protocol for signing the message.              |
 
 ## Returns
 
