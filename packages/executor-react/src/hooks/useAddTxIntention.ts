@@ -26,24 +26,16 @@ type AddTxIntentionVariables = {
 };
 
 /**
- * Custom hook to add a transaction intention.
+ * Adds a transaction intention using the provided parameters.
  *
- * This hook provides a function to add a new transaction intention to the store,
- * enforcing constraints such as the maximum number of intentions and limiting runes deposits.
+ * This utility wraps `addTxIntention` and stores the resulting intention in the context store.
+ *
+ * @param params - Optional parameters to override the default config or store.
+ * @returns An object with `addTxIntention`, `addTxIntentionAsync`, `txIntentions`, and mutation state from React Query.
  *
  * @example
- * ```typescript
- *
- * const { addTxIntention, addTxIntentionAsync, txIntentions, isLoading } = useAddTxIntention();
- *
- * const intention = {
- *    // Intention object
- * };
- *
- * addTxIntention(intention);
- * ```
- *
- * @returns `AddTxIntentionResponse` – The response object containing the mutation function and the current transaction intentions.
+ * const { addTxIntention } = useAddTxIntention();
+ * addTxIntention({ intention });
  */
 export const useAddTxIntention = ({
 	store: customStore,
