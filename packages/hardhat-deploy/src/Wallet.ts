@@ -16,6 +16,23 @@ const ECPair = ECPairFactory(ecc);
 
 bitcoin.initEccLib(ecc);
 
+export const DerivationPath: Record<
+	"Xverse" | "Leather",
+	{
+		mainnet: string;
+		testnet: string;
+	}
+> = {
+	Xverse: {
+		mainnet: "m/86'/0'/ACCOUNT'/0/0",
+		testnet: "m/86'/1'/ACCOUNT'/0/0",
+	},
+	Leather: {
+		mainnet: "m/86'/0'/ACCOUNT'/0/0",
+		testnet: "m/86'/1'/ACCOUNT'/0/0",
+	},
+};
+
 export class Wallet {
 	private readonly network: bitcoin.Network;
 	private readonly root: BIP32Interface;
@@ -23,7 +40,7 @@ export class Wallet {
 	constructor(
 		readonly mnemonic: string,
 		bitcoinNetwork: BitcoinNetwork,
-		private readonly derivationPath: string = "m/86'/1'/0'/0",
+		private readonly derivationPath: string = DerivationPath.Xverse.testnet,
 	) {
 		if (!bip39.validateMnemonic(mnemonic)) {
 			throw new Error("Invalid mnemonic");
@@ -36,7 +53,9 @@ export class Wallet {
 	}
 
 	getAccount(index = 0) {
-		const child = this.root.derivePath(`${this.derivationPath}/${index}`);
+		const child = this.root.derivePath(
+			this.derivationPath.replace("ACCOUNT", index.toString()),
+		);
 		return ECPair.fromWIF(child.toWIF(), this.network);
 	}
 }
