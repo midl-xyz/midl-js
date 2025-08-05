@@ -12,7 +12,6 @@ declare module "hardhat/types/config" {
 				string | "default",
 				{
 					mnemonic: string;
-					path?: string;
 					confirmationsRequired?: number;
 					btcConfirmationsRequired?: number;
 					network?: string | BitcoinNetwork;
