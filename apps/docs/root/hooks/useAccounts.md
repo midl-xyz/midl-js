@@ -10,9 +10,9 @@ import { useAccounts } from "@midl-xyz/midl-js-react";
 
 ## Params
 
-| Name   | Type     | Description                                                   |
-| ------ | -------- | ------------------------------------------------------------- |
-| config | `Config` | Optional custom config object to override the context config. |
+| Name   | Type     | Description                                                      |
+| ------ | -------- | ---------------------------------------------------------------- |
+| config | `Config` | (optional) Config object to use instead of the one from context. |
 
 ## Example
 

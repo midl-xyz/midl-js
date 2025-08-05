@@ -1,6 +1,8 @@
 # useBalance
 
-Fetches the balance of a given address.
+> **useBalance**(`params`): `{ balance, ...rest }`
+
+Fetches the balance of a given address or the default account if no address is provided.
 
 ## Import
 
@@ -12,8 +14,7 @@ import { useBalance } from "@midl-xyz/midl-js-react";
 
 ```tsx
 function Balance() {
-  const { address } = useAddress();
-  const { balance, isLoading, error } = useBalance(address);
+  const { balance, isLoading, error } = useBalance();
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
@@ -24,14 +25,15 @@ function Balance() {
 
 ## Parameters
 
-| Name    | Type           | Description                |
-| ------- | -------------- | -------------------------- |
-| address | `string`       | The address to get balance |
-| query   | `QueryOptions` | `useQuery` options         |
+| Name    | Type              | Description                                                                                 |
+| ------- | ----------------- | ------------------------------------------------------------------------------------------- |
+| address | string            | (optional) The address to fetch the balance for. If not provided, uses the default account. |
+| query   | `UseQueryOptions` | (optional) Query options for react-query.                                                   |
+| config  | `Config`          | (optional) Config object to use instead of the one from context.                            |
 
 ## Returns
 
-| Name    | Type     | Description             |
-| ------- | -------- | ----------------------- |
-| balance | `number` | The balance in satoshis |
-| ...rest | `object` | `useQuery` return value |
+| Name    | Type   | Description                                     |
+| ------- | ------ | ----------------------------------------------- |
+| balance | number | The balance of the address (or 0 if not found). |
+| ...rest | object | Additional query state from useQuery.           |

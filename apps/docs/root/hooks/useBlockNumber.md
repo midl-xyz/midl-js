@@ -31,6 +31,7 @@ function Page() {
 | params.watch           | `boolean`              | If true, the block number will be polled at the specified interval.                 |
 | params.pollingInterval | `number`               | The interval in milliseconds at which to poll the block number. Default is `30_000` |
 | params.query           | `QueryOptions`         | The query options to pass to the underlying `useQuery` hook.                        |
+| params.config          | `Config`               | (optional) Config object to use instead of the one from context.                    |
 
 ## Returns
 
