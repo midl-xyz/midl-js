@@ -1,10 +1,6 @@
 # Deploy Contract
 
-::: warning
-THE DOCUMENTATION IS OUTDATED AND MAY NOT REFLECT THE CURRENT STATE OF THE PROJECT.
-:::
-
-The process of deploying contract to MIDL Protocol is similar to deploying contract to Ethereum. However to get the best experience, we recommend using the `@midl-xyz/hardhat-deploy` plugin alongside with [hardhat-deploy](https://github.com/wighawag/hardhat-deploy).
+The process of deploying contract to MIDL Protocol is similar to deploying contract to EVM compatible networks with the only difference, however every deployment and write transactions require interacting with BTC L1. However to get the best experience, we recommend using the `@midl-xyz/hardhat-deploy` plugin alongside with [hardhat-deploy](https://github.com/wighawag/hardhat-deploy).
 
 You can find the example in [apps/docs/examples](https://github.com/midl-xyz/midl-js/tree/main/apps/docs/examples)
 
@@ -16,7 +12,19 @@ First, create a new project using the following command:
 mkdir hardhat-midl
 cd hardhat-midl
 pnpm init
-pnpm add -D hardhat @midl-xyz/hardhat-deploy hardhat-deploy @midl-xyz/midl-js-executor
+pnpm add -D hardhat @midl-xyz/hardhat-deploy hardhat-deploy @midl-xyz/midl-js-executor @midl-xyz/midl-js-core
+```
+
+## Override viem at `package.json`
+
+Add the following lines to your packages.json to override viem used with:
+
+```json
+"pnpm": {
+    "overrides": {
+      "viem": "npm:@midl-xyz/midl-viem"
+    }
+  }
 ```
 
 ## Initialize Hardhat
@@ -57,19 +65,35 @@ const { vars } = require("hardhat/config");
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
   solidity: "0.8.28",
-  midl: {
-    mnemonic: vars.get("MNEMONIC"),
-    path: "deployments",
-    confirmationsRequired: 1,
-    btcConfirmationsRequired: 1,
-  },
   networks: {
-    default: {
-      url: midlRegtest.rpcUrls.default.http[0],
-      chain: midlRegtest.id,
-    },
+      default: {
+          url: "https://rpc.regtest.midl.xyz",
+          accounts: {
+              mnemonic: process.env.MNEMONIC,
+              path: walletsPaths.leather
+          }
+      }
   },
-};
+  midl: {
+      path: "deployments",
+      networks: {
+          default: {
+              mnemonic: accounts[0],
+              confirmationsRequired: 1,
+              btcConfirmationsRequired: 1,
+              hardhatNetwork: "default",
+              network: {
+                  explorerUrl: "https://mempool.regtest.midl.xyz",
+                  id: "regtest",
+                  network: "regtest"
+              },
+              provider: new MempoolSpaceProvider({
+                  "regtest": "https://mempool.regtest.midl.xyz",
+              } as any)
+          },
+      }
+    }
+  },
 ```
 
 ## Create a new contract
@@ -154,3 +178,7 @@ npx hardhat deploy
 ```
 
 After the deployment is complete, you will see a folder named `deployments` in your project directory. Inside this folder, you will find a JSON file containing the contract address and other information.
+
+
+## Advanced Usage
+Midl's hardhat-deploy offer more functionality then just deploying or writing to contracts. You may find commonly used function [here](../tools/contracts/advancedUsage.md) & examples in [this repo](https://github.com/midl-xyz/smart-contract-deploy-starter)

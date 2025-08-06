@@ -4,7 +4,11 @@
 THE DOCUMENTATION IS OUTDATED AND MAY NOT REFLECT THE CURRENT STATE OF THE PROJECT.
 :::
 
-Writing to a contract is a common operation in a dApp. This guide will show you how to write to a contract using MIDL Protocol. Writing a contract in MIDL requires the BTC transaction to cover the fees and the EVM transaction to interact with the contract. You can read more about it [here](../how-it-works.md).
+Writing to a contract is a common operation in a dApp. This guide demonstrates how to write to a contract using MIDL protocol with a web application. 
+
+Additionally, you may write to contract using midl-xyz/hardhat-deploy. You can read more about it [here](./deploy-contract.md)
+
+Writing a contract in MIDL requires a BTC transaction to cover the fees, transfer assets required for transaction execution and to form EVM transaction to interact with the contract. You can read more about it [here](../how-it-works.md).
 
 The example below is available in the [examples](https://github.com/midl-xyz/midl-js/tree/main/apps/docs/examples).
 
