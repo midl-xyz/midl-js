@@ -101,7 +101,7 @@ export class MidlHardhatEnvironment {
 		const testnetOrMainnet =
 			this.bitcoinNetwork.id === "mainnet" ? "mainnet" : "testnet";
 
-		let addressType = AddressType.P2SH_P2WPKH;
+		let addressType = AddressType.P2WPKH;
 
 		if (this.userConfig.defaultPurpose === AddressPurpose.Ordinals) {
 			addressType = AddressType.P2TR;

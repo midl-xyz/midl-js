@@ -1,5 +1,11 @@
 # @midl-xyz/hardhat-deploy
 
+## 2.0.0-next.57
+
+### Patch Changes
+
+- fix(hardhat-deploy): p2wpkh address purpose
+
 ## 2.0.0-next.56
 
 ### Patch Changes
