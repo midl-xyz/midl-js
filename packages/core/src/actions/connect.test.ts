@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getKeyPair } from "~/__tests__/keyPair";
+import { __TEST__MNEMONIC__ } from "~/__tests__/keyPair";
 import { EmptyAccountsError, connect } from "~/actions/connect";
 import { AddressPurpose } from "~/constants";
 import { createConfig } from "~/createConfig";
@@ -11,7 +11,7 @@ describe("core | actions | connect", async () => {
 	it("connects", async () => {
 		const config = createConfig({
 			networks: [regtest],
-			connectors: [keyPairConnector({ keyPair: getKeyPair() })],
+			connectors: [keyPairConnector({ mnemonic: __TEST__MNEMONIC__ })],
 		});
 
 		await connect(config, { purposes: [AddressPurpose.Ordinals] });
@@ -26,7 +26,7 @@ describe("core | actions | connect", async () => {
 	it("throws error", async () => {
 		const config = createConfig({
 			networks: [regtest],
-			connectors: [keyPairConnector({ keyPair: getKeyPair() })],
+			connectors: [keyPairConnector({ mnemonic: __TEST__MNEMONIC__ })],
 		});
 
 		await expect(

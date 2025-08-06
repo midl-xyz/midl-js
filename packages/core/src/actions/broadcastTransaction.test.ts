@@ -1,6 +1,5 @@
-import * as bitcoin from "bitcoinjs-lib";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { getKeyPair } from "~/__tests__/keyPair";
+import { __TEST__MNEMONIC__ } from "~/__tests__/keyPair";
 import { mockServer } from "~/__tests__/mockServer";
 import { broadcastTransaction } from "~/actions/broadcastTransaction";
 import { createConfig } from "~/createConfig";
@@ -20,7 +19,7 @@ describe("core | actions | broadcastTransaction", async () => {
 	it("should broadcast a transaction", async () => {
 		const config = createConfig({
 			networks: [regtest],
-			connectors: [keyPairConnector({ keyPair: getKeyPair() })],
+			connectors: [keyPairConnector({ mnemonic: __TEST__MNEMONIC__ })],
 		});
 
 		const result = await broadcastTransaction(config, "txHex");

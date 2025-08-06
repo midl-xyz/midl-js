@@ -35,7 +35,7 @@ describe("useAddTxIntention", () => {
 		expect(result.current.txIntentions?.[0]).toEqual({
 			evmTransaction: {
 				to: zeroAddress,
-				from: "0x8Ccf062691b33747c2C0950621992BCDe33A8d5C",
+				from: "0x5E5b88DEfa1A412C69644CB47E68107d97807E35",
 				value: 1n,
 				chainId: 1,
 			},
@@ -43,7 +43,7 @@ describe("useAddTxIntention", () => {
 	});
 
 	it("should add intentions to the existing ones", async () => {
-		const { result, rerender } = renderHook(() => useAddTxIntention(), {
+		const { result } = renderHook(() => useAddTxIntention(), {
 			wrapper,
 		});
 

@@ -15,33 +15,52 @@ import {
 	extractXCoordinate,
 	getAddressType,
 } from "@midl-xyz/midl-js-core";
+import BIP32Factory from "bip32";
+import * as bip39 from "bip39";
 import * as bitcoin from "bitcoinjs-lib";
 import { Psbt } from "bitcoinjs-lib";
 import bitcoinMessage from "bitcoinjs-message";
-import type { ECPairInterface } from "ecpair";
+import ECPairFactory from "ecpair";
+import { derivationPathMap } from "~/config";
 import { signBIP322Simple } from "~/utils";
+
+const bip32 = BIP32Factory(ecc);
+const ECPair = ECPairFactory(ecc);
 
 bitcoin.initEccLib(ecc);
 
 class KeyPairConnector implements Connector {
 	public readonly id = "keyPair";
+	private readonly seed: Buffer;
+	private network: BitcoinNetwork | null = null;
 
 	constructor(
-		private keyPair: ECPairInterface,
-		private readonly paymentAddressType: AddressType = AddressType.P2WPKH,
-	) {}
+		readonly mnemonic: string,
+		private readonly paymentAddressType: AddressType,
+		private readonly accountIndex: number = 0,
+	) {
+		if (!bip39.validateMnemonic(mnemonic)) {
+			throw new Error("Invalid mnemonic");
+		}
+
+		this.seed = bip39.mnemonicToSeedSync(mnemonic);
+	}
 
 	async connect({
 		purposes,
 		network,
 	}: ConnectorConnectParams): Promise<Account[]> {
+		this.network = network;
+
 		const bitcoinNetwork = bitcoin.networks[network.network];
 		const accounts: Account[] = [];
 
 		if (purposes.includes(AddressPurpose.Ordinals)) {
+			const keyPair = this.deriveKeyPair(AddressType.P2TR);
+
 			const p2tr = bitcoin.payments.p2tr({
 				internalPubkey: Buffer.from(
-					extractXCoordinate(this.keyPair.publicKey.toString("hex")),
+					extractXCoordinate(keyPair.publicKey.toString("hex")),
 					"hex",
 				),
 				network: bitcoinNetwork,
@@ -51,16 +70,18 @@ class KeyPairConnector implements Connector {
 				// biome-ignore lint/style/noNonNullAssertion: <explanation>
 				address: p2tr.address!,
 				purpose: AddressPurpose.Ordinals,
-				publicKey: this.keyPair.publicKey.toString("hex"),
+				publicKey: keyPair.publicKey.toString("hex"),
 				addressType: AddressType.P2TR,
 			});
 		}
 
 		if (purposes.includes(AddressPurpose.Payment)) {
 			if (this.paymentAddressType === AddressType.P2SH_P2WPKH) {
+				const keyPair = this.deriveKeyPair(AddressType.P2SH_P2WPKH);
+
 				const p2sh = bitcoin.payments.p2sh({
 					redeem: bitcoin.payments.p2wpkh({
-						pubkey: this.keyPair.publicKey,
+						pubkey: keyPair.publicKey,
 						network: bitcoinNetwork,
 					}),
 					network: bitcoinNetwork,
@@ -70,14 +91,16 @@ class KeyPairConnector implements Connector {
 					// biome-ignore lint/style/noNonNullAssertion: <explanation>
 					address: p2sh.address!,
 					purpose: AddressPurpose.Payment,
-					publicKey: this.keyPair.publicKey.toString("hex"),
+					publicKey: keyPair.publicKey.toString("hex"),
 					addressType: AddressType.P2SH_P2WPKH,
 				});
 			}
 
 			if (this.paymentAddressType === AddressType.P2WPKH) {
+				const keyPair = this.deriveKeyPair(AddressType.P2WPKH);
+
 				const p2wpkh = bitcoin.payments.p2wpkh({
-					pubkey: this.keyPair.publicKey,
+					pubkey: keyPair.publicKey,
 					network: bitcoinNetwork,
 				});
 
@@ -85,7 +108,7 @@ class KeyPairConnector implements Connector {
 					// biome-ignore lint/style/noNonNullAssertion: <explanation>
 					address: p2wpkh.address!,
 					purpose: AddressPurpose.Payment,
-					publicKey: this.keyPair.publicKey.toString("hex"),
+					publicKey: keyPair.publicKey.toString("hex"),
 					addressType: AddressType.P2WPKH,
 				});
 			}
@@ -98,17 +121,18 @@ class KeyPairConnector implements Connector {
 		params: SignMessageParams,
 		network: BitcoinNetwork,
 	): Promise<SignMessageResponse> {
-		if (!this.keyPair.privateKey) {
-			throw new Error("No private key");
-		}
-
 		const addressType = getAddressType(params.address);
+		const keyPair = this.deriveKeyPair(addressType);
+
+		if (!keyPair.privateKey) {
+			throw new Error("No private key found in the derived key pair.");
+		}
 
 		switch (params.protocol) {
 			case SignMessageProtocol.Bip322: {
 				const signature = signBIP322Simple(
 					params.message,
-					this.keyPair.toWIF(),
+					keyPair.toWIF(),
 					params.address,
 					bitcoin.networks[network.network],
 				);
@@ -123,8 +147,8 @@ class KeyPairConnector implements Connector {
 			case SignMessageProtocol.Ecdsa: {
 				const signature = bitcoinMessage.sign(
 					params.message,
-					this.keyPair.privateKey,
-					this.keyPair.compressed,
+					keyPair.privateKey,
+					keyPair.compressed,
 					{
 						segwitType:
 							addressType === AddressType.P2SH_P2WPKH
@@ -144,6 +168,7 @@ class KeyPairConnector implements Connector {
 				throw new Error("Unsupported protocol");
 		}
 	}
+
 	async signPSBT(
 		{
 			psbt: psbtData,
@@ -163,27 +188,31 @@ class KeyPairConnector implements Connector {
 
 			switch (type) {
 				case AddressType.P2SH_P2WPKH: {
+					const keyPair = this.deriveKeyPair(AddressType.P2SH_P2WPKH);
+
 					for (const input of inputs) {
-						psbt.signInput(input, this.keyPair);
+						psbt.signInput(input, keyPair);
 					}
 					break;
 				}
 
 				case AddressType.P2TR: {
 					for (const input of inputs) {
-						const signer = this.keyPair.tweak(
+						const keyPair = this.deriveKeyPair(AddressType.P2TR);
+
+						const signer = keyPair.tweak(
 							Buffer.from(
 								bitcoin.crypto.taggedHash(
 									"TapTweak",
 									Buffer.from(
-										extractXCoordinate(this.keyPair.publicKey.toString("hex")),
+										extractXCoordinate(keyPair.publicKey.toString("hex")),
 										"hex",
 									),
 								),
 							),
 						);
 
-						psbt.signInput(input, disableTweakSigner ? this.keyPair : signer);
+						psbt.signInput(input, disableTweakSigner ? keyPair : signer);
 					}
 					break;
 				}
@@ -194,18 +223,41 @@ class KeyPairConnector implements Connector {
 			psbt: psbt.toBase64(),
 		};
 	}
+
+	private deriveKeyPair(addressType: AddressType) {
+		if (!this.network) {
+			throw new Error("Network is not set. Call connect() first.");
+		}
+
+		const network = bitcoin.networks[this.network.network];
+		const derivationPath = derivationPathMap[this.network.network][addressType];
+
+		const root = bip32.fromSeed(this.seed, network);
+		const child = root.derivePath(
+			derivationPath.replace("ACCOUNT", this.accountIndex.toString()),
+		);
+
+		return ECPair.fromWIF(child.toWIF(), network);
+	}
 }
 
 export const keyPairConnector: CreateConnectorFn<{
-	keyPair: ECPairInterface;
+	mnemonic: string;
 	paymentAddressType?: AddressType;
-}> = ({ metadata, keyPair, paymentAddressType }) =>
+	accountIndex?: number;
+}> = ({
+	metadata,
+	mnemonic,
+	paymentAddressType = AddressType.P2WPKH,
+	accountIndex = 0,
+}) =>
 	createConnector(
 		{
 			metadata: {
 				name: "KeyPair",
 			},
-			create: () => new KeyPairConnector(keyPair, paymentAddressType),
+			create: () =>
+				new KeyPairConnector(mnemonic, paymentAddressType, accountIndex),
 		},
 		metadata,
 	);

@@ -6,9 +6,8 @@ import {
 	regtest,
 } from "@midl-xyz/midl-js-core";
 import { keyPairConnector } from "@midl-xyz/midl-js-node";
-import * as bitcoin from "bitcoinjs-lib";
 import { beforeAll, describe, expect, it } from "vitest";
-import { getKeyPair } from "~/__tests__/keyPair";
+import { __TEST__MNEMONIC__ } from "~/__tests__/keyPair";
 import { addTxIntention } from "~/actions/addTxIntention";
 import { getEVMAddress } from "~/utils";
 
@@ -17,7 +16,7 @@ describe("executor | actions | addTxIntention", () => {
 		networks: [regtest],
 		connectors: [
 			keyPairConnector({
-				keyPair: getKeyPair(bitcoin.networks.regtest),
+				mnemonic: __TEST__MNEMONIC__,
 			}),
 		],
 	});

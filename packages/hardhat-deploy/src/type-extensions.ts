@@ -3,7 +3,6 @@ import type {
 	AddressPurpose,
 	BitcoinNetwork,
 } from "@midl-xyz/midl-js-core";
-import type { Chain } from "@midl-xyz/midl-js-executor";
 import "hardhat/types/config";
 import "hardhat/types/runtime";
 import type { MidlHardhatEnvironment } from "~/MidlHardhatEnvironment";
@@ -21,7 +20,6 @@ declare module "hardhat/types/config" {
 					network?: string | BitcoinNetwork;
 					hardhatNetwork?: string;
 					provider?: AbstractProvider;
-					derivationPath?: "xverse" | "leather" | string;
 					defaultPurpose?: AddressPurpose;
 				}
 			>;

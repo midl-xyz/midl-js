@@ -1,6 +1,6 @@
 import * as bitcoin from "bitcoinjs-lib";
 import { describe, expect, it, vi } from "vitest";
-import { getKeyPair } from "~/__tests__/keyPair";
+import { __TEST__MNEMONIC__ } from "~/__tests__/keyPair";
 import { broadcastTransaction } from "~/actions/broadcastTransaction";
 import { WalletConnectionError, connect } from "~/actions/connect";
 import { getDefaultAccount } from "~/actions/getDefaultAccount";
@@ -24,7 +24,7 @@ describe("core | actions | signPSBT", async () => {
 			networks: [regtest],
 			connectors: [
 				keyPairConnector({
-					keyPair: getKeyPair(),
+					mnemonic: __TEST__MNEMONIC__,
 				}),
 			],
 		});
@@ -88,7 +88,7 @@ describe("core | actions | signPSBT", async () => {
 			networks: [regtest],
 			connectors: [
 				keyPairConnector({
-					keyPair: getKeyPair(),
+					mnemonic: __TEST__MNEMONIC__,
 					paymentAddressType: AddressType.P2SH_P2WPKH,
 				}),
 			],

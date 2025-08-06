@@ -2,7 +2,7 @@ import * as bitcoin from "bitcoinjs-lib";
 import { Runestone } from "runelib";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import { makeRuneUTXO } from "~/__tests__/fixtures/utxo";
-import { getKeyPair } from "~/__tests__/keyPair";
+import { __TEST__MNEMONIC__ } from "~/__tests__/keyPair";
 import { makeRandomAddress } from "~/__tests__/makeRandomAddress";
 import { mockServer } from "~/__tests__/mockServer";
 import { connect } from "~/actions/connect";
@@ -22,7 +22,7 @@ describe("core | actions | edictRune", async () => {
 
 		config = createConfig({
 			networks: [regtest],
-			connectors: [keyPairConnector({ keyPair: getKeyPair() })],
+			connectors: [keyPairConnector({ mnemonic: __TEST__MNEMONIC__ })],
 		});
 
 		await connect(config, { purposes: [AddressPurpose.Ordinals] });
