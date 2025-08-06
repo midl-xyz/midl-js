@@ -105,4 +105,4 @@ await midl.callContract("MyContract", "functionWithRuneTransfer", {
 ### Deploying a Proxy
 It is possible to deploy proxy contracts same with usual hardhat-deploy library.
 
-Please check a complete example [here](TODO)
+Please check a complete example [here](https://github.com/midl-xyz/smart-contract-deploy-starter)
