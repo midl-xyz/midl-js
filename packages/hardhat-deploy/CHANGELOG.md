@@ -1,5 +1,11 @@
 # @midl-xyz/hardhat-deploy
 
+## 2.0.0-next.56
+
+### Patch Changes
+
+- feat(hardhat-deploy): change default purpose to payment
+
 ## 2.0.0-next.54
 
 ### Patch Changes
