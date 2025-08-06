@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor
 
+## 2.0.0-next.60
+
+### Patch Changes
+
+- fix(executor): unhandled operation scriptSize max
+
 ## 2.0.0-next.59
 
 ### Patch Changes

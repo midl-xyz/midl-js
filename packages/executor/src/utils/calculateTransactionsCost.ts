@@ -50,10 +50,19 @@ export const calculateTransactionsCost = (
 	let scriptSizeKey = DEPOSIT_BTC;
 
 	if (hasRunesDeposit) scriptSizeKey |= DEPOSIT_RUNES;
-	if (hasWithdraw) scriptSizeKey |= WITHDRAW_BTC;
 	if (hasRunesWithdraw) scriptSizeKey |= WITHDRAW_RUNES;
+	if (hasWithdraw || hasRunesWithdraw) scriptSizeKey |= WITHDRAW_BTC;
 
-	const scriptSize = scriptSizeMap.get(scriptSizeKey) as bigint;
+	let scriptSize = scriptSizeMap.get(scriptSizeKey);
+
+	if (!scriptSize) {
+		console.warn(
+			`Unknown script size for the operation: ${scriptSizeKey}. Using maximum size.`,
+		);
+		scriptSize = scriptSizeMap.get(
+			DEPOSIT_BTC | DEPOSIT_RUNES | WITHDRAW_BTC | WITHDRAW_RUNES,
+		) as bigint;
+	}
 
 	const fees =
 		(GAS_PRICE * totalGas) / ONE_SATOSHI +
