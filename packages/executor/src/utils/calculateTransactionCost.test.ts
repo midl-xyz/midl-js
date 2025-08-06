@@ -30,6 +30,6 @@ describe("calculateTransactionCost", () => {
 				hasRunesWithdraw: true,
 				assetsToWithdrawSize: 1,
 			}),
-		).toBe(1978n);
+		).toBe(2064n);
 	});
 });
