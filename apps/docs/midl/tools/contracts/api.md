@@ -95,6 +95,14 @@ getEVMAddress(): string
 ```
 Returns the EVM address for the default account.
 
+
+### getAccount
+```ts
+getAccount(): Account
+```
+
+Return `Account` object for the current wallet.
+
 ---
 
 ## Properties

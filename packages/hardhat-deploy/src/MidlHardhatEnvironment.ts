@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import {
 	AddressPurpose,
+	AddressType,
 	type BitcoinNetwork,
 	type Config,
 	SignMessageProtocol,
@@ -100,17 +101,23 @@ export class MidlHardhatEnvironment {
 		const testnetOrMainnet =
 			this.bitcoinNetwork.id === "mainnet" ? "mainnet" : "testnet";
 
+		let addressType = AddressType.P2SH_P2WPKH;
+
+		if (this.userConfig.defaultPurpose === AddressPurpose.Ordinals) {
+			addressType = AddressType.P2TR;
+		}
+
 		switch (this.userConfig.derivationPath) {
 			case "leather":
-				derivationPath = DerivationPath.Leather[testnetOrMainnet];
+				derivationPath = DerivationPath.Leather[addressType][testnetOrMainnet];
 				break;
 			case "xverse":
-				derivationPath = DerivationPath.Xverse[testnetOrMainnet];
+				derivationPath = DerivationPath.Xverse[addressType][testnetOrMainnet];
 				break;
 			default:
 				derivationPath =
 					this.userConfig.derivationPath ||
-					DerivationPath.Xverse[testnetOrMainnet];
+					DerivationPath.Xverse[addressType][testnetOrMainnet];
 		}
 
 		this.wallet = new Wallet(
@@ -184,11 +191,12 @@ export class MidlHardhatEnvironment {
 					keyPair: this.wallet.getAccount(this.accountIndex),
 				}),
 			],
+			defaultPurpose: this.userConfig.defaultPurpose,
 			provider: this.userConfig.provider,
 		});
 
 		await connect(this.config, {
-			purposes: [AddressPurpose.Ordinals],
+			purposes: [AddressPurpose.Payment, AddressPurpose.Ordinals],
 		});
 
 		this.store.setState({
@@ -373,7 +381,7 @@ export class MidlHardhatEnvironment {
 
 		const walletClient = await this.getWalletClient();
 
-		const account = getDefaultAccount(this.config);
+		const account = this.getAccount();
 
 		if (shouldComplete) {
 			await addCompleteTxIntention(this.config, assetsToWithdraw);
@@ -538,12 +546,14 @@ export class MidlHardhatEnvironment {
 			throw new Error("MidlHardhatEnvironment not initialized");
 		}
 
-		const account = getDefaultAccount(this.config);
+		return getEVMAddress(this.getAccount(), this.config.getState().network);
+	}
 
-		if (!account) {
-			throw new Error("No default account set");
+	public getAccount() {
+		if (!this.config) {
+			throw new Error("MidlHardhatEnvironment not initialized");
 		}
 
-		return getEVMAddress(account, this.config.getState().network);
+		return getDefaultAccount(this.config);
 	}
 }
