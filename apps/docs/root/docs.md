@@ -5,7 +5,7 @@ order: 0
 
 # Overview
 
-MIDL.js is a JavaScript library that makes it easy to interact with the Bitcoin and MIDL Protocol. It provides a simple and intuitive API to interact with the blockchain, manage accounts, and sign transactions.
+MIDL.js is a JavaScript library that makes it easy to interact with the Bitcoin and MIDL Protocol. It provides a simple and intuitive API for interacting with the blockchain, managing accounts, and signing transactions.
 
 ## Features
 
