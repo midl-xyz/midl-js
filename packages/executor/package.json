@@ -1,6 +1,6 @@
 {
 	"name": "@midl-xyz/midl-js-executor",
-	"version": "2.0.0-next.58",
+	"version": "2.0.0-next.59",
 	"scripts": {
 		"build": "pnpm run clean && tspc --project tsconfig.esm.json && tspc --project tsconfig.cjs.json",
 		"dev": "concurrently \"tspc --watch --preserveWatchOutput --project tsconfig.esm.json\" \"tspc --watch --preserveWatchOutput --project tsconfig.cjs.json\"",
@@ -32,7 +32,6 @@
 		"@wagmi/cli": "^2.1.15",
 		"bitcoinjs-lib": "7.0.0-rc.0",
 		"bitcoinjs-message": "^2.2.0",
-		"ecpair": "^2.1.0",
 		"msw": "^2.7.0",
 		"viem": "npm:@midl-xyz/midl-viem"
 	},
@@ -43,8 +42,7 @@
 		"@noble/secp256k1": "1.7.1",
 		"@scure/btc-signer": "1.4.0",
 		"bip322-js": "^2.0.0",
-		"secp256k1": "^4.0.3",
-		"zustand": "^5.0.1"
+		"secp256k1": "^4.0.3"
 	},
 	"peerDependencies": {
 		"@midl-xyz/midl-viem": "*",

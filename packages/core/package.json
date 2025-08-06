@@ -1,6 +1,6 @@
 {
 	"name": "@midl-xyz/midl-js-core",
-	"version": "2.0.0-next.58",
+	"version": "2.0.0-next.59",
 	"scripts": {
 		"build": "pnpm run clean && tspc --project tsconfig.esm.json && tspc --project tsconfig.cjs.json",
 		"dev": "concurrently \"tspc --watch --preserveWatchOutput --project tsconfig.esm.json\" \"tspc --watch --preserveWatchOutput --project tsconfig.cjs.json\"",
@@ -28,12 +28,10 @@
 		"@leather.io/rpc": "2.1.12",
 		"@midl-xyz/midl-js-config": "workspace:^",
 		"@types/node": "^22.8.7",
-		"bip39": "^3.1.0",
 		"msw": "^2.5.2"
 	},
 	"dependencies": {
 		"@bitcoinerlab/secp256k1": "^1.2.0",
-		"bip32": "5.0.0-rc.0",
 		"bitcoinjs-lib": "7.0.0-rc.0",
 		"bitcoinselect": "^1.0.0",
 		"deepmerge": "^4.3.1",
