@@ -12,15 +12,13 @@ import * as bitcoin from "bitcoinjs-lib";
 import { Psbt } from "bitcoinjs-lib";
 import bitcoinMessage from "bitcoinjs-message";
 import { afterEach, describe, expect, it } from "vitest";
-import { getKeyPair } from "~/__tests__/keyPair";
+import { __TEST__MNEMONIC__ } from "~/__tests__/keyPair";
 import { keyPairConnector } from "~/connectors/keyPair";
-
-const key = getKeyPair();
 
 describe("core | connectors | keyPair", () => {
 	const midlConfig = createConfig({
 		networks: [regtest],
-		connectors: [keyPairConnector({ keyPair: key })],
+		connectors: [keyPairConnector({ mnemonic: __TEST__MNEMONIC__ })],
 	});
 
 	afterEach(async () => {
@@ -135,7 +133,7 @@ describe("core | connectors | keyPair", () => {
 
 		const p2sh = bitcoin.payments.p2sh({
 			redeem: bitcoin.payments.p2wpkh({
-				pubkey: key.publicKey,
+				pubkey: Buffer.from(account.publicKey, "hex"),
 				network: bitcoin.networks.regtest,
 			}),
 			network: bitcoin.networks.regtest,
@@ -188,10 +186,7 @@ describe("core | connectors | keyPair", () => {
 
 		const psbt = new Psbt();
 
-		const xOnly = Buffer.from(
-			extractXCoordinate(key.publicKey.toString("hex")),
-			"hex",
-		);
+		const xOnly = Buffer.from(extractXCoordinate(account.publicKey), "hex");
 
 		const p2tr = bitcoin.payments.p2tr({
 			internalPubkey: xOnly,

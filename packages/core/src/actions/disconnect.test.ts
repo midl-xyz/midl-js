@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { getKeyPair } from "~/__tests__/keyPair";
+import { __TEST__MNEMONIC__ } from "~/__tests__/keyPair";
 import { connect } from "~/actions/connect";
 import { disconnect } from "~/actions/disconnect";
 import type { Connector } from "~/connectors";
@@ -13,7 +13,7 @@ describe("core | actions | disconnect", async () => {
 	it("disconnects and saves latest network", async () => {
 		const config = createConfig({
 			networks: [regtest],
-			connectors: [keyPairConnector({ keyPair: getKeyPair() })],
+			connectors: [keyPairConnector({ mnemonic: __TEST__MNEMONIC__ })],
 		});
 
 		await connect(config, { purposes: [AddressPurpose.Payment] });
@@ -29,7 +29,7 @@ describe("core | actions | disconnect", async () => {
 
 	it("calls beforeDisconnect", async () => {
 		const connector = keyPairConnector({
-			keyPair: getKeyPair(),
+			mnemonic: __TEST__MNEMONIC__,
 		});
 		const mockDisconnect = vi.fn();
 

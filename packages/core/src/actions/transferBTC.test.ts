@@ -1,6 +1,6 @@
 import { Psbt } from "bitcoinjs-lib";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { getKeyPair } from "~/__tests__/keyPair";
+import { __TEST__MNEMONIC__ } from "~/__tests__/keyPair";
 import { makeRandomAddress } from "~/__tests__/makeRandomAddress";
 import { mockServer } from "~/__tests__/mockServer";
 import { connect } from "~/actions/connect";
@@ -23,7 +23,7 @@ describe("core | actions | transferBTC", async () => {
 	it.skip("creates correct PSBT ", async () => {
 		const config = createConfig({
 			networks: [regtest],
-			connectors: [keyPairConnector({ keyPair: getKeyPair() })],
+			connectors: [keyPairConnector({ mnemonic: __TEST__MNEMONIC__ })],
 		});
 
 		await connect(config, {

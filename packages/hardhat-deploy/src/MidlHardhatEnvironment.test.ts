@@ -6,7 +6,7 @@ import { useEnvironment } from "../tests/useEnvironment";
 describe("MidlHardhatEnvironment", () => {
 	useEnvironment();
 
-	it("initialized with p2wpkh address", async () => {
+	it("initializes with p2wpkh address", async () => {
 		const {
 			hre: { midl },
 		} = globalThis;
@@ -14,6 +14,17 @@ describe("MidlHardhatEnvironment", () => {
 
 		expect(midl.getAccount().address).toBe(
 			"bcrt1qz4yz7junaupmav0ycmwheglahya7wuy0g7n6tc",
+		);
+	});
+
+	it("initializes with p2wpkh address, index 1", async () => {
+		const {
+			hre: { midl },
+		} = globalThis;
+		await midl.initialize(1);
+
+		expect(midl.getAccount().address).toBe(
+			"bcrt1qldp99gjlh5qhj624qu9hg7cw3tztj0h6urds2z",
 		);
 	});
 

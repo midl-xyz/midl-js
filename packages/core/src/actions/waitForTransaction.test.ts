@@ -1,5 +1,5 @@
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { getKeyPair } from "~/__tests__/keyPair";
+import { __TEST__MNEMONIC__ } from "~/__tests__/keyPair";
 import { mockServer } from "~/__tests__/mockServer";
 import { waitForTransaction } from "~/actions/waitForTransaction";
 import { type Config, createConfig } from "~/createConfig";
@@ -20,7 +20,7 @@ describe("core | actions | waitForTransaction", async () => {
 			networks: [regtest],
 			connectors: [
 				keyPairConnector({
-					keyPair: getKeyPair(),
+					mnemonic: __TEST__MNEMONIC__,
 				}),
 			],
 		});

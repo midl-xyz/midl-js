@@ -16,7 +16,7 @@ describe("useEVMAddress", () => {
 			wrapper: Wrapper,
 		});
 
-		expect(result.current).toBe("0x8Ccf062691b33747c2C0950621992BCDe33A8d5C");
+		expect(result.current).toBe("0x5E5b88DEfa1A412C69644CB47E68107d97807E35");
 
 		await disconnect(midlConfig);
 	});
