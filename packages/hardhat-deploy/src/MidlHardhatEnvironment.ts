@@ -349,7 +349,14 @@ export class MidlHardhatEnvironment {
 		const walletClient = await this.getWalletClient();
 
 		if (shouldComplete) {
-			await addCompleteTxIntention(this.config, assetsToWithdraw);
+			const intention = await addCompleteTxIntention(
+				this.config,
+				assetsToWithdraw,
+			);
+
+			this.store.setState((state) => ({
+				intentions: [...state.intentions, intention],
+			}));
 		}
 
 		const tx = await finalizeBTCTransaction(
