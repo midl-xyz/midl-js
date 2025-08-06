@@ -13,7 +13,7 @@ You may find the most common of those below.
 Additionally, uou may find complete available API [here](./api.md) & Some more advanced examples in [this repo](https://github.com/midl-xyz/smart-contract-deploy-starter).
 
 
-If there is a missing functionality that you may find usefull - please don't hesitate to open an Issue in [GitHub](https://github.com/midl-xyz/midl-js)
+If there is a missing functionality that you may find useful - please don't hesitate to open an Issue in [GitHub](https://github.com/midl-xyz/midl-js)
 
 ## Advanced Usage
 
