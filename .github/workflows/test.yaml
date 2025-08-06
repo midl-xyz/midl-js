@@ -38,7 +38,7 @@ jobs:
         run: pnpm build:packages
 
       - name: Run tests
-        run: pnpm test:packages
+        run: pnpm test:packages --coverage --reporter=dot --reporter=github-actions
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5
