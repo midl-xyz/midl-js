@@ -1,6 +1,6 @@
 ---
-order: 0
-title: "Setup & Deploy Contract"
+order: 1
+title: "Advanced Usage"
 ---
 
 # Advanced Usage
