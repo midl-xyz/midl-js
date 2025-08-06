@@ -464,9 +464,6 @@ importers:
 
   packages/hardhat-deploy:
     dependencies:
-      '@bitcoinerlab/secp256k1':
-        specifier: ^1.2.0
-        version: 1.2.0
       '@midl-xyz/midl-js-core':
         specifier: workspace:^
         version: link:../core
@@ -482,18 +479,6 @@ importers:
       '@nomicfoundation/hardhat-viem':
         specifier: ^2.0.6
         version: 2.0.6(@midl-xyz/midl-viem@2.21.37(bufferutil@4.0.9)(typescript@5.7.2)(utf-8-validate@5.0.10)(zod@3.24.1))(hardhat@2.22.18(bufferutil@4.0.9)(ts-node@10.9.2(@swc/core@1.10.11(@swc/helpers@0.5.15))(@types/node@22.12.0)(typescript@5.7.2))(typescript@5.7.2)(utf-8-validate@5.0.10))(typescript@5.7.2)(zod@3.24.1)
-      bip32:
-        specifier: 5.0.0-rc.0
-        version: 5.0.0-rc.0(typescript@5.7.2)
-      bip39:
-        specifier: ^3.1.0
-        version: 3.1.0
-      bitcoinjs-lib:
-        specifier: ^6.1.7
-        version: 6.1.7
-      ecpair:
-        specifier: ^2.1.0
-        version: 2.1.0
       viem:
         specifier: npm:@midl-xyz/midl-viem@2.21.37
         version: '@midl-xyz/midl-viem@2.21.37(bufferutil@4.0.9)(typescript@5.7.2)(utf-8-validate@5.0.10)(zod@3.24.1)'
@@ -519,6 +504,12 @@ importers:
       '@noble/hashes':
         specifier: ^1.7.1
         version: 1.7.1
+      bip32:
+        specifier: 5.0.0-rc.0
+        version: 5.0.0-rc.0(typescript@5.7.2)
+      bip39:
+        specifier: ^3.1.0
+        version: 3.1.0
       bitcoinjs-lib:
         specifier: 7.0.0-rc.0
         version: 7.0.0-rc.0(typescript@5.7.2)
@@ -541,15 +532,9 @@ importers:
       '@types/node':
         specifier: ^22.8.7
         version: 22.12.0
-      bip32:
-        specifier: 5.0.0-rc.0
-        version: 5.0.0-rc.0(typescript@5.7.2)
       bip322-js:
         specifier: ^2.0.0
         version: 2.0.0
-      bip39:
-        specifier: ^3.1.0
-        version: 3.1.0
 
   packages/playwright-btc-wallets:
     dependencies:

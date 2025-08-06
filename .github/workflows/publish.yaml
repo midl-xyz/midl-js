@@ -31,10 +31,10 @@ jobs:
         run: pnpm install
 
       - name: Build packages
-        run: pnpm turbo run build --filter="./packages/*"
+        run: pnpm build:packages
 
       - name: Run tests
-        run: pnpm turbo run test --filter="./packages/*"
+        run: pnpm test:packages
 
       - name: Publish packages
         run: |

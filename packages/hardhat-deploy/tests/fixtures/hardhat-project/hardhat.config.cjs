@@ -1,6 +1,5 @@
 require("../../../dist/cjs/index");
 require("hardhat-deploy");
-const { MempoolSpaceProvider } = require("@midl-xyz/midl-js-core");
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
@@ -20,9 +19,6 @@ module.exports = {
 					id: "regtest",
 					network: "regtest",
 				},
-				provider: new MempoolSpaceProvider({
-					regtest: "https://mempool.regtest.midl.xyz",
-				}),
 			},
 		},
 	},

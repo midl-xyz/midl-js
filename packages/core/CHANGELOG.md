@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 2.0.0-next.58
+
+### Patch Changes
+
+- feat(hardhat-deploy): segwit
+
 ## 2.0.0-next.54
 
 ### Patch Changes

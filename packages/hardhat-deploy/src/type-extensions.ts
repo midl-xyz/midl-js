@@ -1,5 +1,8 @@
-import type { AbstractProvider, BitcoinNetwork } from "@midl-xyz/midl-js-core";
-import type { Chain } from "@midl-xyz/midl-js-executor";
+import type {
+	AbstractProvider,
+	AddressPurpose,
+	BitcoinNetwork,
+} from "@midl-xyz/midl-js-core";
 import "hardhat/types/config";
 import "hardhat/types/runtime";
 import type { MidlHardhatEnvironment } from "~/MidlHardhatEnvironment";
@@ -17,7 +20,7 @@ declare module "hardhat/types/config" {
 					network?: string | BitcoinNetwork;
 					hardhatNetwork?: string;
 					provider?: AbstractProvider;
-					derivationPath?: "xverse" | "leather" | string;
+					defaultPurpose?: AddressPurpose;
 				}
 			>;
 		};
