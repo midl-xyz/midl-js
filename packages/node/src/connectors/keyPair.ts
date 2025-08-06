@@ -187,6 +187,14 @@ class KeyPairConnector implements Connector {
 			const type = getAddressType(address);
 
 			switch (type) {
+				case AddressType.P2WPKH: {
+					const keyPair = this.deriveKeyPair(AddressType.P2WPKH);
+
+					for (const input of inputs) {
+						psbt.signInput(input, keyPair);
+					}
+					break;
+				}
 				case AddressType.P2SH_P2WPKH: {
 					const keyPair = this.deriveKeyPair(AddressType.P2SH_P2WPKH);
 
