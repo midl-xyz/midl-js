@@ -181,4 +181,4 @@ After the deployment is complete, you will see a folder named `deployments` in y
 
 
 ## Advanced Usage
-Midl's hardhat-deploy offer more functionality then just deploying or writing to contracts. You may find commonly used function [here](../tools/contracts/advancedUsage.md) & examples in [this repo](https://github.com/midl-xyz/smart-contract-deploy-starter)
+Midl's hardhat-deploy offers more functionality than just deploying or writing to contracts. You may find commonly used functions [here](../tools/contracts/advancedUsage.md) & examples in [this repo](https://github.com/midl-xyz/smart-contract-deploy-starter)

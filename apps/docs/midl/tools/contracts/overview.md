@@ -1,6 +1,6 @@
 ---
 order: 0
-title: "Setup & Deploy Contract"
+title: "Overview"
 ---
 
 # Overview
