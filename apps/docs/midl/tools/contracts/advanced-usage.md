@@ -4,105 +4,169 @@ title: "Advanced Usage"
 ---
 
 # Advanced Usage
-Midl's hardhat-deploy offer more functionality then just deploying or writing to contracts.
+Midl's `hardhat-deploy` offers more functionality than just deploying or writing to contracts.
 
-Common requests from developers is to be able to retrieve deployed smart contract addresses, add runes deposit to the function execution, rewrite the deployment file and so on...
+Common requests from developers include retrieving deployed smart contract addresses, adding rune deposits to function executions, rewriting deployment files, and more.
 
-You may find the most common of those below.
+Below are some of the most common use cases.
 
-Additionally, uou may find complete available API [here](./api.md) & Some more advanced examples in [this repo](https://github.com/midl-xyz/smart-contract-deploy-starter).
+Additionally, you can find the complete API [here](./api.md) and more advanced examples in [this repository](https://github.com/midl-xyz/smart-contract-deploy-starter).
 
-
-If there is a missing functionality that you may find useful - please don't hesitate to open an Issue in [GitHub](https://github.com/midl-xyz/midl-js)
+If you find any missing functionality that would be useful, please open an issue on [GitHub](https://github.com/midl-xyz/midl-js).
 
 ## Advanced Usage
 
-### Retrieving an EVM Address
-EVM address is generated from the default btc account derived of the Mnemonic in [hardhat-config](./config.md)
 
-In a hardhat deploy function it may be retrieved with the following:
+### Retrieving an EVM Address
+The EVM address is generated from the default BTC account derived from the mnemonic in [hardhat-config](./config.md).
+
+In a `hardhat-deploy` function, you can retrieve it as follows:
 ```ts
 const evmAddress = hre.midl.getEVMAddress();
 ```
 
-### Retrieving a Bitcoin Address
-Bitcoin address is derived from the Mnemonic in [hardhat-config](./config.md)
 
-In a hardhat deploy function it may be retrieved with the following:
+### Retrieving a Bitcoin Address
+The Bitcoin address is derived from the mnemonic in [hardhat-config](./config.md).
+
+In a `hardhat-deploy` function, you can retrieve it as follows:
 ```ts
-hre.midl.init(); // retrieved account with the index #0
-const btcAddress = midl.getConfig()?.getState()?.accounts?.[0].address
+hre.midl.init(); // retrieves account with index #0
+const btcAddress = midl.getConfig()?.getState()?.accounts?.[0].address;
 ```
 
-### Using multiple accounts during deployment
-Accounts are derived from the Mnemonic in [hardhat-config](./config.md)
-It is possible to change the accounts directly within the deploy functions.
+
+### Using Multiple Accounts During Deployment
+Accounts are derived from the mnemonic in [hardhat-config](./config.md). You can change the account directly within deploy functions.
 
 ```ts
 hre.midl.init();
-await midl.deploy("MyContract", { 
-    args: ["Hello World!"]
- });
-hre.midl.execute(); // Deployed by account with the index #0
+await midl.deploy("MyContract", {
+  args: ["Hello World!"]
+});
+hre.midl.execute(); // Deployed by account with index #0
 
 hre.midl.init(1);
 await midl.deploy("MyContract", {
-    args: ["Hello world"]
+  args: ["Hello world"]
 });
-hre.midl.execute(); // Deployed by account with the index #1
-
+hre.midl.execute(); // Deployed by account with index #1
 ```
 
-### Retrieving deployed contract address & abi
-Deployed contracts address & abi are by default stored in /deployments folder in json files
 
-In a hardhat deploy function it may be retrieved with the following:
+### Retrieving Deployed Contract Address & ABI
+Deployed contract addresses and ABIs are stored by default in the `/deployments` folder as JSON files.
+
+In a `hardhat-deploy` function, you can retrieve them as follows:
 ```ts
-const {address, abi} = await hre.midl.getDeployment("MyContract");
+const { address, abi } = await hre.midl.getDeployment("MyContract");
 ```
 
-### Passing BTC as value to deploy or write function
-It is possible to pass native token as a value to payable functions.
 
-In a hardhat deploy function it is utilized in the following way:
+### Passing BTC as Value to Deploy or Write Functions
+You can pass the native token as a value to payable functions.
+
+In a `hardhat-deploy` function, this can be done as follows:
 ```ts
-await midl.deploy("MyContract", { 
-    args: ["Hello World!"], 
-    value: BigInt(1)// attaching 1 wei as msg.value
- });
+await midl.deploy("MyContract", {
+  args: ["Hello World!"],
+  value: 1n // attaching 1 wei as msg.value
+});
 
 await midl.callContract("MyContract", "somePayableFunction", {
-    value: BigInt(1) // attaching 1 wei as msg.value
-  });
+  value: 1n // attaching 1 wei as msg.value
+});
 ```
 
-### Using a Rune with your hardhat-deploy function
-It is possible to use Runes in Midl functions & seamlessly utilize them with hardhat-deploy. Choosing to do so - hardhat deploy is going to create a transfer of a rune in the BTC Transaction.
 
-In a hardhat deploy function it is utilized in the following way:
+### Calling CompleteTx
+[CompleteTx](../../actions/addCompleteTxIntention.md) allows you to withdraw your assets back to Bitcoin L1. A complete transaction can retrieve either native BTC or Runes.
+
+::: tip
+Passing only `shouldComplete: true` to `execute({})` will retrieve only native sats.
+:::
+
+::: warning
+To retrieve runes, you must include the transaction intention:
+```ts
+{ hasRunesWithdraw: true, runes: [{ id, amount, runeAddress }] }
+```
+
+and add `assetsToWithdraw` together with `shouldComplete` to the `execute({})` call:
+```ts
+{ assetsToWithdraw: [runeAddress], shouldComplete: true }
+```
+:::
+
+In a `hardhat-deploy` function, you can invoke this as follows:
+```ts
+await midl.callContract(
+  "RunesRelayer",
+  "withdrawRune",
+  { args: [amount] },
+  {
+    hasRunesWithdraw: true,
+    runes: [{ id: runeId, value: amount, address: runeAddress }],
+  },
+);
+
+await midl.execute({ assetsToWithdraw: [runeAddress], shouldComplete: true });
+```
+
+
+### Using a Rune with Your hardhat-deploy Function
+You can use Runes in Midl functions and seamlessly utilize them with `hardhat-deploy`. Doing so will create a transfer of a Rune in the BTC transaction.
+
+In a `hardhat-deploy` function, this can be done as follows:
 ```ts
 const assetAddress = await getDeployment("ERC20Asset").address;
 const myContractAddress = await getDeployment("MyContract").address;
+const amount = 1n; // Amount in Rune units according to the Rune's decimals
 
-await midl.callContract("ERC20Asset", "approve", { 
-    args: [myContractAddress, BigInt(1)]
-    });
+await midl.callContract("ERC20Asset", "approve", {
+  args: [myContractAddress, amount]
+});
 
-await midl.callContract("MyContract", "functionWithRuneTransfer", {
-    value: BigInt(1) // attaching 1 wei as msg.value
+await midl.callContract(
+  "MyContract",
+  "functionWithRuneTransfer",
+  {
+    args: [amount]
   },
   {
     hasRunesDeposit: true,
-    runes: [{ 
+    runes: [
+      {
         id: "1:1", // Rune ID may be attached manually or found by token address using midl-js-executor util
-        value: BigInt(1), // in wei
+        value: amount,
         address: assetAddress // Mirrored ERC20 asset
-        }],
+      }
+    ],
   }
-  );
+);
 ```
 
-### Deploying a Proxy
-It is possible to deploy proxy contracts same with usual hardhat-deploy library.
 
-Please check a complete example [here](https://github.com/midl-xyz/smart-contract-deploy-starter)
+### Skip Estimate Gas
+::: warning
+This is a dangerous feature—please use it at your own risk. If your transaction reverts, transaction fees will still be charged.
+:::
+
+You can use Runes in Midl functions and seamlessly utilize them with `hardhat-deploy`. Doing so will create a transfer of a Rune in the BTC transaction.
+
+In a `hardhat-deploy` function, this can be done as follows:
+```ts
+hre.midl.initialize();
+
+// some deployment functions
+
+hre.midl.execute({
+  skipEstimateGasMulti: true, // Skips gas estimation
+});
+```
+
+
+### Deploying a Proxy
+You can deploy proxy contracts in the same way as with the standard `hardhat-deploy` library.
+
+Please see a complete example [here](https://github.com/midl-xyz/smart-contract-deploy-starter).

@@ -12,7 +12,7 @@ First, create a new project using the following command:
 mkdir hardhat-midl
 cd hardhat-midl
 pnpm init
-pnpm add -D hardhat @midl-xyz/hardhat-deploy hardhat-deploy @midl-xyz/midl-js-executor @midl-xyz/midl-js-core
+pnpm add -D hardhat @midl-xyz/hardhat-deploy hardhat-deploy @midl-xyz/midl-js-executor
 ```
 
 ## Override viem at `package.json`
