@@ -115,5 +115,5 @@ export default async function deploy(hre: HardhatRuntimeEnvironment) {
 }
 ```
 
-See the [Advanced Usage](./advancedUsage.md) for more examples on commonly used functionality.
+See the [Advanced Usage](./advanced-usage.md) for more examples on commonly used functionality.
 

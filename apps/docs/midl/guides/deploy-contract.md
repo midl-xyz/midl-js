@@ -1,8 +1,8 @@
 # Deploy Contract
 
-The process of deploying contract to MIDL Protocol is similar to deploying contract to EVM compatible networks with the only difference, however every deployment and write transactions require interacting with BTC L1. However to get the best experience, we recommend using the `@midl-xyz/hardhat-deploy` plugin alongside with [hardhat-deploy](https://github.com/wighawag/hardhat-deploy).
+The process of deploying contract to MIDL Protocol is similar to deploying contract to EVM compatible networks with the only difference, however every deployment and write transactions require interacting with Bitcoin L1. However to get the best experience, we recommend using the `@midl-xyz/hardhat-deploy` plugin alongside with [hardhat-deploy](https://github.com/wighawag/hardhat-deploy).
 
-You can find the example in [this repo](https://github.com/midl-xyz/smart-contract-deploy-starter)
+You can find advanced examples in [this repo](https://github.com/midl-xyz/smart-contract-deploy-starter)
 
 ## Create a new project
 
@@ -184,7 +184,7 @@ module.exports = async function deploy(hre) {
 Run the following command to deploy the contract:
 
 ```bash
-npx hardhat deploy
+pnpm hardhat deploy
 ```
 
 After the deployment is complete, you will see a folder named `deployments` in your project directory. Inside this folder, you will find a JSON file containing the contract address and other information.
@@ -192,3 +192,7 @@ After the deployment is complete, you will see a folder named `deployments` in y
 
 ## Advanced Usage
 Midl's hardhat-deploy offers more functionality than just deploying or writing to contracts. You may find commonly used functions [here](../tools/contracts/advancedUsage.md) & examples in [this repo](https://github.com/midl-xyz/smart-contract-deploy-starter)
+
+
+// TODO: Add verification example
+// TODO: Check this thru completely

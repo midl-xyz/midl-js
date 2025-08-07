@@ -14,10 +14,8 @@ Additionally, you can find the complete API [here](./api.md) and more advanced e
 
 If you find any missing functionality that would be useful, please open an issue on [GitHub](https://github.com/midl-xyz/midl-js).
 
-## Advanced Usage
 
-
-### Retrieving an EVM Address
+## Retrieving an EVM Address
 The EVM address is generated from the default BTC account derived from the mnemonic in [hardhat-config](./config.md).
 
 In a `hardhat-deploy` function, you can retrieve it as follows:
@@ -26,13 +24,13 @@ const evmAddress = hre.midl.getEVMAddress();
 ```
 
 
-### Retrieving a Bitcoin Address
+## Retrieving a Bitcoin Address
 The Bitcoin address is derived from the mnemonic in [hardhat-config](./config.md).
 
 In a `hardhat-deploy` function, you can retrieve it as follows:
 ```ts
-hre.midl.init(); // retrieves account with index #0
-const btcAddress = midl.getConfig()?.getState()?.accounts?.[0].address;
+hre.midl.initialize(); // retrieves account with index #0
+const { address } = hre.midl.getAccount();
 ```
 
 
@@ -40,14 +38,14 @@ const btcAddress = midl.getConfig()?.getState()?.accounts?.[0].address;
 Accounts are derived from the mnemonic in [hardhat-config](./config.md). You can change the account directly within deploy functions.
 
 ```ts
-hre.midl.init();
+hre.midl.initialize();
 await midl.deploy("MyContract", {
   args: ["Hello World!"]
 });
 hre.midl.execute(); // Deployed by account with index #0
 
-hre.midl.init(1);
-await midl.deploy("MyContract", {
+hre.midl.initialize(1);
+await hre.midl.deploy("MyContract", {
   args: ["Hello world"]
 });
 hre.midl.execute(); // Deployed by account with index #1
@@ -68,12 +66,12 @@ You can pass the native token as a value to payable functions.
 
 In a `hardhat-deploy` function, this can be done as follows:
 ```ts
-await midl.deploy("MyContract", {
+await hre.midl.deploy("MyContract", {
   args: ["Hello World!"],
   value: 1n // attaching 1 wei as msg.value
 });
 
-await midl.callContract("MyContract", "somePayableFunction", {
+await hre.midl.callContract("MyContract", "somePayableFunction", {
   value: 1n // attaching 1 wei as msg.value
 });
 ```
@@ -100,7 +98,7 @@ and add `assetsToWithdraw` together with `shouldComplete` to the `execute({})` c
 
 In a `hardhat-deploy` function, you can invoke this as follows:
 ```ts
-await midl.callContract(
+await hre.midl.callContract(
   "RunesRelayer",
   "withdrawRune",
   { args: [amount] },
@@ -110,7 +108,7 @@ await midl.callContract(
   },
 );
 
-await midl.execute({ assetsToWithdraw: [runeAddress], shouldComplete: true });
+await hre.midl.execute({ assetsToWithdraw: [runeAddress], shouldComplete: true });
 ```
 
 
@@ -123,11 +121,11 @@ const assetAddress = await getDeployment("ERC20Asset").address;
 const myContractAddress = await getDeployment("MyContract").address;
 const amount = 1n; // Amount in Rune units according to the Rune's decimals
 
-await midl.callContract("ERC20Asset", "approve", {
+await hre.midl.callContract("ERC20Asset", "approve", {
   args: [myContractAddress, amount]
 });
 
-await midl.callContract(
+await hre.midl.callContract(
   "MyContract",
   "functionWithRuneTransfer",
   {
