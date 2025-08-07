@@ -34,7 +34,7 @@ const { address } = hre.midl.getAccount();
 ```
 
 
-### Using Multiple Accounts During Deployment
+## Using Multiple Accounts During Deployment
 Accounts are derived from the mnemonic in [hardhat-config](./config.md). You can change the account directly within deploy functions.
 
 ```ts
@@ -52,8 +52,8 @@ await hre.midl.execute(); // Deployed by account with index #1
 ```
 
 
-### Retrieving Deployed Contract Address & ABI
-Deployed contract addresses and ABIs are stored by default in the `/deployments` folder as JSON files.
+## Retrieving Deployed Contract Address & ABI
+Deployed contract addresses and ABIs are stored by default in the `deployments` of your hardhat project folder as JSON files.
 
 In a `hardhat-deploy` function, you can retrieve them as follows:
 ```ts
@@ -61,23 +61,23 @@ const { address, abi } = await hre.midl.getDeployment("MyContract");
 ```
 
 
-### Passing BTC as Value to Deploy or Write Functions
+## Passing BTC as Value to Deploy or Write Functions
 You can pass the native token as a value to payable functions.
 
 In a `hardhat-deploy` function, this can be done as follows:
 ```ts
 await hre.midl.deploy("MyContract", {
   args: ["Hello World!"],
-  value: 1n // attaching 1 wei as msg.value
+  value: satoshisToWei(1000) // attaching 1000 satoshis and multiplying by 10 * 10 ** 10 in msg.value
 });
 
 await hre.midl.callContract("MyContract", "somePayableFunction", {
-  value: 1n // attaching 1 wei as msg.value
+  value: satoshisToWei(1000) // attaching 1000 satoshis and multiplying by 10 ** 10 in msg.value
 });
 ```
 
 
-### Calling CompleteTx
+## Calling CompleteTx
 [CompleteTx](../../actions/addCompleteTxIntention.md) allows you to withdraw your assets back to Bitcoin L1. A complete transaction can retrieve either native BTC or Runes.
 
 ::: tip
@@ -87,7 +87,7 @@ Passing only `shouldComplete: true` to `execute({})` will retrieve only native s
 ::: warning
 To retrieve runes, you must include the transaction intention:
 ```ts
-{ hasRunesWithdraw: true, runes: [{ id, amount, runeAddress }] }
+{ hasRunesWithdraw: true, runes: [{ id, value, runeAddress }] }
 ```
 
 and add `assetsToWithdraw` together with `shouldComplete` to the `execute({})` call:
@@ -112,7 +112,7 @@ await hre.midl.execute({ assetsToWithdraw: [runeAddress], shouldComplete: true }
 ```
 
 
-### Using a Rune with Your hardhat-deploy Function
+## Using a Rune with Your hardhat-deploy Function
 You can use Runes in Midl functions and seamlessly utilize them with `hardhat-deploy`. Doing so will create a transfer of a Rune in the BTC transaction.
 
 In a `hardhat-deploy` function, this can be done as follows:
@@ -145,7 +145,7 @@ await hre.midl.callContract(
 ```
 
 
-### Skip Estimate Gas
+## Skip Estimate Gas
 ::: warning
 This is a dangerous feature—please use it at your own risk. If your transaction reverts, transaction fees will still be charged.
 :::
@@ -164,7 +164,7 @@ hre.midl.execute({
 ```
 
 
-### Deploying a Proxy
+## Deploying a Proxy
 You can deploy proxy contracts in the same way as with the standard `hardhat-deploy` library.
 
 Please see a complete example [here](https://github.com/midl-xyz/smart-contract-deploy-starter).
