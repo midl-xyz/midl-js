@@ -66,14 +66,16 @@ You can pass the native token as a value to payable functions.
 
 In a `hardhat-deploy` function, this can be done as follows:
 ```ts
+const value = 1000; // Amount in satoshis
+
 await hre.midl.deploy("MyContract", {
   args: ["Hello World!"],
-  value: satoshisToWei(1000) // attaching 1000 satoshis and multiplying by 10 * 10 ** 10 in msg.value
-});
+  value: satoshisToWei(value) // attaching 1000 satoshis and multiplying by 10 * 10 ** 10 in msg.value
+}, { satoshis: value });
 
 await hre.midl.callContract("MyContract", "somePayableFunction", {
-  value: satoshisToWei(1000) // attaching 1000 satoshis and multiplying by 10 ** 10 in msg.value
-});
+  value: satoshisToWei(value) // attaching 1000 satoshis and multiplying by 10 ** 10 in msg.value
+}, { satoshis: value });
 ```
 
 
@@ -81,7 +83,7 @@ await hre.midl.callContract("MyContract", "somePayableFunction", {
 [CompleteTx](../../actions/addCompleteTxIntention.md) allows you to withdraw your assets back to Bitcoin L1. A complete transaction can retrieve either native BTC or Runes.
 
 ::: tip
-Passing only `shouldComplete: true` to `execute({})` will retrieve only native sats.
+Passing only `shouldComplete: true` to `execute({})` will retrieve only native satoshis.
 :::
 
 ::: warning
