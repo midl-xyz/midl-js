@@ -80,7 +80,7 @@ await hre.midl.callContract("MyContract", "somePayableFunction", {
 
 
 ## Calling CompleteTx
-[CompleteTx](../../actions/addCompleteTxIntention.md) allows you to withdraw your assets back to Bitcoin L1. A complete transaction can retrieve either native BTC or Runes.
+[CompleteTx](../../actions/addCompleteTxIntention.md) allows you to withdraw your assets back to Bitcoin L1. A complete transaction retrieves native BTC and Runes on request.
 
 ::: tip
 Passing only `shouldComplete: true` to `execute({})` will retrieve only native satoshis.
