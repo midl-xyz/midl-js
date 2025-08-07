@@ -2,7 +2,7 @@
 
 The process of deploying contract to MIDL Protocol is similar to deploying contract to EVM compatible networks with the only difference, however every deployment and write transactions require interacting with BTC L1. However to get the best experience, we recommend using the `@midl-xyz/hardhat-deploy` plugin alongside with [hardhat-deploy](https://github.com/wighawag/hardhat-deploy).
 
-You can find the example in [apps/docs/examples](https://github.com/midl-xyz/midl-js/tree/main/apps/docs/examples)
+You can find the example in [this repo](https://github.com/midl-xyz/smart-contract-deploy-starter)
 
 ## Create a new project
 
@@ -56,44 +56,54 @@ To defined the `MNEMONIC` variable, you can use the `npx hardhat vars set MNEMON
 
 :::
 
-```javascript{1-4,9-21}
-require("hardhat-deploy");
-require("@midl-xyz/hardhat-deploy");
-const { midlRegtest } = require("@midl-xyz/midl-js-executor");
-const { vars } = require("hardhat/config");
+```ts
+import "hardhat-deploy";
+import "@midl-xyz/hardhat-deploy";
+import { midlRegtest } from "@midl-xyz/midl-js-executor";
+import { type HardhatUserConfig, vars } from "hardhat/config";
+import "@nomicfoundation/hardhat-verify";
 
-/** @type import('hardhat/config').HardhatUserConfig */
-module.exports = {
-  solidity: "0.8.28",
-  networks: {
-      default: {
-          url: "https://rpc.regtest.midl.xyz",
-          accounts: {
-              mnemonic: process.env.MNEMONIC,
-              path: walletsPaths.leather
-          }
-      }
-  },
-  midl: {
-      path: "deployments",
-      networks: {
-          default: {
-              mnemonic: accounts[0],
-              confirmationsRequired: 1,
-              btcConfirmationsRequired: 1,
-              hardhatNetwork: "default",
-              network: {
-                  explorerUrl: "https://mempool.regtest.midl.xyz",
-                  id: "regtest",
-                  network: "regtest"
-              },
-              provider: new MempoolSpaceProvider({
-                  "regtest": "https://mempool.regtest.midl.xyz",
-              } as any)
-          },
-      }
-    }
-  },
+export default (<HardhatUserConfig>{
+	solidity: "0.8.28",
+	defaultNetwork: "regtest",
+	midl: {
+		networks: {
+			regtest: {
+				mnemonic: vars.get("MNEMONIC"),
+				path: "deployments",
+				confirmationsRequired: 1,
+				btcConfirmationsRequired: 1,
+				hardhatNetwork: "regtest",
+				network: {
+					explorerUrl: "https://mempool.regtest.midl.xyz",
+					id: "regtest",
+					network: "regtest",
+				},
+			},
+		},
+	},
+	networks: {
+		regtest: {
+			url: midlRegtest.rpcUrls.default.http[0],
+			chainId: midlRegtest.id,
+		},
+	},
+	etherscan: {
+		apiKey: {
+			regtest: "empty",
+		},
+		customChains: [
+			{
+				network: "regtest",
+				chainId: midlRegtest.id,
+				urls: {
+					apiURL: "https://blockscout.regtest.midl.xyz/api",
+					browserURL: "https://blockscout.regtest.midl.xyz",
+				},
+			},
+		],
+	},
+});
 ```
 
 ## Create a new contract
