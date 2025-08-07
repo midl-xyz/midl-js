@@ -29,7 +29,7 @@ The Bitcoin address is derived from the mnemonic in [hardhat-config](./config.md
 
 In a `hardhat-deploy` function, you can retrieve it as follows:
 ```ts
-hre.midl.initialize(); // retrieves account with index #0
+await hre.midl.initialize(); // retrieves account with index #0
 const { address } = hre.midl.getAccount();
 ```
 
@@ -38,17 +38,17 @@ const { address } = hre.midl.getAccount();
 Accounts are derived from the mnemonic in [hardhat-config](./config.md). You can change the account directly within deploy functions.
 
 ```ts
-hre.midl.initialize();
-await midl.deploy("MyContract", {
+await hre.midl.initialize();
+await hre.midl.deploy("MyContract", {
   args: ["Hello World!"]
 });
-hre.midl.execute(); // Deployed by account with index #0
+await hre.midl.execute(); // Deployed by account with index #0
 
 hre.midl.initialize(1);
 await hre.midl.deploy("MyContract", {
   args: ["Hello world"]
 });
-hre.midl.execute(); // Deployed by account with index #1
+await hre.midl.execute(); // Deployed by account with index #1
 ```
 
 
@@ -154,7 +154,7 @@ You can use Runes in Midl functions and seamlessly utilize them with `hardhat-de
 
 In a `hardhat-deploy` function, this can be done as follows:
 ```ts
-hre.midl.initialize();
+await hre.midl.initialize();
 
 // some deployment functions
 
