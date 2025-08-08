@@ -1,5 +1,11 @@
 # @midl-xyz/hardhat-deploy
 
+## 2.0.0-next.63
+
+### Patch Changes
+
+- feat(hardhat-deploy): add midl:address task
+
 ## 2.0.0-next.62
 
 ### Patch Changes
