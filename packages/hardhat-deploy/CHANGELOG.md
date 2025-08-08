@@ -1,5 +1,11 @@
 # @midl-xyz/hardhat-deploy
 
+## 2.0.0-next.62
+
+### Patch Changes
+
+- fix(hardhat-deploy): default network
+
 ## 2.0.0-next.61
 
 ### Patch Changes

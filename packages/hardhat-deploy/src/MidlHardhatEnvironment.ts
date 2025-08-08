@@ -97,11 +97,6 @@ export class MidlHardhatEnvironment {
 		const networks = { regtest, mainnet, testnet4, testnet, signet } as const;
 		const { network, hardhatNetwork } = this.userConfig;
 
-		if (!network) {
-			this.bitcoinNetwork = regtest;
-			return;
-		}
-
 		if (typeof network === "string") {
 			if (!(network in networks)) {
 				throw new Error(`Network ${network} is not supported`);
@@ -109,7 +104,7 @@ export class MidlHardhatEnvironment {
 
 			this.bitcoinNetwork = networks[network as keyof typeof networks];
 		} else {
-			this.bitcoinNetwork = network;
+			this.bitcoinNetwork = network || regtest;
 		}
 
 		this.chain = getEVMFromBitcoinNetwork(this.bitcoinNetwork);
