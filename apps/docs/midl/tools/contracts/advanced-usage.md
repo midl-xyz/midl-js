@@ -12,7 +12,7 @@ Below are some of the most common use cases.
 
 Additionally, you can find the complete API [here](./api.md) and more advanced examples in [this repository](https://github.com/midl-xyz/smart-contract-deploy-starter).
 
-If you find any missing functionality that would be useful, please open an issue on [GitHub](https://github.com/midl-xyz/midl-js).
+If you find any missing functionality that would be useful, please open an issue on [GitHub](https://github.com/midl-xyz/midl-js/issues/new/choose).
 
 
 ## Retrieving an EVM Address
@@ -152,7 +152,7 @@ await hre.midl.callContract(
 This is a dangerous feature—please use it at your own risk. If your transaction reverts, transaction fees will still be charged.
 :::
 
-You can use Runes in Midl functions and seamlessly utilize them with `hardhat-deploy`. Doing so will create a transfer of a Rune in the BTC transaction.
+This feature allows you to skip gas estimation for a transaction. It is useful when you are unsure why transaction reverts but RPC doesn't provide a reason. It is sometimes useful to see the raw-trace of the transaction to understand the issue. (possible with an RPC request or at a block explorer)
 
 In a `hardhat-deploy` function, this can be done as follows:
 ```ts
