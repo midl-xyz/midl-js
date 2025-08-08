@@ -1,12 +1,8 @@
 # Deploy Contract
 
-::: warning
-THE DOCUMENTATION IS OUTDATED AND MAY NOT REFLECT THE CURRENT STATE OF THE PROJECT.
-:::
+The process of deploying contract to MIDL Protocol is similar to deploying contract to EVM compatible networks with the only difference, however every deployment and write transactions require interacting with Bitcoin L1. However to get the best experience, we recommend using the `@midl-xyz/hardhat-deploy` plugin alongside with [hardhat-deploy](https://github.com/wighawag/hardhat-deploy).
 
-The process of deploying contract to MIDL Protocol is similar to deploying contract to Ethereum. However to get the best experience, we recommend using the `@midl-xyz/hardhat-deploy` plugin alongside with [hardhat-deploy](https://github.com/wighawag/hardhat-deploy).
-
-You can find the example in [apps/docs/examples](https://github.com/midl-xyz/midl-js/tree/main/apps/docs/examples)
+You can find advanced examples in [this repo](https://github.com/midl-xyz/smart-contract-deploy-starter)
 
 ## Create a new project
 
@@ -17,6 +13,18 @@ mkdir hardhat-midl
 cd hardhat-midl
 pnpm init
 pnpm add -D hardhat @midl-xyz/hardhat-deploy hardhat-deploy @midl-xyz/midl-js-executor
+```
+
+## Override viem at `package.json`
+
+Add the following lines to your packages.json to override viem used with:
+
+```json
+"pnpm": {
+    "overrides": {
+      "viem": "npm:@midl-xyz/midl-viem"
+    }
+  }
 ```
 
 ## Initialize Hardhat
@@ -48,28 +56,54 @@ To defined the `MNEMONIC` variable, you can use the `npx hardhat vars set MNEMON
 
 :::
 
-```javascript{1-4,9-21}
-require("hardhat-deploy");
-require("@midl-xyz/hardhat-deploy");
-const { midlRegtest } = require("@midl-xyz/midl-js-executor");
-const { vars } = require("hardhat/config");
+```ts
+import "hardhat-deploy";
+import "@midl-xyz/hardhat-deploy";
+import { midlRegtest } from "@midl-xyz/midl-js-executor";
+import { type HardhatUserConfig, vars } from "hardhat/config";
+import "@nomicfoundation/hardhat-verify";
 
-/** @type import('hardhat/config').HardhatUserConfig */
-module.exports = {
-  solidity: "0.8.28",
-  midl: {
-    mnemonic: vars.get("MNEMONIC"),
-    path: "deployments",
-    confirmationsRequired: 1,
-    btcConfirmationsRequired: 1,
-  },
-  networks: {
-    default: {
-      url: midlRegtest.rpcUrls.default.http[0],
-      chain: midlRegtest.id,
-    },
-  },
-};
+export default (<HardhatUserConfig>{
+	solidity: "0.8.28",
+	defaultNetwork: "regtest",
+	midl: {
+		networks: {
+			regtest: {
+				mnemonic: vars.get("MNEMONIC"),
+				path: "deployments",
+				confirmationsRequired: 1,
+				btcConfirmationsRequired: 1,
+				hardhatNetwork: "regtest",
+				network: {
+					explorerUrl: "https://mempool.regtest.midl.xyz",
+					id: "regtest",
+					network: "regtest",
+				},
+			},
+		},
+	},
+	networks: {
+		regtest: {
+			url: midlRegtest.rpcUrls.default.http[0],
+			chainId: midlRegtest.id,
+		},
+	},
+	etherscan: {
+		apiKey: {
+			regtest: "empty",
+		},
+		customChains: [
+			{
+				network: "regtest",
+				chainId: midlRegtest.id,
+				urls: {
+					apiURL: "https://blockscout.regtest.midl.xyz/api",
+					browserURL: "https://blockscout.regtest.midl.xyz",
+				},
+			},
+		],
+	},
+});
 ```
 
 ## Create a new contract
@@ -150,7 +184,15 @@ module.exports = async function deploy(hre) {
 Run the following command to deploy the contract:
 
 ```bash
-npx hardhat deploy
+pnpm hardhat deploy
 ```
 
 After the deployment is complete, you will see a folder named `deployments` in your project directory. Inside this folder, you will find a JSON file containing the contract address and other information.
+
+
+## Advanced Usage
+Midl's hardhat-deploy offers more functionality than just deploying or writing to contracts. You may find commonly used functions [here](../tools/contracts/advanced-usage.md) & examples in [this repo](https://github.com/midl-xyz/smart-contract-deploy-starter)
+
+
+// TODO: Add verification example
+// TODO: Check this thru completely

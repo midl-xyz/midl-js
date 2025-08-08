@@ -1,5 +1,6 @@
 ---
 order: 0
+title: "Overview"
 ---
 
 # Overview
@@ -114,5 +115,5 @@ export default async function deploy(hre: HardhatRuntimeEnvironment) {
 }
 ```
 
-See the [API Reference](./api.md) for full details on available methods and properties.
+See the [Advanced Usage](./advanced-usage.md) for more examples on commonly used functionality.
 
