@@ -152,7 +152,7 @@ await hre.midl.callContract(
 This is a dangerous feature—please use it at your own risk. If your transaction reverts, transaction fees will still be charged.
 :::
 
-This feature allows you to skip gas estimation for a transaction. It is useful when you are unsure why transaction reverts but RPC doesn't provide a reason. It is sometimes useful to see the raw-trace of the transaction to understand the issue. (possible with an RPC request or at a block explorer)
+This option allows you to bypass gas estimation before executing a transaction. It’s particularly helpful when transactions are failing silently and you need deeper insight into what’s going wrong - for example, by inspecting the raw transaction trace through an RPC call or block explorer.
 
 In a `hardhat-deploy` function, this can be done as follows:
 ```ts
