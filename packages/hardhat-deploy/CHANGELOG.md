@@ -1,5 +1,13 @@
 # @midl-xyz/hardhat-deploy
 
+## 2.0.0-next.64
+
+### Patch Changes
+
+- fix: separate deposits/withdrawls
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@2.0.0-next.64
+
 ## 2.0.0-next.63
 
 ### Patch Changes

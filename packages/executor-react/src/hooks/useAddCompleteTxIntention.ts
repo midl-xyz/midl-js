@@ -1,12 +1,14 @@
 import type { Config } from "@midl-xyz/midl-js-core";
-import { addCompleteTxIntention } from "@midl-xyz/midl-js-executor";
+import {
+	type TransactionIntention,
+	addCompleteTxIntention,
+} from "@midl-xyz/midl-js-executor";
 import {
 	type MidlContextStore,
 	useConfigInternal,
 	useStoreInternal,
 } from "@midl-xyz/midl-js-react";
-import { useMutation } from "@tanstack/react-query";
-import type { Address } from "viem";
+import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
 
 type UseAddCompleteTxIntentionParams = {
 	/**
@@ -17,12 +19,21 @@ type UseAddCompleteTxIntentionParams = {
 	 * Custom store to override the default.
 	 */
 	store?: MidlContextStore;
+
+	mutation?: Omit<
+		UseMutationOptions<
+			TransactionIntention,
+			Error,
+			AddCompleteTxIntentionVariables
+		>,
+		"mutationFn"
+	>;
 };
 
-type AddCompleteTxIntentionVariables = {
-	assetsToWithdraw: [Address] | [Address, Address];
-};
-
+type AddCompleteTxIntentionVariables =
+	| Parameters<typeof addCompleteTxIntention>[1]
+	// biome-ignore lint/suspicious/noConfusingVoidType: This is used to allow the function to be called without parameters.
+	| void;
 /**
  * Adds a complete transaction intention using the provided parameters.
  *
@@ -38,15 +49,21 @@ type AddCompleteTxIntentionVariables = {
 export const useAddCompleteTxIntention = ({
 	store: customStore,
 	config: customConfig,
+	mutation,
 }: UseAddCompleteTxIntentionParams = {}) => {
 	const store = useStoreInternal(customStore);
 	const config = useConfigInternal(customConfig);
 
-	const { mutate, mutateAsync, ...rest } = useMutation({
-		mutationFn: async ({
-			assetsToWithdraw,
-		}: AddCompleteTxIntentionVariables) => {
-			const intention = await addCompleteTxIntention(config, assetsToWithdraw);
+	const { mutate, mutateAsync, ...rest } = useMutation<
+		TransactionIntention,
+		Error,
+		AddCompleteTxIntentionVariables
+	>({
+		mutationFn: async (withdraw) => {
+			const intention = await addCompleteTxIntention(
+				config,
+				withdraw ?? undefined,
+			);
 
 			store.setState((state) => {
 				return {
@@ -56,6 +73,7 @@ export const useAddCompleteTxIntention = ({
 
 			return intention;
 		},
+		...mutation,
 	});
 
 	return {

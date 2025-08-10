@@ -40,7 +40,7 @@ export const createStateOverride = async (
 	);
 
 	const satoshis = intentions.reduce((acc, intention) => {
-		return acc + (intention.satoshis || 0);
+		return acc + (intention.deposit?.satoshis || 0);
 	}, 0);
 
 	const userBalance = await getBalance(client, {
@@ -57,9 +57,9 @@ export const createStateOverride = async (
 	const runes = intentions
 		.flatMap((intention) => {
 			return (
-				intention.runes?.map((rune) => ({
+				intention.deposit?.runes?.map((rune) => ({
 					address: rune.address ?? evmAddress,
-					balance: rune.value,
+					balance: rune.amount,
 				})) || []
 			);
 		})

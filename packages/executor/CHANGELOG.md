@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor
 
+## 2.0.0-next.64
+
+### Patch Changes
+
+- fix: separate deposits/withdrawls
+
 ## 2.0.0-next.60
 
 ### Patch Changes

@@ -173,14 +173,7 @@ export class MidlHardhatEnvironment {
 			"to" | "value" | "gas" | "nonce"
 			// biome-ignore lint/suspicious/noExplicitAny: Allow any args
 		> & { args?: any; libraries?: Libraries<Address> },
-		intentionOptions: Pick<
-			TransactionIntention,
-			| "satoshis"
-			| "hasRunesDeposit"
-			| "hasRunesWithdraw"
-			| "hasWithdraw"
-			| "runes"
-		> = {},
+		intentionOptions: Pick<TransactionIntention, "deposit" | "withdraw"> = {},
 	) {
 		if (!this.config) {
 			throw new Error("MidlHardhatEnvironment not initialized");
@@ -257,14 +250,7 @@ export class MidlHardhatEnvironment {
 			"to" | "value" | "gas" | "nonce"
 			// biome-ignore lint/suspicious/noExplicitAny: Allow any args
 		> & { args: any },
-		intentionOptions: Pick<
-			TransactionIntention,
-			| "satoshis"
-			| "hasRunesDeposit"
-			| "hasRunesWithdraw"
-			| "hasWithdraw"
-			| "runes"
-		> = {},
+		intentionOptions: Pick<TransactionIntention, "deposit" | "withdraw"> = {},
 	) {
 		if (!this.config) {
 			throw new Error("MidlHardhatEnvironment not initialized");
@@ -300,7 +286,6 @@ export class MidlHardhatEnvironment {
 				nonce: options.nonce,
 				gas: options.gas,
 			},
-			satoshis: weiToSatoshis(options.value ?? 0n),
 			...intentionOptions,
 		});
 
@@ -312,23 +297,14 @@ export class MidlHardhatEnvironment {
 	public async execute({
 		stateOverride,
 		feeRate,
-		skipEstimateGasMulti = false,
-		shouldComplete = false,
-		assetsToWithdraw,
+		skipEstimateGas = false,
+		options,
 	}: {
 		stateOverride?: StateOverride;
 		feeRate?: number;
-		skipEstimateGasMulti?: boolean;
-	} & (
-		| {
-				shouldComplete?: false;
-				assetsToWithdraw?: never;
-		  }
-		| {
-				shouldComplete: true;
-				assetsToWithdraw?: [Address] | [Address, Address];
-		  }
-	) = {}) {
+		skipEstimateGas?: boolean;
+		options?: Pick<TransactionIntention, "deposit" | "withdraw">;
+	}) {
 		if (!this.config) {
 			throw new Error("MidlHardhatEnvironment not initialized");
 		}
@@ -343,10 +319,10 @@ export class MidlHardhatEnvironment {
 
 		const walletClient = await this.getWalletClient();
 
-		if (shouldComplete) {
+		if (typeof options?.withdraw !== "undefined") {
 			const intention = await addCompleteTxIntention(
 				this.config,
-				assetsToWithdraw,
+				options.withdraw,
 			);
 
 			this.store.setState((state) => ({
@@ -361,8 +337,7 @@ export class MidlHardhatEnvironment {
 			{
 				stateOverride,
 				feeRate,
-				skipEstimateGasMulti,
-				assetsToWithdrawSize: assetsToWithdraw?.length ?? 0,
+				skipEstimateGas,
 			},
 		);
 

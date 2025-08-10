@@ -1,5 +1,13 @@
 # @midl-xyz/midl-js-executor-react
 
+## 2.0.0-next.64
+
+### Patch Changes
+
+- fix: separate deposits/withdrawls
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@2.0.0-next.64
+
 ## 2.0.0-next.60
 
 ### Patch Changes

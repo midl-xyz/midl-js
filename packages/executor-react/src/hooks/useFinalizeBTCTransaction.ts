@@ -20,11 +20,6 @@ type FinalizeMutationVariables = {
 	stateOverride?: StateOverride;
 
 	/**
-	 * Number of assets to withdraw. This is used to calculate the total fees.
-	 */
-	assetsToWithdrawSize?: number;
-
-	/**
 	 * Custom fee rate in sats/vB
 	 */
 	feeRate?: number;
@@ -32,7 +27,7 @@ type FinalizeMutationVariables = {
 	/**
 	 * If true, skip the gas estimation for EVM transactions
 	 */
-	skipEstimateGasMulti?: boolean;
+	skipEstimateGas?: boolean;
 	/**
 	 * BTC address used to sign the transactions
 	 */
@@ -93,9 +88,8 @@ export const useFinalizeBTCTransaction = ({
 	>({
 		mutationFn: async ({
 			stateOverride,
-			assetsToWithdrawSize,
 			feeRate,
-			skipEstimateGasMulti,
+			skipEstimateGas,
 			from,
 		} = {}) => {
 			if (!publicClient) {
@@ -108,9 +102,8 @@ export const useFinalizeBTCTransaction = ({
 				publicClient,
 				{
 					stateOverride,
-					assetsToWithdrawSize,
 					feeRate,
-					skipEstimateGasMulti,
+					skipEstimateGas,
 					from,
 				},
 			);

@@ -7,6 +7,7 @@ import * as bitcoin from "bitcoinjs-lib";
 import {
 	type Address,
 	encodeFunctionData,
+	maxUint256,
 	padBytes,
 	padHex,
 	toHex,
@@ -17,6 +18,7 @@ import { addTxIntention } from "~/actions/addTxIntention";
 import { executorAddress } from "~/config";
 import { executorAbi } from "~/contracts/abi";
 import type { TransactionIntention } from "~/types";
+import { satoshisToWei } from "~/utils";
 
 export const COMPLETE_TX_GAS = 200_000n;
 
@@ -32,7 +34,7 @@ export const COMPLETE_TX_GAS = 200_000n;
  */
 export const addCompleteTxIntention = async (
 	config: Config,
-	assetsToWithdraw?: [Address] | [Address, Address],
+	withdraw?: TransactionIntention["withdraw"],
 ): Promise<TransactionIntention> => {
 	const { network, accounts } = config.getState();
 
@@ -40,8 +42,7 @@ export const addCompleteTxIntention = async (
 		throw new Error("No network set");
 	}
 
-	const hasWithdraw = true;
-	const hasRunesWithdraw = (assetsToWithdraw?.length ?? 0) > 0;
+	const assetsToWithdraw = withdraw?.runes;
 
 	const runesReceiver = accounts?.find(
 		(it) => it.purpose === AddressPurpose.Ordinals,
@@ -50,7 +51,10 @@ export const addCompleteTxIntention = async (
 		accounts?.find((it) => it.purpose === AddressPurpose.Payment) ??
 		runesReceiver;
 
-	if (!runesReceiver && assetsToWithdraw?.find((it) => it !== zeroAddress)) {
+	if (
+		!runesReceiver &&
+		assetsToWithdraw?.find((it) => it.address !== zeroAddress)
+	) {
 		throw new Error("No ordinals account found to withdraw runes");
 	}
 
@@ -105,20 +109,23 @@ export const addCompleteTxIntention = async (
 	}
 
 	return addTxIntention(config, {
-		hasWithdraw,
-		hasRunesWithdraw,
+		withdraw,
 		evmTransaction: {
 			to: executorAddress[network.id] as Address,
 			// We set the gas limit to a high value to ensure the transaction goes through
 			gas: COMPLETE_TX_GAS,
+			value: satoshisToWei(withdraw?.satoshis ?? 0),
 			data: encodeFunctionData({
 				abi: executorAbi,
 				functionName: "completeTx",
 				args: [
 					receiver,
 					receiverBTC,
-					assetsToWithdraw ?? [],
-					new Array(assetsToWithdraw?.length ?? 0).fill(0n),
+					assetsToWithdraw?.map((rune) => rune.address) ?? [],
+					assetsToWithdraw?.map((rune) =>
+						// TODO: When new contracts are deployed, we should use the actual rune amount. For we indicate 0n as maxUint256 to withdraw all available runes.
+						rune.amount === maxUint256 ? 0n : rune.amount,
+					) ?? [],
 				],
 			}),
 		},
