@@ -42,7 +42,9 @@ export const addCompleteTxIntention = async (
 		throw new Error("No network set");
 	}
 
-	const assetsToWithdraw = withdraw?.runes;
+	const assetsToWithdraw = typeof withdraw === "object" ? withdraw?.runes : [];
+	const satoshisToWithdraw =
+		typeof withdraw === "object" ? (withdraw?.satoshis ?? 0) : 0;
 
 	const runesReceiver = accounts?.find(
 		(it) => it.purpose === AddressPurpose.Ordinals,
@@ -114,7 +116,7 @@ export const addCompleteTxIntention = async (
 			to: executorAddress[network.id] as Address,
 			// We set the gas limit to a high value to ensure the transaction goes through
 			gas: COMPLETE_TX_GAS,
-			value: satoshisToWei(withdraw?.satoshis ?? 0),
+			value: satoshisToWei(satoshisToWithdraw),
 			data: encodeFunctionData({
 				abi: executorAbi,
 				functionName: "completeTx",

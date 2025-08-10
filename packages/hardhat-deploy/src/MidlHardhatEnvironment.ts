@@ -24,7 +24,6 @@ import {
 	getEVMAddress,
 	getEVMFromBitcoinNetwork,
 	signIntention,
-	weiToSatoshis,
 } from "@midl-xyz/midl-js-executor";
 import { keyPairConnector } from "@midl-xyz/midl-js-node";
 import {
@@ -304,7 +303,7 @@ export class MidlHardhatEnvironment {
 		feeRate?: number;
 		skipEstimateGas?: boolean;
 		options?: Pick<TransactionIntention, "deposit" | "withdraw">;
-	}) {
+	} = {}) {
 		if (!this.config) {
 			throw new Error("MidlHardhatEnvironment not initialized");
 		}

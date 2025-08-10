@@ -1,5 +1,36 @@
 import type { Address, TransactionSerializableBTC } from "viem";
 
+export type RunesTransfer = {
+	/**
+	 * The rune ID, in the format `blockHeight:txIndex`
+	 */
+	id: string;
+	/**
+	 * The amount to transfer
+	 */
+	amount: bigint;
+	/**
+	 * ERC20 address of the rune
+	 */
+	address: Address;
+};
+
+export type Deposit = {
+	/**
+	 * The amount in satoshis to deposit, if not provided it will deposit all available balance.
+	 */
+	satoshis?: number;
+	runes?: RunesTransfer[];
+};
+
+export type Withdrawal = {
+	/**
+	 * The amount in satoshis to withdraw, if not provided it will withdraw all available balance.
+	 */
+	satoshis?: number;
+	runes?: RunesTransfer[];
+};
+
 export interface TransactionIntention {
 	/**
 	 * EVM transaction to execute
@@ -13,24 +44,7 @@ export interface TransactionIntention {
 	 */
 	signedEvmTransaction?: `0x${string}`;
 
-	deposit?: {
-		satoshis?: number;
-		runes?: {
-			id: string;
-			amount: bigint;
-			address: Address;
-		}[];
-	};
+	deposit?: Deposit;
 
-	withdraw?: {
-		/**
-		 * The amount in satoshis to withdraw, if not provided it will withdraw all available balance.
-		 */
-		satoshis?: number;
-		runes?: {
-			id: string;
-			amount: bigint;
-			address: Address;
-		}[];
-	};
+	withdraw?: Withdrawal | boolean;
 }

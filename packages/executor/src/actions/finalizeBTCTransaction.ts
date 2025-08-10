@@ -14,7 +14,7 @@ import { estimateGasMulti } from "viem/actions";
 import { createStateOverride } from "~/actions/createStateOverride";
 import { getBTCFeeRate } from "~/actions/getBTCFeeRate";
 import { multisigAddress } from "~/config";
-import type { TransactionIntention } from "~/types";
+import type { RunesTransfer, TransactionIntention, Withdrawal } from "~/types";
 import { calculateTransactionsCost, getEVMAddress } from "~/utils";
 
 type FinalizeBTCTransactionOptions = {
@@ -96,10 +96,16 @@ export const finalizeBTCTransaction = async (
 	const evmIntentions = intentions.filter((it) => Boolean(it.evmTransaction));
 	const evmTransactions = evmIntentions.map((it) => it.evmTransaction);
 	const hasWithdraw = intentions.some(
-		(it) => it.withdraw?.satoshis && it.withdraw.satoshis > 0,
+		(it) =>
+			typeof it.withdraw === "object" &&
+			it.withdraw?.satoshis &&
+			it.withdraw.satoshis > 0,
 	);
 	const hasRunesWithdraw = intentions.some(
-		(it) => it.withdraw?.runes && it.withdraw.runes.length > 0,
+		(it) =>
+			typeof it.withdraw === "object" &&
+			it.withdraw?.runes &&
+			it.withdraw.runes.length > 0,
 	);
 	const hasRunesDeposit = intentions.some(
 		(it) => it.deposit?.runes && it.deposit.runes.length > 0,
@@ -108,10 +114,15 @@ export const finalizeBTCTransaction = async (
 
 	const runes = Array.from(
 		intentions
-			.filter((it) => it.withdraw?.runes && it.withdraw.runes.length > 0)
+			.filter(
+				(it) =>
+					typeof it.withdraw === "object" &&
+					it.withdraw?.runes &&
+					it.withdraw.runes.length > 0,
+			)
 			.flatMap((it) => {
-				// biome-ignore lint/style/noNonNullAssertion: Filter ensures withdraw is defined
-				return it.withdraw!.runes!;
+				// biome-ignore lint/suspicious/noExplicitAny: It was filtered above
+				return (it.withdraw as any).runes as RunesTransfer[];
 			})
 			.reduce(
 				(acc, rune) => {
