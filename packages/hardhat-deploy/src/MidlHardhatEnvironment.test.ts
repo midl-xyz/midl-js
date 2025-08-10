@@ -174,7 +174,7 @@ describe("MidlHardhatEnvironment", () => {
 			to: "0xff2BdE9960f3C2904F6A0085D669DA866f4EDDEC",
 		});
 
-		await midl.execute({ skipEstimateGasMulti: true });
+		await midl.execute({ skipEstimateGas: true });
 	});
 
 	it("changes account", async () => {

@@ -34,11 +34,8 @@ const intention = await addTxIntention(config, {
 | Name             | Type                                                                 | Description                                                                           |
 | ---------------- | -------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
 | evmTransaction   | [`TransactionSerializableBTC & { from?: Address }`](#evmtransaction) | EVM transaction details (with optional `from` address)                                |
-| satoshis         | `number` (optional)                                                  | BTC amount to transfer to MIDL in satoshis                                            |
-| runes            | `{ id: string; value: bigint; address?: Address; }[]` (optional)     | Array of runes to transfer to MIDL. Each rune has an id, value, and optional address. |
-| hasRunesWithdraw | `boolean` (optional)                                                 | If true, the intention contains runes to withdraw                                     |
-| hasWithdraw      | `boolean` (optional)                                                 | If true, the intention contains Bitcoin to withdraw                                   |
-| hasRunesDeposit  | `boolean` (optional)                                                 | If true, the intention contains a Rune deposit                                        |
+| deposit          | `{ satoshis?: number; runes?: { id: string; amount: bigint; address: Address; }[] }` | Optional deposit details. Satoshis and/or runes to deposit.                           |
+| withdraw         | `{ satoshis?: number; runes?: { id: string; amount: bigint; address: Address; }[] }` | Optional withdraw details. Satoshis and/or runes to withdraw.                         |
 
 #### runes
 

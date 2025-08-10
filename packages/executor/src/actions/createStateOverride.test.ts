@@ -29,7 +29,9 @@ describe("executor | actions | createStateOverride", async () => {
 
 	it("overrides balance", async () => {
 		const intention = await addTxIntention(midlConfig, {
-			satoshis: 1000,
+			deposit: {
+				satoshis: 1000,
+			},
 		});
 
 		const override = await createStateOverride(
@@ -49,10 +51,14 @@ describe("executor | actions | createStateOverride", async () => {
 
 	it("overrides balance with multiple intentions", async () => {
 		const intention1 = await addTxIntention(midlConfig, {
-			satoshis: 1000,
+			deposit: {
+				satoshis: 1000,
+			},
 		});
 		const intention2 = await addTxIntention(midlConfig, {
-			satoshis: 2000,
+			deposit: {
+				satoshis: 2000,
+			},
 		});
 
 		const override = await createStateOverride(
@@ -72,13 +78,15 @@ describe("executor | actions | createStateOverride", async () => {
 
 	it("overrides runes balance", async () => {
 		const intention = await addTxIntention(midlConfig, {
-			runes: [
-				{
-					id: "rune1",
-					value: 100n,
-					address: "0x17C646bad1Ee22e6945E3fC5D9732077ED211560",
-				},
-			],
+			deposit: {
+				runes: [
+					{
+						id: "rune1",
+						amount: 100n,
+						address: "0x17C646bad1Ee22e6945E3fC5D9732077ED211560",
+					},
+				],
+			},
 		});
 
 		const override = await createStateOverride(
@@ -107,18 +115,20 @@ describe("executor | actions | createStateOverride", async () => {
 
 	it("overrides runes balance with multiple runes", async () => {
 		const intention = await addTxIntention(midlConfig, {
-			runes: [
-				{
-					id: "rune1",
-					value: 100n,
-					address: "0x17C646bad1Ee22e6945E3fC5D9732077ED211560",
-				},
-				{
-					id: "rune2",
-					value: 200n,
-					address: "0x1234567890abcdef1234567890abcdef12345678",
-				},
-			],
+			deposit: {
+				runes: [
+					{
+						id: "rune1",
+						amount: 100n,
+						address: "0x17C646bad1Ee22e6945E3fC5D9732077ED211560",
+					},
+					{
+						id: "rune2",
+						amount: 200n,
+						address: "0x1234567890abcdef1234567890abcdef12345678",
+					},
+				],
+			},
 		});
 
 		const override = await createStateOverride(
@@ -156,22 +166,26 @@ describe("executor | actions | createStateOverride", async () => {
 
 	it("overrides rune's balance with multiple intentions", async () => {
 		const intention1 = await addTxIntention(midlConfig, {
-			runes: [
-				{
-					id: "rune1",
-					value: 100n,
-					address: "0x17C646bad1Ee22e6945E3fC5D9732077ED211560",
-				},
-			],
+			deposit: {
+				runes: [
+					{
+						id: "rune1",
+						amount: 100n,
+						address: "0x17C646bad1Ee22e6945E3fC5D9732077ED211560",
+					},
+				],
+			},
 		});
 		const intention2 = await addTxIntention(midlConfig, {
-			runes: [
-				{
-					id: "rune1",
-					value: 200n,
-					address: "0x17C646bad1Ee22e6945E3fC5D9732077ED211560",
-				},
-			],
+			deposit: {
+				runes: [
+					{
+						id: "rune1",
+						amount: 200n,
+						address: "0x17C646bad1Ee22e6945E3fC5D9732077ED211560",
+					},
+				],
+			},
 		});
 
 		const override = await createStateOverride(

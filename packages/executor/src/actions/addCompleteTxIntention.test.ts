@@ -1,5 +1,5 @@
 import { AddressPurpose, connect, disconnect } from "@midl-xyz/midl-js-core";
-import { decodeFunctionData } from "viem";
+import { decodeFunctionData, maxUint256 } from "viem";
 import { afterEach, describe, expect, it } from "vitest";
 import { midlConfig, midlConfigP2SH } from "~/__tests__/midlConfig";
 import { addCompleteTxIntention } from "~/actions/addCompleteTxIntention";
@@ -32,9 +32,15 @@ describe("executor | actions | addCompleteTxIntention", () => {
 		await connect(midlConfig, {
 			purposes: [AddressPurpose.Ordinals],
 		});
-		const intention = await addCompleteTxIntention(midlConfig, [
-			"0x17C646bad1Ee22e6945E3fC5D9732077ED211560",
-		]);
+		const intention = await addCompleteTxIntention(midlConfig, {
+			runes: [
+				{
+					id: "1:1",
+					address: "0x17C646bad1Ee22e6945E3fC5D9732077ED211560",
+					amount: maxUint256,
+				},
+			],
+		});
 
 		const txData = decodeFunctionData({
 			abi: executorAbi,
