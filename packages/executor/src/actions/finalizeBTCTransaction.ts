@@ -14,8 +14,12 @@ import { estimateGasMulti } from "viem/actions";
 import { createStateOverride } from "~/actions/createStateOverride";
 import { getBTCFeeRate } from "~/actions/getBTCFeeRate";
 import { multisigAddress } from "~/config";
-import type { RunesTransfer, TransactionIntention, Withdrawal } from "~/types";
-import { calculateTransactionsCost, getEVMAddress } from "~/utils";
+import type { TransactionIntention, TransactionIntentionEVM } from "~/types";
+import {
+	aggregateIntentionRunes,
+	calculateTransactionsCost,
+	getEVMAddress,
+} from "~/utils";
 
 type FinalizeBTCTransactionOptions = {
 	/**
@@ -93,7 +97,9 @@ export const finalizeBTCTransaction = async (
 	}
 
 	const evmAddress = getEVMAddress(account, network);
-	const evmIntentions = intentions.filter((it) => Boolean(it.evmTransaction));
+	const evmIntentions = intentions.filter((it): it is TransactionIntentionEVM =>
+		Boolean(it.evmTransaction),
+	);
 	const evmTransactions = evmIntentions.map((it) => it.evmTransaction);
 	const hasWithdraw = intentions.some(
 		(it) =>
@@ -112,40 +118,8 @@ export const finalizeBTCTransaction = async (
 	);
 	const feeRate = customFeeRate ?? Number(await getBTCFeeRate(config, client));
 
-	const runes = Array.from(
-		intentions
-			.filter(
-				(it) =>
-					typeof it.withdraw === "object" &&
-					it.withdraw?.runes &&
-					it.withdraw.runes.length > 0,
-			)
-			.flatMap((it) => {
-				// biome-ignore lint/suspicious/noExplicitAny: It was filtered above
-				return (it.withdraw as any).runes as RunesTransfer[];
-			})
-			.reduce(
-				(acc, rune) => {
-					acc.set(rune.id, {
-						id: rune.id,
-						value: acc.get(rune.id)
-							? // biome-ignore lint/style/noNonNullAssertion: <explanation>
-								acc.get(rune.id)!.value + rune.amount
-							: rune.amount,
-					});
-
-					return acc;
-				},
-				new Map<
-					string,
-					{
-						id: string;
-						value: bigint;
-					}
-				>(),
-			)
-			.values(),
-	);
+	const runesToDeposit = aggregateIntentionRunes(intentions, "deposit");
+	const runesToWithdraw = aggregateIntentionRunes(intentions, "withdraw");
 
 	if (!options.skipEstimateGas) {
 		const stateOverride =
@@ -184,7 +158,7 @@ export const finalizeBTCTransaction = async (
 			hasWithdraw,
 			hasRunesDeposit,
 			hasRunesWithdraw,
-			assetsToWithdrawSize: runes.length,
+			assetsToWithdrawSize: runesToWithdraw.length,
 		});
 
 		// Here we ensure that transactions passes with minimum fees transferred
@@ -218,7 +192,7 @@ export const finalizeBTCTransaction = async (
 		hasWithdraw,
 		hasRunesDeposit,
 		hasRunesWithdraw,
-		assetsToWithdrawSize: runes.length,
+		assetsToWithdrawSize: runesToWithdraw.length,
 	});
 
 	const btcTransfer = intentions.reduce((acc, it) => {
@@ -232,7 +206,7 @@ export const finalizeBTCTransaction = async (
 		},
 	];
 
-	for (const rune of runes) {
+	for (const rune of runesToDeposit) {
 		transfers.push({
 			receiver: options.multisigAddress ?? multisigAddress[network.id],
 			amount: rune.value,
@@ -242,7 +216,7 @@ export const finalizeBTCTransaction = async (
 
 	let btcTx: EdictRuneResponse | TransferBTCResponse;
 
-	if (runes.length > 0) {
+	if (runesToDeposit.length > 0) {
 		btcTx = await edictRune(config, {
 			transfers,
 			publish: false,

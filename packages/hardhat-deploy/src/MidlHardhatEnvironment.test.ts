@@ -170,11 +170,9 @@ describe("MidlHardhatEnvironment", () => {
 					},
 				],
 			],
-			gas: BigInt(10000000),
-			to: "0xff2BdE9960f3C2904F6A0085D669DA866f4EDDEC",
 		});
 
-		await midl.execute({ skipEstimateGas: true });
+		await midl.execute();
 	});
 
 	it("changes account", async () => {
