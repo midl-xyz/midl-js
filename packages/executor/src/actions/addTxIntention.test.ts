@@ -37,6 +37,6 @@ describe("executor | actions | addTxIntention", () => {
 			config.getState().network,
 		);
 
-		expect(assignedTxIntention.evmTransaction.from).toEqual(evmAddress);
+		expect(assignedTxIntention.evmTransaction?.from).toEqual(evmAddress);
 	});
 });

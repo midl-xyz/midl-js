@@ -20,7 +20,7 @@ describe("executor | actions | addCompleteTxIntention", () => {
 		const txData = decodeFunctionData({
 			abi: executorAbi,
 			// biome-ignore lint/style/noNonNullAssertion: Data is guaranteed to be present
-			data: intention.evmTransaction.data!,
+			data: intention.evmTransaction?.data!,
 		});
 
 		expect(txData.args[1]).toBe(
@@ -45,7 +45,7 @@ describe("executor | actions | addCompleteTxIntention", () => {
 		const txData = decodeFunctionData({
 			abi: executorAbi,
 			// biome-ignore lint/style/noNonNullAssertion: Data is guaranteed to be present
-			data: intention.evmTransaction.data!,
+			data: intention.evmTransaction?.data!,
 		});
 
 		expect(txData.args[2]).toStrictEqual([
@@ -64,7 +64,7 @@ describe("executor | actions | addCompleteTxIntention", () => {
 		const txData = decodeFunctionData({
 			abi: executorAbi,
 			// biome-ignore lint/style/noNonNullAssertion: Data is guaranteed to be present
-			data: intention.evmTransaction.data!,
+			data: intention.evmTransaction?.data!,
 		});
 
 		expect(txData.args[1]).toBe(
@@ -82,7 +82,7 @@ describe("executor | actions | addCompleteTxIntention", () => {
 		const txData = decodeFunctionData({
 			abi: executorAbi,
 			// biome-ignore lint/style/noNonNullAssertion: Data is guaranteed to be present
-			data: intention.evmTransaction.data!,
+			data: intention.evmTransaction?.data!,
 		});
 
 		expect(txData.args[1]).toBe(
