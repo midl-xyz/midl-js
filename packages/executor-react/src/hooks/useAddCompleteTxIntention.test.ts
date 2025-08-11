@@ -34,13 +34,11 @@ describe("executor-react | hooks | useAddCompleteTxIntention", () => {
 			},
 		);
 
-		await result.current.addCompleteTxIntentionAsync({
-			assetsToWithdraw: [zeroAddress],
-		});
+		await result.current.addCompleteTxIntentionAsync();
 
 		const [intention] = store.getState().intentions as TransactionIntention[];
 
-		expect(intention.evmTransaction.to).toBe(
+		expect(intention.evmTransaction?.to).toBe(
 			executorAddress[midlConfig.getState().network.id],
 		);
 	});
