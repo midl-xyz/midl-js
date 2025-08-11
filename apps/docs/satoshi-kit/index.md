@@ -5,11 +5,11 @@ order: 0
 
 # SatoshiKit
 
-::: warning
-THE DOCUMENTATION IS OUTDATED AND MAY NOT REFLECT THE CURRENT STATE OF THE PROJECT.
-:::
+SatosiKit is a modern toolkit designed to help developers easily integrate Bitcoin wallets into their applications. It provides a set of components and utilities that simplify the process of connecting your favorite Bitcoin wallets and authenticating users.
 
-SatoshiKit provides a simple way to connect your apps with Bitcoin wallets.
+
+Just click the button below to see an example of how to use SatoshiKit in your application.
+
 
 <div ref="el" class="vp-raw"/>
 
@@ -58,9 +58,9 @@ Use `createMidlConfig` from `@midl-xyz/satoshi-kit` to create the midl config. T
 
 ::: code-group
 
-```tsx{2,5,6} [App.tsx]
+```tsx{2,5,14-16} [App.tsx]
 import { MidlProvider } from "@midl-xyz/midl-js-react";
-import { SatoshiKitProvider } from "@midl-xyz/satoshi-kit";
+import { SatoshiKitProvider, ConnectButton } from "@midl-xyz/satoshi-kit";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { useMemo, type ReactNode } from "react";
 import "@midl-xyz/satoshi-kit/styles.css";
@@ -70,10 +70,12 @@ export const App = ({ children }: { children: ReactNode }) => {
 	const client = useMemo(() => queryClient, []);
 
 	return (
-		<MidlProvider config={midlConfig}>
-			<SatoshiKitProvider>
-				<QueryClientProvider client={client}>{children}</QueryClientProvider>
-			</SatoshiKitProvider>
+	  <MidlProvider config={midlConfig}>
+			<QueryClientProvider client={client}>
+				<SatoshiKitProvider>
+					<ConnectButton />
+				</SatoshiKitProvider>
+			</QueryClientProvider>
 		</MidlProvider>
 	);
 };
@@ -87,7 +89,7 @@ import { QueryClient } from "@tanstack/react-query";
 export const midlConfig = createMidlConfig({
   networks: [regtest],
   persist: true,
-}) as Config;
+});
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -99,69 +101,3 @@ export const queryClient = new QueryClient({
 ```
 
 :::
-
-### Add ConnectButton
-
-You can add the `ConnectButton` component to your app to allow users to connect their wallets. The `ConnectButton` will automatically detect the available connectors and display them.
-
-```tsx
-import { ConnectButton } from "@midl-xyz/satoshi-kit";
-
-export const Page = () => {
-  return (
-    <div>
-      <ConnectButton />
-    </div>
-  );
-};
-```
-
-## Customization
-
-You can customize the `ConnectButton` appearance by passing children to it.
-
-```tsx
-import { ConnectButton, AccountButton } from "@midl-xyz/satoshi-kit";
-import { Button } from "/path/to/your/button/component";
-
-export const Page = () => {
-  return (
-    <div>
-      <ConnectButton>
-        {({
-          openConnectDialog,
-          openAccountDialog,
-          isConnected,
-          isConnecting,
-        }) => {
-          return (
-            <Button
-              onClick={isConnected ? openAccountDialog : openConnectDialog}
-            >
-              {isConnected ? (
-                <AccountButton
-                  hideAvatar
-                  hideBalance
-                  hideAddress
-                  onClick={openAccountDialog}
-                />
-              ) : (
-                "Connect"
-              )}
-            </Button>
-          );
-        }}
-      </ConnectButton>
-    </div>
-  );
-};
-```
-
-## ConnectButton Props
-
-| Name          | Type      | Description                                 |
-| ------------- | --------- | ------------------------------------------- |
-| `hideAvatar`  | `boolean` | Hide the avatar icon.                       |
-| `hideBalance` | `boolean` | Hide the balance.                           |
-| `hideAddress` | `boolean` | Hide the address.                           |
-| `children`    |           | The children function to render the button. |
