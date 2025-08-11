@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-executor
 
+## 2.0.0-next.66
+
+### Patch Changes
+
+- fix: gas re-estimate with completeTx
+
 ## 2.0.0-next.65
 
 ### Patch Changes

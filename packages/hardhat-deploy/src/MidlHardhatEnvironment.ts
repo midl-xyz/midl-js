@@ -36,6 +36,7 @@ import type {
 } from "hardhat/types";
 import {
 	http,
+	type Abi,
 	type Address,
 	type StateOverride,
 	type TransactionSerializableBTC,
@@ -297,13 +298,12 @@ export class MidlHardhatEnvironment {
 		stateOverride,
 		feeRate,
 		skipEstimateGas = false,
-		options,
+		withdraw,
 	}: {
 		stateOverride?: StateOverride;
 		feeRate?: number;
 		skipEstimateGas?: boolean;
-		options?: Pick<TransactionIntention, "deposit" | "withdraw">;
-	} = {}) {
+	} & Pick<TransactionIntention, "deposit" | "withdraw"> = {}) {
 		if (!this.config) {
 			throw new Error("MidlHardhatEnvironment not initialized");
 		}
@@ -318,11 +318,8 @@ export class MidlHardhatEnvironment {
 
 		const walletClient = await this.getWalletClient();
 
-		if (typeof options?.withdraw !== "undefined") {
-			const intention = await addCompleteTxIntention(
-				this.config,
-				options.withdraw,
-			);
+		if (typeof withdraw !== "undefined") {
+			const intention = await addCompleteTxIntention(this.config, withdraw);
 
 			this.store.setState((state) => ({
 				intentions: [...state.intentions, intention],
@@ -433,8 +430,7 @@ export class MidlHardhatEnvironment {
 			txId,
 			address,
 		}: {
-			// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-			abi: any[];
+			abi: Abi;
 			address: Address;
 			txId?: string;
 		},

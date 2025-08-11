@@ -1,4 +1,4 @@
-import { getAddress } from "viem";
+import { type Address, erc20Abi, getAddress } from "viem";
 import { getTransactionReceipt, readContract } from "viem/actions";
 import { describe, expect, it } from "vitest";
 import { useEnvironment } from "../tests/useEnvironment";
@@ -26,6 +26,64 @@ describe("MidlHardhatEnvironment", () => {
 		expect(midl.getAccount().address).toBe(
 			"bcrt1qldp99gjlh5qhj624qu9hg7cw3tztj0h6urds2z",
 		);
+	});
+
+	it.skip("deposits and withdraws runes", async () => {
+		const {
+			hre: { midl },
+		} = globalThis;
+		await midl.initialize();
+		const evmAddress = midl.getEVMAddress();
+
+		console.log("EMV address", evmAddress);
+
+		const RuneID: {
+			runeId: string;
+			address: Address;
+		} = {
+			runeId: "11893:1",
+			address: "0x3eDb3dFD4C8b1bb46304F25e933816A7fDAB6FF6",
+		};
+
+		await midl.save("USDT", {
+			abi: erc20Abi,
+			address: RuneID.address,
+		});
+
+		const runeId = RuneID.runeId;
+		const runeAddress = RuneID.address;
+		const amount = 228n;
+		console.log("USDT", runeId, runeAddress);
+
+		await midl.deploy("RunesRelayer", { args: [runeAddress] });
+		await midl.execute(); // Run callContract
+
+		const Relayer = await midl.getDeployment("RunesRelayer");
+		console.log("Deployed Relayer Address: ", Relayer?.address);
+
+		await midl.callContract("USDT", "approve", {
+			args: [Relayer?.address, amount],
+		});
+
+		await midl.callContract(
+			"RunesRelayer",
+			"depositRune",
+			{ args: [amount] },
+			{
+				deposit: {
+					runes: [{ id: runeId, amount: amount, address: runeAddress }],
+				},
+			},
+		);
+
+		await midl.callContract("RunesRelayer", "withdrawRune", {
+			args: [amount],
+		});
+		await midl.execute({
+			withdraw: {
+				runes: [{ id: runeId, amount: amount, address: runeAddress }],
+			},
+		});
 	});
 
 	it.skip("deploys libraries", async () => {
