@@ -31,20 +31,21 @@ export type Withdrawal = {
 	runes?: RunesTransfer[];
 };
 
-export interface TransactionIntention {
-	/**
-	 * EVM transaction to execute
-	 */
-	evmTransaction: TransactionSerializableBTC & {
-		from?: Address;
-	};
-
-	/**
-	 * Serialized signed EVM transaction
-	 */
-	signedEvmTransaction?: `0x${string}`;
-
+export type TransactionIntentionSimple = {
 	deposit?: Deposit;
-
 	withdraw?: Withdrawal | boolean;
+};
+
+export type IntentionEVMTransaction = TransactionSerializableBTC & {
+	from?: Address;
+};
+
+export type TransactionIntentionEVM = {
+	evmTransaction: IntentionEVMTransaction;
+	signedEvmTransaction?: `0x${string}`;
+} & TransactionIntentionSimple;
+
+export interface TransactionIntention
+	extends Omit<TransactionIntentionEVM, "evmTransaction"> {
+	evmTransaction?: IntentionEVMTransaction;
 }

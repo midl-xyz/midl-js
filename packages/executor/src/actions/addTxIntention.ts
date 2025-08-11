@@ -1,13 +1,16 @@
 import { type Config, getDefaultAccount } from "@midl-xyz/midl-js-core";
 import type { TransactionSerializableBTC } from "viem";
-import type { TransactionIntention } from "~/types/intention";
+import type {
+	IntentionEVMTransaction,
+	TransactionIntention,
+} from "~/types/intention";
 import { getEVMAddress } from "~/utils";
 
 export type PartialIntention = Omit<
 	TransactionIntention,
 	"evmTransaction" | "signedEvmTransaction"
 > & {
-	evmTransaction?: Omit<TransactionIntention["evmTransaction"], "chainId"> & {
+	evmTransaction?: Omit<IntentionEVMTransaction, "chainId"> & {
 		chainId?: TransactionSerializableBTC["chainId"];
 	};
 };

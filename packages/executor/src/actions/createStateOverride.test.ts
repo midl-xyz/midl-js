@@ -1,3 +1,4 @@
+import { configure, configureSync, getConsoleSink } from "@midl-xyz/logger";
 import { AddressPurpose, connect } from "@midl-xyz/midl-js-core";
 import { http, createTestClient, toHex } from "viem";
 import { midl } from "viem/chains";
@@ -7,6 +8,20 @@ import { mockServer } from "~/__tests__/mockServer";
 import { addTxIntention } from "~/actions/addTxIntention";
 import { createStateOverride } from "~/actions/createStateOverride";
 import { satoshisToWei } from "~/utils";
+
+configureSync({
+	sinks: {
+		console: getConsoleSink(),
+	},
+	loggers: [
+		{
+			category: ["@midl-xyz/midl-js-executor"],
+			lowestLevel: "debug",
+			sinks: ["console"],
+		},
+		{ category: ["logtape", "meta"], sinks: [] },
+	],
+});
 
 describe("executor | actions | createStateOverride", async () => {
 	const client = createTestClient({

@@ -14,7 +14,8 @@
 		"@midl-xyz/satoshi-kit": "1.0.18",
 		"@midl-xyz/playwright-btc-wallets": "0.0.1",
 		"@midl-xyz/midl-js-connectors": "0.0.1",
-		"@midl-xyz/midl-js-node": "0.0.1"
+		"@midl-xyz/midl-js-node": "0.0.1",
+		"@midl-xyz/logger": "1.0.0"
 	},
 	"changesets": [
 		"afraid-monkeys-confess",
@@ -81,6 +82,7 @@
 		"tidy-vans-cover",
 		"tiny-planets-attack",
 		"twelve-trainers-switch",
+		"twenty-crabs-care",
 		"unlucky-zebras-melt",
 		"violet-kangaroos-hang",
 		"violet-seals-know",

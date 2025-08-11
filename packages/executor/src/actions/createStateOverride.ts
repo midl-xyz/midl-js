@@ -9,8 +9,11 @@ import {
 	toHex,
 } from "viem";
 import { getBalance, readContract } from "viem/actions";
+import { LoggerNamespace, getLogger } from "~/config";
 import type { TransactionIntention } from "~/types";
 import { getEVMAddress, satoshisToWei } from "~/utils";
+
+const logger = getLogger([LoggerNamespace.Actions, "createStateOverride"]);
 
 /**
  * Creates a state override for EVM simulation based on the provided transaction intentions.
@@ -51,6 +54,17 @@ export const createStateOverride = async (
 		address: evmAddress,
 		balance: satoshisToWei(satoshis) + userBalance + fees,
 	};
+
+	logger.debug(
+		"Creating state override for {evmAddress} with balance: {balanceOverride}, total deposit: {satoshis} satoshis, fees: {fees} wei, user balance: {userBalance} wei",
+		{
+			evmAddress,
+			balanceOverride: balanceOverride.balance,
+			satoshis,
+			fees,
+			userBalance,
+		},
+	);
 
 	const overrides: StateOverride = [balanceOverride];
 
@@ -105,5 +119,12 @@ export const createStateOverride = async (
 		});
 	}
 
+	logger.debug(
+		"Created state override for {evmAddress}, overrides: {overrides}",
+		{
+			evmAddress,
+			overrides,
+		},
+	);
 	return overrides;
 };

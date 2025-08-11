@@ -1,5 +1,11 @@
 # @midl-xyz/midl-js-core
 
+## 2.0.0-next.65
+
+### Patch Changes
+
+- fix(executor): withdrawals overlap deposits
+
 ## 2.0.0-next.59
 
 ### Patch Changes
