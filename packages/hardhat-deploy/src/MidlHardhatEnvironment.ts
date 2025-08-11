@@ -366,7 +366,7 @@ export class MidlHardhatEnvironment {
 			if (intention.meta?.contractName) {
 				const contractAddress = getContractAddress({
 					from: this.getEVMAddress(),
-					nonce: BigInt(intention.evmTransaction.nonce ?? 0),
+					nonce: BigInt(intention.evmTransaction?.nonce ?? 0),
 				});
 
 				this.saveDeployment(intention.meta.contractName, {
