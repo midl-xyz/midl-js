@@ -449,6 +449,9 @@ importers:
 
   packages/hardhat-deploy:
     dependencies:
+      '@midl-xyz/logger':
+        specifier: workspace:*
+        version: link:../logger
       '@midl-xyz/midl-js-core':
         specifier: workspace:^
         version: link:../core
@@ -477,6 +480,12 @@ importers:
       hardhat-deploy:
         specifier: ^1.0.3
         version: 1.0.3(bufferutil@4.0.9)(utf-8-validate@5.0.10)
+
+  packages/hardhat-deploy/tests/fixtures/hardhat-project:
+    devDependencies:
+      '@openzeppelin/contracts':
+        specifier: ^5.4.0
+        version: 5.4.0
 
   packages/logger:
     dependencies:
@@ -2633,6 +2642,9 @@ packages:
 
   '@open-draft/until@2.1.0':
     resolution: {integrity: sha512-U69T3ItWHvLwGg5eJ0n3I62nWuE6ilHlmz7zM0npLBRvPRd7e6NYmg54vvRtP5mZG7kZqZCFVdsTWo7BPtBujg==}
+
+  '@openzeppelin/contracts@5.4.0':
+    resolution: {integrity: sha512-eCYgWnLg6WO+X52I16TZt8uEjbtdkgLC0SUX/xnAksjjrQI4Xfn4iBRoI5j55dmlOhDv1Y7BoR3cU7e3WWhC6A==}
 
   '@pandacss/config@0.53.1':
     resolution: {integrity: sha512-Qh3jx3Ku0e7bKJFCRN89xUpPruk1097e9VOdEiX1DcZ0JnoUzUiny894xeranf7ZMBijCBLQSzIOEV9ghQpwuA==}
@@ -11983,6 +11995,8 @@ snapshots:
       outvariant: 1.4.3
 
   '@open-draft/until@2.1.0': {}
+
+  '@openzeppelin/contracts@5.4.0': {}
 
   '@pandacss/config@0.53.1':
     dependencies:

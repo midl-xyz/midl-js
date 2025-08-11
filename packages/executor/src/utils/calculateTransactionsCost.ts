@@ -71,5 +71,5 @@ export const calculateTransactionsCost = (
 			BigInt(assetsToWithdrawSize) * RUNES_MAGIC_VALUE) *
 			BigInt(feeRate);
 
-	return fees;
+	return Number(fees);
 };

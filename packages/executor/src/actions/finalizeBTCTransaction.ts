@@ -13,13 +13,16 @@ import type { Client, StateOverride } from "viem";
 import { estimateGasMulti } from "viem/actions";
 import { createStateOverride } from "~/actions/createStateOverride";
 import { getBTCFeeRate } from "~/actions/getBTCFeeRate";
-import { multisigAddress } from "~/config";
+import { LoggerNamespace, getLogger, multisigAddress } from "~/config";
 import type { TransactionIntention, TransactionIntentionEVM } from "~/types";
 import {
 	aggregateIntentionRunes,
 	calculateTransactionsCost,
 	getEVMAddress,
+	satoshisToWei,
 } from "~/utils";
+
+const logger = getLogger([LoggerNamespace.Actions, "finalizeBTCTransaction"]);
 
 type FinalizeBTCTransactionOptions = {
 	/**
@@ -101,25 +104,26 @@ export const finalizeBTCTransaction = async (
 		Boolean(it.evmTransaction),
 	);
 	const evmTransactions = evmIntentions.map((it) => it.evmTransaction);
-	const hasWithdraw = intentions.some(
-		(it) =>
-			typeof it.withdraw === "object" &&
-			it.withdraw?.satoshis &&
-			it.withdraw.satoshis > 0,
-	);
-	const hasRunesWithdraw = intentions.some(
-		(it) =>
-			typeof it.withdraw === "object" &&
-			it.withdraw?.runes &&
-			it.withdraw.runes.length > 0,
-	);
-	const hasRunesDeposit = intentions.some(
-		(it) => it.deposit?.runes && it.deposit.runes.length > 0,
-	);
-	const feeRate = customFeeRate ?? Number(await getBTCFeeRate(config, client));
-
 	const runesToDeposit = aggregateIntentionRunes(intentions, "deposit");
 	const runesToWithdraw = aggregateIntentionRunes(intentions, "withdraw");
+
+	const hasWithdraw = intentions.some((it) => Boolean(it.withdraw));
+	const hasRunesWithdraw = runesToWithdraw.length > 0;
+	const hasRunesDeposit = runesToDeposit.length > 0;
+
+	const feeRate = customFeeRate ?? Number(await getBTCFeeRate(config, client));
+
+	logger.debug(
+		"Finalizing BTC transaction with fee rate: {feeRate}, hasWithdraw: {hasWithdraw}, hasRunesWithdraw: {hasRunesWithdraw}, hasRunesDeposit: {hasRunesDeposit}, runesToDeposit: {runesToDeposit}, runesToWithdraw: {runesToWithdraw}",
+		{
+			feeRate,
+			hasWithdraw,
+			hasRunesWithdraw,
+			hasRunesDeposit,
+			runesToDeposit,
+			runesToWithdraw,
+		},
+	);
 
 	if (!options.skipEstimateGas) {
 		const stateOverride =
@@ -133,6 +137,15 @@ export const finalizeBTCTransaction = async (
 		let gasLimits: bigint[] = [];
 
 		if (emvTransactionsWithoutGas.length > 0) {
+			logger.debug(
+				"Estimating gas for EVM transactions: {emvTransactionsWithoutGas}, stateOverride: {stateOverride}, evmAddress: {evmAddress}",
+				{
+					emvTransactionsWithoutGas,
+					stateOverride,
+					evmAddress,
+				},
+			);
+
 			gasLimits = await estimateGasMulti(client as Client, {
 				transactions: emvTransactionsWithoutGas,
 				stateOverride,
@@ -146,6 +159,10 @@ export const finalizeBTCTransaction = async (
 
 				tx.gas = gasLimits[i];
 			}
+
+			logger.trace("Estimated gas limits for EVM transactions: {gasLimits}", {
+				gasLimits,
+			});
 		}
 
 		const totalGas = evmTransactions.reduce(
@@ -161,12 +178,31 @@ export const finalizeBTCTransaction = async (
 			assetsToWithdrawSize: runesToWithdraw.length,
 		});
 
+		logger.debug("Total gas: {totalGas}, totalCost: {totalCost}", {
+			totalGas,
+			totalCost,
+		});
+
+		const stateOverrideWithMinFees =
+			options.stateOverride ??
+			(await createStateOverride(
+				config,
+				client,
+				intentions,
+				satoshisToWei(totalCost),
+			));
+
+		logger.debug(
+			"Creating state override with minimum fees: {stateOverrideWithMinFees}",
+			{
+				stateOverrideWithMinFees,
+			},
+		);
+
 		// Here we ensure that transactions passes with minimum fees transferred
 		await estimateGasMulti(client as Client, {
 			transactions: evmTransactions,
-			stateOverride:
-				options.stateOverride ??
-				(await createStateOverride(config, client, intentions, totalCost)),
+			stateOverride: stateOverrideWithMinFees,
 			account: evmAddress,
 		});
 
@@ -180,6 +216,10 @@ export const finalizeBTCTransaction = async (
 				Math.ceil(Number(gasLimits[i]) * 1.2),
 			);
 		}
+
+		logger.debug("Final EVM transactions with gas limits: {evmTransactions}", {
+			evmTransactions,
+		});
 	}
 
 	const totalGas = evmTransactions.reduce(
@@ -213,6 +253,14 @@ export const finalizeBTCTransaction = async (
 			runeId: rune.id,
 		});
 	}
+
+	logger.debug(
+		"Preparing BTC transaction with transfers: {transfers}, feeRate: {feeRate}",
+		{
+			transfers,
+			feeRate,
+		},
+	);
 
 	let btcTx: EdictRuneResponse | TransferBTCResponse;
 
