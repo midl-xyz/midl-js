@@ -1,5 +1,11 @@
 # @midl-xyz/hardhat-deploy
 
+## 2.0.0-next.67
+
+### Patch Changes
+
+- fix(hardhat-deploy): withdrawal
+
 ## 2.0.0-next.66
 
 ### Patch Changes

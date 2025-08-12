@@ -16,7 +16,11 @@ import {
 	testnet4,
 	waitForTransaction,
 } from "@midl-xyz/midl-js-core";
-import type { Chain, TransactionIntention } from "@midl-xyz/midl-js-executor";
+import type {
+	Chain,
+	TransactionIntention,
+	Withdrawal,
+} from "@midl-xyz/midl-js-executor";
 import {
 	addCompleteTxIntention,
 	addTxIntention,
@@ -303,7 +307,8 @@ export class MidlHardhatEnvironment {
 		stateOverride?: StateOverride;
 		feeRate?: number;
 		skipEstimateGas?: boolean;
-	} & Pick<TransactionIntention, "deposit" | "withdraw"> = {}) {
+		withdraw?: Withdrawal;
+	} = {}) {
 		if (!this.config) {
 			throw new Error("MidlHardhatEnvironment not initialized");
 		}
