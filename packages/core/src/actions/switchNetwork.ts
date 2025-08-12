@@ -23,7 +23,8 @@ export const switchNetwork = async (
 	config: Config,
 	network: BitcoinNetwork,
 ) => {
-	const { networks } = config.getState();
+	const { networks, connection } = config.getState();
+
 	if (!networks.includes(network)) {
 		throw new NetworkError();
 	}
@@ -31,4 +32,6 @@ export const switchNetwork = async (
 	config.setState({
 		network,
 	});
+
+	await connection?.switchNetwork?.(network);
 };

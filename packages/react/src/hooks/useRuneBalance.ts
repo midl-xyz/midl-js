@@ -5,6 +5,7 @@ import {
 	getRuneBalance,
 } from "@midl-xyz/midl-js-core";
 import { type UseQueryOptions, useQuery } from "@tanstack/react-query";
+import { useAccounts } from "~/hooks/useAccounts";
 import { useConfigInternal } from "~/hooks/useConfigInternal";
 
 type QueryOptions = Omit<
@@ -14,9 +15,20 @@ type QueryOptions = Omit<
 	queryKey?: ReadonlyArray<unknown>;
 };
 
-type UseRuneBalanceParams = GetRuneBalanceParams & {
+type UseRuneBalanceParams = Omit<GetRuneBalanceParams, "address"> & {
+	/**
+	 * Optional query options for the rune balance operation.
+	 */
 	query?: QueryOptions;
+	/**
+	 * Custom configuration to override the default.
+	 */
 	config?: Config;
+	/**
+	 * Optional address to fetch the rune balance for.
+	 * If not provided, it will use the address from the ordinals account.
+	 */
+	address?: GetRuneBalanceParams["address"];
 };
 
 /**
@@ -42,12 +54,18 @@ export const useRuneBalance = ({
 	config: customConfig,
 }: UseRuneBalanceParams) => {
 	const config = useConfigInternal(customConfig);
+	const { ordinalsAccount } = useAccounts({ config });
+	const addressToUse = address ?? ordinalsAccount?.address;
 
 	const { data: balance, ...rest } = useQuery<RuneBalanceResponse>({
-		queryKey: ["runeBalance", address, runeId, ...(queryKey ?? [])],
+		queryKey: ["runeBalance", addressToUse, runeId, ...(queryKey ?? [])],
 		queryFn: () => {
+			if (!addressToUse) {
+				throw new Error("Address is required to fetch Rune balance.");
+			}
+
 			return getRuneBalance(config, {
-				address,
+				address: addressToUse,
 				runeId,
 			});
 		},

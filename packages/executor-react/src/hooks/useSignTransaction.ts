@@ -1,9 +1,10 @@
+// TODO: UNUSED HOOK - Remove if not needed
 import { type Config, SignMessageProtocol } from "@midl-xyz/midl-js-core";
 import { signTransaction } from "@midl-xyz/midl-js-executor";
 import { useConfigInternal } from "@midl-xyz/midl-js-react";
 import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
 import type { TransactionSerializableBTC } from "viem";
-import { useWalletClient } from "wagmi";
+import { usePublicClient, useWalletClient } from "wagmi";
 
 type SignTransactionParams = {
 	tx: TransactionSerializableBTC;
@@ -15,9 +16,9 @@ type SignTransactionError = Error;
 
 type UseSignTransactionParams = {
 	/**
-	 * The public key to use for signing the transaction.
+	 * The address of the account to sign the transaction with.
 	 */
-	publicKey?: string;
+	from?: string;
 	/**
 	 * The protocol to use for signing the message.
 	 */
@@ -63,7 +64,7 @@ type UseSignTransactionParams = {
 export const useSignTransaction = (
 	{
 		mutation,
-		publicKey,
+		from,
 		protocol = SignMessageProtocol.Bip322,
 		config: customConfig,
 	}: UseSignTransactionParams = {
@@ -75,7 +76,7 @@ export const useSignTransaction = (
 		throw new Error("Only BIP322 protocol is supported");
 	}
 
-	const { data: client } = useWalletClient();
+	const client = usePublicClient();
 	const config = useConfigInternal(customConfig);
 
 	const { mutate, mutateAsync, ...rest } = useMutation<
@@ -89,7 +90,7 @@ export const useSignTransaction = (
 			}
 
 			return await signTransaction(config, tx, client, {
-				publicKey,
+				from,
 			});
 		},
 		...mutation,

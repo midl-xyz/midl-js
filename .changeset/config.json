@@ -3,9 +3,17 @@
 	"changelog": "@changesets/cli/changelog",
 	"commit": false,
 	"fixed": [],
-	"linked": [["@midl-xyz/*"]],
+	"linked": [
+		[
+			"@midl-xyz/*"
+		]
+	],
 	"access": "public",
-	"baseBranch": "main",
+	"baseBranch": "next",
 	"updateInternalDependencies": "patch",
-	"ignore": ["e2e", "@midl-xyz/midl-js-docs", "@midl-xyz/rune-etcher"]
+	"ignore": [
+		"e2e",
+		"@midl-xyz/midl-js-docs",
+		"@midl-xyz/rune-etcher"
+	]
 }

@@ -21,6 +21,6 @@ describe("core | actions | switchNetwork", () => {
 			connectors: [],
 		});
 
-		expect(switchNetwork(config, mainnet)).rejects.throws(NetworkError);
+		await expect(switchNetwork(config, mainnet)).rejects.throws(NetworkError);
 	});
 });

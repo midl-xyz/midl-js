@@ -1,24 +1,24 @@
-import { clearTxIntentions } from "@midl-xyz/midl-js-executor";
 import {
 	type MidlContextStore,
 	useStoreInternal,
 } from "@midl-xyz/midl-js-react";
 
 type UseClearTxIntentionsParams = {
+	/**
+	 * Custom store to override the default.
+	 */
 	store?: MidlContextStore;
 };
 
 /**
- * Clear all transaction intentions from the store
+ * Clears all transaction intentions from the store.
+ *
+ * @param params - Optional parameters
+ * @returns A function to clear all transaction intentions.
  *
  * @example
- * ```typescript
  * const clearIntentions = useClearTxIntentions();
- *
  * clearIntentions();
- * ```
- *
- * @returns Function to clear all transaction intentions.
  */
 export const useClearTxIntentions = ({
 	store: customStore,
@@ -26,6 +26,6 @@ export const useClearTxIntentions = ({
 	const store = useStoreInternal(customStore);
 
 	return () => {
-		clearTxIntentions(store);
+		store.setState({ intentions: [] });
 	};
 };

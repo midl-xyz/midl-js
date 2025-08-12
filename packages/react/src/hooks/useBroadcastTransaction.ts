@@ -3,6 +3,9 @@ import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
 import { useConfigInternal } from "~/hooks/useConfigInternal";
 
 type UseBroadcastTransactionVariables = {
+	/**
+	 * The transaction raw hex string to broadcast.
+	 */
 	tx: string;
 };
 
@@ -11,6 +14,9 @@ type UseBroadcastTransactionError = Error;
 type UseBroadcastTransactionData = string;
 
 type UseBroadcastTransactionParams = {
+	/**
+	 * Mutation options for react-query.
+	 */
 	mutation?: Omit<
 		UseMutationOptions<
 			UseBroadcastTransactionData,
@@ -19,12 +25,15 @@ type UseBroadcastTransactionParams = {
 		>,
 		"mutationFn"
 	>;
+	/**
+	 * Config object to use instead of the one from context.
+	 */
 	config?: Config;
 };
 
 /**
  * Broadcasts a transaction to Bitcoin network.
- * *
+ *
  * @example
  * ```typescript
  * const { broadcastTransaction, broadcastTransactionAsync } = useBroadcastTransaction();
@@ -36,8 +45,7 @@ type UseBroadcastTransactionParams = {
  * await broadcastTransactionAsync({ tx: 'transaction_data' });
  * ```
  *
- * @param params - Configuration options for the mutation.
- *
+ * @param params - Configuration options for the mutation and the network.
  * @returns
  * - **broadcastTransaction**: `(variables: UseBroadcastTransactionVariables) => void` – Function to initiate broadcasting a transaction.
  * - **broadcastTransactionAsync**: `(variables: UseBroadcastTransactionVariables) => Promise<UseBroadcastTransactionData>` – Function to asynchronously broadcast a transaction.

@@ -13,6 +13,20 @@ const config = createMidlConfig({
 	persist: true,
 });
 
+const Wallet = () => {
+	return (
+		<div
+			style={{
+				display: "flex",
+				justifyContent: "center",
+				paddingBlock: "4rem",
+			}}
+		>
+			<ConnectButton />
+		</div>
+	);
+};
+
 export const Example = () => {
 	const queryClient = new QueryClient();
 
@@ -20,7 +34,7 @@ export const Example = () => {
 		<MidlProvider config={config}>
 			<QueryClientProvider client={queryClient}>
 				<SatoshiKitProvider>
-					<ConnectButton />
+					<Wallet />
 				</SatoshiKitProvider>
 			</QueryClientProvider>
 		</MidlProvider>

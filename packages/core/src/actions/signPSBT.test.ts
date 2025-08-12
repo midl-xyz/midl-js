@@ -1,12 +1,12 @@
 import * as bitcoin from "bitcoinjs-lib";
 import { describe, expect, it, vi } from "vitest";
-import { getKeyPair } from "~/__tests__/keyPair";
+import { __TEST__MNEMONIC__ } from "~/__tests__/keyPair";
 import { broadcastTransaction } from "~/actions/broadcastTransaction";
-import { connect, WalletConnectionError } from "~/actions/connect";
+import { WalletConnectionError, connect } from "~/actions/connect";
 import { getDefaultAccount } from "~/actions/getDefaultAccount";
 import { signPSBT } from "~/actions/signPSBT";
-import { type Account, KeyPairConnector } from "~/connectors";
-import { AddressPurpose } from "~/constants";
+import type { Account } from "~/connectors";
+import { AddressPurpose, AddressType } from "~/constants";
 import { createConfig } from "~/createConfig";
 import { regtest } from "~/networks";
 
@@ -16,11 +16,17 @@ vi.mock("./broadcastTransaction", () => {
 	};
 });
 
-describe("core | actions | signPSBT", () => {
+describe("core | actions | signPSBT", async () => {
+	const { keyPairConnector } = await import("@midl-xyz/midl-js-node");
+
 	it("signs psbt with the connected wallet", async () => {
 		const config = createConfig({
 			networks: [regtest],
-			connectors: [new KeyPairConnector(getKeyPair())],
+			connectors: [
+				keyPairConnector({
+					mnemonic: __TEST__MNEMONIC__,
+				}),
+			],
 		});
 
 		await connect(config, { purposes: [AddressPurpose.Payment] });
@@ -72,7 +78,7 @@ describe("core | actions | signPSBT", () => {
 
 		const psbt = new bitcoin.Psbt();
 
-		expect(
+		await expect(
 			signPSBT(config, { psbt: psbt.toBase64(), signInputs: {} }),
 		).rejects.throws(WalletConnectionError);
 	});
@@ -80,7 +86,12 @@ describe("core | actions | signPSBT", () => {
 	it("publishes the transaction", async () => {
 		const config = createConfig({
 			networks: [regtest],
-			connectors: [new KeyPairConnector(getKeyPair())],
+			connectors: [
+				keyPairConnector({
+					mnemonic: __TEST__MNEMONIC__,
+					paymentAddressType: AddressType.P2SH_P2WPKH,
+				}),
+			],
 		});
 
 		await connect(config, {

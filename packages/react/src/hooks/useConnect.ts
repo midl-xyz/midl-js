@@ -25,10 +25,16 @@ type ConnectVariables = {
 };
 
 type UseConnectParams = ConnectParams & {
+	/**
+	 * Mutation options for the connect operation.
+	 */
 	mutation?: Omit<
 		UseMutationOptions<ConnectData, ConnectError, ConnectVariables>,
 		"mutationFn"
 	>;
+	/**
+	 * Custom configuration to override the default.
+	 */
 	config?: Config;
 };
 
@@ -49,7 +55,8 @@ export const ConnectMutationKey = "connect";
  * @returns
  * - **connect**: `(variables: ConnectVariables) => void` – Function to initiate connection.
  * - **connectAsync**: `(variables: ConnectVariables) => Promise<ConnectData>` – Function to asynchronously connect.
- * - **connectors**: `Array<Connector>` – The list of available connectors.
+ * - **connectors**:  The list of available connectors.
+ * - **rest**: Other properties from the mutation object, such as `isLoading`, `error`, etc.
  */
 export const useConnect = ({
 	mutation: { onSuccess, ...mutationOptions } = {},

@@ -1,23 +1,29 @@
-import deployment from "@midl-xyz/contracts/deployments/0.0.10/Executor.json";
+import deployment from "@midl-xyz/contracts/deployments/0.1.1/Executor.json";
+import type { Config } from "@midl-xyz/midl-js-core";
+import { executorAbi } from "@midl-xyz/midl-js-executor";
+import { bytes32toRuneId } from "@midl-xyz/midl-js-executor";
 import { useRune } from "@midl-xyz/midl-js-react";
 import type { Address } from "viem";
 import { type UseReadContractParameters, useReadContract } from "wagmi";
-import { executorAbi } from "@midl-xyz/midl-js-executor";
-import { bytes32toRuneId } from "@midl-xyz/midl-js-executor";
-import type { Config } from "@midl-xyz/midl-js-core";
 
 type UseERC20Params = {
+	/**
+	 * Custom query options for the read contract call.
+	 */
 	query?: NonNullable<
 		UseReadContractParameters<
 			typeof executorAbi,
 			"getRuneIdByAssetAddress"
 		>["query"]
 	>;
+	/**
+	 * Custom configuration to override the default.
+	 */
 	config?: Config;
 };
 
 /**
- * Get Rune by it's EVM address.
+ * Returns the Rune associated with a given EVM address.
  *
  * @example
  * ```typescript

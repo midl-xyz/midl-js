@@ -1,28 +1,45 @@
-import { useConfig } from "@midl-xyz/midl-js-react";
-import { getEVMFromBitcoinNetwork } from "@midl-xyz/midl-js-executor";
 import type { Config } from "@midl-xyz/midl-js-core";
+import {
+	type Chain,
+	getEVMFromBitcoinNetwork,
+} from "@midl-xyz/midl-js-executor";
+import { useConfig } from "@midl-xyz/midl-js-react";
 
 type UseEVMChainParams = {
+	/**
+	 * Custom configuration to override the default.
+	 */
 	config?: Config;
+	/**
+	 * Custom EVM chain to override the default.
+	 */
+	chain?: Chain;
 };
 
 /**
  * Gets the EVM chain associated with the current Bitcoin network.
  *
+ * @returns The EVM chain configuration if available, otherwise `null`.
+ *
  * @example
- * ```typescript
  * const evmChain = useEVMChain();
  * if (evmChain) {
  *   console.log(`EVM Chain Name: ${evmChain.name}`);
  * }
- * ```
- *
- * @returns The EVM chain configuration if available, otherwise `null`.
  */
 export const useEVMChain = ({
 	config: customConfig,
+	chain: customChain,
 }: UseEVMChainParams = {}) => {
 	const { network } = useConfig(customConfig);
 
-	return network ? getEVMFromBitcoinNetwork(network) : null;
+	if (customChain) {
+		return customChain;
+	}
+
+	try {
+		return getEVMFromBitcoinNetwork(network);
+	} catch (error) {
+		return null;
+	}
 };

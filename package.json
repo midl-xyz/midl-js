@@ -2,13 +2,15 @@
 	"name": "@midl-xyz/midl-js",
 	"private": true,
 	"description": "",
-	"packageManager": "pnpm@9.1.4",
+	"packageManager": "pnpm@10.13.1",
 	"scripts": {
 		"ci:publish": "pnpm publish -r",
 		"build:packages": "turbo run build --filter='./packages/*'",
 		"dev:packages": "turbo run dev --filter='./packages/*'",
 		"prepare": "husky",
-		"test:packages": "turbo run test --filter='./packages/*'"
+		"test:packages": "pnpm build:packages && vitest",
+		"docs": "pnpm turbo run --filter='./apps/docs'",
+		"docs:dev": "pnpm run docs dev"
 	},
 	"devDependencies": {
 		"@alcalzone/esm2cjs": "^1.4.1",
@@ -22,6 +24,7 @@
 		"esm2cjs": "^1.0.2",
 		"husky": "^9.1.7",
 		"jsdom": "^24.1.1",
+		"lint-staged": "^15.5.1",
 		"pkgroll": "^2.6.1",
 		"ts-node": "^10.9.2",
 		"ts-patch": "^3.3.0",
@@ -39,10 +42,15 @@
 	},
 	"pnpm": {
 		"overrides": {
-			"viem": "npm:@midl-xyz/midl-viem",
+			"viem": "npm:@midl-xyz/midl-viem@2.21.37",
 			"@bitcoinerlab/secp256k1": "^1.2.0",
 			"@noble/secp256k1": "1.7.1",
 			"@tanstack/react-query": "5.69.0"
 		}
+	},
+	"lint-staged": {
+		"*": [
+			"biome check --no-errors-on-unmatched --apply --files-ignore-unknown=true"
+		]
 	}
 }

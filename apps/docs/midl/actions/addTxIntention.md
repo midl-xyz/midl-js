@@ -1,8 +1,8 @@
 # addTxIntention
 
-> **addTxIntention**(`config`, `store`, `intention`, `reset`, `publicKey?`): `Promise`\<[`TransactionIntention`](#transactionintention)\>
+> **addTxIntention**(`config`, `intention`, `from?`): `Promise<TransactionIntention>`
 
-Add a transaction intention to the store
+Creates a transaction intention with the provided parameters. This is a low-level utility for preparing a transaction intention object, typically used internally by higher-level transaction flows.
 
 ## Import
 
@@ -13,44 +13,56 @@ import { addTxIntention } from "@midl-xyz/midl-js-executor";
 ## Example
 
 ```ts
-const intention = await addTxIntention(config, store, {
-  evmTransaction: {
-    to: "0x...",
-    data: "0x...",
-  },
-  value: 100n,
-  hasDeposit: true,
+import { addTxIntention } from "@midl-xyz/midl-js-executor";
+
+const intention = await addTxIntention(config, {
+  // ...partial intention fields
 });
-console.log(intention);
 ```
 
 ## Parameters
 
-| Name       | Type                                                                    | Description                                                     |
-| ---------- | ----------------------------------------------------------------------- | --------------------------------------------------------------- |
-| config     | [`Config`](../../root/configuration.md#creating-a-configuration-object) | The configuration object                                        |
-| store      | `Store`                                                                 | The store object                                                |
-| intention  | [`PartialIntention`](#partialintention)                                 | The intention to add                                            |
-| reset?     | `boolean`                                                               | If true, the intentions array will be reset. Default is `false` |
-| publicKey? | `string`                                                                | Public key to use to sign the transaction                       |
+| Name        | Type                                    | Description                                                                                           |
+| ----------- | --------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `config`    | `Config`                                | The configuration object.                                                                             |
+| `intention` | [`PartialIntention`](#partialintention) | The intention to add.                                                                                 |
+| `from`      | `string` (optional)                     | The BTC Address of the account to sign the transaction with. If omitted, the default account is used. |
+
 
 ### PartialIntention
 
-Defined in [packages/executor/src/actions/addTxIntention.ts](https://github.com/midl-xyz/midl-js/blob/main/packages/executor/src/actions/addTxIntention.ts#L9)
+| Name           | Type                                                                 | Description                                                   |
+| -------------- | -------------------------------------------------------------------- | ------------------------------------------------------------- |
+| evmTransaction | [`TransactionSerializableBTC & { from?: Address }`](#evmtransaction) | EVM transaction details (with optional `from` address)        |
+| deposit        | `Deposit`                                                            | Optional deposit details. Satoshis and/or runes to deposit.   |
+| withdraw       | `Withdrawal`                                                         | Optional withdraw details. Satoshis and/or runes to withdraw. |
+
+
+#### Deposit
+
+| Name     | Type                         | Description                                                                            |
+| -------- | ---------------------------- | -------------------------------------------------------------------------------------- |
+| satoshis | `number` (optional)          | Amount in satoshis to deposit. If not provided, it will deposit all available balance. |
+| runes    | `RunesTransfer[]` (optional) | Array of runes to transfer. If not provided, it will not deposit any runes.            |
+
+
+#### Withdrawal
+
+| Name     | Type                         | Description                                                                              |
+| -------- | ---------------------------- | ---------------------------------------------------------------------------------------- |
+| satoshis | `number` (optional)          | Amount in satoshis to withdraw. If not provided, it will withdraw all available balance. |
+| runes    | `RunesTransfer[]` (optional) | Array of runes to transfer. If not provided, it will not withdraw any runes.             |
+
+#### RunesTransfer
+
+| Name    | Type      | Description                                      |
+| ------- | --------- | ------------------------------------------------ |
+| id      | `string`  | The rune ID, in the format `blockHeight:txIndex` |
+| amount  | `bigint`  | The amount to transfer                           |
+| address | `Address` | ERC20 address of the rune                        |
+
 
 ## Returns
 
-`Promise`\<[`TransactionIntention`](#transactionintention)\> - The added intention
+`Promise<TransactionIntention>` — The added intention object.
 
-### TransactionIntention
-
-| Name                  | Type                             | Description                                         |
-| --------------------- | -------------------------------- | --------------------------------------------------- |
-| evmTransaction        | `TransactionSerializableBTC`     | EVM transaction to execute                          |
-| signedEvmTransaction? | `string`                         | Serialized signed EVM transaction                   |
-| value?                | `bigint`                         | Native token value to transfer to Midl              |
-| rune?                 | `{ id: string; value: bigint; }` | Rune id and value to transfer to Midl               |
-| hasRunesWithdraw?     | `boolean`                        | If true, the intention contains runes to withdraw   |
-| hasWithdraw?          | `boolean`                        | If true, the intention contains Bitcoin to withdraw |
-| hasDeposit?           | `boolean`                        | If true, the intention contains a Bitcoin deposit   |
-| hasRunesDeposit?      | `boolean`                        | If true, the intention contains a Rune deposit      |

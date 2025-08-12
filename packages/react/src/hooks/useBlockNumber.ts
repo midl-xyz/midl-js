@@ -15,8 +15,13 @@ type UseBlockNumberParams = {
 	 * The interval in milliseconds at which to poll the block number.
 	 */
 	pollingInterval?: number;
+	/**
+	 * Query options for react-query.
+	 */
 	query?: QueryOptions;
-
+	/**
+	 * Config object to use instead of the one from context.
+	 */
 	config?: Config;
 };
 

@@ -1,43 +1,51 @@
 import type { Address, TransactionSerializableBTC } from "viem";
 
-export interface TransactionIntention {
+export type RunesTransfer = {
 	/**
-	 * EVM transaction to execute
+	 * The rune ID, in the format `blockHeight:txIndex`
 	 */
-	evmTransaction: TransactionSerializableBTC & {
-		from?: Address;
-	};
+	id: string;
+	/**
+	 * The amount to transfer
+	 */
+	amount: bigint;
+	/**
+	 * ERC20 address of the rune
+	 */
+	address: Address;
+};
 
+export type Deposit = {
 	/**
-	 * Serialized signed EVM transaction
+	 * The amount in satoshis to deposit, if not provided it will deposit all available balance.
 	 */
+	satoshis?: number;
+	runes?: RunesTransfer[];
+};
+
+export type Withdrawal = {
+	/**
+	 * The amount in satoshis to withdraw, if not provided it will withdraw all available balance.
+	 */
+	satoshis?: number;
+	runes?: RunesTransfer[];
+};
+
+export type TransactionIntentionSimple = {
+	deposit?: Deposit;
+	withdraw?: Withdrawal | boolean;
+};
+
+export type IntentionEVMTransaction = TransactionSerializableBTC & {
+	from?: Address;
+};
+
+export type TransactionIntentionEVM = {
+	evmTransaction: IntentionEVMTransaction;
 	signedEvmTransaction?: `0x${string}`;
+} & TransactionIntentionSimple;
 
-	/**
-	 * Native token value to transfer to Midl
-	 */
-	value?: bigint;
-	/**
-	 * Rune id and value to transfer to Midl
-	 */
-	rune?: {
-		id: string;
-		value: bigint;
-	};
-	/**
-	 * If true, the intention contains runes to withdraw
-	 */
-	hasRunesWithdraw?: boolean;
-	/**
-	 * If true, the intention contains Bitcoin to withdraw
-	 */
-	hasWithdraw?: boolean;
-	/**
-	 * If true, the intention contains a Bitcoin deposit
-	 */
-	hasDeposit?: boolean;
-	/**
-	 * If true, the intention contains a Rune deposit
-	 */
-	hasRunesDeposit?: boolean;
+export interface TransactionIntention
+	extends Omit<TransactionIntentionEVM, "evmTransaction"> {
+	evmTransaction?: IntentionEVMTransaction;
 }

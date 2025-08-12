@@ -1,6 +1,6 @@
 {
 	"name": "@midl-xyz/hardhat-deploy",
-	"version": "1.0.22",
+	"version": "2.0.0",
 	"scripts": {
 		"build": "pnpm run clean && tspc --project tsconfig.esm.json && tspc --project tsconfig.cjs.json",
 		"dev": "concurrently \"tspc --watch --preserveWatchOutput --project tsconfig.esm.json\" \"tspc --watch --preserveWatchOutput --project tsconfig.cjs.json\"",
@@ -10,9 +10,7 @@
 	"main": "./dist/cjs/index.js",
 	"module": "./dist/esm/index.js",
 	"types": "./dist/types/index.d.ts",
-	"files": [
-		"dist"
-	],
+	"files": ["dist"],
 	"exports": {
 		"./package.json": "./package.json",
 		".": {
@@ -27,21 +25,19 @@
 		}
 	},
 	"devDependencies": {
-		"hardhat": "^2.22.17"
+		"@midl-xyz/midl-js-config": "workspace:^",
+		"hardhat": "^2.22.17",
+		"hardhat-deploy": "^1.0.3"
 	},
 	"peerDependencies": {
 		"hardhat": "^2.22.17"
 	},
 	"dependencies": {
-		"@bitcoinerlab/secp256k1": "^1.2.0",
+		"@midl-xyz/logger": "workspace:*",
 		"@midl-xyz/midl-js-core": "workspace:^",
 		"@midl-xyz/midl-js-executor": "workspace:^",
-		"@midl-xyz/midl-js-react": "workspace:^",
+		"@midl-xyz/midl-js-node": "workspace:^",
 		"@nomicfoundation/hardhat-viem": "^2.0.6",
-		"bip32": "5.0.0-rc.0",
-		"bip39": "^3.1.0",
-		"bitcoinjs-lib": "^6.1.7",
-		"ecpair": "^2.1.0",
 		"viem": "npm:@midl-xyz/midl-viem",
 		"zustand": "^5.0.1"
 	}

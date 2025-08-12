@@ -1,0 +1,40 @@
+{
+	"name": "@midl-xyz/midl-js-connectors",
+	"version": "2.0.0",
+	"scripts": {
+		"build": "pnpm run clean && tspc --project tsconfig.esm.json && tspc --project tsconfig.cjs.json",
+		"dev": "concurrently \"tspc --watch --preserveWatchOutput --project tsconfig.esm.json\" \"tspc --watch --preserveWatchOutput --project tsconfig.cjs.json\"",
+		"clean": "rm -rf dist",
+		"test": "vitest"
+	},
+	"main": "./dist/cjs/index.js",
+	"module": "./dist/esm/index.js",
+	"types": "./dist/types/index.d.ts",
+	"files": ["dist"],
+	"exports": {
+		"./package.json": "./package.json",
+		".": {
+			"import": "./dist/esm/index.js",
+			"require": "./dist/cjs/index.js",
+			"types": "./dist/types/index.d.ts"
+		},
+		"./*": {
+			"import": "./dist/esm/*.js",
+			"require": "./dist/cjs/*.js",
+			"types": "./dist/types/*.d.ts"
+		}
+	},
+	"devDependencies": {
+		"@leather.io/rpc": "2.1.12",
+		"@midl-xyz/midl-js-config": "workspace:^",
+		"@midl-xyz/midl-js-core": "workspace:^",
+		"@types/node": "^22.8.7"
+	},
+	"dependencies": {
+		"bitcoinjs-lib": "7.0.0-rc.0",
+		"sats-connect": "^3.5.0"
+	},
+	"peerDependencies": {
+		"@midl-xyz/midl-js-core": "workspace:^"
+	}
+}

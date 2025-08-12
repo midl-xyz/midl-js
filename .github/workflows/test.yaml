@@ -4,9 +4,12 @@ on:
   pull_request:
     branches:
       - main
+      - next
   push:
     branches:
       - main
+      - next
+  workflow_dispatch:
 
 jobs:
   build-and-test:
@@ -14,32 +17,28 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18.x]
+        node-version: [22]
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
-
+        uses: actions/checkout@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4     
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-
-      - name: Configure npm for GitHub Packages
-        run: |
-          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> ~/.npmrc
-
-      - name: Install pnpm
-        run: npm install -g pnpm
+          registry-url: https://registry.npmjs.org
+          cache: 'pnpm'
 
       - name: Install dependencies
         run: pnpm install
 
       - name: Build packages
-        run: pnpm turbo run build --filter="./packages/*"
+        run: pnpm build:packages
 
       - name: Run tests
-        run: pnpm turbo run test --filter="./packages/*" -- --coverage --reporter=dot --reporter=github-actions
+        run: pnpm test:packages --coverage --reporter=dot --reporter=github-actions
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5

@@ -10,4 +10,3 @@ export * from "./makeAddress";
 export * from "./makePSBTInputs";
 
 export * from "./runeUTXOSelect";
-export * from "./signBIP322Simple";

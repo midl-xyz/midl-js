@@ -1,28 +1,18 @@
 {
-    "$schema": "https://turbo.build/schema.json",
-    "globalEnv": [
-        "DOCS_OUTPUT_DIR"
-    ],
-    "tasks": {
-        "dev": {
-            "dependsOn": [
-                "^build"
-            ],
-            "persistent": true
-        },
-        "build": {
-            "dependsOn": [
-                "^build"
-            ],
-            "outputs": [
-                "dist"
-            ]
-        },
-        "test": {
-            "dependsOn": [
-                "^build"
-            ],
-            "outputs": []
-        }
-    }
+	"$schema": "https://turbo.build/schema.json",
+	"tasks": {
+		"dev": {
+			"dependsOn": ["^build"],
+			"persistent": true
+		},
+		"build": {
+			"dependsOn": ["^build"],
+			"outputs": ["dist"]
+		},
+		"test": {
+			"dependsOn": ["^build"],
+			"cache": false,
+			"outputs": []
+		}
+	}
 }

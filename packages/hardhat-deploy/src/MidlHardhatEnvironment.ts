@@ -1,100 +1,105 @@
+import fs from "node:fs";
+import path from "node:path";
 import {
 	AddressPurpose,
+	AddressType,
 	type BitcoinNetwork,
 	type Config,
-	KeyPairConnector,
 	SignMessageProtocol,
-	broadcastTransaction,
 	connect,
 	createConfig,
+	getDefaultAccount,
 	mainnet,
 	regtest,
+	signet,
 	testnet,
 	testnet4,
 	waitForTransaction,
 } from "@midl-xyz/midl-js-core";
-import type { TransactionIntention } from "@midl-xyz/midl-js-executor";
+import type {
+	Chain,
+	TransactionIntention,
+	Withdrawal,
+} from "@midl-xyz/midl-js-executor";
 import {
+	addCompleteTxIntention,
 	addTxIntention,
-	clearTxIntentions,
 	finalizeBTCTransaction,
 	getEVMAddress,
 	getEVMFromBitcoinNetwork,
-	getPublicKeyForAccount,
 	signIntention,
 } from "@midl-xyz/midl-js-executor";
-import type { MidlContextState } from "@midl-xyz/midl-js-react";
-
+import { keyPairConnector } from "@midl-xyz/midl-js-node";
 import {
 	type Libraries,
 	resolveBytecodeWithLinkedLibraries,
 } from "@nomicfoundation/hardhat-viem/internal/bytecode";
-import type { HardhatRuntimeEnvironment } from "hardhat/types";
-import fs from "node:fs";
-import path from "node:path";
+import type {
+	HardhatRuntimeEnvironment,
+	HttpNetworkConfig,
+} from "hardhat/types";
 import {
+	http,
+	type Abi,
 	type Address,
-	type Chain,
 	type StateOverride,
 	type TransactionSerializableBTC,
+	type Chain as ViemChain,
 	type WalletClient,
 	createWalletClient,
 	encodeDeployData,
 	encodeFunctionData,
 	getContractAddress,
-	http,
+	keccak256,
 } from "viem";
-import { waitForTransactionReceipt } from "viem/actions";
+import { sendBTCTransactions, waitForTransactionReceipt } from "viem/actions";
 import { type StoreApi, createStore } from "zustand";
 import "~/types/context";
-import { Wallet } from "~/Wallet";
 
 export class MidlHardhatEnvironment {
-	private readonly store: StoreApi<MidlContextState> =
-		createStore<MidlContextState>()(() => ({
-			intentions: [],
-		}));
+	private readonly store: StoreApi<{
+		intentions: TransactionIntention[];
+	}> = createStore<{
+		intentions: TransactionIntention[];
+	}>()(() => ({
+		intentions: [],
+	}));
 
 	private readonly deploymentsPath: string;
 	private readonly confirmationsRequired;
 	private readonly btcConfirmationsRequired;
 
-	private accountIndex = 0;
-
 	private walletClient: WalletClient | undefined;
 
-	public wallet: Wallet;
-	private bitcoinNetwork: BitcoinNetwork;
+	private bitcoinNetwork!: BitcoinNetwork;
+	private chain!: Chain;
 
 	private config: Config | null = null;
+	private readonly userConfig: HardhatRuntimeEnvironment["userConfig"]["midl"]["networks"][string];
 
 	constructor(private readonly hre: HardhatRuntimeEnvironment) {
-		this.bitcoinNetwork = regtest;
+		this.userConfig =
+			this.hre.userConfig.midl.networks[
+				hre.hardhatArguments.network ?? "default"
+			];
 		this.initializeNetwork();
 
 		this.deploymentsPath = path.join(
 			this.hre.config.paths.root,
 			this.hre.userConfig.midl.path ?? "deployments",
 		);
-		this.confirmationsRequired =
-			this.hre.userConfig.midl.confirmationsRequired ?? 5;
+		this.confirmationsRequired = this.userConfig.confirmationsRequired ?? 5;
 		this.btcConfirmationsRequired =
-			this.hre.userConfig.midl.btcConfirmationsRequired ?? 1;
+			this.userConfig.btcConfirmationsRequired ?? 1;
 
 		if (!fs.existsSync(this.deploymentsPath)) {
 			fs.mkdirSync(this.deploymentsPath);
 		}
-
-		this.wallet = new Wallet(this.hre.userConfig.midl.mnemonic, regtest);
 	}
 
 	private initializeNetwork() {
-		const networks = { regtest, mainnet, testnet4, testnet } as const;
-		const network = this.hre.userConfig.midl.network;
-
-		if (!network) {
-			return;
-		}
+		const networks = { regtest, mainnet, testnet4, testnet, signet } as const;
+		const { network, hardhatNetwork } = this.userConfig;
 
 		if (typeof network === "string") {
 			if (!(network in networks)) {
@@ -103,42 +108,76 @@ export class MidlHardhatEnvironment {
 
 			this.bitcoinNetwork = networks[network as keyof typeof networks];
 		} else {
-			this.bitcoinNetwork = network;
+			this.bitcoinNetwork = network || regtest;
+		}
+
+		this.chain = getEVMFromBitcoinNetwork(this.bitcoinNetwork);
+
+		if (hardhatNetwork) {
+			const { chainId, url } = this.hre.config.networks[
+				hardhatNetwork
+			] as HttpNetworkConfig;
+
+			if (!chainId) {
+				throw new Error(
+					`Hardhat network ${hardhatNetwork} does not have chainId defined`,
+				);
+			}
+
+			if (!url) {
+				throw new Error(
+					`Hardhat network ${hardhatNetwork} does not have url defined`,
+				);
+			}
+
+			this.chain = {
+				id: chainId,
+				name: "MIDL",
+				nativeCurrency: {
+					name: "MIDL",
+					symbol: "MIDL",
+					decimals: 18,
+				},
+				rpcUrls: {
+					default: {
+						http: [url],
+					},
+				},
+			};
 		}
 	}
 
 	public async initialize(accountIndex = 0) {
-		this.accountIndex = accountIndex;
 		this.config = createConfig({
 			networks: [this.bitcoinNetwork],
 			connectors: [
-				new KeyPairConnector(this.wallet.getAccount(this.accountIndex)),
+				keyPairConnector({
+					mnemonic: this.userConfig.mnemonic,
+					paymentAddressType: AddressType.P2WPKH,
+					accountIndex,
+				}),
 			],
+			defaultPurpose: this.userConfig.defaultPurpose,
+			provider: this.userConfig.provider,
 		});
 
 		await connect(this.config, {
-			purposes: [AddressPurpose.Ordinals],
+			purposes: [AddressPurpose.Payment, AddressPurpose.Ordinals],
 		});
 
-		clearTxIntentions(this.store);
+		this.store.setState({
+			intentions: [],
+		});
 	}
 
 	public async deploy(
 		name: string,
 		options?: Pick<
 			TransactionSerializableBTC,
-			"to" | "value" | "gasPrice" | "gas" | "nonce"
+			"to" | "value" | "gas" | "nonce"
 			// biome-ignore lint/suspicious/noExplicitAny: Allow any args
 		> & { args?: any; libraries?: Libraries<Address> },
-		intentionOptions: Pick<
-			TransactionIntention,
-			| "value"
-			| "hasDeposit"
-			| "hasRunesDeposit"
-			| "hasRunesWithdraw"
-			| "hasWithdraw"
-			| "rune"
-		> = {},
+		intentionOptions: Pick<TransactionIntention, "deposit" | "withdraw"> = {},
 	) {
 		if (!this.config) {
 			throw new Error("MidlHardhatEnvironment not initialized");
@@ -164,13 +203,12 @@ export class MidlHardhatEnvironment {
 			bytecode: bytecode as `0x${string}`,
 		});
 
-		await addTxIntention(this.config, this.store, {
+		const intention = await addTxIntention(this.config, {
 			evmTransaction: {
 				type: "btc",
-				chainId: 777,
+				chainId: this.walletClient?.chain?.id,
 				data: deployData,
 				gas: options?.gas,
-				gasPrice: options?.gasPrice,
 				to: options?.to,
 				value: options?.value,
 				nonce: options?.nonce,
@@ -180,6 +218,10 @@ export class MidlHardhatEnvironment {
 			},
 			...intentionOptions,
 		});
+
+		this.store.setState((state) => ({
+			intentions: [...state.intentions, intention],
+		}));
 	}
 
 	public async getDeployment(name: string) {
@@ -209,9 +251,10 @@ export class MidlHardhatEnvironment {
 		methodName: string,
 		options: Pick<
 			TransactionSerializableBTC,
-			"to" | "value" | "gasPrice" | "gas" | "nonce"
+			"to" | "value" | "gas" | "nonce"
 			// biome-ignore lint/suspicious/noExplicitAny: Allow any args
 		> & { args: any },
+		intentionOptions: Pick<TransactionIntention, "deposit" | "withdraw"> = {},
 	) {
 		if (!this.config) {
 			throw new Error("MidlHardhatEnvironment not initialized");
@@ -237,42 +280,35 @@ export class MidlHardhatEnvironment {
 			functionName: methodName,
 		});
 
-		await addTxIntention(this.config, this.store, {
-			hasDeposit: Boolean(options.value && options.value > 0n),
+		const intention = await addTxIntention(this.config, {
 			evmTransaction: {
 				type: "btc",
-				chainId: 777,
+				chainId: this.walletClient?.chain?.id,
 				data,
 				to: options.to ?? (address as Address),
 				value: options.value,
 				nonce: options.nonce,
-				gasPrice: options.gasPrice,
 				gas: options.gas,
 			},
-			value: options.value,
+			...intentionOptions,
 		});
+
+		this.store.setState((state) => ({
+			intentions: [...state.intentions, intention],
+		}));
 	}
 
 	public async execute({
 		stateOverride,
-		feeRateMultiplier = 4,
-		skipEstimateGasMulti = false,
-		shouldComplete = false,
-		assetsToWithdraw,
+		feeRate,
+		skipEstimateGas = false,
+		withdraw,
 	}: {
 		stateOverride?: StateOverride;
-		feeRateMultiplier?: number;
-		skipEstimateGasMulti?: boolean;
-	} & (
-		| {
-				shouldComplete?: false;
-				assetsToWithdraw?: never;
-		  }
-		| {
-				shouldComplete: true;
-				assetsToWithdraw?: [Address] | [Address, Address];
-		  }
-	) = {}) {
+		feeRate?: number;
+		skipEstimateGas?: boolean;
+		withdraw?: Withdrawal;
+	} = {}) {
 		if (!this.config) {
 			throw new Error("MidlHardhatEnvironment not initialized");
 		}
@@ -286,23 +322,23 @@ export class MidlHardhatEnvironment {
 		}
 
 		const walletClient = await this.getWalletClient();
-		const publicKey = await getPublicKeyForAccount(this.config);
+
+		if (typeof withdraw !== "undefined") {
+			const intention = await addCompleteTxIntention(this.config, withdraw);
+
+			this.store.setState((state) => ({
+				intentions: [...state.intentions, intention],
+			}));
+		}
 
 		const tx = await finalizeBTCTransaction(
 			this.config,
-			this.store,
+			this.store.getState().intentions ?? [],
 			walletClient,
 			{
-				stateOverride: stateOverride ?? [
-					{
-						address: getEVMAddress(publicKey),
-						balance: intentions.reduce((acc, it) => acc + (it.value ?? 0n), 0n),
-					},
-				],
-				shouldComplete,
-				feeRateMultiplier,
-				skipEstimateGasMulti,
-				assetsToWithdraw,
+				stateOverride,
+				feeRate,
+				skipEstimateGas,
 			},
 		);
 
@@ -311,27 +347,28 @@ export class MidlHardhatEnvironment {
 		// biome-ignore lint/style/noNonNullAssertion: reload intentions in case of shouldComplete equal true
 		intentions = this.store.getState().intentions!;
 
+		const txs: `0x${string}`[] = [];
+
 		for (const intention of intentions) {
 			const signed = await signIntention(
 				this.config,
-				this.store,
 				walletClient,
 				intention,
+				this.store.getState().intentions ?? [],
 				{
-					gasPrice: 1000n,
 					txId: tx.tx.id,
 					protocol: SignMessageProtocol.Bip322,
 				},
 			);
 
-			const txId = await walletClient.sendRawTransaction({
-				serializedTransaction: signed,
-			});
+			const txId = keccak256(signed);
+
+			txs.push(signed);
 
 			if (intention.meta?.contractName) {
 				const contractAddress = getContractAddress({
-					from: getEVMAddress(publicKey),
-					nonce: BigInt(intention.evmTransaction.nonce ?? 0),
+					from: this.getEVMAddress(),
+					nonce: BigInt(intention.evmTransaction?.nonce ?? 0),
 				});
 
 				this.saveDeployment(intention.meta.contractName, {
@@ -350,8 +387,19 @@ export class MidlHardhatEnvironment {
 			console.log("Transaction sent", txId);
 		}
 
-		const txId = await broadcastTransaction(this.config, tx.tx.hex);
-		await waitForTransaction(this.config, txId, this.btcConfirmationsRequired);
+		await sendBTCTransactions(walletClient, {
+			serializedTransactions: txs,
+			btcTransaction: tx.tx.hex,
+		});
+
+		console.log("BTC transaction sent", tx.tx.id);
+
+		await waitForTransaction(
+			this.config,
+			tx.tx.id,
+			this.btcConfirmationsRequired,
+		);
+
 		await Promise.all(
 			evmTXHashes.map((hash) =>
 				waitForTransactionReceipt(walletClient, {
@@ -361,18 +409,19 @@ export class MidlHardhatEnvironment {
 			),
 		);
 
-		console.log("Transaction confirmed", txId);
+		console.log("Transaction confirmed", tx.tx.id);
 
-		clearTxIntentions(this.store);
+		this.store.setState((state) => ({
+			...state,
+			intentions: [],
+		}));
 	}
 
 	public async getWalletClient(): Promise<WalletClient> {
 		if (!this.walletClient) {
-			const chain = getEVMFromBitcoinNetwork(this.bitcoinNetwork);
-
 			this.walletClient = createWalletClient({
-				chain: chain as Chain,
-				transport: http(chain.rpcUrls.default.http[0]),
+				chain: this.chain as ViemChain,
+				transport: http(this.chain.rpcUrls.default.http[0]),
 			});
 		}
 
@@ -386,8 +435,7 @@ export class MidlHardhatEnvironment {
 			txId,
 			address,
 		}: {
-			// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-			abi: any[];
+			abi: Abi;
 			address: Address;
 			txId?: string;
 		},
@@ -400,6 +448,16 @@ export class MidlHardhatEnvironment {
 				abi: abi,
 			}),
 		);
+	}
+
+	public async deleteDeployment(name: string) {
+		const filePath = path.join(this.deploymentsPath, `${name}.json`);
+
+		if (!fs.existsSync(filePath)) {
+			throw new Error(`No deployment file found for "${name}" at ${filePath}`);
+		}
+
+		fs.unlinkSync(filePath);
 	}
 
 	private async saveDeployment(
@@ -421,18 +479,23 @@ export class MidlHardhatEnvironment {
 		});
 	}
 
-	/**
-	 * @deprecated Use `wallet.getEVMAddress()` instead
-	 */
-	public getAddress() {
-		console.warn(
-			"getAddress is deprecated. Use wallet.getEVMAddress() instead",
-		);
-
-		return this.wallet.getEVMAddress(this.accountIndex);
-	}
-
 	public getConfig() {
 		return this.config;
+	}
+
+	public getEVMAddress() {
+		if (!this.config) {
+			throw new Error("MidlHardhatEnvironment not initialized");
+		}
+
+		return getEVMAddress(this.getAccount(), this.bitcoinNetwork);
+	}
+
+	public getAccount() {
+		if (!this.config) {
+			throw new Error("MidlHardhatEnvironment not initialized");
+		}
+
+		return getDefaultAccount(this.config);
 	}
 }

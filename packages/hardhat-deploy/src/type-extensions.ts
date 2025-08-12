@@ -1,4 +1,8 @@
-import type { BitcoinNetwork } from "@midl-xyz/midl-js-core";
+import type {
+	AbstractProvider,
+	AddressPurpose,
+	BitcoinNetwork,
+} from "@midl-xyz/midl-js-core";
 import "hardhat/types/config";
 import "hardhat/types/runtime";
 import type { MidlHardhatEnvironment } from "~/MidlHardhatEnvironment";
@@ -6,11 +10,19 @@ import type { MidlHardhatEnvironment } from "~/MidlHardhatEnvironment";
 declare module "hardhat/types/config" {
 	export interface HardhatUserConfig {
 		midl: {
-			mnemonic: string;
 			path?: string;
-			confirmationsRequired?: number;
-			btcConfirmationsRequired?: number;
-			network?: string | BitcoinNetwork;
+			networks: Record<
+				string | "default",
+				{
+					mnemonic: string;
+					confirmationsRequired?: number;
+					btcConfirmationsRequired?: number;
+					network?: string | BitcoinNetwork;
+					hardhatNetwork?: string;
+					provider?: AbstractProvider;
+					defaultPurpose?: AddressPurpose;
+				}
+			>;
 		};
 	}
 }

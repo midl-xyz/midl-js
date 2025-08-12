@@ -1,5 +1,424 @@
 # @midl-xyz/midl-js-executor
 
+## 2.0.0
+
+### Minor Changes
+
+- a52922b: feat: add custom network support
+
+### Patch Changes
+
+- dab7c62: fix: select txs without gas only
+- 5caf7c1: fix: evm address account getter
+- f9479b5: fix(node): signPSBT p2wpkh
+- 301dddc: feat(satoshi-kit): expose account and network to verify and sign message
+  feat(executor): getEVMAddress is now possible to use w/o midl config
+- 0555150: feat: add default state override
+- 19599b9: fix(executor): remove tx intention on complete
+- fac919a: fix: gas price
+- 220e274: feat(hardhat-deploy): segwit
+- 8e39984: feat: re-estimate with state override
+- 9200384: feat(executor): update tx costs
+- 8e2a038: chore: pre-release clean up
+- cff9ac6: fix(executor): unhandled operation scriptSize max
+- c6eb2b7: feat: fix gas price to 1000n
+- 5d1e6be: feat: update connectors
+- 9519964: fix: complete tx bytes32
+- 15f2a89: feat(executor): provide built-in wagmi
+- 6f5743d: feat: add complete tx intetnion
+- e838dfc: fix(executor): bip322 extract evm signature
+- f9f6d30: feat: add p2sh-p2wpkh support
+- 95fc514: fix: etna to regtest
+- a6279f0: fix: separate deposits/withdrawls
+- f9433a4: fix: estiamte gas total cost
+- 5197f61: feat(core): define default account
+- ccc957e: feat: use btc fee rate from midl
+- 2d41af6: fix: use sign intention
+- bc97fb9: feat: upgrade midl contracts
+- 7a859cc: fix: gas re-estimate
+- 9299b45: fix: gas re-estimate with completeTx
+- c7e2f56: feat(executor): declarative api
+- 5ae3e60: feat: add signet support
+- ecc0bf0: fix(executor): p2wpkh receiver btc
+- c7b98b9: fix: zero address in complete tx intention util
+- d15fa7c: feat: set complete tx gas cost
+- d63953b: fix(executor): btc fee rate response type
+- b21a677: feat: add multicall3
+- 2b4b7fa: fix(executor): withdrawals overlap deposits
+- 173e73f: fix: 0x0 padhex
+- 2f9e940: feat: pass satoshis to tx
+- df23720: feat: update executor address
+- 8bf4bde: fix(executor): evm address p2wpkh
+- a6d1675: fix(executor): fee rate multiplier
+- Updated dependencies [8d84ec9]
+- Updated dependencies [5caf7c1]
+- Updated dependencies [f9479b5]
+- Updated dependencies [220e274]
+- Updated dependencies [4fd01b4]
+- Updated dependencies [8e2a038]
+- Updated dependencies [d8e16c9]
+- Updated dependencies [fcccf25]
+- Updated dependencies [b05d2c8]
+- Updated dependencies [5d1e6be]
+- Updated dependencies [a52922b]
+- Updated dependencies [aa819b9]
+- Updated dependencies [5197f61]
+- Updated dependencies [5ae3e60]
+- Updated dependencies [4835a25]
+- Updated dependencies [8935124]
+- Updated dependencies [2b4b7fa]
+- Updated dependencies [417f76e]
+- Updated dependencies [2f9e940]
+  - @midl-xyz/midl-js-core@2.0.0
+  - @midl-xyz/logger@1.0.1
+
+## 2.0.0-next.66
+
+### Patch Changes
+
+- fix: gas re-estimate with completeTx
+
+## 2.0.0-next.65
+
+### Patch Changes
+
+- fix(executor): withdrawals overlap deposits
+- Updated dependencies
+  - @midl-xyz/midl-js-core@2.0.0-next.65
+
+## 2.0.0-next.64
+
+### Patch Changes
+
+- fix: separate deposits/withdrawls
+
+## 2.0.0-next.60
+
+### Patch Changes
+
+- fix(executor): unhandled operation scriptSize max
+
+## 2.0.0-next.59
+
+### Patch Changes
+
+- fix(node): signPSBT p2wpkh
+- Updated dependencies
+  - @midl-xyz/midl-js-core@2.0.0-next.59
+
+## 2.0.0-next.58
+
+### Patch Changes
+
+- feat(hardhat-deploy): segwit
+- Updated dependencies
+  - @midl-xyz/midl-js-core@2.0.0-next.58
+
+## 2.0.0-next.54
+
+### Patch Changes
+
+- chore: pre-release clean up
+- Updated dependencies
+  - @midl-xyz/midl-js-core@2.0.0-next.54
+
+## 2.0.0-next.50
+
+### Patch Changes
+
+- fix: gas re-estimate
+
+## 2.0.0-next.48
+
+### Patch Changes
+
+- feat(satoshi-kit): expose account and network to verify and sign message
+  feat(executor): getEVMAddress is now possible to use w/o midl config
+
+## 2.0.0-next.47
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-core@2.0.0-next.47
+
+## 2.0.0-next.46
+
+### Patch Changes
+
+- Updated dependencies [c5d7f73]
+  - @midl-xyz/midl-js-core@2.0.0-next.46
+
+## 2.0.0-next.45
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-core@2.0.0-next.45
+
+## 2.0.0-next.44
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-core@2.0.0-next.44
+
+## 2.0.0-next.43
+
+### Patch Changes
+
+- d2518df: feat: add signet support
+- Updated dependencies [d2518df]
+  - @midl-xyz/midl-js-core@2.0.0-next.43
+
+## 2.0.0-next.42
+
+### Patch Changes
+
+- 6979a7f: fix(executor): btc fee rate response type
+
+## 2.0.0-next.40
+
+### Patch Changes
+
+- fix: select txs without gas only
+
+## 2.0.0-next.39
+
+### Patch Changes
+
+- feat: set complete tx gas cost
+
+## 2.0.0-next.38
+
+### Patch Changes
+
+- fix: estiamte gas total cost
+
+## 2.0.0-next.37
+
+### Patch Changes
+
+- feat: re-estimate with state override
+
+## 2.0.0-next.36
+
+### Patch Changes
+
+- fix: use sign intention
+
+## 2.0.0-next.34
+
+### Patch Changes
+
+- feat: add default state override
+
+## 2.0.0-next.33
+
+### Patch Changes
+
+- fix: gas price
+
+## 2.0.0-next.32
+
+### Patch Changes
+
+- feat: pass satoshis to tx
+- Updated dependencies
+  - @midl-xyz/midl-js-core@2.0.0-next.32
+
+## 2.0.0-next.31
+
+### Patch Changes
+
+- feat: fix gas price to 1000n
+
+## 2.0.0-next.30
+
+### Patch Changes
+
+- 19599b9: fix(executor): remove tx intention on complete
+
+## 2.0.0-next.29
+
+### Patch Changes
+
+- feat(executor): declarative api
+
+## 2.0.0-next.28
+
+### Patch Changes
+
+- Updated dependencies [75d24ae]
+  - @midl-xyz/midl-js-core@2.0.0-next.28
+  - @midl-xyz/midl-js-react@2.0.0-next.28
+
+## 2.0.0-next.27
+
+### Patch Changes
+
+- 9200384: feat(executor): update tx costs
+- Updated dependencies
+  - @midl-xyz/midl-js-core@2.0.0-next.27
+  - @midl-xyz/midl-js-react@2.0.0-next.27
+
+## 2.0.0-next.26
+
+### Patch Changes
+
+- ccc957e: feat: use btc fee rate from midl
+
+## 2.0.0-next.25
+
+### Patch Changes
+
+- fix(executor): fee rate multiplier
+
+## 2.0.0-next.24
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-react@2.0.0-next.24
+
+## 2.0.0-next.23
+
+### Patch Changes
+
+- 5197f61: feat(core): define default account
+- Updated dependencies [5197f61]
+  - @midl-xyz/midl-js-react@2.0.0-next.23
+  - @midl-xyz/midl-js-core@2.0.0-next.23
+
+## 2.0.0-next.22
+
+### Patch Changes
+
+- fix: etna to regtest
+
+## 2.0.0-next.19
+
+### Patch Changes
+
+- feat: update executor address
+
+## 2.0.0-next.18
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-core@2.0.0-next.18
+  - @midl-xyz/midl-js-react@2.0.0-next.18
+
+## 2.0.0-next.17
+
+### Patch Changes
+
+- feat: add multicall3
+
+## 2.0.0-next.16
+
+### Patch Changes
+
+- feat: add p2sh-p2wpkh support
+
+## 2.0.0-next.15
+
+### Patch Changes
+
+- fix: evm address account getter
+- Updated dependencies
+  - @midl-xyz/midl-js-core@2.0.0-next.15
+  - @midl-xyz/midl-js-react@2.0.0-next.15
+
+## 2.0.0-next.14
+
+### Patch Changes
+
+- f18068b: fix(executor): evm address p2wpkh
+
+## 2.0.0-next.13
+
+### Patch Changes
+
+- feat: upgrade midl contracts
+
+## 2.0.0-next.12
+
+### Patch Changes
+
+- 5d1e6be: feat: update connectors
+- 15f2a89: feat(executor): provide built-in wagmi
+- Updated dependencies [5d1e6be]
+  - @midl-xyz/midl-js-react@2.0.0-next.12
+  - @midl-xyz/midl-js-core@2.0.0-next.12
+
+## 2.0.0-next.11
+
+### Patch Changes
+
+- fix(executor): bip322 extract evm signature
+
+## 2.0.0-next.10
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-core@2.0.0-next.10
+  - @midl-xyz/midl-js-react@2.0.0-next.10
+
+## 2.0.0-next.9
+
+### Patch Changes
+
+- fix: 0x0 padhex
+
+## 2.0.0-next.8
+
+### Patch Changes
+
+- fix: complete tx bytes32
+
+## 2.0.0-next.7
+
+### Patch Changes
+
+- fix: zero address in complete tx intention util
+
+## 2.0.0-next.6
+
+### Patch Changes
+
+- 0df7eef: fix(executor): p2wpkh receiver btc
+
+## 2.0.0-next.4
+
+### Patch Changes
+
+- 6f5743d: feat: add complete tx intetnion
+
+## 2.0.0-next.2
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-core@2.0.0-next.2
+  - @midl-xyz/midl-js-react@2.0.0-next.2
+
+## 2.0.0-next.0
+
+### Minor Changes
+
+- feat: add custom network support
+
+### Patch Changes
+
+- 46ce271: test: add coverage
+- Updated dependencies [46ce271]
+- Updated dependencies
+  - @midl-xyz/midl-js-core@2.0.0-next.0
+  - @midl-xyz/midl-js-react@2.0.0-next.0
+
 ## 1.0.22
 
 ### Patch Changes

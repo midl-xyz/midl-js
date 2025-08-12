@@ -8,7 +8,7 @@ import { css } from "styled-system/css";
 import { Stack } from "styled-system/jsx";
 import { useSatoshiKit } from "~/app";
 import { useClipboard } from "~/features/clipboard";
-import { shortenAddress, useToaster } from "~/shared";
+import { shortenAddress } from "~/shared";
 import { Button } from "~/shared/ui/button";
 import { Dialog } from "~/shared/ui/dialog";
 import { IconButton } from "~/shared/ui/icon-button";
@@ -31,17 +31,10 @@ export const AccountDialog = ({ open, onClose }: AccountDialogProps) => {
 		},
 	});
 
-	const toaster = useToaster();
-
 	const [, copyToClipboard] = useClipboard();
 
 	const onCopyToClipboard = (address: string) => {
 		copyToClipboard(address);
-		toaster.info({
-			title: "Copied to clipboard",
-			description: "Address copied to clipboard",
-			closable: true,
-		});
 	};
 
 	const onDisconnect = () => {
@@ -67,7 +60,7 @@ export const AccountDialog = ({ open, onClose }: AccountDialogProps) => {
 					<Dialog.Content>
 						<Stack gap="8" p="6">
 							<Stack gap="1">
-								<Dialog.Title>Connected</Dialog.Title>
+								<Dialog.Title textStyle="subtitle">Connected</Dialog.Title>
 							</Stack>
 							<Stack
 								gap={6}
@@ -93,6 +86,7 @@ export const AccountDialog = ({ open, onClose }: AccountDialogProps) => {
 													className={css({
 														fontSize: "xs",
 														color: "fg.subtle",
+														textStyle: "xs",
 													})}
 												>
 													{getPurpose(it.purpose)}
@@ -100,6 +94,7 @@ export const AccountDialog = ({ open, onClose }: AccountDialogProps) => {
 												<div
 													className={css({
 														mt: "-0.25em",
+														textStyle: "md",
 													})}
 												>
 													{shortenAddress(it.address)}

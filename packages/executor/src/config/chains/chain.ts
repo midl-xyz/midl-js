@@ -11,12 +11,12 @@ export type Chain = {
 			http: string[];
 		};
 	};
-	nativeCurrency?: {
+	nativeCurrency: {
 		name: string;
 		symbol: string;
 		decimals: number;
 	};
-	name?: string;
+	name: string;
 	blockExplorers?: {
 		default: {
 			name: string;
@@ -28,4 +28,10 @@ export type Chain = {
 		};
 	};
 	testnet?: boolean;
+	contracts?: {
+		multicall3?: {
+			address: `0x${string}`;
+			blockCreated?: number;
+		};
+	};
 };

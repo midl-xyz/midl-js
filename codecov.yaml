@@ -5,8 +5,12 @@ coverage:
         target: auto
         threshold: 0%
         informational: true
+        paths:
+          - packages/
     patch:
       default:
         target: auto
         threshold: 0%
         informational: true
+        paths:
+          - packages/

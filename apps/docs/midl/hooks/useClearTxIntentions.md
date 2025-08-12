@@ -1,6 +1,6 @@
 # useClearTxIntentions
 
-Clear all transaction intentions from the store
+Clears all transaction intentions from the store.
 
 ## Import
 
@@ -11,11 +11,18 @@ import { useClearTxIntentions } from "@midl-xyz/midl-js-executor-react";
 ## Example
 
 ```ts
-const clearTxIntentions = useClearTxIntentions();
-
-clearTxIntentions();
+const clearIntentions = useClearTxIntentions();
+clearIntentions();
 ```
+
+## Parameters
+
+| Name    | Type                        | Description                           |
+| ------- | --------------------------- | ------------------------------------- |
+| `store` | MidlContextStore (optional) | Custom store to override the default. |
 
 ## Returns
 
-`() => void` - A function to clear all transaction intentions from the store
+| Name              | Type     | Description                                   |
+| ----------------- | -------- | --------------------------------------------- |
+| `clearIntentions` | function | Function to clear all transaction intentions. |

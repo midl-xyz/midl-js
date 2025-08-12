@@ -1,13 +1,14 @@
 import { createJSONStorage, persist } from "zustand/middleware";
 import { createStore } from "zustand/vanilla";
-import type { Account, Connector } from "~/connectors";
+import type { Account, Connector, ConnectorWithMetadata } from "~/connectors";
+import type { AddressPurpose } from "~/constants";
 import { type AbstractProvider, MempoolSpaceProvider } from "~/providers";
 
 export type BitcoinNetwork = {
 	/**
 	 * The id of the network
 	 */
-	id: "mainnet" | "testnet" | "testnet4" | "regtest";
+	id: "mainnet" | "testnet" | "testnet4" | "regtest" | "signet";
 
 	/**
 	 * Bitcoin API used to generate addresses and sign transactions
@@ -27,7 +28,7 @@ type ConfigParams = {
 	/**
 	 * The connectors to use
 	 */
-	connectors: Connector[];
+	connectors: ConnectorWithMetadata[];
 	/**
 	 * If true, the config will persist in local storage
 	 */
@@ -43,6 +44,11 @@ type ConfigParams = {
 	 * @default MempoolSpaceProvider
 	 */
 	provider?: AbstractProvider;
+
+	/**
+	 * The default address to use for signing transactions, etc.
+	 */
+	defaultPurpose?: AddressPurpose;
 };
 
 export type ConfigState = {
@@ -50,8 +56,9 @@ export type ConfigState = {
 	readonly networks: BitcoinNetwork[];
 	readonly connection?: Connector;
 	readonly accounts?: Account[];
-	readonly connectors: Connector[];
+	readonly connectors: ConnectorWithMetadata[];
 	readonly provider: AbstractProvider;
+	readonly defaultPurpose?: AddressPurpose;
 };
 
 export type Config = ReturnType<typeof createConfig>;
@@ -118,6 +125,10 @@ export const createConfig = (params: ConfigParams) => {
 			},
 		),
 	);
+
+	if (params.defaultPurpose) {
+		configStore.setState({ defaultPurpose: params.defaultPurpose });
+	}
 
 	return configStore;
 };

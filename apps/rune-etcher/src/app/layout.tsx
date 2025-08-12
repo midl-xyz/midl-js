@@ -1,5 +1,4 @@
 import { MainMenu } from "@/components/main-menu";
-import { Toaster } from "@/components/ui/toaster";
 import { Web3Provider } from "@/components/web3-provider/Web3Provider";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
@@ -46,7 +45,6 @@ export default function RootLayout({
 						<MainMenu />
 						{children}
 					</div>
-					<Toaster />
 				</Web3Provider>
 			</body>
 		</html>

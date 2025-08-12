@@ -1,28 +1,25 @@
-import type { Config, SignMessageProtocol } from "@midl-xyz/midl-js-core";
-import type { MidlContextState } from "@midl-xyz/midl-js-react";
-import { isHex, type Client } from "viem";
+import {
+	type Config,
+	type SignMessageProtocol,
+	getDefaultAccount,
+} from "@midl-xyz/midl-js-core";
+import { type Client, isHex } from "viem";
 import { getTransactionCount } from "viem/actions";
-import type { StoreApi } from "zustand";
 import { getPublicKey } from "~/actions/getPublicKey";
-import { getPublicKeyForAccount } from "~/actions/getPublicKeyForAccount";
 import { signTransaction } from "~/actions/signTransaction";
+import { GAS_PRICE } from "~/config";
 import type { TransactionIntention } from "~/types/intention";
 import { getBTCAddressByte, getEVMAddress } from "~/utils";
 
 type SignIntentionOptions = {
 	/**
-	 * Public key of the account to use for signing
+	 * BTC address used to sign the transactions
 	 */
-	publicKey?: string;
+	from?: string;
 	/**
 	 * Next nonce of registered in EVM network, nonce is incremented by 1 for each transaction intention
 	 */
 	nonce?: number;
-
-	/**
-	 * Gas price for EVM transactions
-	 */
-	gasPrice?: bigint;
 
 	/**
 	 * Transaction hash of the BTC transaction
@@ -35,49 +32,53 @@ type SignIntentionOptions = {
 };
 
 /**
- * Signs the intention with the given options. The intentions is signed as generic Bitcoin message.
+ * Signs the intention with the given options. The intention is signed as a generic Bitcoin message.
  *
- * @param config The configuration object
- * @param store The store object
- * @param client EVM client or provider
- * @param intention The intention to sign
- * @param options The options for signing
- * @returns
+ * @param config - The configuration object.
+ * @param client - EVM client or provider.
+ * @param intention - The intention to sign.
+ * @param intentions - The list of intentions to sign (used for nonce calculation).
+ * @param options - The options for signing:
+ *   - publicKey: Public key of the account to use for signing.
+ *   - nonce: Next nonce registered in EVM network (optional).
+ *   - txId: Transaction hash of the BTC transaction.
+ *   - protocol: Protocol for signing the message (optional).
+ * @returns The signed EVM transaction object.
+ 
+ * @example
+ * const signed = await signIntention(config, client, intention, intentions, { txId });
  */
 export const signIntention = async (
 	config: Config,
-	store: StoreApi<MidlContextState>,
 	client: Client,
 	intention: TransactionIntention,
+	intentions: TransactionIntention[],
 	options: SignIntentionOptions,
 ) => {
-	const { network, accounts } = config.getState();
+	const { network } = config.getState();
 
 	if (!network) {
 		throw new Error("No network set");
 	}
 
-	const publicKey = await getPublicKeyForAccount(config, options.publicKey);
-
-	const account = accounts?.find(
-		async (it) =>
-			(await getPublicKeyForAccount(config, it.publicKey)) ===
-			options.publicKey,
+	const account = getDefaultAccount(
+		config,
+		options.from ? (it) => it.address === options.from : undefined,
 	);
 
-	if (!account) {
+	const publicKey = getPublicKey(account, network);
+
+	if (!account || !publicKey) {
 		throw new Error("No public key set");
 	}
 
-	const evmAddress = getEVMAddress(publicKey);
+	const evmAddress = getEVMAddress(account, network);
 
 	const nonce =
 		options.nonce ??
 		(await getTransactionCount(client, {
 			address: evmAddress,
 		}));
-
-	const intentions = store.getState().intentions;
 
 	if (!intentions) {
 		throw new Error("No intentions found");
@@ -87,15 +88,20 @@ export const signIntention = async (
 		throw new Error("No EVM transaction set");
 	}
 
+	if (!client.chain) {
+		throw new Error("No EVM chain set");
+	}
+
 	intention.evmTransaction = {
 		...intention.evmTransaction,
-
+		chainId: client.chain.id,
+		from: intention.evmTransaction.from ?? evmAddress,
 		nonce:
 			nonce +
 			intentions
 				.filter((it) => Boolean(it.evmTransaction))
 				.findIndex((it) => it === intention),
-		gasPrice: options.gasPrice,
+		gasPrice: GAS_PRICE,
 		publicKey,
 		btcAddressByte: getBTCAddressByte(account),
 		btcTxHash: isHex(options.txId, { strict: false })
@@ -110,22 +116,9 @@ export const signIntention = async (
 		{
 			nonce,
 			protocol: options.protocol,
-			publicKey: options.publicKey,
+			from: options.from,
 		},
 	);
-
-	store.setState({
-		intentions: intentions.map((it) => {
-			if (it === intention) {
-				return {
-					...it,
-					signedEvmTransaction: signed,
-				};
-			}
-
-			return it;
-		}),
-	});
 
 	return signed;
 };

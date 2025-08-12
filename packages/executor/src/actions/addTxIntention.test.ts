@@ -2,45 +2,41 @@ import {
 	AddressPurpose,
 	connect,
 	createConfig,
-	KeyPairConnector,
+	getDefaultAccount,
 	regtest,
 } from "@midl-xyz/midl-js-core";
-import type { MidlContextState } from "@midl-xyz/midl-js-react";
-import * as bitcoin from "bitcoinjs-lib";
-import { zeroAddress } from "viem";
+import { keyPairConnector } from "@midl-xyz/midl-js-node";
 import { beforeAll, describe, expect, it } from "vitest";
-import { createStore } from "zustand/vanilla";
-import { getKeyPair } from "~/__tests__/keyPair";
+import { __TEST__MNEMONIC__ } from "~/__tests__/keyPair";
 import { addTxIntention } from "~/actions/addTxIntention";
-import { midlRegtest } from "~/config";
-import type { TransactionIntention } from "~/types/intention";
+import { getEVMAddress } from "~/utils";
 
 describe("executor | actions | addTxIntention", () => {
 	const config = createConfig({
 		networks: [regtest],
-		connectors: [new KeyPairConnector(getKeyPair(bitcoin.networks.regtest))],
+		connectors: [
+			keyPairConnector({
+				mnemonic: __TEST__MNEMONIC__,
+			}),
+		],
 	});
-
-	const store = createStore<MidlContextState>()(() => ({
-		intentions: [],
-		wallet: {},
-	}));
 
 	beforeAll(async () => {
 		await connect(config, { purposes: [AddressPurpose.Payment] });
 	});
 
 	it("adds a transaction intention", async () => {
-		const txIntention: TransactionIntention = {
+		const assignedTxIntention = await addTxIntention(config, {
 			evmTransaction: {
-				from: zeroAddress,
 				value: 0n,
-				chainId: midlRegtest.id,
 			},
-		};
+		});
 
-		await addTxIntention(config, store, txIntention);
+		const evmAddress = getEVMAddress(
+			getDefaultAccount(config),
+			config.getState().network,
+		);
 
-		expect(store.getState().intentions).toEqual([txIntention]);
+		expect(assignedTxIntention.evmTransaction?.from).toEqual(evmAddress);
 	});
 });

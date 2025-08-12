@@ -7,15 +7,22 @@ import {
 	signMessage,
 } from "@midl-xyz/midl-js-core";
 import { schnorr } from "@noble/secp256k1";
-import { OutScript, Transaction, p2sh, p2wpkh } from "@scure/btc-signer";
-import { BIP322, Verifier } from "bip322-js";
+import { Verifier } from "bip322-js";
 import { magicHash } from "bitcoinjs-message";
 import { publicKeyConvert } from "secp256k1";
-import { hexToBigInt, keccak256, recoverPublicKey } from "viem";
+import {
+	getAddress,
+	hexToBigInt,
+	keccak256,
+	recoverAddress,
+	recoverPublicKey,
+} from "viem";
 import { afterEach, describe, expect, it } from "vitest";
 import { midlConfig, midlConfigP2SH } from "~/__tests__/midlConfig";
-import { getPublicKeyForAccount } from "~/actions";
+import { getPublicKey } from "~/actions";
 import { extractEVMSignature } from "~/utils/extractEVMSignature";
+import { getBIP322Hash } from "~/utils/getBIP322Hash";
+import { getEVMAddress } from "~/utils/getEVMAddress";
 
 describe("extractEVMSignature", () => {
 	afterEach(async () => {
@@ -38,10 +45,11 @@ describe("extractEVMSignature", () => {
 			address: account.address,
 		});
 
-		const { r, s, v } = extractEVMSignature(
+		const { r, s, v } = await extractEVMSignature(
+			message,
 			signature,
 			protocol,
-			account.addressType,
+			account,
 		);
 
 		const recovered = await recoverPublicKey({
@@ -65,8 +73,12 @@ describe("extractEVMSignature", () => {
 			purposes: [AddressPurpose.Payment],
 		});
 
-		const account = await getDefaultAccount(midlConfigP2SH);
-		const pk = await getPublicKeyForAccount(midlConfigP2SH);
+		const account = getDefaultAccount(midlConfigP2SH);
+		const pk = getPublicKey(account, midlConfigP2SH.getState().network);
+
+		if (!pk) {
+			throw new Error("No public key found for account");
+		}
 
 		const message = keccak256(new TextEncoder().encode("test"));
 
@@ -82,14 +94,15 @@ describe("extractEVMSignature", () => {
 			signature,
 		);
 
-		const { r, s, v } = extractEVMSignature(
+		const { r, s, v } = await extractEVMSignature(
+			message,
 			signature,
 			protocol,
-			account.addressType,
+			account,
 		);
 
 		const recovered = await recoverPublicKey({
-			hash: getBIP322HashP2SHP2WPKH(message, account.publicKey),
+			hash: getBIP322Hash(message, account.addressType, account.publicKey),
 			signature: {
 				r,
 				s,
@@ -97,6 +110,7 @@ describe("extractEVMSignature", () => {
 			},
 		});
 
+		expect(isValid).toBeTruthy();
 		expect(
 			Buffer.from(
 				publicKeyConvert(Buffer.from(recovered.slice(2), "hex"), true),
@@ -111,7 +125,7 @@ describe("extractEVMSignature", () => {
 			purposes: [AddressPurpose.Payment],
 		});
 
-		const account = await getDefaultAccount(midlConfig);
+		const account = getDefaultAccount(midlConfig);
 
 		const message = keccak256(new TextEncoder().encode("test"));
 
@@ -121,10 +135,11 @@ describe("extractEVMSignature", () => {
 			address: account.address,
 		});
 
-		const { r, s, v } = extractEVMSignature(
+		const { r, s, v } = await extractEVMSignature(
+			message,
 			signature,
 			protocol,
-			account.addressType,
+			account,
 		);
 
 		const recovered = await recoverPublicKey({
@@ -148,7 +163,7 @@ describe("extractEVMSignature", () => {
 			purposes: [AddressPurpose.Payment],
 		});
 
-		const account = await getDefaultAccount(midlConfig);
+		const account = getDefaultAccount(midlConfig);
 
 		const message = keccak256(new TextEncoder().encode("test"));
 
@@ -158,22 +173,44 @@ describe("extractEVMSignature", () => {
 			address: account.address,
 		});
 
-		const { r, s, v } = extractEVMSignature(
+		const network = midlConfig.getState().network;
+
+		const pk = getPublicKey(account, network);
+
+		if (!pk) {
+			throw new Error("No public key found for account");
+		}
+
+		const { r, s, v } = await extractEVMSignature(
+			message,
 			signature,
 			protocol,
-			account.addressType,
+			account,
 		);
 
-		const pk = await getPublicKeyForAccount(midlConfig);
-
 		const recovered = await recoverPublicKey({
-			hash: getBIP322HashP2WPKH(message, account.publicKey),
+			hash: getBIP322Hash(message, account.addressType, account.publicKey),
 			signature: {
 				r,
 				s,
 				v,
 			},
 		});
+
+		const hashedMessage = getBIP322Hash(
+			message,
+			account.addressType,
+			account.publicKey,
+		);
+
+		const recoveredAddress = await recoverAddress({
+			hash: hashedMessage,
+			signature: { r, s, v },
+		});
+
+		const hash = getEVMAddress(account, network);
+
+		expect(hash).toEqual(recoveredAddress);
 
 		expect(
 			Buffer.from(
@@ -199,97 +236,25 @@ describe("extractEVMSignature", () => {
 			address: account.address,
 		});
 
-		const { r, s } = extractEVMSignature(
+		const pk = getPublicKey(account, midlConfig.getState().network);
+
+		if (!pk) {
+			throw new Error("No public key found for account");
+		}
+
+		const { r, s } = await extractEVMSignature(
+			message,
 			signature,
 			protocol,
-			account.addressType,
+			account,
 		);
-
-		const pk = await getPublicKeyForAccount(midlConfig);
 
 		const valid = await schnorr.verify(
 			new schnorr.Signature(hexToBigInt(r), hexToBigInt(s)).toHex(),
-			getBIP322HashP2TR(message, pk.substring(2)),
+			getBIP322Hash(message, account.addressType, pk.substring(2)),
 			Buffer.from(pk.substring(2), "hex"),
 		);
 
 		expect(valid).toBeTruthy();
 	});
 });
-
-function getBIP322HashP2TR(message: string, publicKey: string) {
-	const scriptPubKey = new Uint8Array(34);
-	const publicKeyBuffer = Buffer.from(publicKey, "hex");
-
-	scriptPubKey[0] = 0x51;
-	scriptPubKey[1] = 0x20;
-	scriptPubKey.set(publicKeyBuffer, 2);
-
-	const toSpendTx = BIP322.buildToSpendTx(message, Buffer.from(scriptPubKey));
-
-	const toSignTx = BIP322.buildToSignTx(
-		toSpendTx.getId(),
-		Buffer.from(scriptPubKey),
-		false,
-		publicKeyBuffer,
-	);
-	const tx = Transaction.fromPSBT(toSignTx.toBuffer());
-
-	return tx.preimageWitnessV1(0, [scriptPubKey], 0, [0n]);
-}
-
-function getBIP322HashP2WPKH(message: string, publicKey: string) {
-	const publicKeyBuffer = Buffer.from(publicKey, "hex");
-
-	const scriptPubKey = p2wpkh(publicKeyBuffer).script;
-
-	const toSpendTx = BIP322.buildToSpendTx(message, Buffer.from(scriptPubKey));
-
-	const toSignTx = BIP322.buildToSignTx(
-		toSpendTx.getId(),
-		Buffer.from(scriptPubKey),
-	);
-	toSignTx.updateInput(0, {
-		sighashType: 1,
-	});
-
-	const tx = Transaction.fromPSBT(toSignTx.toBuffer());
-
-	const signingScript = OutScript.encode({
-		type: "pkh",
-		hash: scriptPubKey.slice(2),
-	});
-
-	return tx.preimageWitnessV0(0, signingScript, 1, 0n);
-}
-
-function getBIP322HashP2SHP2WPKH(message: string, publicKey: string) {
-	const publicKeyBuffer = Buffer.from(publicKey, "hex");
-
-	const p2wpkhResult = p2wpkh(publicKeyBuffer);
-
-	const redeemScript = p2wpkhResult.script;
-
-	const p2shResult = p2sh(p2wpkhResult);
-	if (!p2shResult.script) {
-		throw new Error("Failed to generate P2SH scriptPubKey");
-	}
-	const scriptPubKey = p2shResult.script;
-
-	const toSpendTx = BIP322.buildToSpendTx(message, Buffer.from(scriptPubKey));
-	const toSignTx = BIP322.buildToSignTx(
-		toSpendTx.getId(),
-		Buffer.from(scriptPubKey),
-	);
-
-	toSignTx.updateInput(0, { sighashType: 1 });
-
-	const tx = Transaction.fromPSBT(toSignTx.toBuffer());
-
-	const signingScript = OutScript.encode({
-		type: "pkh",
-		hash: redeemScript.slice(2),
-	});
-
-	return tx.preimageWitnessV0(0, signingScript, 1, 0n);
-}

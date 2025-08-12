@@ -1,4 +1,4 @@
-import { networks, payments, type Psbt } from "bitcoinjs-lib";
+import { type Psbt, networks, payments } from "bitcoinjs-lib";
 import type { UTXO } from "bitcoinselect";
 import type { Account } from "~/connectors";
 import { AddressType } from "~/constants";
@@ -29,7 +29,7 @@ export const makePSBTInputs = async (
 	const inputs: PSBTInput[] = [];
 
 	switch (account.addressType) {
-		case AddressType.P2SH: {
+		case AddressType.P2SH_P2WPKH: {
 			const { redeem } = payments.p2sh({
 				redeem: payments.p2wpkh({
 					pubkey: Buffer.from(account.publicKey, "hex"),

@@ -1,5 +1,554 @@
 # @midl-xyz/midl-js-executor-react
 
+## 2.0.0
+
+### Minor Changes
+
+- a52922b: feat: add custom network support
+
+### Patch Changes
+
+- 5caf7c1: fix: evm address account getter
+- f9479b5: fix(node): signPSBT p2wpkh
+- 301dddc: feat(satoshi-kit): expose account and network to verify and sign message
+  feat(executor): getEVMAddress is now possible to use w/o midl config
+- 19599b9: fix(executor): remove tx intention on complete
+- 220e274: feat(hardhat-deploy): segwit
+- db818a2: fix: useSignIntention export
+- ce533bc: fix(executor-react): re-export hooks
+- 8e2a038: chore: pre-release clean up
+- fcccf25: fix(core): extract default account
+- c6eb2b7: feat: fix gas price to 1000n
+- 5d1e6be: feat: update connectors
+- 15f2a89: feat(executor): provide built-in wagmi
+- 9de8e50: fix(executor-react): fix evm address no connection"
+- 6f5743d: feat: add complete tx intetnion
+- 13f7e4e: fix(executor-react): disable wagmi reconnect on mount
+- a6279f0: fix: separate deposits/withdrawls
+- 5197f61: feat(core): define default account
+- ccc957e: feat: use btc fee rate from midl
+- 2d41af6: fix: use sign intention
+- bc97fb9: feat: upgrade midl contracts
+- ac33f3b: feat(executor-react): add useSendBTCTransactions
+- c7e2f56: feat(executor): declarative api
+- 5ae3e60: feat: add signet support
+- d63953b: fix(executor): btc fee rate response type
+- d4adf31: fix(executor-react): fix add complete tx intention store
+- a064678: fix: rerenders wagmi auto connect
+- 2f9e940: feat: pass satoshis to tx
+- Updated dependencies [dab7c62]
+- Updated dependencies [8d84ec9]
+- Updated dependencies [5caf7c1]
+- Updated dependencies [f9479b5]
+- Updated dependencies [301dddc]
+- Updated dependencies [0555150]
+- Updated dependencies [19599b9]
+- Updated dependencies [fac919a]
+- Updated dependencies [220e274]
+- Updated dependencies [8e39984]
+- Updated dependencies [9200384]
+- Updated dependencies [4fd01b4]
+- Updated dependencies [8e2a038]
+- Updated dependencies [cff9ac6]
+- Updated dependencies [d8e16c9]
+- Updated dependencies [fcccf25]
+- Updated dependencies [b05d2c8]
+- Updated dependencies [c6eb2b7]
+- Updated dependencies [5d1e6be]
+- Updated dependencies [9519964]
+- Updated dependencies [15f2a89]
+- Updated dependencies [6f5743d]
+- Updated dependencies [e838dfc]
+- Updated dependencies [a52922b]
+- Updated dependencies [f9f6d30]
+- Updated dependencies [95fc514]
+- Updated dependencies [aa819b9]
+- Updated dependencies [a6279f0]
+- Updated dependencies [f9433a4]
+- Updated dependencies [5197f61]
+- Updated dependencies [371ac5f]
+- Updated dependencies [ccc957e]
+- Updated dependencies [2d41af6]
+- Updated dependencies [bc97fb9]
+- Updated dependencies [7a859cc]
+- Updated dependencies [9299b45]
+- Updated dependencies [c7e2f56]
+- Updated dependencies [5ae3e60]
+- Updated dependencies [ecc0bf0]
+- Updated dependencies [c7b98b9]
+- Updated dependencies [4835a25]
+- Updated dependencies [d15fa7c]
+- Updated dependencies [d63953b]
+- Updated dependencies [b21a677]
+- Updated dependencies [a064678]
+- Updated dependencies [8935124]
+- Updated dependencies [2b4b7fa]
+- Updated dependencies [417f76e]
+- Updated dependencies [173e73f]
+- Updated dependencies [2f9e940]
+- Updated dependencies [df23720]
+- Updated dependencies [8bf4bde]
+- Updated dependencies [a6d1675]
+  - @midl-xyz/midl-js-executor@2.0.0
+  - @midl-xyz/midl-js-core@2.0.0
+  - @midl-xyz/midl-js-react@2.0.0
+
+## 2.0.0-next.66
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@2.0.0-next.66
+
+## 2.0.0-next.65
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@2.0.0-next.65
+  - @midl-xyz/midl-js-core@2.0.0-next.65
+  - @midl-xyz/midl-js-react@2.0.0-next.65
+
+## 2.0.0-next.64
+
+### Patch Changes
+
+- fix: separate deposits/withdrawls
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@2.0.0-next.64
+
+## 2.0.0-next.60
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@2.0.0-next.60
+
+## 2.0.0-next.59
+
+### Patch Changes
+
+- fix(node): signPSBT p2wpkh
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@2.0.0-next.59
+  - @midl-xyz/midl-js-core@2.0.0-next.59
+  - @midl-xyz/midl-js-react@2.0.0-next.59
+
+## 2.0.0-next.58
+
+### Patch Changes
+
+- feat(hardhat-deploy): segwit
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@2.0.0-next.58
+  - @midl-xyz/midl-js-react@2.0.0-next.58
+  - @midl-xyz/midl-js-core@2.0.0-next.58
+
+## 2.0.0-next.55
+
+### Patch Changes
+
+- fix(executor-react): disable wagmi reconnect on mount
+
+## 2.0.0-next.54
+
+### Patch Changes
+
+- chore: pre-release clean up
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@2.0.0-next.54
+  - @midl-xyz/midl-js-react@2.0.0-next.54
+  - @midl-xyz/midl-js-core@2.0.0-next.54
+
+## 2.0.0-next.50
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@2.0.0-next.50
+
+## 2.0.0-next.49
+
+### Patch Changes
+
+- fix: rerenders wagmi auto connect
+- Updated dependencies
+  - @midl-xyz/midl-js-react@2.0.0-next.49
+
+## 2.0.0-next.48
+
+### Patch Changes
+
+- feat(satoshi-kit): expose account and network to verify and sign message
+  feat(executor): getEVMAddress is now possible to use w/o midl config
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@2.0.0-next.48
+
+## 2.0.0-next.47
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-core@2.0.0-next.47
+  - @midl-xyz/midl-js-react@2.0.0-next.47
+  - @midl-xyz/midl-js-executor@2.0.0-next.47
+
+## 2.0.0-next.46
+
+### Patch Changes
+
+- Updated dependencies [c5d7f73]
+  - @midl-xyz/midl-js-core@2.0.0-next.46
+  - @midl-xyz/midl-js-executor@2.0.0-next.46
+  - @midl-xyz/midl-js-react@2.0.0-next.46
+
+## 2.0.0-next.45
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-react@2.0.0-next.45
+  - @midl-xyz/midl-js-core@2.0.0-next.45
+  - @midl-xyz/midl-js-executor@2.0.0-next.45
+
+## 2.0.0-next.44
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-core@2.0.0-next.44
+  - @midl-xyz/midl-js-executor@2.0.0-next.44
+  - @midl-xyz/midl-js-react@2.0.0-next.44
+
+## 2.0.0-next.43
+
+### Patch Changes
+
+- d2518df: feat: add signet support
+- Updated dependencies [d2518df]
+  - @midl-xyz/midl-js-executor@2.0.0-next.43
+  - @midl-xyz/midl-js-core@2.0.0-next.43
+  - @midl-xyz/midl-js-react@2.0.0-next.43
+
+## 2.0.0-next.42
+
+### Patch Changes
+
+- 6979a7f: fix(executor): btc fee rate response type
+- Updated dependencies [6979a7f]
+  - @midl-xyz/midl-js-executor@2.0.0-next.42
+
+## 2.0.0-next.41
+
+### Patch Changes
+
+- fix(executor-react): re-export hooks
+
+## 2.0.0-next.40
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@2.0.0-next.40
+
+## 2.0.0-next.39
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@2.0.0-next.39
+
+## 2.0.0-next.38
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@2.0.0-next.38
+
+## 2.0.0-next.37
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@2.0.0-next.37
+
+## 2.0.0-next.36
+
+### Patch Changes
+
+- fix: use sign intention
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@2.0.0-next.36
+
+## 2.0.0-next.35
+
+### Patch Changes
+
+- fix(executor-react): fix add complete tx intention store
+
+## 2.0.0-next.34
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@2.0.0-next.34
+
+## 2.0.0-next.33
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@2.0.0-next.33
+
+## 2.0.0-next.32
+
+### Patch Changes
+
+- feat: pass satoshis to tx
+- Updated dependencies
+  - @midl-xyz/midl-js-core@2.0.0-next.32
+  - @midl-xyz/midl-js-executor@2.0.0-next.32
+  - @midl-xyz/midl-js-react@2.0.0-next.32
+
+## 2.0.0-next.31
+
+### Patch Changes
+
+- feat: fix gas price to 1000n
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@2.0.0-next.31
+
+## 2.0.0-next.30
+
+### Patch Changes
+
+- 19599b9: fix(executor): remove tx intention on complete
+- Updated dependencies [19599b9]
+  - @midl-xyz/midl-js-executor@2.0.0-next.30
+
+## 2.0.0-next.29
+
+### Patch Changes
+
+- feat(executor): declarative api
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@2.0.0-next.29
+
+## 2.0.0-next.28
+
+### Patch Changes
+
+- Updated dependencies [75d24ae]
+  - @midl-xyz/midl-js-core@2.0.0-next.28
+  - @midl-xyz/midl-js-executor@2.0.0-next.28
+  - @midl-xyz/midl-js-react@2.0.0-next.28
+
+## 2.0.0-next.27
+
+### Patch Changes
+
+- Updated dependencies
+- Updated dependencies [9200384]
+  - @midl-xyz/midl-js-core@2.0.0-next.27
+  - @midl-xyz/midl-js-executor@2.0.0-next.27
+  - @midl-xyz/midl-js-react@2.0.0-next.27
+
+## 2.0.0-next.26
+
+### Patch Changes
+
+- ccc957e: feat: use btc fee rate from midl
+- Updated dependencies [ccc957e]
+  - @midl-xyz/midl-js-executor@2.0.0-next.26
+
+## 2.0.0-next.25
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@2.0.0-next.25
+
+## 2.0.0-next.24
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-react@2.0.0-next.24
+  - @midl-xyz/midl-js-executor@2.0.0-next.24
+
+## 2.0.0-next.23
+
+### Patch Changes
+
+- fix(executor-react): fix evm address no connection"
+- 5197f61: feat(core): define default account
+- Updated dependencies [5197f61]
+  - @midl-xyz/midl-js-executor@2.0.0-next.23
+  - @midl-xyz/midl-js-react@2.0.0-next.23
+  - @midl-xyz/midl-js-core@2.0.0-next.23
+
+## 2.0.0-next.22
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@2.0.0-next.22
+
+## 2.0.0-next.19
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@2.0.0-next.19
+
+## 2.0.0-next.18
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-core@2.0.0-next.18
+  - @midl-xyz/midl-js-executor@2.0.0-next.18
+  - @midl-xyz/midl-js-react@2.0.0-next.18
+
+## 2.0.0-next.17
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@2.0.0-next.17
+
+## 2.0.0-next.16
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@2.0.0-next.16
+
+## 2.0.0-next.15
+
+### Patch Changes
+
+- fix: evm address account getter
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@2.0.0-next.15
+  - @midl-xyz/midl-js-core@2.0.0-next.15
+  - @midl-xyz/midl-js-react@2.0.0-next.15
+
+## 2.0.0-next.14
+
+### Patch Changes
+
+- Updated dependencies [f18068b]
+  - @midl-xyz/midl-js-executor@2.0.0-next.14
+
+## 2.0.0-next.13
+
+### Patch Changes
+
+- feat: upgrade midl contracts
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@2.0.0-next.13
+
+## 2.0.0-next.12
+
+### Patch Changes
+
+- 5d1e6be: feat: update connectors
+- 15f2a89: feat(executor): provide built-in wagmi
+- Updated dependencies [5d1e6be]
+- Updated dependencies [15f2a89]
+  - @midl-xyz/midl-js-executor@2.0.0-next.12
+  - @midl-xyz/midl-js-react@2.0.0-next.12
+  - @midl-xyz/midl-js-core@2.0.0-next.12
+
+## 2.0.0-next.11
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@2.0.0-next.11
+
+## 2.0.0-next.10
+
+### Patch Changes
+
+- fix(core): extract default account
+- Updated dependencies
+  - @midl-xyz/midl-js-core@2.0.0-next.10
+  - @midl-xyz/midl-js-executor@2.0.0-next.10
+  - @midl-xyz/midl-js-react@2.0.0-next.10
+
+## 2.0.0-next.9
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@2.0.0-next.9
+
+## 2.0.0-next.8
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@2.0.0-next.8
+
+## 2.0.0-next.7
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@2.0.0-next.7
+
+## 2.0.0-next.6
+
+### Patch Changes
+
+- Updated dependencies [0df7eef]
+  - @midl-xyz/midl-js-executor@2.0.0-next.6
+
+## 2.0.0-next.5
+
+### Patch Changes
+
+- fix: useSignIntention export
+
+## 2.0.0-next.4
+
+### Patch Changes
+
+- 6f5743d: feat: add complete tx intetnion
+- Updated dependencies [6f5743d]
+  - @midl-xyz/midl-js-executor@2.0.0-next.4
+
+## 2.0.0-next.3
+
+### Patch Changes
+
+- ac33f3b: feat(executor-react): add useSendBTCTransactions
+
+## 2.0.0-next.2
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl-xyz/midl-js-core@2.0.0-next.2
+  - @midl-xyz/midl-js-executor@2.0.0-next.2
+  - @midl-xyz/midl-js-react@2.0.0-next.2
+
+## 2.0.0-next.0
+
+### Minor Changes
+
+- feat: add custom network support
+
+### Patch Changes
+
+- Updated dependencies [46ce271]
+- Updated dependencies
+  - @midl-xyz/midl-js-executor@2.0.0-next.0
+  - @midl-xyz/midl-js-core@2.0.0-next.0
+  - @midl-xyz/midl-js-react@2.0.0-next.0
+
 ## 1.0.22
 
 ### Patch Changes

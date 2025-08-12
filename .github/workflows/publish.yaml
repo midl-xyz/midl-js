@@ -11,34 +11,37 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18.x]
+        node-version: [22]
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-          ref: main
-          
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4      
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           registry-url: https://registry.npmjs.org
-
-      - name: Install pnpm
-        run: npm install -g pnpm
+          cache: 'pnpm'
 
       - name: Install dependencies
         run: pnpm install
 
       - name: Build packages
-        run: pnpm turbo run build --filter="./packages/*"
+        run: pnpm build:packages
 
       - name: Run tests
-        run: pnpm turbo run test --filter="./packages/*"
+        run: pnpm test:packages
 
       - name: Publish packages
-        run: pnpm publish -r --filter="./packages/*" --access public
+        run: |
+          TAG=""
+          if [[ "${GITHUB_REF##*/}" == "next" ]]; then
+            TAG="--tag next --publish-branch next"
+          fi
+          pnpm publish -r --filter="./packages/*" --access public $TAG
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

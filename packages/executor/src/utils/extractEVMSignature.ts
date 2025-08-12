@@ -1,6 +1,8 @@
 import { AddressType, SignMessageProtocol } from "@midl-xyz/midl-js-core";
 import { Signature } from "@noble/secp256k1";
-import { toBytes, toHex } from "viem";
+import { publicKeyConvert } from "secp256k1";
+import { recoverPublicKey, toBytes, toHex } from "viem";
+import { getBIP322Hash } from "~/utils";
 
 /**
  *  Extracts EVM signature from a base64 encoded signature.
@@ -8,10 +10,17 @@ import { toBytes, toHex } from "viem";
  * @param signature Base64 encoded signature
  * @param signer Signer account
  */
-export const extractEVMSignature = (
+export const extractEVMSignature = async (
+	message: string,
 	signature: string,
 	protocol: SignMessageProtocol,
-	addressType: AddressType,
+	{
+		addressType,
+		publicKey,
+	}: {
+		addressType: AddressType;
+		publicKey: string;
+	},
 ) => {
 	const signatureBuffer = Buffer.from(signature, "base64");
 
@@ -40,6 +49,12 @@ export const extractEVMSignature = (
 			r = toBytes(sig.r);
 			s = toBytes(sig.s);
 
+			if (recoveryId < 0n || recoveryId > 3n) {
+				throw new Error("Invalid recovery id");
+			}
+
+			recoveryId = recoveryId < 27n ? recoveryId + 27n : recoveryId;
+
 			break;
 		}
 
@@ -55,7 +70,7 @@ export const extractEVMSignature = (
 				recoveryId = 27n;
 			}
 
-			if ([AddressType.P2SH, AddressType.P2WPKH].includes(addressType)) {
+			if ([AddressType.P2SH_P2WPKH, AddressType.P2WPKH].includes(addressType)) {
 				const secp256k1N = BigInt(
 					"0xfffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141",
 				);
@@ -72,19 +87,29 @@ export const extractEVMSignature = (
 
 				if (sBig > secp256k1halfN) {
 					sBig = secp256k1N - sBig;
-					recoveryId = 27n;
-				} else {
-					recoveryId = 28n;
 				}
 
-				if (addressType === AddressType.P2SH) {
-					recoveryId = recoveryId === 27n ? 28n : 27n;
-				}
+				recoveryId = null;
 
 				r = new Uint8Array(32);
 				s = new Uint8Array(32);
 				r.set(Buffer.from(rBig.toString(16).padStart(64, "0"), "hex"));
 				s.set(Buffer.from(sBig.toString(16).padStart(64, "0"), "hex"));
+
+				try {
+					await verifyBIP322Signature(message, toHex(r), toHex(s), 27n, {
+						addressType,
+						publicKey,
+					});
+
+					recoveryId = 27n;
+				} catch {
+					await verifyBIP322Signature(message, toHex(r), toHex(s), 28n, {
+						addressType,
+						publicKey,
+					});
+					recoveryId = 28n;
+				}
 			}
 
 			break;
@@ -100,4 +125,41 @@ export const extractEVMSignature = (
 		s: toHex(s),
 		v: recoveryId,
 	};
+};
+
+export const verifyBIP322Signature = async (
+	message: string,
+	r: `0x${string}`,
+	s: `0x${string}`,
+	v: bigint,
+	{
+		addressType,
+		publicKey,
+	}: {
+		addressType: AddressType;
+		publicKey: string;
+	},
+) => {
+	const recovered = await recoverPublicKey({
+		hash: getBIP322Hash(message, addressType, publicKey),
+		signature: {
+			r,
+			s,
+			v,
+		},
+	});
+
+	const converted = Buffer.from(
+		publicKeyConvert(Buffer.from(recovered.slice(2), "hex"), true),
+	)
+		.toString("hex")
+		.substring(2);
+
+	if (converted !== publicKey.slice(2)) {
+		throw new Error(
+			`Public key mismatch: expected ${publicKey.slice(2)}, got ${converted}`,
+		);
+	}
+
+	return true;
 };

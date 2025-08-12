@@ -1,6 +1,6 @@
 {
 	"name": "e2e",
-	"version": "1.0.47",
+	"version": "1.0.44",
 	"description": "",
 	"main": "index.js",
 	"type": "module",
@@ -8,41 +8,27 @@
 		"dev": "vite ./app",
 		"build": "vite build ./app",
 		"preview": "vite preview ./app",
-		"postinstall": "./scripts/prepare.sh",
 		"test": "playwright test"
 	},
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
 	"devDependencies": {
-		"@eslint/js": "^9.14.0",
+		"@midl-xyz/midl-js-config": "workspace:^",
 		"@playwright/test": "^1.48.2",
 		"@types/node": "^20.16.11",
-		"@types/react": "^18.3.12",
-		"@types/react-dom": "^18.3.1",
-		"@vitejs/plugin-react": "^4.3.3",
+		"bip32": "5.0.0-rc.0",
+		"bip39": "^3.1.0",
 		"dotenv": "^16.4.5",
-		"eslint": "^9.14.0",
-		"eslint-plugin-react-hooks": "^5.0.0",
-		"eslint-plugin-react-refresh": "^0.4.14",
+		"ecpair": "^2.1.0",
 		"globals": "^15.11.0",
 		"typescript": "~5.6.2",
-		"typescript-eslint": "^8.12.2",
-		"vite": "^5.4.10",
-		"vite-plugin-top-level-await": "^1.4.4",
-		"vite-plugin-wasm": "^3.3.0"
+		"bitcoinjs-lib": "7.0.0-rc.0"
 	},
 	"dependencies": {
 		"@midl-xyz/midl-js-core": "workspace:^",
 		"@midl-xyz/midl-js-executor": "workspace:^",
-		"@midl-xyz/midl-js-react": "workspace:^",
-		"@midl-xyz/midl-js-executor-react": "workspace:^",
-		"@tanstack/react-query": "*",
-		"@wagmi/connectors": "^5.1.11",
-		"buffer": "^6.0.3",
-		"react": "^18.3.1",
-		"react-dom": "^18.3.1",
-		"viem": "npm:@midl-xyz/midl-viem",
-		"wagmi": "^2.*"
+		"@midl-xyz/playwright-btc-wallets": "workspace:^",
+		"viem": "npm:@midl-xyz/midl-viem@2.21.37"
 	}
 }

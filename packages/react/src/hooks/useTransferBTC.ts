@@ -1,11 +1,11 @@
 import {
+	type Config,
 	type TransferBTCParams,
 	type TransferBTCResponse,
 	transferBTC,
 } from "@midl-xyz/midl-js-core";
 import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
-import { useMidlContext } from "~/context";
-import { useConfig } from "~/hooks/useConfig";
+import { useConfigInternal } from "~/hooks/useConfigInternal";
 
 type TransferBTCVariables = TransferBTCParams;
 
@@ -14,10 +14,17 @@ type TransferBTCError = Error;
 type TransferBTCData = TransferBTCResponse;
 
 type UseTransferBTCParams = {
+	/**
+	 * Mutation options for the transfer BTC operation.
+	 */
 	mutation?: Omit<
 		UseMutationOptions<TransferBTCData, TransferBTCError, TransferBTCVariables>,
 		"mutationFn"
 	>;
+	/**
+	 * Custom configuration to override the default.
+	 */
+	config?: Config;
 };
 
 /**
@@ -27,7 +34,7 @@ type UseTransferBTCParams = {
  * ```typescript
  * const { transferBTC, transferBTCAsync } = useTransferBTC();
  *
- * transferBTC({  --parameters--  });
+ * transferBTC({  ...parameters });
  * ```
  *
  * @param params Configuration options for the mutation.
@@ -37,8 +44,11 @@ type UseTransferBTCParams = {
  * - `transferBTCAsync`: `(variables: TransferBTCVariables) => Promise<TransferBTCData>` – Function to asynchronously transfer BTC.
  */
 
-export const useTransferBTC = ({ mutation }: UseTransferBTCParams = {}) => {
-	const { config } = useMidlContext();
+export const useTransferBTC = ({
+	mutation,
+	config: customConfig,
+}: UseTransferBTCParams = {}) => {
+	const config = useConfigInternal(customConfig);
 
 	const { mutationKey = [], ...mutationParams } = mutation ?? {};
 

@@ -1,9 +1,10 @@
 import { css, cx } from "styled-system/css";
+import BitgetIcon from "./BitgetIcon";
 import LeatherIcon from "./LeatherIcon";
+import MagicEdenIcon from "./MagicEden";
+import PhantomIcon from "./PhantomIcon";
 import UnisatIcon from "./UnisatIcon";
 import XverseIcon from "./XverseIcon";
-import BitgetIcon from "./BitgetIcon";
-import PhantomIcon from "./PhantomIcon";
 
 type WalletIconProps = {
 	size: number;
@@ -38,6 +39,10 @@ export const WalletIcon = ({
 
 		case "phantom":
 			Icon = PhantomIcon;
+			break;
+
+		case "sats-connect-magicEden.bitcoin":
+			Icon = MagicEdenIcon;
 			break;
 
 		default:

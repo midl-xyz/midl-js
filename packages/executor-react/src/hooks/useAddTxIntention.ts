@@ -22,28 +22,23 @@ type AddTxIntentionVariables = {
 	 * If true, the array of intentions will be cleared before adding the new one
 	 */
 	reset?: boolean;
-	publicKey?: string;
+	/**
+	 * BTC address to use for the intention
+	 */
+	from?: string;
 };
 
 /**
- * Custom hook to add a transaction intention.
+ * Adds a transaction intention using the provided parameters.
  *
- * This hook provides a function to add a new transaction intention to the store,
- * enforcing constraints such as the maximum number of intentions and limiting runes deposits.
+ * This utility wraps `addTxIntention` and stores the resulting intention in the context store.
+ *
+ * @param params - Optional parameters to override the default config or store.
+ * @returns An object with `addTxIntention`, `addTxIntentionAsync`, `txIntentions`, and mutation state from React Query.
  *
  * @example
- * ```typescript
- *
- * const { addTxIntention, addTxIntentionAsync, txIntentions, isLoading } = useAddTxIntention();
- *
- * const intention = {
- *    // Intention object
- * };
- *
- * addTxIntention(intention);
- * ```
- *
- * @returns `AddTxIntentionResponse` – The response object containing the mutation function and the current transaction intentions.
+ * const { addTxIntention } = useAddTxIntention();
+ * addTxIntention({ intention });
  */
 export const useAddTxIntention = ({
 	store: customStore,
@@ -54,8 +49,18 @@ export const useAddTxIntention = ({
 	const { intentions = [] } = useStore(customStore);
 
 	const { mutate, mutateAsync, ...rest } = useMutation({
-		mutationFn: ({ reset, publicKey, intention }: AddTxIntentionVariables) => {
-			return addTxIntention(config, store, intention, reset, publicKey);
+		mutationFn: async ({ reset, from, intention }: AddTxIntentionVariables) => {
+			const intentionToAdd = await addTxIntention(config, intention, from);
+
+			store.setState((state) => {
+				return {
+					intentions: reset
+						? [intentionToAdd]
+						: [...(state.intentions || []), intentionToAdd],
+				};
+			});
+
+			return intentionToAdd;
 		},
 	});
 

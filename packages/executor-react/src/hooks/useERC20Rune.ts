@@ -1,16 +1,22 @@
-import deployment from "@midl-xyz/contracts/deployments/0.0.10/Executor.json";
+import deployment from "@midl-xyz/contracts/deployments/0.1.1/Executor.json";
 import type { Config } from "@midl-xyz/midl-js-core";
 import { executorAbi, runeIdToBytes32 } from "@midl-xyz/midl-js-executor";
 import { useRune } from "@midl-xyz/midl-js-react";
 import { type UseReadContractParameters, useReadContract } from "wagmi";
 
 type UseERC20Params = {
+	/**
+	 * Optional query parameters to customize the read contract query.
+	 */
 	query?: NonNullable<
 		UseReadContractParameters<
 			typeof executorAbi,
 			"getAssetAddressByRuneId"
 		>["query"]
 	>;
+	/**
+	 * Custom configuration to override the default.
+	 */
 	config?: Config;
 };
 

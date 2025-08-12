@@ -11,10 +11,16 @@ type EtchRuneError = Error;
 type EtchRuneVariables = EtchRuneParams;
 
 type UseEtchRuneParams = {
+	/**
+	 * Mutation options for the etch rune operation.
+	 */
 	mutation?: Omit<
 		UseMutationOptions<EtchRuneData, EtchRuneError, EtchRuneVariables>,
 		"mutationFn"
 	>;
+	/**
+	 * Custom configuration to override the default.
+	 */
 	config?: Config;
 };
 
@@ -25,7 +31,7 @@ type UseEtchRuneParams = {
  * ```typescript
  * const { etchRune } = useEtchRune();
  *
- * etchRune({ --parameters-- });
+ * etchRune({ ...parameters });
  * ```
  *
  * @param {UseEtchRuneParams} params - Configuration options for the mutation.

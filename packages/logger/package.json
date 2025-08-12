@@ -1,0 +1,17 @@
+{
+	"name": "@midl-xyz/logger",
+	"version": "2.0.0",
+	"type": "module",
+	"dependencies": {
+		"@logtape/logtape": "^1.0.4"
+	},
+	"exports": {
+		".": {
+			"types": "./index.d.ts",
+			"import": "./index.js",
+			"require": "./index.cjs"
+		}
+	},
+	"types": "./index.d.ts",
+	"files": ["index.js", "index.cjs", "index.d.ts"]
+}

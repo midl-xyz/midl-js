@@ -12,23 +12,43 @@ import {
 } from "viem";
 import { getTransactionCount } from "viem/actions";
 import { getPublicKey } from "~/actions/getPublicKey";
-import {
-	extractEVMSignature,
-	getEVMAddress,
-	getEVMFromBitcoinNetwork,
-} from "~/utils";
+import { extractEVMSignature, getEVMAddress } from "~/utils";
 
+/**
+ * Options for signing a transaction.
+ */
 type SignTransactionOptions = {
-	publicKey?: string;
+	/**
+	 * BTC address used to sign the transactions.
+	 */
+	from?: string;
+	/**
+	 * Next nonce of registered in EVM network, nonce is incremented by 1 for each transaction intention.
+	 */
 	nonce?: number;
+	/**
+	 * Transaction hash of the BTC transaction.
+	 */
 	protocol?: SignMessageProtocol;
 };
 
+/**
+ * Signs an EVM transaction using the provided configuration and options.
+ *
+ * @param config - The configuration object.
+ * @param tx - The transaction to sign (TransactionSerializableBTC).
+ * @param client - EVM client or provider.
+ * @param options - Options for signing the transaction
+ * @returns The signed and serialized transaction as a hex string.
+ *
+ * @example
+ * const signedTx = await signTransaction(config, tx, client, { publicKey, protocol });
+ */
 export const signTransaction = async (
 	config: Config,
 	{ chainId, ...tx }: TransactionSerializableBTC,
 	client: Client,
-	{ publicKey: customPublicKey, protocol, nonce }: SignTransactionOptions = {},
+	{ from, protocol, nonce }: SignTransactionOptions = {},
 ) => {
 	const { network } = config.getState();
 
@@ -36,14 +56,18 @@ export const signTransaction = async (
 		throw new Error("No network set");
 	}
 
-	const account = await getDefaultAccount(
+	const account = getDefaultAccount(
 		config,
-		customPublicKey ? (it) => it.publicKey === customPublicKey : undefined,
+		from ? (it) => it.address === from : undefined,
 	);
 
-	const chainIdToUse = chainId || getEVMFromBitcoinNetwork(network).id;
+	const chainIdToUse = chainId || client.chain?.id;
 
-	const publicKey = getPublicKey(config, account.publicKey);
+	if (!chainIdToUse) {
+		throw new Error("No chain ID found");
+	}
+
+	const publicKey = getPublicKey(account, network);
 
 	if (!publicKey) {
 		throw new Error("No public key found");
@@ -52,7 +76,7 @@ export const signTransaction = async (
 	const lastNonce =
 		nonce ??
 		(await getTransactionCount(client, {
-			address: getEVMAddress(publicKey),
+			address: getEVMAddress(account, network),
 		}));
 
 	const serialized = serializeTransaction({
@@ -62,16 +86,22 @@ export const signTransaction = async (
 		...tx,
 	});
 
+	const message = keccak256(serialized);
+
 	const data = await signMessage(config, {
-		message: keccak256(serialized),
+		message,
 		address: account.address,
 		protocol,
 	});
 
-	const { r, s, v } = extractEVMSignature(
+	const { r, s, v } = await extractEVMSignature(
+		message,
 		data.signature,
 		data.protocol,
-		account.addressType,
+		{
+			addressType: account.addressType,
+			publicKey: account.publicKey,
+		},
 	);
 	const signedSerializedTransaction = serializeTransaction(
 		{

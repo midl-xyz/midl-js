@@ -1,5 +1,5 @@
 import { type Config, getUTXOs } from "@midl-xyz/midl-js-core";
-import { useQuery, type UseQueryOptions } from "@tanstack/react-query";
+import { type UseQueryOptions, useQuery } from "@tanstack/react-query";
 import { useConfig } from "~/hooks/useConfig";
 import { useConfigInternal } from "~/hooks/useConfigInternal";
 
@@ -8,7 +8,13 @@ type QueryOptions = Omit<UseQueryOptions, "queryFn" | "queryKey"> & {
 };
 
 type UseUTXOsParams = {
+	/**
+	 * Custom configuration to override the default.
+	 */
 	config?: Config;
+	/**
+	 * Query options for the UTXOs operation.
+	 */
 	query?: QueryOptions;
 };
 

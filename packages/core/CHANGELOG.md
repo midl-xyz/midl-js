@@ -1,5 +1,151 @@
 # @midl-xyz/midl-js-core
 
+## 2.0.0
+
+### Minor Changes
+
+- a52922b: feat: add custom network support
+
+### Patch Changes
+
+- 8d84ec9: feat: edict rune default account
+- 5caf7c1: fix: evm address account getter
+- f9479b5: fix(node): signPSBT p2wpkh
+- 220e274: feat(hardhat-deploy): segwit
+- 4fd01b4: feat: add network abstraction
+- 8e2a038: chore: pre-release clean up
+- d8e16c9: feat: xverse midl regtest
+- fcccf25: fix(core): extract default account
+- b05d2c8: feat: useDefaultAccount hook, default account for transfer and etch
+- 5d1e6be: feat: update connectors
+- aa819b9: feat: call switchNetwork connector
+- 5197f61: feat(core): define default account
+- 5ae3e60: feat: add signet support
+- 4835a25: feat(satoshi-kit): new look satoshi kit
+- 8935124: feat: disable rune edict limit
+- 2b4b7fa: fix(executor): withdrawals overlap deposits
+- 417f76e: chore: bump version
+- 2f9e940: feat: pass satoshis to tx
+  - @midl-xyz/logger@1.0.1
+
+## 2.0.0-next.65
+
+### Patch Changes
+
+- fix(executor): withdrawals overlap deposits
+
+## 2.0.0-next.59
+
+### Patch Changes
+
+- fix(node): signPSBT p2wpkh
+
+## 2.0.0-next.58
+
+### Patch Changes
+
+- feat(hardhat-deploy): segwit
+
+## 2.0.0-next.54
+
+### Patch Changes
+
+- chore: pre-release clean up
+
+## 2.0.0-next.47
+
+### Patch Changes
+
+- feat: useDefaultAccount hook, default account for transfer and etch
+
+## 2.0.0-next.46
+
+### Patch Changes
+
+- c5d7f73: feat: call switchNetwork connector
+
+## 2.0.0-next.45
+
+### Patch Changes
+
+- feat: add network abstraction
+
+## 2.0.0-next.44
+
+### Patch Changes
+
+- feat: xverse midl regtest
+
+## 2.0.0-next.43
+
+### Patch Changes
+
+- d2518df: feat: add signet support
+
+## 2.0.0-next.32
+
+### Patch Changes
+
+- feat: pass satoshis to tx
+
+## 2.0.0-next.28
+
+### Patch Changes
+
+- 75d24ae: feat(satoshi-kit): new look satoshi kit
+
+## 2.0.0-next.27
+
+### Patch Changes
+
+- feat: edict rune default account
+
+## 2.0.0-next.23
+
+### Patch Changes
+
+- 5197f61: feat(core): define default account
+
+## 2.0.0-next.18
+
+### Patch Changes
+
+- feat: disable rune edict limit
+
+## 2.0.0-next.15
+
+### Patch Changes
+
+- fix: evm address account getter
+
+## 2.0.0-next.12
+
+### Patch Changes
+
+- 5d1e6be: feat: update connectors
+
+## 2.0.0-next.10
+
+### Patch Changes
+
+- fix(core): extract default account
+
+## 2.0.0-next.2
+
+### Patch Changes
+
+- chore: bump version
+
+## 2.0.0-next.0
+
+### Minor Changes
+
+- feat: add custom network support
+
+### Patch Changes
+
+- 46ce271: test: add coverage
+
 ## 1.0.20
 
 ### Patch Changes

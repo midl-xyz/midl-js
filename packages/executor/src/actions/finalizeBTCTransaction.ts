@@ -6,28 +6,23 @@ import {
 	type TransferBTCResponse,
 	edictRune,
 	ensureMoreThanDust,
+	getDefaultAccount,
 	transferBTC,
 } from "@midl-xyz/midl-js-core";
-import type { MidlContextState } from "@midl-xyz/midl-js-react";
-import {
-	type Address,
-	type Client,
-	type StateOverride,
-	encodeFunctionData,
-	padHex,
-} from "viem";
+import type { Client, StateOverride } from "viem";
 import { estimateGasMulti } from "viem/actions";
-import type { StoreApi } from "zustand";
-import { addTxIntention } from "~/actions/addTxIntention";
-import { getPublicKeyForAccount } from "~/actions/getPublicKeyForAccount";
-import { executorAddress, multisigAddress } from "~/config";
-import { executorAbi } from "~/contracts/abi";
+import { createStateOverride } from "~/actions/createStateOverride";
+import { getBTCFeeRate } from "~/actions/getBTCFeeRate";
+import { LoggerNamespace, getLogger, multisigAddress } from "~/config";
+import type { TransactionIntention, TransactionIntentionEVM } from "~/types";
 import {
+	aggregateIntentionRunes,
 	calculateTransactionsCost,
-	convertETHtoBTC,
 	getEVMAddress,
-	getEVMFromBitcoinNetwork,
+	satoshisToWei,
 } from "~/utils";
+
+const logger = getLogger([LoggerNamespace.Actions, "finalizeBTCTransaction"]);
 
 type FinalizeBTCTransactionOptions = {
 	/**
@@ -35,51 +30,49 @@ type FinalizeBTCTransactionOptions = {
 	 */
 	stateOverride?: StateOverride;
 	/**
-	 * Public key of the account to use for signing
+	 * BTC address used to sign the transactions
 	 */
-	publicKey?: string;
-	/**
-	 * Gas price for EVM transactions
-	 */
-	gasPrice?: bigint;
-	/**
-	 * If true, send complete transaction
-	 */
-	shouldComplete?: boolean;
+	from?: string;
 
 	/**
-	 * Fee rate multiplier for the transaction
+	 * Custom fee rate
 	 */
-	feeRateMultiplier?: number;
-
-	/**
-	 * Array of ERC20 assets to withdraw
-	 */
-	assetsToWithdraw?: [Address] | [Address, Address];
+	feeRate?: number;
 
 	/**
 	 * If true skips estimate gas for EVM transactions
 	 */
-	skipEstimateGasMulti?: boolean;
+	skipEstimateGas?: boolean;
+
+	/**
+	 * Multisig address to use for the transaction.
+	 * If not provided, the default multisig address for the current network will be used.
+	 */
+	multisigAddress?: string;
 };
 
 /**
- * Prepares BTC transaction for the intentions.
- * Calculates gas limits for EVM transactions, total fees and transfers.
+ * Prepares a Bitcoin transaction for the provided intentions.
  *
- * If `options.shouldComplete` is true, adds a complete transaction to the intentions.
+ * Calculates gas limits for EVM transactions, total fees, and transfers. Handles both BTC and rune transfers.
  *
- * @param config The configuration object
- * @param store The store object
- * @param client EVM client or provider (viem)
- * @param options Configuration options
- * @returns BTC transaction response
+ * @param config - The configuration object.
+ * @param intentions - Array of TransactionIntention objects to process.
+ * @param client - EVM client or provider (viem).
+ * @param options - Optional configuration options.
+ *
+ * @returns A BTC transaction response: EdictRuneResponse or TransferBTCResponse.
+ *
+ * @throws If no network is set, no account is found, intentions are empty, or more than 10 intentions/runes.
+ *
+ * @example
+ * const btcTx = await finalizeBTCTransaction(config, intentions, client, { feeRate: 10 });
  */
 export const finalizeBTCTransaction = async (
 	config: Config,
-	store: StoreApi<MidlContextState>,
+	intentions: TransactionIntention[],
 	client: Client,
-	options: FinalizeBTCTransactionOptions,
+	{ feeRate: customFeeRate, ...options }: FinalizeBTCTransactionOptions = {},
 ) => {
 	const { network } = config.getState();
 
@@ -87,155 +80,201 @@ export const finalizeBTCTransaction = async (
 		throw new Error("No network set");
 	}
 
-	const { intentions = [] } = store.getState();
-
 	if (intentions.length === 0) {
-		throw new Error("No intentions found");
+		throw new Error("Cannot finalize BTC transaction without intentions");
 	}
 
-	const pk = await getPublicKeyForAccount(config, options.publicKey);
-	const evmAddress = getEVMAddress(pk);
-	const evmIntentions = intentions.filter((it) => Boolean(it.evmTransaction));
+	if (intentions.length > 10) {
+		throw new Error(
+			"Cannot finalize BTC transaction with more than 10 intentions",
+		);
+	}
+
+	const account = getDefaultAccount(
+		config,
+		options.from ? (it) => it.address === options.from : undefined,
+	);
+
+	if (!account) {
+		throw new Error("No account found for public key");
+	}
+
+	const evmAddress = getEVMAddress(account, network);
+	const evmIntentions = intentions.filter((it): it is TransactionIntentionEVM =>
+		Boolean(it.evmTransaction),
+	);
 	const evmTransactions = evmIntentions.map((it) => it.evmTransaction);
+	const runesToDeposit = aggregateIntentionRunes(intentions, "deposit");
+	const runesToWithdraw = aggregateIntentionRunes(intentions, "withdraw");
 
-	if (!options.skipEstimateGasMulti) {
-		let gasLimits: bigint[];
+	const hasWithdraw = intentions.some((it) => Boolean(it.withdraw));
+	const hasRunesWithdraw = runesToWithdraw.length > 0;
+	const hasRunesDeposit = runesToDeposit.length > 0;
 
-		gasLimits = await estimateGasMulti(client as Client, {
+	const feeRate = customFeeRate ?? Number(await getBTCFeeRate(config, client));
+
+	logger.debug(
+		"Finalizing BTC transaction with fee rate: {feeRate}, hasWithdraw: {hasWithdraw}, hasRunesWithdraw: {hasRunesWithdraw}, hasRunesDeposit: {hasRunesDeposit}, runesToDeposit: {runesToDeposit}, runesToWithdraw: {runesToWithdraw}",
+		{
+			feeRate,
+			hasWithdraw,
+			hasRunesWithdraw,
+			hasRunesDeposit,
+			runesToDeposit,
+			runesToWithdraw,
+		},
+	);
+
+	if (!options.skipEstimateGas) {
+		const stateOverride =
+			options.stateOverride ??
+			(await createStateOverride(config, client, intentions));
+
+		const emvTransactionsWithoutGas = evmTransactions.filter(
+			(it) => it.gas === undefined,
+		);
+
+		let gasLimits: bigint[] = [];
+
+		if (emvTransactionsWithoutGas.length > 0) {
+			logger.debug(
+				"Estimating gas for EVM transactions: {emvTransactionsWithoutGas}, stateOverride: {stateOverride}, evmAddress: {evmAddress}",
+				{
+					emvTransactionsWithoutGas,
+					stateOverride,
+					evmAddress,
+				},
+			);
+
+			gasLimits = await estimateGasMulti(client as Client, {
+				transactions: emvTransactionsWithoutGas,
+				stateOverride,
+				account: evmAddress,
+			});
+
+			for (const [i, tx] of emvTransactionsWithoutGas.entries()) {
+				if (tx.gas !== undefined) {
+					continue;
+				}
+
+				tx.gas = gasLimits[i];
+			}
+
+			logger.trace("Estimated gas limits for EVM transactions: {gasLimits}", {
+				gasLimits,
+			});
+		}
+
+		const totalGas = evmTransactions.reduce(
+			(acc, tx) => acc + (tx.gas ?? 0n),
+			0n,
+		);
+
+		const totalCost = calculateTransactionsCost(totalGas, {
+			feeRate,
+			hasWithdraw,
+			hasRunesDeposit,
+			hasRunesWithdraw,
+			assetsToWithdrawSize: runesToWithdraw.length,
+		});
+
+		logger.debug("Total gas: {totalGas}, totalCost: {totalCost}", {
+			totalGas,
+			totalCost,
+		});
+
+		const stateOverrideWithMinFees =
+			options.stateOverride ??
+			(await createStateOverride(
+				config,
+				client,
+				intentions,
+				satoshisToWei(totalCost),
+			));
+
+		logger.debug(
+			"Creating state override with minimum fees: {stateOverrideWithMinFees}",
+			{
+				stateOverrideWithMinFees,
+			},
+		);
+
+		// Here we ensure that transactions passes with minimum fees transferred
+		await estimateGasMulti(client as Client, {
 			transactions: evmTransactions,
-			stateOverride: options.stateOverride,
+			stateOverride: stateOverrideWithMinFees,
 			account: evmAddress,
 		});
 
 		for (const [i, intention] of evmIntentions.entries()) {
+			if (intention.evmTransaction.gas !== undefined) {
+				continue;
+			}
+
 			intention.evmTransaction.gas = BigInt(
+				// Increase gas limit by 20% to account for potential fluctuations
 				Math.ceil(Number(gasLimits[i]) * 1.2),
 			);
 		}
+
+		logger.debug("Final EVM transactions with gas limits: {evmTransactions}", {
+			evmTransactions,
+		});
 	}
 
-	const hasWithdraw =
-		intentions.some((it) => it.hasWithdraw) || options.shouldComplete;
-	const hasRunesWithdraw =
-		intentions.some((it) => it.hasRunesWithdraw) ||
-		(options.shouldComplete && (options.assetsToWithdraw?.length ?? 0) > 0);
-
-	const totalCost = await calculateTransactionsCost(
-		[
-			...evmTransactions,
-			...(options.shouldComplete
-				? [
-						{
-							gas: 300_000n,
-						},
-					]
-				: []),
-		],
-		config,
-		{
-			feeRateMultiplier: options.feeRateMultiplier,
-			gasPrice: options.gasPrice,
-			hasDeposit: intentions.some((it) => it.hasDeposit),
-			hasWithdraw: hasWithdraw,
-			hasRunesDeposit: intentions.some((it) => it.hasRunesDeposit),
-			hasRunesWithdraw: hasRunesWithdraw,
-			assetsToWithdrawSize: options.assetsToWithdraw?.length ?? 0,
-		},
+	const totalGas = evmTransactions.reduce(
+		(acc, tx) => acc + (tx.gas ?? 0n),
+		0n,
 	);
 
-	const btcTransfer = convertETHtoBTC(
-		intentions.reduce((acc, it) => {
-			return acc + (it.evmTransaction?.value ?? 0n);
-		}, 0n),
-	);
+	const totalCost = calculateTransactionsCost(totalGas, {
+		feeRate,
+		hasWithdraw,
+		hasRunesDeposit,
+		hasRunesWithdraw,
+		assetsToWithdrawSize: runesToWithdraw.length,
+	});
+
+	const btcTransfer = intentions.reduce((acc, it) => {
+		return acc + (it?.deposit?.satoshis ?? 0);
+	}, 0);
 
 	const transfers: EdictRuneParams["transfers"] = [
 		{
-			receiver: multisigAddress[network.id],
+			receiver: options.multisigAddress ?? multisigAddress[network.id],
 			amount: ensureMoreThanDust(Math.ceil(Number(totalCost) + btcTransfer)),
 		},
 	];
 
-	const runes = Array.from(
-		intentions
-			.filter((it) => it.hasRunesDeposit)
-			.map((it) => {
-				if (!it.rune) {
-					throw new Error("No rune set");
-				}
-
-				return it.rune;
-			})
-			.reduce(
-				(acc, rune) => {
-					acc.set(rune.id, {
-						id: rune.id,
-						value: acc.get(rune.id)
-							? // biome-ignore lint/style/noNonNullAssertion: <explanation>
-								acc.get(rune.id)!.value + rune.value
-							: rune.value,
-					});
-
-					return acc;
-				},
-				new Map<
-					string,
-					{
-						id: string;
-						value: bigint;
-					}
-				>(),
-			)
-			.values(),
-	);
-
-	if (runes.length > 2) {
-		throw new Error("Transferring more than two runes is not allowed");
-	}
-
-	for (const rune of runes) {
+	for (const rune of runesToDeposit) {
 		transfers.push({
-			receiver: multisigAddress[network.id],
+			receiver: options.multisigAddress ?? multisigAddress[network.id],
 			amount: rune.value,
 			runeId: rune.id,
 		});
 	}
 
+	logger.debug(
+		"Preparing BTC transaction with transfers: {transfers}, feeRate: {feeRate}",
+		{
+			transfers,
+			feeRate,
+		},
+	);
+
 	let btcTx: EdictRuneResponse | TransferBTCResponse;
 
-	if (runes.length > 0) {
+	if (runesToDeposit.length > 0) {
 		btcTx = await edictRune(config, {
 			transfers,
 			publish: false,
+			feeRate,
 		});
 	} else {
 		btcTx = await transferBTC(config, {
 			transfers: transfers as TransferBTCParams["transfers"],
 			publish: false,
-		});
-	}
-
-	if (options.shouldComplete) {
-		addTxIntention(config, store, {
-			hasWithdraw,
-			hasRunesWithdraw,
-
-			evmTransaction: {
-				to: executorAddress[network.id] as Address,
-				gas: 300_000n,
-				data: encodeFunctionData({
-					abi: executorAbi,
-					functionName: "completeTx",
-					args: [
-						`0x${btcTx.tx.id}`,
-						pk as `0x${string}`,
-						padHex("0x0", { size: 32 }), // BTC receiver
-						options.assetsToWithdraw ?? [],
-						new Array(options.assetsToWithdraw?.length ?? 0).fill(0n),
-					],
-				}),
-				chainId: getEVMFromBitcoinNetwork(network).id,
-			},
+			feeRate,
 		});
 	}
 

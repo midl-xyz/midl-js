@@ -1,29 +1,30 @@
-import { forwardRef } from 'react'
-import { styled } from 'styled-system/jsx'
-import { Spinner as StyledSpinner, type SpinnerProps as StyledSpinnerProps } from './styled/spinner'
+import { forwardRef } from "react";
+import { styled } from "styled-system/jsx";
+import {
+	Spinner as StyledSpinner,
+	type SpinnerProps as StyledSpinnerProps,
+} from "./styled/spinner";
 
 export interface SpinnerProps extends StyledSpinnerProps {
-  /**
-   * For accessibility, it is important to add a fallback loading text.
-   * This text will be visible to screen readers.
-   * @default "Loading..."
-   */
-  label?: string
+	/**
+	 * For accessibility, it is important to add a fallback loading text.
+	 * This text will be visible to screen readers.
+	 * @default "Loading..."
+	 */
+	label?: string;
 }
 
-export const Spinner = forwardRef<HTMLDivElement, SpinnerProps>((props, ref) => {
-  const { label = 'Loading...', ...rest } = props
+export const Spinner = forwardRef<HTMLDivElement, SpinnerProps>(
+	(props, ref) => {
+		const { label = "Loading...", ...rest } = props;
 
-  return (
-    <StyledSpinner
-      ref={ref}
-      borderBottomColor="transparent"
-      borderLeftColor="transparent"
-      {...rest}
-    >
-      {label && <styled.span srOnly>{label}</styled.span>}
-    </StyledSpinner>
-  )
-})
+		return (
+			<div ref={ref}>
+				<StyledSpinner {...rest} />
+				{label && <styled.span srOnly>{label}</styled.span>}
+			</div>
+		);
+	},
+);
 
-Spinner.displayName = 'Spinner'
+Spinner.displayName = "Spinner";

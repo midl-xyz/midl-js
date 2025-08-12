@@ -25,8 +25,29 @@
 
 ### Documentation
 
-> [!WARNING]
-> Documentation is still a work in progress
+For detailed documentation, please visit our [documentation site](https://midl-js-lib.midl.xyz).
 
-For detailed documentation, please visit
-[midl-js-lib.midl.xyz](https://midl-js-lib.midl.xyz).
+### Development
+
+To contribute to the MIDL JS library, you can clone the repository and run the following commands:
+
+```bash
+# Install dependencies
+pnpm install
+
+# Build the project
+pnpm build:packages
+
+# Run tests
+pnpm test:packages
+```
+
+#### Documentation
+
+To contribute to the documentation, you can edit the Markdown files in the `apps/docs` directory. The documentation is built using [VitePress](https://vitepress.dev/).
+
+Run the following command to start the documentation server:
+
+```bash
+pnpm docs:dev
+```

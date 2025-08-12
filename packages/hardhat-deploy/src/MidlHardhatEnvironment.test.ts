@@ -1,11 +1,90 @@
+import { type Address, erc20Abi, getAddress } from "viem";
+import { getTransactionReceipt, readContract } from "viem/actions";
 import { describe, expect, it } from "vitest";
 import { useEnvironment } from "../tests/useEnvironment";
-import { getTransactionReceipt, readContract } from "viem/actions";
-import { getEVMAddress } from "@midl-xyz/midl-js-executor";
-import { type Address, getAddress, zeroAddress } from "viem";
 
 describe("MidlHardhatEnvironment", () => {
 	useEnvironment();
+
+	it("initializes with p2wpkh address", async () => {
+		const {
+			hre: { midl },
+		} = globalThis;
+		await midl.initialize();
+
+		expect(midl.getAccount().address).toBe(
+			"bcrt1qz4yz7junaupmav0ycmwheglahya7wuy0g7n6tc",
+		);
+	});
+
+	it("initializes with p2wpkh address, index 1", async () => {
+		const {
+			hre: { midl },
+		} = globalThis;
+		await midl.initialize(1);
+
+		expect(midl.getAccount().address).toBe(
+			"bcrt1qldp99gjlh5qhj624qu9hg7cw3tztj0h6urds2z",
+		);
+	});
+
+	it.skip("deposits and withdraws runes", async () => {
+		const {
+			hre: { midl },
+		} = globalThis;
+		await midl.initialize();
+		const evmAddress = midl.getEVMAddress();
+
+		console.log("EMV address", evmAddress);
+
+		const RuneID: {
+			runeId: string;
+			address: Address;
+		} = {
+			runeId: "11893:1",
+			address: "0x3eDb3dFD4C8b1bb46304F25e933816A7fDAB6FF6",
+		};
+
+		await midl.save("USDT", {
+			abi: erc20Abi,
+			address: RuneID.address,
+		});
+
+		const runeId = RuneID.runeId;
+		const runeAddress = RuneID.address;
+		const amount = 228n;
+		console.log("USDT", runeId, runeAddress);
+
+		await midl.deploy("RunesRelayer", { args: [runeAddress] });
+		await midl.execute(); // Run callContract
+
+		const Relayer = await midl.getDeployment("RunesRelayer");
+		console.log("Deployed Relayer Address: ", Relayer?.address);
+
+		await midl.callContract("USDT", "approve", {
+			args: [Relayer?.address, amount],
+		});
+
+		await midl.callContract(
+			"RunesRelayer",
+			"depositRune",
+			{ args: [amount] },
+			{
+				deposit: {
+					runes: [{ id: runeId, amount: amount, address: runeAddress }],
+				},
+			},
+		);
+
+		await midl.callContract("RunesRelayer", "withdrawRune", {
+			args: [amount],
+		});
+		await midl.execute({
+			withdraw: {
+				runes: [{ id: runeId, amount: amount, address: runeAddress }],
+			},
+		});
+	});
 
 	it.skip("deploys libraries", async () => {
 		const {
@@ -97,7 +176,7 @@ describe("MidlHardhatEnvironment", () => {
 		await midl.deploy("StructFunctionParam", { args: [] });
 		await midl.execute();
 
-		const deployer = midl.wallet.getEVMAddress();
+		const deployer = midl.getEVMAddress();
 
 		await midl.initialize();
 		await midl.callContract("StructFunctionParam", "foo", {
@@ -149,11 +228,9 @@ describe("MidlHardhatEnvironment", () => {
 					},
 				],
 			],
-			gas: BigInt(10000000),
-			to: "0xff2BdE9960f3C2904F6A0085D669DA866f4EDDEC",
 		});
 
-		await midl.execute({ skipEstimateGasMulti: true });
+		await midl.execute();
 	});
 
 	it("changes account", async () => {
@@ -165,23 +242,16 @@ describe("MidlHardhatEnvironment", () => {
 
 		const prevConfig = midl.getConfig();
 
+		const prevAddress = midl.getEVMAddress();
+
 		await midl.initialize(1);
 
 		const newConfig = midl.getConfig();
 
-		expect(newConfig).not.toEqual(prevConfig);
+		const newAddress = midl.getEVMAddress();
 
-		expect(
-			getEVMAddress(
-				(prevConfig?.getState().accounts?.[0].publicKey as Address) ??
-					zeroAddress,
-			),
-		).not.toEqual(
-			getEVMAddress(
-				(newConfig?.getState().accounts?.[0].publicKey as Address) ??
-					zeroAddress,
-			),
-		);
+		expect(newConfig).not.toEqual(prevConfig);
+		expect(prevAddress).not.toEqual(newAddress);
 	});
 
 	it.skip("return correct evm address", async () => {
@@ -191,7 +261,7 @@ describe("MidlHardhatEnvironment", () => {
 
 		await midl.initialize();
 
-		const evmAddress = midl.wallet.getEVMAddress();
+		const evmAddress = midl.getEVMAddress();
 
 		await midl.deploy("StructFunctionParam", { args: [] });
 		await midl.execute();

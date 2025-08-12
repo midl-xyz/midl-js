@@ -10,13 +10,22 @@ import { useEVMChain } from "@midl-xyz/midl-js-executor-react";
 
 ## Example
 
-```tsx
+```ts
 const evmChain = useEVMChain();
 if (evmChain) {
   console.log(`EVM Chain Name: ${evmChain.name}`);
 }
 ```
 
+## Parameters
+
+| Name     | Type     | Description                                              |
+| -------- | -------- | -------------------------------------------------------- |
+| `config` | `Config` | (optional) Custom configuration to override the default. |
+| `chain`  | `Chain`  | (optional) Custom EVM chain to override the default.     |
+
 ## Returns
 
-`Chain` | `null` - The EVM chain configuration if available, otherwise `null`.
+| Name       | Type            | Description                                               |
+| ---------- | --------------- | --------------------------------------------------------- |
+| `evmChain` | `Chain \| null` | The EVM chain configuration if available, otherwise null. |
