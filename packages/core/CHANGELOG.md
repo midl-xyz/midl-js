@@ -1,5 +1,33 @@
 # @midl-xyz/midl-js-core
 
+## 2.0.0
+
+### Minor Changes
+
+- a52922b: feat: add custom network support
+
+### Patch Changes
+
+- 8d84ec9: feat: edict rune default account
+- 5caf7c1: fix: evm address account getter
+- f9479b5: fix(node): signPSBT p2wpkh
+- 220e274: feat(hardhat-deploy): segwit
+- 4fd01b4: feat: add network abstraction
+- 8e2a038: chore: pre-release clean up
+- d8e16c9: feat: xverse midl regtest
+- fcccf25: fix(core): extract default account
+- b05d2c8: feat: useDefaultAccount hook, default account for transfer and etch
+- 5d1e6be: feat: update connectors
+- aa819b9: feat: call switchNetwork connector
+- 5197f61: feat(core): define default account
+- 5ae3e60: feat: add signet support
+- 4835a25: feat(satoshi-kit): new look satoshi kit
+- 8935124: feat: disable rune edict limit
+- 2b4b7fa: fix(executor): withdrawals overlap deposits
+- 417f76e: chore: bump version
+- 2f9e940: feat: pass satoshis to tx
+  - @midl-xyz/logger@1.0.1
+
 ## 2.0.0-next.65
 
 ### Patch Changes

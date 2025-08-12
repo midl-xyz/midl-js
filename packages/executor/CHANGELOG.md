@@ -1,5 +1,77 @@
 # @midl-xyz/midl-js-executor
 
+## 2.0.0
+
+### Minor Changes
+
+- a52922b: feat: add custom network support
+
+### Patch Changes
+
+- dab7c62: fix: select txs without gas only
+- 5caf7c1: fix: evm address account getter
+- f9479b5: fix(node): signPSBT p2wpkh
+- 301dddc: feat(satoshi-kit): expose account and network to verify and sign message
+  feat(executor): getEVMAddress is now possible to use w/o midl config
+- 0555150: feat: add default state override
+- 19599b9: fix(executor): remove tx intention on complete
+- fac919a: fix: gas price
+- 220e274: feat(hardhat-deploy): segwit
+- 8e39984: feat: re-estimate with state override
+- 9200384: feat(executor): update tx costs
+- 8e2a038: chore: pre-release clean up
+- cff9ac6: fix(executor): unhandled operation scriptSize max
+- c6eb2b7: feat: fix gas price to 1000n
+- 5d1e6be: feat: update connectors
+- 9519964: fix: complete tx bytes32
+- 15f2a89: feat(executor): provide built-in wagmi
+- 6f5743d: feat: add complete tx intetnion
+- e838dfc: fix(executor): bip322 extract evm signature
+- f9f6d30: feat: add p2sh-p2wpkh support
+- 95fc514: fix: etna to regtest
+- a6279f0: fix: separate deposits/withdrawls
+- f9433a4: fix: estiamte gas total cost
+- 5197f61: feat(core): define default account
+- ccc957e: feat: use btc fee rate from midl
+- 2d41af6: fix: use sign intention
+- bc97fb9: feat: upgrade midl contracts
+- 7a859cc: fix: gas re-estimate
+- 9299b45: fix: gas re-estimate with completeTx
+- c7e2f56: feat(executor): declarative api
+- 5ae3e60: feat: add signet support
+- ecc0bf0: fix(executor): p2wpkh receiver btc
+- c7b98b9: fix: zero address in complete tx intention util
+- d15fa7c: feat: set complete tx gas cost
+- d63953b: fix(executor): btc fee rate response type
+- b21a677: feat: add multicall3
+- 2b4b7fa: fix(executor): withdrawals overlap deposits
+- 173e73f: fix: 0x0 padhex
+- 2f9e940: feat: pass satoshis to tx
+- df23720: feat: update executor address
+- 8bf4bde: fix(executor): evm address p2wpkh
+- a6d1675: fix(executor): fee rate multiplier
+- Updated dependencies [8d84ec9]
+- Updated dependencies [5caf7c1]
+- Updated dependencies [f9479b5]
+- Updated dependencies [220e274]
+- Updated dependencies [4fd01b4]
+- Updated dependencies [8e2a038]
+- Updated dependencies [d8e16c9]
+- Updated dependencies [fcccf25]
+- Updated dependencies [b05d2c8]
+- Updated dependencies [5d1e6be]
+- Updated dependencies [a52922b]
+- Updated dependencies [aa819b9]
+- Updated dependencies [5197f61]
+- Updated dependencies [5ae3e60]
+- Updated dependencies [4835a25]
+- Updated dependencies [8935124]
+- Updated dependencies [2b4b7fa]
+- Updated dependencies [417f76e]
+- Updated dependencies [2f9e940]
+  - @midl-xyz/midl-js-core@2.0.0
+  - @midl-xyz/logger@1.0.1
+
 ## 2.0.0-next.66
 
 ### Patch Changes

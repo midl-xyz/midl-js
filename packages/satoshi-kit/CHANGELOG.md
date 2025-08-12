@@ -1,5 +1,51 @@
 # @midl-xyz/satoshi-kit
 
+## 2.0.0
+
+### Minor Changes
+
+- a52922b: feat: add custom network support
+
+### Patch Changes
+
+- f17d440: fix: use default account sign auth
+- 301dddc: feat(satoshi-kit): expose account and network to verify and sign message
+  feat(executor): getEVMAddress is now possible to use w/o midl config
+- 220e274: feat(hardhat-deploy): segwit
+- 4fd01b4: feat: add network abstraction
+- 8e2a038: chore: pre-release clean up
+- d8e16c9: feat: xverse midl regtest
+- b05d2c8: feat: useDefaultAccount hook, default account for transfer and etch
+- 5d1e6be: feat: update connectors
+- 5ae3e60: feat: add signet support
+- 4835a25: feat(satoshi-kit): new look satoshi kit
+- d31eea0: feat: isolate satoshi kit
+- 2f9e940: feat: pass satoshis to tx
+- Updated dependencies [8d84ec9]
+- Updated dependencies [5caf7c1]
+- Updated dependencies [f9479b5]
+- Updated dependencies [220e274]
+- Updated dependencies [4fd01b4]
+- Updated dependencies [8e2a038]
+- Updated dependencies [d8e16c9]
+- Updated dependencies [fcccf25]
+- Updated dependencies [b05d2c8]
+- Updated dependencies [5d1e6be]
+- Updated dependencies [a52922b]
+- Updated dependencies [aa819b9]
+- Updated dependencies [5197f61]
+- Updated dependencies [371ac5f]
+- Updated dependencies [5ae3e60]
+- Updated dependencies [4835a25]
+- Updated dependencies [a064678]
+- Updated dependencies [8935124]
+- Updated dependencies [2b4b7fa]
+- Updated dependencies [417f76e]
+- Updated dependencies [2f9e940]
+  - @midl-xyz/midl-js-core@2.0.0
+  - @midl-xyz/midl-js-react@2.0.0
+  - @midl-xyz/midl-js-connectors@2.0.0
+
 ## 2.0.0-next.65
 
 ### Patch Changes
