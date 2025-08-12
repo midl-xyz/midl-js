@@ -1,0 +1,46 @@
+import { describe, expect, it } from "vitest";
+import { formatRuneName } from "./formatRuneName";
+
+describe("core | utils | formatRuneName", () => {
+	it("throws error if name is empty", () => {
+		expect(() => formatRuneName(" ")).toThrow("Rune name cannot be empty");
+	});
+
+	it("throws error if rune name contains non-ASCII chars", () => {
+		expect(() => formatRuneName("!A")).toThrowError(
+			"Rune name can only contain A-Z and • placed between letters",
+		);
+
+		expect(() => formatRuneName("ñ")).toThrowError(
+			"Rune name can only contain A-Z and • placed between letters",
+		);
+
+		expect(() => formatRuneName("1")).toThrowError(
+			"Rune name can only contain A-Z and • placed between letters",
+		);
+	});
+
+	it("throws error if rune name contains 2 or more • in a row", () => {
+		expect(() => formatRuneName("A•B••C")).toThrowError(
+			"Rune name can only contain A-Z and • placed between letters",
+		);
+	});
+
+	it("returns rune name if name contains only letters", () => {
+		expect(formatRuneName("AAAA")).toBe("AAAA");
+	});
+
+	it("returns rune name without • if name contains letters and •", () => {
+		expect(formatRuneName("RUNE•NAME")).toBe("RUNE•NAME");
+	});
+
+	it("returns rune name in local upper case format", () => {
+		expect(formatRuneName("Rune•Name")).toBe("RUNE•NAME");
+	});
+
+	it("throws error if length of the rune name is more than 26 letters", async () => {
+		expect(() =>
+			formatRuneName("IN•THIS•RUNE•NAME•TWENTY•SEVEN•SY"),
+		).toThrowError("Rune name can contain no more than 26 letters");
+	});
+});
