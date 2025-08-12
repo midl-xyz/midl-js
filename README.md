@@ -42,3 +42,12 @@ pnpm build:packages
 pnpm test:packages
 ```
 
+#### Documentation
+
+To contribute to the documentation, you can edit the Markdown files in the `apps/docs` directory. The documentation is built using [VitePress](https://vitepress.dev/).
+
+Run the following command to start the documentation server:
+
+```bash
+pnpm docs:dev
+```

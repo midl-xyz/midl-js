@@ -1,9 +1,5 @@
 # Sign Message
 
-::: warning
-THE DOCUMENTATION IS OUTDATED AND MAY NOT REFLECT THE CURRENT STATE OF THE PROJECT.
-:::
-
 Message signing is a way to prove that you own a particular public key without revealing the private key. This is useful for proving ownership of an address or for signing messages in a secure way.
 
 ## Usage

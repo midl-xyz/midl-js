@@ -8,7 +8,9 @@
 		"build:packages": "turbo run build --filter='./packages/*'",
 		"dev:packages": "turbo run dev --filter='./packages/*'",
 		"prepare": "husky",
-		"test:packages": "pnpm build:packages && vitest"
+		"test:packages": "pnpm build:packages && vitest",
+		"docs": "pnpm turbo run --filter='./apps/docs'",
+		"docs:dev": "pnpm run docs dev"
 	},
 	"devDependencies": {
 		"@alcalzone/esm2cjs": "^1.4.1",

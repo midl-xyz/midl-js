@@ -1,31 +1,33 @@
 # Connect Wallet
 
-::: warning
-THE DOCUMENTATION IS OUTDATED AND MAY NOT REFLECT THE CURRENT STATE OF THE PROJECT.
+::: tip
+We recommend to start with [SatoshiKit](../../satoshi-kit/index.md) to make it easier to connect to wallets and manage accounts.
 :::
+
 
 The ability to connect a wallet is a crucial part of interacting with the blockchain. MIDL.js provides a simple way to connect to a wallet.
 
-You can find the example in [apps/docs/examples](https://github.com/midl-xyz/midl-js/tree/main/apps/docs/examples)
 
 ## Usage
 
 ### 1. Create a Configuration Object
 
-In the example below we are using the `LeatherConnector` connector and the `regtest` network. You can use any connector and network you want.
+
+In the example below we are using `xverseConnector` to connect to the Xverse wallet. You can use any connector from `@midl-xyz/midl-js-connectors` or create your own.
 
 ::: code-group
 
 ```ts [midlConfig.ts]
 import {
   createConfig,
-  LeatherConnector,
   regtest,
 } from "@midl-xyz/midl-js-core";
+import { xverseConnector } from "@midl-xyz/midl-js-connectors";
 
 export const midlConfig = createConfig({
   networks: [regtest],
-  connectors: [new LeatherConnector()],
+  connectors: [xverseConnector()],
+  persist: true, // Enable persistence to store the wallet connection state
 });
 ```
 
@@ -141,13 +143,28 @@ export function YourApp() {
 
 ## Create your own Connector
 
-You can create your own connector by implementing the `Connector` interface.
+You can create your own connector by implementing the `Connector` interface and using the `createConnector` function.
 
 ```ts
-import { Connector } from "@midl-xyz/midl-js-core";
+import {
+	type CreateConnectorFn,
+  type Connector,
+	createConnector,
+} from "@midl-xyz/midl-js-core";
 
-export class CustomConnector implements Connector {
-  // Your implementation here
+export const myCustomConnector: CreateConnectorFn = ({ metadata } = {}) =>
+	createConnector(
+		{
+			metadata: {
+				name: "Phantom",
+			},
+			create: () => new MyCustomConnectorFactory(), 
+		},
+		metadata,
+	);
+
+class MyCustomConnectorFactory extends Connector {
+  // Implement the required methods like connect, signMessage, etc.
 }
 ```
 
@@ -157,18 +174,19 @@ Defined in [core/src/connectors/createConnector.ts](https://github.com/midl-xyz/
 
 ```ts
 export interface Connector {
-  readonly id: string;
-  readonly name: string;
-  connect(params: ConnectorConnectParams): Promise<Account[]>;
-  signMessage(
-    params: SignMessageParams,
-    network: BitcoinNetwork
-  ): Promise<SignMessageResponse>;
-  signPSBT(
-    params: Omit<SignPSBTParams, "publish">,
-    network: BitcoinNetwork
-  ): Promise<Omit<SignPSBTResponse, "txId">>;
-  beforeDisconnect?(): Promise<void>;
-  switchNetwork?(network: BitcoinNetwork): Promise<Account[]>;
+	readonly id: string;
+	connect(params: ConnectorConnectParams): Promise<Account[]>;
+	signMessage(
+		params: SignMessageParams,
+		network: BitcoinNetwork,
+	): Promise<SignMessageResponse>;
+	signPSBT(
+		params: Omit<SignPSBTParams, "publish">,
+		network: BitcoinNetwork,
+	): Promise<Omit<SignPSBTResponse, "txId">>;
+
+	beforeDisconnect?(): Promise<void>;
+	switchNetwork?(network: BitcoinNetwork): Promise<Account[]>;
+	addNetwork?(networkConfig: NetworkConfig): Promise<void>;
 }
 ```
