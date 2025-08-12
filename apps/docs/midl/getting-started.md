@@ -16,15 +16,15 @@ The executor packages allow you to interact with and deploy contracts on the MID
 ::: code-group
 
 ```bash [pnpm]
-pnpm add @midl-xyz/midl-js-executor @midl-xyz/midl-js-executor-react @midl-xyz/midl-js-connectors
+pnpm add @midl-xyz/midl-js-executor @midl-xyz/midl-js-executor-react @midl-xyz/midl-js-connectors @midl-xyz/midl-js-core @midl-xyz/midl-js-react
 ```
 
 ```bash [npm]
-npm install @midl-xyz/midl-js-executor @midl-xyz/midl-js-executor-react @midl-xyz/midl-js-connectors
+npm install @midl-xyz/midl-js-executor @midl-xyz/midl-js-executor-react @midl-xyz/midl-js-connectors @midl-xyz/midl-js-core @midl-xyz/midl-js-react
 ```
 
 ```bash [yarn]
-yarn add @midl-xyz/midl-js-executor @midl-xyz/midl-js-executor-react @midl-xyz/midl-js-connectors
+yarn add @midl-xyz/midl-js-executor @midl-xyz/midl-js-executor-react @midl-xyz/midl-js-connectors @midl-xyz/midl-js-core @midl-xyz/midl-js-react
 ```
 
 :::
