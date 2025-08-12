@@ -31,19 +31,35 @@ const intention = await addTxIntention(config, {
 
 ### PartialIntention
 
-| Name             | Type                                                                 | Description                                                                           |
-| ---------------- | -------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
-| evmTransaction   | [`TransactionSerializableBTC & { from?: Address }`](#evmtransaction) | EVM transaction details (with optional `from` address)                                |
-| deposit          | `{ satoshis?: number; runes?: { id: string; amount: bigint; address: Address; }[] }` | Optional deposit details. Satoshis and/or runes to deposit.                           |
-| withdraw         | `{ satoshis?: number; runes?: { id: string; amount: bigint; address: Address; }[] }` | Optional withdraw details. Satoshis and/or runes to withdraw.                         |
+| Name           | Type                                                                 | Description                                                   |
+| -------------- | -------------------------------------------------------------------- | ------------------------------------------------------------- |
+| evmTransaction | [`TransactionSerializableBTC & { from?: Address }`](#evmtransaction) | EVM transaction details (with optional `from` address)        |
+| deposit        | `Deposit`                                                            | Optional deposit details. Satoshis and/or runes to deposit.   |
+| withdraw       | `Withdrawal`                                                         | Optional withdraw details. Satoshis and/or runes to withdraw. |
 
-#### runes
 
-| Name    | Type                 | Description                           |
-| ------- | -------------------- | ------------------------------------- |
-| id      | `string`             | Rune id                               |
-| value   | `bigint`             | Amount of the rune to transfer        |
-| address | `Address` (optional) | Address for state override (optional) |
+#### Deposit
+
+| Name     | Type                         | Description                                                                            |
+| -------- | ---------------------------- | -------------------------------------------------------------------------------------- |
+| satoshis | `number` (optional)          | Amount in satoshis to deposit. If not provided, it will deposit all available balance. |
+| runes    | `RunesTransfer[]` (optional) | Array of runes to transfer. If not provided, it will not deposit any runes.            |
+
+
+#### Withdrawal
+
+| Name     | Type                         | Description                                                                              |
+| -------- | ---------------------------- | ---------------------------------------------------------------------------------------- |
+| satoshis | `number` (optional)          | Amount in satoshis to withdraw. If not provided, it will withdraw all available balance. |
+| runes    | `RunesTransfer[]` (optional) | Array of runes to transfer. If not provided, it will not withdraw any runes.             |
+
+#### RunesTransfer
+
+| Name    | Type      | Description                                      |
+| ------- | --------- | ------------------------------------------------ |
+| id      | `string`  | The rune ID, in the format `blockHeight:txIndex` |
+| amount  | `bigint`  | The amount to transfer                           |
+| address | `Address` | ERC20 address of the rune                        |
 
 
 ## Returns

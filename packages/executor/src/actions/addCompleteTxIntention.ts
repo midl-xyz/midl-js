@@ -17,7 +17,7 @@ import { getPublicKey } from "~/actions";
 import { addTxIntention } from "~/actions/addTxIntention";
 import { executorAddress } from "~/config";
 import { executorAbi } from "~/contracts/abi";
-import type { TransactionIntention } from "~/types";
+import type { TransactionIntention, Withdrawal } from "~/types";
 import { satoshisToWei } from "~/utils";
 
 export const COMPLETE_TX_GAS = 200_000n;
@@ -34,7 +34,7 @@ export const COMPLETE_TX_GAS = 200_000n;
  */
 export const addCompleteTxIntention = async (
 	config: Config,
-	withdraw?: TransactionIntention["withdraw"],
+	withdraw?: Withdrawal,
 ): Promise<TransactionIntention> => {
 	const { network, accounts } = config.getState();
 

@@ -71,11 +71,19 @@ const value = 1000; // Amount in satoshis
 await hre.midl.deploy("MyContract", {
   args: ["Hello World!"],
   value: satoshisToWei(value) // attaching 1000 satoshis and multiplying by 10 * 10 ** 10 in msg.value
-}, { satoshis: value });
+}, { 
+    deposit: {
+      satoshis: value
+    }
+});
 
 await hre.midl.callContract("MyContract", "somePayableFunction", {
   value: satoshisToWei(value) // attaching 1000 satoshis and multiplying by 10 ** 10 in msg.value
-}, { satoshis: value });
+}, {   
+  deposit: {
+      satoshis: value
+    }
+});
 ```
 
 
@@ -83,34 +91,19 @@ await hre.midl.callContract("MyContract", "somePayableFunction", {
 [CompleteTx](../../actions/addCompleteTxIntention.md) allows you to withdraw your assets back to Bitcoin L1. A complete transaction retrieves native BTC and Runes on request.
 
 ::: tip
-Passing only `shouldComplete: true` to `execute({})` will retrieve only native satoshis.
+Calling `execute({ withdraw: true })` will automatically call `completeTx` and withdraw only native BTC.
 :::
 
 ::: warning
-To retrieve runes, you must include the transaction intention:
-```ts
-{ hasRunesWithdraw: true, runes: [{ id, value, runeAddress }] }
-```
-
-and add `assetsToWithdraw` together with `shouldComplete` to the `execute({})` call:
-```ts
-{ assetsToWithdraw: [runeAddress], shouldComplete: true }
-```
+Only add `withdraw` to the `callContract` or `deploy` transaction intentions if you the contract you are calling calls the `Executor` contract's `completeTx` function. Otherwise, if you want to withdraw assets, you must call `completeTx` directly.
 :::
 
 In a `hardhat-deploy` function, you can invoke this as follows:
-```ts
-await hre.midl.callContract(
-  "RunesRelayer",
-  "withdrawRune",
-  { args: [amount] },
-  {
-    hasRunesWithdraw: true,
-    runes: [{ id: runeId, value: amount, address: runeAddress }],
-  },
-);
 
-await hre.midl.execute({ assetsToWithdraw: [runeAddress], shouldComplete: true });
+```ts
+await hre.midl.execute({ withdraw: {
+  runes: [{ id: runeId, value: amount, address: runeAddress }],
+}});
 ```
 
 
@@ -134,14 +127,15 @@ await hre.midl.callContract(
     args: [amount]
   },
   {
-    hasRunesDeposit: true,
-    runes: [
-      {
-        id: "1:1", // Rune ID may be attached manually or found by token address using midl-js-executor util
-        value: amount,
-        address: assetAddress // Mirrored ERC20 asset
-      }
-    ],
+    deposit: {
+      runes: [
+        {
+          id: "1:1", // Rune ID may be attached manually or found by token address using midl-js-executor util
+          value: amount,
+          address: assetAddress // Mirrored ERC20 asset
+        }
+      ]
+    }
   }
 );
 ```
@@ -161,7 +155,7 @@ await hre.midl.initialize();
 // some deployment functions
 
 hre.midl.execute({
-  skipEstimateGasMulti: true, // Skips gas estimation
+  skipEstimateGas: true, // Skips gas estimation
 });
 ```
 

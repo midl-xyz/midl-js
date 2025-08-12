@@ -20,11 +20,10 @@ const intention = await addCompleteTxIntention(config, [btcAddress, runeAddress]
 
 ## Parameters
 
-| Name               | Type                              | Description                                                                                  |
-| ------------------ | --------------------------------- | -------------------------------------------------------------------------------------------- |
-| `config`           | `Config`                          | The configuration object.                                                                    |
-| `assetsToWithdraw` | `[Address] \| [Address, Address]` | ERC20 addresses corresponding to Runes to withdraw. If omitted, no assets will be withdrawn. |
-
+| Name       | Type                                           | Description               |
+| ---------- | ---------------------------------------------- | ------------------------- |
+| `config`   | `Config`                                       | The configuration object. |
+| `withdraw` | [`Withdrawal`](./addTxIntention.md#withdrawal) | The assets to withdraw    |
 ## Returns
 
 `Promise<TransactionIntention>` — The prepared transaction intention object.
