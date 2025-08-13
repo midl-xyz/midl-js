@@ -8,14 +8,6 @@ import { wrapper } from "~/__tests__";
 import { midlConfig } from "~/__tests__/midlConfig";
 import { useSignIntention } from "~/hooks/useSignIntention";
 
-vi.mock("~/hooks/useLastNonce", async () => {
-	const actual = await vi.importActual("~/hooks");
-	return {
-		...actual,
-		useLastNonce: vi.fn(() => 1),
-	};
-});
-
 describe("executor-react | hooks | useSignIntention", () => {
 	beforeEach(async () => {
 		await connect(midlConfig, {

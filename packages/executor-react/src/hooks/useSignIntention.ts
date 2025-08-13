@@ -11,7 +11,6 @@ import {
 } from "@midl-xyz/midl-js-react";
 import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
 import { usePublicClient } from "wagmi";
-import { useLastNonce } from "~/hooks";
 
 type SignIntentionVariables = {
 	txId: string;
@@ -37,6 +36,10 @@ type UseSignIntentionParams = {
 	 */
 	store?: MidlContextStore;
 	options?: {
+		/**
+		 * If provided, will be used as starting nonce for the intentions
+		 */
+		nonce?: number;
 		/**
 		 * BTC address used to sign the transactions.
 		 */
@@ -65,7 +68,6 @@ export const useSignIntention = ({
 		protocol: SignMessageProtocol.Bip322,
 	},
 }: UseSignIntentionParams = {}) => {
-	const nonce = useLastNonce();
 	const config = useConfigInternal(customConfig);
 	const store = useStoreInternal(customStore);
 	const { intentions = [] } = useStore(customStore);
@@ -90,7 +92,7 @@ export const useSignIntention = ({
 				intentions,
 				{
 					txId,
-					nonce,
+					nonce: options.nonce,
 					from: options.from,
 					protocol: options.protocol,
 				},
