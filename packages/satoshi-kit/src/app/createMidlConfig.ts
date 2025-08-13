@@ -14,7 +14,6 @@ type ConfigParams = Omit<Parameters<typeof createConfig>[0], "connectors"> & {
 
 export const createMidlConfig = (params: ConfigParams) => {
 	return createConfig({
-		...params,
 		connectors: [
 			leatherConnector({
 				metadata: {
@@ -32,5 +31,6 @@ export const createMidlConfig = (params: ConfigParams) => {
 			phantomConnector(),
 			magicEdenConnector(),
 		],
+		...params,
 	});
 };
