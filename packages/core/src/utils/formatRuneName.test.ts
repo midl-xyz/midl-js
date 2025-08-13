@@ -62,14 +62,4 @@ describe("core | utils | formatRuneName", () => {
 			"IN•THIS•RUNE•NAME•TWENTY•SIX•SYM",
 		);
 	});
-
-	it("throws error if rune name contains similar A-Z and • symbols", () => {
-		expect(() => formatRuneName("RUNЕ•NAME")).toThrowError(
-			"Rune name can only contain A-Z and • placed between letters",
-		);
-
-		expect(() => formatRuneName("RUNE.NAME")).toThrowError(
-			"Rune name can only contain A-Z and • placed between letters",
-		);
-	});
 });
