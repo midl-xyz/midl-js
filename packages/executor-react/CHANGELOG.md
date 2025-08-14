@@ -1,5 +1,14 @@
 # @midl-xyz/midl-js-executor-react
 
+## 2.0.1
+
+### Patch Changes
+
+- 013ed6f: fix(executor-react): remove useLastNonce
+  - @midl-xyz/midl-js-core@2.0.1
+  - @midl-xyz/midl-js-executor@2.0.1
+  - @midl-xyz/midl-js-react@2.0.1
+
 ## 2.0.0
 
 ### Minor Changes
