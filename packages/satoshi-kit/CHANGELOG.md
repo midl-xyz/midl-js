@@ -1,5 +1,14 @@
 # @midl-xyz/satoshi-kit
 
+## 2.0.1
+
+### Patch Changes
+
+- 07762d4: fix(satoshi-kit): override connectors createMidlConfig
+  - @midl-xyz/midl-js-connectors@2.0.1
+  - @midl-xyz/midl-js-core@2.0.1
+  - @midl-xyz/midl-js-react@2.0.1
+
 ## 2.0.0
 
 ### Minor Changes

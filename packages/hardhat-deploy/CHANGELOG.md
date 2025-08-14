@@ -1,5 +1,14 @@
 # @midl-xyz/hardhat-deploy
 
+## 2.0.1
+
+### Patch Changes
+
+- @midl-xyz/midl-js-core@2.0.1
+- @midl-xyz/midl-js-executor@2.0.1
+- @midl-xyz/logger@2.0.1
+- @midl-xyz/midl-js-node@2.0.1
+
 ## 2.0.0
 
 ### Minor Changes
