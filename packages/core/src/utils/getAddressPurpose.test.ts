@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { AddressPurpose } from "~/constants";
 import { mainnet } from "../networks/mainnet";
 import { regtest } from "../networks/regtest";
 import { signet } from "../networks/signet";
@@ -8,21 +9,23 @@ import { getBitcoinAddress } from "./fixtures";
 import { getAddressPurpose } from "./getAddressPurpose";
 
 describe("core | utils | getAddressPurpose", () => {
+	const payment = AddressPurpose.Payment;
+	const ordinals = AddressPurpose.Ordinals;
 	it("returns payment purpose for P2WPKH address", () => {
 		const { p2wpkhMainnet } = getBitcoinAddress();
 		const { p2wpkhTestnet } = getBitcoinAddress();
 		const { p2wpkhRegtest } = getBitcoinAddress();
 
 		// biome-ignore lint/style/noNonNullAssertion: <explanation>
-		expect(getAddressPurpose(p2wpkhMainnet!, mainnet)).toBe("payment");
+		expect(getAddressPurpose(p2wpkhMainnet!, mainnet)).toBe(payment);
 		// biome-ignore lint/style/noNonNullAssertion: <explanation>
-		expect(getAddressPurpose(p2wpkhTestnet!, testnet)).toBe("payment");
+		expect(getAddressPurpose(p2wpkhTestnet!, testnet)).toBe(payment);
 		// biome-ignore lint/style/noNonNullAssertion: <explanation>
-		expect(getAddressPurpose(p2wpkhTestnet!, signet)).toBe("payment");
+		expect(getAddressPurpose(p2wpkhTestnet!, signet)).toBe(payment);
 		// biome-ignore lint/style/noNonNullAssertion: <explanation>
-		expect(getAddressPurpose(p2wpkhTestnet!, testnet4)).toBe("payment");
+		expect(getAddressPurpose(p2wpkhTestnet!, testnet4)).toBe(payment);
 		// biome-ignore lint/style/noNonNullAssertion: <explanation>
-		expect(getAddressPurpose(p2wpkhRegtest!, regtest)).toBe("payment");
+		expect(getAddressPurpose(p2wpkhRegtest!, regtest)).toBe(payment);
 	});
 
 	it("returns payment purpose for P2SH-P2WPKH address", () => {
@@ -31,15 +34,15 @@ describe("core | utils | getAddressPurpose", () => {
 		const { p2shRegtest } = getBitcoinAddress();
 
 		// biome-ignore lint/style/noNonNullAssertion: <explanation>
-		expect(getAddressPurpose(p2shMainnet!, mainnet)).toBe("payment");
+		expect(getAddressPurpose(p2shMainnet!, mainnet)).toBe(payment);
 		// biome-ignore lint/style/noNonNullAssertion: <explanation>
-		expect(getAddressPurpose(p2shTestnet!, testnet)).toBe("payment");
+		expect(getAddressPurpose(p2shTestnet!, testnet)).toBe(payment);
 		// biome-ignore lint/style/noNonNullAssertion: <explanation>
-		expect(getAddressPurpose(p2shTestnet!, testnet4)).toBe("payment");
+		expect(getAddressPurpose(p2shTestnet!, testnet4)).toBe(payment);
 		// biome-ignore lint/style/noNonNullAssertion: <explanation>
-		expect(getAddressPurpose(p2shTestnet!, signet)).toBe("payment");
+		expect(getAddressPurpose(p2shTestnet!, signet)).toBe(payment);
 		// biome-ignore lint/style/noNonNullAssertion: <explanation>
-		expect(getAddressPurpose(p2shRegtest!, regtest)).toBe("payment");
+		expect(getAddressPurpose(p2shRegtest!, regtest)).toBe(payment);
 	});
 
 	it("returns originals purpose for P2TR address", () => {
@@ -48,15 +51,15 @@ describe("core | utils | getAddressPurpose", () => {
 		const { p2trRegtest } = getBitcoinAddress();
 
 		// biome-ignore lint/style/noNonNullAssertion: <explanation>
-		expect(getAddressPurpose(p2trMainnet!, mainnet)).toBe("ordinals");
+		expect(getAddressPurpose(p2trMainnet!, mainnet)).toBe(ordinals);
 		// biome-ignore lint/style/noNonNullAssertion: <explanation>
-		expect(getAddressPurpose(p2trTestnet!, testnet)).toBe("ordinals");
+		expect(getAddressPurpose(p2trTestnet!, testnet)).toBe(ordinals);
 		// biome-ignore lint/style/noNonNullAssertion: <explanation>
-		expect(getAddressPurpose(p2trTestnet!, testnet4)).toBe("ordinals");
+		expect(getAddressPurpose(p2trTestnet!, testnet4)).toBe(ordinals);
 		// biome-ignore lint/style/noNonNullAssertion: <explanation>
-		expect(getAddressPurpose(p2trTestnet!, signet)).toBe("ordinals");
+		expect(getAddressPurpose(p2trTestnet!, signet)).toBe(ordinals);
 		// biome-ignore lint/style/noNonNullAssertion: <explanation>
-		expect(getAddressPurpose(p2trRegtest!, regtest)).toBe("ordinals");
+		expect(getAddressPurpose(p2trRegtest!, regtest)).toBe(ordinals);
 	});
 
 	it("returns payment purpose for P2PKH address", () => {
@@ -65,15 +68,15 @@ describe("core | utils | getAddressPurpose", () => {
 		const { p2pkhRegtest } = getBitcoinAddress();
 
 		// biome-ignore lint/style/noNonNullAssertion: <explanation>
-		expect(getAddressPurpose(p2pkhMainnet!, mainnet)).toBe("payment");
+		expect(getAddressPurpose(p2pkhMainnet!, mainnet)).toBe(payment);
 		// biome-ignore lint/style/noNonNullAssertion: <explanation>
-		expect(getAddressPurpose(p2pkhTestnet!, testnet)).toBe("payment");
+		expect(getAddressPurpose(p2pkhTestnet!, testnet)).toBe(payment);
 		// biome-ignore lint/style/noNonNullAssertion: <explanation>
-		expect(getAddressPurpose(p2pkhTestnet!, testnet4)).toBe("payment");
+		expect(getAddressPurpose(p2pkhTestnet!, testnet4)).toBe(payment);
 		// biome-ignore lint/style/noNonNullAssertion: <explanation>
-		expect(getAddressPurpose(p2pkhTestnet!, signet)).toBe("payment");
+		expect(getAddressPurpose(p2pkhTestnet!, signet)).toBe(payment);
 		// biome-ignore lint/style/noNonNullAssertion: <explanation>
-		expect(getAddressPurpose(p2pkhRegtest!, regtest)).toBe("payment");
+		expect(getAddressPurpose(p2pkhRegtest!, regtest)).toBe(payment);
 	});
 
 	it("throws error if address that does not match the network configuration", () => {
