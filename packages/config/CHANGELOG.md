@@ -1,10 +1,13 @@
-# @midl-xyz/midl-js-config
+# @midl/midl-js-config
 
 ## 2.0.2
 
 ### Patch Changes
 
 - fix(executor-react): context type import
+
+# @midl-xyz/midl-js-config
+
 
 ## 2.0.1
 

@@ -1,4 +1,4 @@
-# @midl-xyz/midl-js-executor-react
+# @midl/executor-react
 
 ## 2.0.2
 
@@ -9,6 +9,8 @@
   - @midl/executor@2.0.2
   - @midl/react@2.0.2
   - @midl/core@2.0.2
+
+# @midl-xyz/midl-js-executor-react
 
 ## 2.0.1
 

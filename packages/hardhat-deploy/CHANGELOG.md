@@ -1,4 +1,4 @@
-# @midl-xyz/hardhat-deploy
+# @midl/hardhat-deploy
 
 ## 2.0.2
 
@@ -10,6 +10,9 @@
   - @midl/logger@2.0.2
   - @midl/core@2.0.2
   - @midl/node@2.0.2
+
+# @midl-xyz/hardhat-deploy
+
 
 ## 2.0.1
 

@@ -1,4 +1,4 @@
-# @midl-xyz/playwright-btc-wallets
+# @midl/playwright
 
 ## 2.0.2
 
@@ -7,6 +7,8 @@
 - fix(executor-react): context type import
 - Updated dependencies
   - @midl/core@2.0.2
+
+# @midl-xyz/playwright-btc-wallets
 
 ## 2.0.1
 
