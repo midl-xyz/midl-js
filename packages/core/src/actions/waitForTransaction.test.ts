@@ -8,7 +8,7 @@ import { regtest } from "~/networks";
 const txId = "1";
 
 describe("core | actions | waitForTransaction", async () => {
-	const { keyPairConnector } = await import("@midl-xyz/midl-js-node");
+	const { keyPairConnector } = await import("@midl/node");
 
 	let config: Config;
 

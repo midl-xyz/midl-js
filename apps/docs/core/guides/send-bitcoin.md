@@ -13,7 +13,7 @@ Follow the [Connect Wallet](connect-wallet.md) guide to configure the app.
 ::: code-group
 
 ```tsx [SendBitcoin.tsx]
-import { useTransferBTC, useEdictRune } from "@midl-xyz/midl-js-react";
+import { useTransferBTC, useEdictRune } from "@midl/react";
 
 export function SendBitcoin() {
   const { transferBTC, data: btcData } = useTransferBTC();
@@ -70,7 +70,7 @@ export function SendBitcoin() {
 ```tsx{4,15} [YourApp.tsx]
 import { ConnectWallet } from "./ConnectWallet";
 import { ConnectedAccounts } from "./ConnectedAccounts";
-import { useAccounts } from "@midl-xyz/midl-js-react";
+import { useAccounts } from "@midl/react";
 import { SendBitcoin } from "./SendBitcoin";
 
 export function YourApp() {

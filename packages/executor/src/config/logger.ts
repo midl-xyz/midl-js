@@ -1,6 +1,6 @@
-import { getLogger as midlGetLogger } from "@midl-xyz/logger";
+import { getLogger as midlGetLogger } from "@midl/logger";
 
-const logger = midlGetLogger(["@midl-xyz/midl-js-executor"]);
+const logger = midlGetLogger(["@midl/executor"]);
 
 export enum LoggerNamespace {
 	Actions = "actions",

@@ -4,8 +4,8 @@ import {
 	createConfig,
 	getDefaultAccount,
 	regtest,
-} from "@midl-xyz/midl-js-core";
-import { keyPairConnector } from "@midl-xyz/midl-js-node";
+} from "@midl/core";
+import { keyPairConnector } from "@midl/node";
 import { beforeAll, describe, expect, it } from "vitest";
 import { __TEST__MNEMONIC__ } from "~/__tests__/keyPair";
 import { addTxIntention } from "~/actions/addTxIntention";

@@ -7,13 +7,13 @@ Creates a transaction intention with the provided parameters. This is a low-leve
 ## Import
 
 ```ts
-import { addTxIntention } from "@midl-xyz/midl-js-executor";
+import { addTxIntention } from "@midl/executor";
 ```
 
 ## Example
 
 ```ts
-import { addTxIntention } from "@midl-xyz/midl-js-executor";
+import { addTxIntention } from "@midl/executor";
 
 const intention = await addTxIntention(config, {
   // ...partial intention fields

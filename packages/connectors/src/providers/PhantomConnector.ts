@@ -8,7 +8,7 @@ import {
 	type SignPSBTParams,
 	type SignPSBTResponse,
 	getAddressType,
-} from "@midl-xyz/midl-js-core";
+} from "@midl/core";
 import { Psbt } from "bitcoinjs-lib";
 
 export class PhantomConnector implements Connector {

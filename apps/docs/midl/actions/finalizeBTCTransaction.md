@@ -8,13 +8,13 @@ Prepares a Bitcoin transaction for the provided intentions. Calculates gas limit
 ## Import
 
 ```ts
-import { finalizeBTCTransaction } from "@midl-xyz/midl-js-executor";
+import { finalizeBTCTransaction } from "@midl/executor";
 ```
 
 ## Example
 
 ```ts
-import { finalizeBTCTransaction } from "@midl-xyz/midl-js-executor";
+import { finalizeBTCTransaction } from "@midl/executor";
 
 const btcTx = await finalizeBTCTransaction(config, intentions, client, { feeRate: 10 });
 ```

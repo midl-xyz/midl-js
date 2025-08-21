@@ -1,5 +1,5 @@
-import type { Account } from "@midl-xyz/midl-js-core";
-import { useConfig, useSignMessage } from "@midl-xyz/midl-js-react";
+import type { Account } from "@midl/core";
+import { useConfig, useSignMessage } from "@midl/react";
 import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
 import { useSatoshiKit } from "~/app";
 

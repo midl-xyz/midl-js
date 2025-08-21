@@ -7,7 +7,7 @@ Returns the public key to use for passing along to the EVM network.
 ## Import
 
 ```ts
-import { getPublicKey } from "@midl-xyz/midl-js-executor";
+import { getPublicKey } from "@midl/executor";
 ```
 
 ## Example

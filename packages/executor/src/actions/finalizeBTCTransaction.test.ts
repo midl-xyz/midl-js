@@ -1,4 +1,4 @@
-import { AddressPurpose, connect, disconnect } from "@midl-xyz/midl-js-core";
+import { AddressPurpose, connect, disconnect } from "@midl/core";
 import { http, type Chain, createWalletClient } from "viem";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { midlConfig } from "~/__tests__/midlConfig";

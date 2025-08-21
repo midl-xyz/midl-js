@@ -1,5 +1,5 @@
 ---
-title: "@midl-xyz/satoshi-kit"
+title: "@midl/satoshi-kit"
 order: 100
 ---
 

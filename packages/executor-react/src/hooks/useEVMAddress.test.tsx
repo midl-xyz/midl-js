@@ -1,4 +1,4 @@
-import { AddressPurpose, connect, disconnect } from "@midl-xyz/midl-js-core";
+import { AddressPurpose, connect, disconnect } from "@midl/core";
 import { renderHook } from "@testing-library/react";
 import { zeroAddress } from "viem";
 import { describe, expect, it } from "vitest";

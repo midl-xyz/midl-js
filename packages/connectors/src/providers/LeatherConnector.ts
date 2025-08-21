@@ -11,7 +11,7 @@ import {
 	type SignPSBTResponse,
 	getAddressPurpose,
 	getAddressType,
-} from "@midl-xyz/midl-js-core";
+} from "@midl/core";
 import { Psbt, networks } from "bitcoinjs-lib";
 
 export class LeatherConnector implements Connector {

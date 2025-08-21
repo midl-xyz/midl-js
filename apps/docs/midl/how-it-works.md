@@ -5,13 +5,13 @@ order: 2
 
 # How it works
 
-To interact with MIDL protocol, you need to use the `@midl-xyz/midl-js-executor` package.
+To interact with MIDL protocol, you need to use the `@midl/executor` package.
 
 Executor packages enable you to interact with the MIDL protocol to create more complex Bitcoin dApps.
 
 ## Concept
 
-While the `@midl-xyz/midl-js-core` package provides the basic building blocks for interacting with Bitcoin, the executor packages provide pre-built functions that can be used to interact with the MIDL protocol.
+While the `@midl/core` package provides the basic building blocks for interacting with Bitcoin, the executor packages provide pre-built functions that can be used to interact with the MIDL protocol.
 
 Core feature of the executor is the ability to execute transaction intentions on the underlaying MIDL protocol which is handled by Bitcoin transactions.
 

@@ -5,7 +5,7 @@ Adds a complete transaction intention. Wraps `addCompleteTxIntention` and stores
 ## Import
 
 ```ts
-import { useAddCompleteTxIntention } from "@midl-xyz/midl-js-executor-react";
+import { useAddCompleteTxIntention } from "@midl/executor-react";
 ```
 
 ## Example

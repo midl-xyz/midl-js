@@ -3,7 +3,7 @@ import {
 	type ConnectParams,
 	type Connector,
 	connect,
-} from "@midl-xyz/midl-js-core";
+} from "@midl/core";
 import {
 	type DefaultError,
 	type UseMutationOptions,

@@ -5,13 +5,13 @@ Switches between different Bitcoin networks as configured.
 ## Import
 
 ```ts
-import { useSwitchNetwork } from '@midl-xyz/midl-js-react';
+import { useSwitchNetwork } from '@midl/react';
 ```
 
 ## Example
 
 ```tsx
-import { mainnet, testnet } from '@midl-xyz/midl-js-core';
+import { mainnet, testnet } from '@midl/core';
 
 function MyComponent() {
     const { switchNetwork } = useSwitchNetwork();

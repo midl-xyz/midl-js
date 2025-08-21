@@ -1,5 +1,5 @@
 {
-	"name": "@midl-xyz/midl-js-node",
+	"name": "@midl/node",
 	"version": "2.0.1",
 	"scripts": {
 		"build": "pnpm run clean && tspc --project tsconfig.esm.json && tspc --project tsconfig.cjs.json",
@@ -25,8 +25,8 @@
 		}
 	},
 	"devDependencies": {
-		"@midl-xyz/midl-js-config": "workspace:^",
-		"@midl-xyz/midl-js-core": "workspace:^",
+		"@midl/midl-js-config": "workspace:^",
+		"@midl/core": "workspace:^",
 		"@types/node": "^22.8.7",
 		"bip322-js": "^2.0.0"
 	},
@@ -41,6 +41,6 @@
 		"varuint-bitcoin": "1.1.2"
 	},
 	"peerDependencies": {
-		"@midl-xyz/midl-js-core": "workspace:^"
+		"@midl/core": "workspace:^"
 	}
 }

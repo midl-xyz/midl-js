@@ -1,6 +1,6 @@
 "use client";
 
-import { useAccounts } from "@midl-xyz/midl-js-react";
+import { useAccounts } from "@midl/react";
 import { useSatoshiKit } from "~/app";
 import { useToggle } from "~/shared/api";
 import { Button } from "~/shared/ui/button";

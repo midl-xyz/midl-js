@@ -16,15 +16,15 @@ The executor packages allow you to interact with and deploy contracts on the MID
 ::: code-group
 
 ```bash [pnpm]
-pnpm add @midl-xyz/midl-js-executor @midl-xyz/midl-js-executor-react @midl-xyz/midl-js-connectors @midl-xyz/midl-js-core @midl-xyz/midl-js-react
+pnpm add @midl/executor @midl/executor-react @midl/connectors @midl/core @midl/react
 ```
 
 ```bash [npm]
-npm install @midl-xyz/midl-js-executor @midl-xyz/midl-js-executor-react @midl-xyz/midl-js-connectors @midl-xyz/midl-js-core @midl-xyz/midl-js-react
+npm install @midl/executor @midl/executor-react @midl/connectors @midl/core @midl/react
 ```
 
 ```bash [yarn]
-yarn add @midl-xyz/midl-js-executor @midl-xyz/midl-js-executor-react @midl-xyz/midl-js-connectors @midl-xyz/midl-js-core @midl-xyz/midl-js-react
+yarn add @midl/executor @midl/executor-react @midl/connectors @midl/core @midl/react
 ```
 
 :::
@@ -46,7 +46,7 @@ fees, adding `estimateGasMulti` method and more.
 {
   "pnpm": {
     "overrides": {
-      "viem": "npm:@midl-xyz/midl-viem"
+      "viem": "npm:@midl/viem"
     }
   }
 }
@@ -55,7 +55,7 @@ fees, adding `estimateGasMulti` method and more.
 ```json [package.json(npm)]
 {
   "overrides": {
-    "viem": "npm:@midl-xyz/midl-viem"
+    "viem": "npm:@midl/viem"
   }
 }
 ```
@@ -63,7 +63,7 @@ fees, adding `estimateGasMulti` method and more.
 ```json [package.json(yarn)]
 {
   "resolutions": {
-    "viem": "npm:@midl-xyz/midl-viem"
+    "viem": "npm:@midl/viem"
   }
 }
 ```
@@ -77,8 +77,8 @@ Add `WagmiMidlProvider` to provide the necessary context for the executor to wor
 ::: code-group
 
 ```tsx [app.tsx]
-import { MidlProvider } from '@midl-xyz/midl-js-react';
-import { WagmiMidlProvider } from "@midl-xyz/midl-js-executor-react";
+import { MidlProvider } from '@midl/react';
+import { WagmiMidlProvider } from "@midl/executor-react";
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import {midlConfig} from './midlConfig';
@@ -102,8 +102,8 @@ function App({ children }: { children: React.ReactNode }) {
 import {
   createConfig,
   regtest,
-} from "@midl-xyz/midl-js-core";
-import { xverseConnector } from "@midl-xyz/midl-js-connectors";
+} from "@midl/core";
+import { xverseConnector } from "@midl/connectors";
 
 export const midlConfig = createConfig({
   networks: [regtest],

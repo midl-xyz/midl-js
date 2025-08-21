@@ -1,4 +1,4 @@
-import type { Account } from "@midl-xyz/midl-js-core";
+import type { Account } from "@midl/core";
 import {
 	fireEvent,
 	render,

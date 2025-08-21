@@ -5,7 +5,7 @@ Gets a rune by its ID. See [getRune](../actions/getRune.md) for more information
 ## Import
 
 ```ts
-import { useRune } from "@midl-xyz/midl-js-react";
+import { useRune } from "@midl/react";
 ```
 
 ## Example

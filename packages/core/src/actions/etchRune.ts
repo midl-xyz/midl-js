@@ -94,8 +94,8 @@ const ETCHING_TX_SIZE = 350;
  *
  * @example
  * ```ts
- * import { etchRune } from "@midl-xyz/midl-js-core";
- * import { broadcastTransaction } from "@midl-xyz/midl-js-core";
+ * import { etchRune } from "@midl/core";
+ * import { broadcastTransaction } from "@midl/core";
  *
  * const etching = await etchRune(config, {
  * 	name: "RUNE•NAME",

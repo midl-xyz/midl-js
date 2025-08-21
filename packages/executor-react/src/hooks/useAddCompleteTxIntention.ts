@@ -1,13 +1,13 @@
-import type { Config } from "@midl-xyz/midl-js-core";
+import type { Config } from "@midl/core";
 import {
 	type TransactionIntention,
 	addCompleteTxIntention,
-} from "@midl-xyz/midl-js-executor";
+} from "@midl/executor";
 import {
 	type MidlContextStore,
 	useConfigInternal,
 	useStoreInternal,
-} from "@midl-xyz/midl-js-react";
+} from "@midl/react";
 import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
 
 type UseAddCompleteTxIntentionParams = {

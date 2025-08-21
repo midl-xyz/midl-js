@@ -11,7 +11,7 @@ Follow the [Connect Wallet](connect-wallet.md) guide to configure the app.
 ### 2. Sign a PSBT
 
 ```tsx [SignPSBT.tsx]
-import { useSignPSBT, useAccounts } from "@midl-xyz/midl-js-react";
+import { useSignPSBT, useAccounts } from "@midl/react";
 import * as bitcoin from "bitcoinjs-lib";
 
 export function SignPSBT() {
@@ -62,7 +62,7 @@ export function SignPSBT() {
 ```tsx{4,15} [YourApp.tsx]
 import { ConnectWallet } from "./ConnectWallet";
 import { ConnectedAccounts } from "./ConnectedAccounts";
-import { useAccounts } from "@midl-xyz/midl-js-react";
+import { useAccounts } from "@midl/react";
 import { SignPSBT } from "./SignPSBT";
 
 export function YourApp() {

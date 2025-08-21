@@ -27,7 +27,7 @@ The `midl` field in your Hardhat config enables integration with the MIDL Hardha
 ## Example
 
 ```ts
-import { AddressPurpose } from "@midl-xyz/midl-js-core";
+import { AddressPurpose } from "@midl/core";
 
 export default {
   midl: {

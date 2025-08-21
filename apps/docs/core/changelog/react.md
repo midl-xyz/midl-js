@@ -1,5 +1,5 @@
 ---
-title: "@midl-xyz/midl-js-react"
+title: "@midl/react"
 order: 100
 ---
 

@@ -1,5 +1,5 @@
-import { AddressPurpose, connect, disconnect } from "@midl-xyz/midl-js-core";
-import { renderHook, waitFor, act } from "@testing-library/react";
+import { AddressPurpose, connect, disconnect } from "@midl/core";
+import { act, renderHook, waitFor } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { midlConfig, wrapper } from "~/__tests__/wrapper";
 import { useAccounts } from "~/hooks/useAccounts";

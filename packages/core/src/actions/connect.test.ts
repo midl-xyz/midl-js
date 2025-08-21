@@ -6,7 +6,7 @@ import { createConfig } from "~/createConfig";
 import { regtest } from "~/networks";
 
 describe("core | actions | connect", async () => {
-	const { keyPairConnector } = await import("@midl-xyz/midl-js-node");
+	const { keyPairConnector } = await import("@midl/node");
 
 	it("connects", async () => {
 		const config = createConfig({

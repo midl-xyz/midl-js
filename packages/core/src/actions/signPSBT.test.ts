@@ -17,7 +17,7 @@ vi.mock("./broadcastTransaction", () => {
 });
 
 describe("core | actions | signPSBT", async () => {
-	const { keyPairConnector } = await import("@midl-xyz/midl-js-node");
+	const { keyPairConnector } = await import("@midl/node");
 
 	it("signs psbt with the connected wallet", async () => {
 		const config = createConfig({

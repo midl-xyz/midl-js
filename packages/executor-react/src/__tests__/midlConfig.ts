@@ -1,5 +1,5 @@
-import { createConfig, regtest } from "@midl-xyz/midl-js-core";
-import { keyPairConnector } from "@midl-xyz/midl-js-node";
+import { createConfig, regtest } from "@midl/core";
+import { keyPairConnector } from "@midl/node";
 import { __TEST__MNEMONIC__ } from "~/__tests__/keyPair";
 
 export const midlConfig = createConfig({

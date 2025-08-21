@@ -8,7 +8,7 @@ Supports ECDSA and BIP322 protocols
 ## Import
 
 ```ts
-import { signMessage } from "@midl-xyz/midl-js-core";
+import { signMessage } from "@midl/core";
 ```
 
 ## Example

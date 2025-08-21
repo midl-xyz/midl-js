@@ -1,4 +1,4 @@
-import { AddressType, SignMessageProtocol } from "@midl-xyz/midl-js-core";
+import { AddressType, SignMessageProtocol } from "@midl/core";
 import { Signature } from "@noble/secp256k1";
 import { publicKeyConvert } from "secp256k1";
 import { recoverPublicKey, toBytes, toHex } from "viem";

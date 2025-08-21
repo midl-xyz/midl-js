@@ -7,12 +7,8 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
-import {
-	useConfig,
-	useHydrated,
-	useSwitchNetwork,
-} from "@midl-xyz/midl-js-react";
-import { ConnectButton } from "@midl-xyz/satoshi-kit";
+import { useConfig, useHydrated, useSwitchNetwork } from "@midl/react";
+import { ConnectButton } from "@midl/satoshi-kit";
 import { useEffect } from "react";
 import { useController, useForm } from "react-hook-form";
 

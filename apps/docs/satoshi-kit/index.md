@@ -31,15 +31,15 @@ onMounted(() => {
 ::: code-group
 
 ```bash [pnpm]
-pnpm add @midl-xyz/satoshi-kit
+pnpm add @midl/satoshi-kit
 ```
 
 ```bash [npm]
-npm install @midl-xyz/satoshi-kit
+npm install @midl/satoshi-kit
 ```
 
 ```bash [yarn]
-yarn add @midl-xyz/satoshi-kit
+yarn add @midl/satoshi-kit
 ```
 
 :::
@@ -52,18 +52,18 @@ Import the required components and create midl config:
 
 ::: tip
 
-Use `createMidlConfig` from `@midl-xyz/satoshi-kit` to create the midl config. This will automatically set up the connectors for you.
+Use `createMidlConfig` from `@midl/satoshi-kit` to create the midl config. This will automatically set up the connectors for you.
 
 :::
 
 ::: code-group
 
 ```tsx{2,5,14-16} [App.tsx]
-import { MidlProvider } from "@midl-xyz/midl-js-react";
-import { SatoshiKitProvider, ConnectButton } from "@midl-xyz/satoshi-kit";
+import { MidlProvider } from "@midl/react";
+import { SatoshiKitProvider, ConnectButton } from "@midl/satoshi-kit";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { useMemo, type ReactNode } from "react";
-import "@midl-xyz/satoshi-kit/styles.css";
+import "@midl/satoshi-kit/styles.css";
 import { midlConfig, queryClient } from "./config";
 
 export const App = ({ children }: { children: ReactNode }) => {
@@ -82,8 +82,8 @@ export const App = ({ children }: { children: ReactNode }) => {
 ```
 
 ```ts [config.ts]
-import { type Config, regtest } from "@midl-xyz/midl-js-core";
-import { createMidlConfig } from "@midl-xyz/satoshi-kit";
+import { type Config, regtest } from "@midl/core";
+import { createMidlConfig } from "@midl/satoshi-kit";
 import { QueryClient } from "@tanstack/react-query";
 
 export const midlConfig = createMidlConfig({

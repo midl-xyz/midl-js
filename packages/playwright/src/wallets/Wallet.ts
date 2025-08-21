@@ -1,10 +1,4 @@
-import {
-	mainnet,
-	regtest,
-	signet,
-	testnet,
-	testnet4,
-} from "@midl-xyz/midl-js-core";
+import { mainnet, regtest, signet, testnet, testnet4 } from "@midl/core";
 import type { BrowserContext, Page } from "@playwright/test";
 
 export const supportedNetworks = {

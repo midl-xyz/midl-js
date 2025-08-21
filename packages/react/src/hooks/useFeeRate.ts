@@ -1,8 +1,4 @@
-import {
-	type Config,
-	type FeeRateResponse,
-	getFeeRate,
-} from "@midl-xyz/midl-js-core";
+import { type Config, type FeeRateResponse, getFeeRate } from "@midl/core";
 import { type UseQueryOptions, useQuery } from "@tanstack/react-query";
 import { useConfigInternal } from "~/hooks/useConfigInternal";
 

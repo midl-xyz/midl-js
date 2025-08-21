@@ -7,7 +7,7 @@ Gets the UTXOs for an address, optionally including UTXOs with Runes
 ## Import
 
 ```ts
-import { getUTXOs } from "@midl-xyz/midl-js-core";
+import { getUTXOs } from "@midl/core";
 ```
 
 ### Example

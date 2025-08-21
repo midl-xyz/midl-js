@@ -5,7 +5,7 @@ Signs a PSBT with the given parameters. Optionally, it can broadcast the transac
 ## Import
 
 ```ts
-import { useSignPSBT } from "@midl-xyz/midl-js-react";
+import { useSignPSBT } from "@midl/react";
 ```
 
 ## Example

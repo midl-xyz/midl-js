@@ -1,4 +1,4 @@
-import type { Config } from "@midl-xyz/midl-js-core";
+import type { Config } from "@midl/core";
 import type { StoreApi } from "zustand/vanilla";
 
 // biome-ignore lint/suspicious/noEmptyInterface: <explanation>

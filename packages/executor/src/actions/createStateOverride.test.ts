@@ -1,4 +1,4 @@
-import { AddressPurpose, connect } from "@midl-xyz/midl-js-core";
+import { AddressPurpose, connect } from "@midl/core";
 import { http, createTestClient, toHex } from "viem";
 import { midl } from "viem/chains";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
