@@ -1,3 +1,15 @@
+# @midl/satoshi-kit
+
+## 2.0.2
+
+### Patch Changes
+
+- fix(executor-react): context type import
+- Updated dependencies
+  - @midl/connectors@2.0.2
+  - @midl/react@2.0.2
+  - @midl/core@2.0.2
+
 # @midl-xyz/satoshi-kit
 
 ## 2.0.1

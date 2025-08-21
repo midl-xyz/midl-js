@@ -5,7 +5,7 @@ Gets the current fee rate for Bitcoin transactions.
 ## Import
 
 ```ts
-import { useFeeRate } from "@midl-xyz/midl-js-react";
+import { useFeeRate } from "@midl/react";
 ```
 
 ## Example

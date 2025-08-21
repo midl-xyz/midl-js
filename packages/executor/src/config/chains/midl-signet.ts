@@ -1,4 +1,4 @@
-import deployment from "@midl-xyz/contracts/deployments/0.1.1/Multicall3.json";
+import deployment from "@midl/contracts/deployments/0.1.1/Multicall3.json";
 import type { Chain } from "~/config/chains/chain";
 
 export const midlSignet: Chain = {

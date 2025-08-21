@@ -14,7 +14,7 @@
 	"author": "",
 	"license": "ISC",
 	"devDependencies": {
-		"@midl-xyz/midl-js-config": "workspace:^",
+		"@midl/midl-js-config": "workspace:^",
 		"@playwright/test": "^1.48.2",
 		"@types/node": "^20.16.11",
 		"bip32": "5.0.0-rc.0",
@@ -26,9 +26,9 @@
 		"bitcoinjs-lib": "7.0.0-rc.0"
 	},
 	"dependencies": {
-		"@midl-xyz/midl-js-core": "workspace:^",
-		"@midl-xyz/midl-js-executor": "workspace:^",
-		"@midl-xyz/playwright-btc-wallets": "workspace:^",
-		"viem": "npm:@midl-xyz/midl-viem@2.21.37"
+		"@midl/core": "workspace:^",
+		"@midl/executor": "workspace:^",
+		"@midl/playwright": "workspace:^",
+		"viem": "npm:@midl/viem@2.21.37"
 	}
 }

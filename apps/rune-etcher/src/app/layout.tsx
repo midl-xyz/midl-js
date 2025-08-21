@@ -3,7 +3,7 @@ import { Web3Provider } from "@/components/web3-provider/Web3Provider";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import "@midl-xyz/satoshi-kit/styles.css";
+import "@midl/satoshi-kit/styles.css";
 import { Header } from "@/components/header/Header";
 
 const geistSans = localFont({

@@ -1,6 +1,6 @@
 {
-	"name": "@midl-xyz/midl-js-connectors",
-	"version": "2.0.1",
+	"name": "@midl/connectors",
+	"version": "2.0.2",
 	"scripts": {
 		"build": "pnpm run clean && tspc --project tsconfig.esm.json && tspc --project tsconfig.cjs.json",
 		"dev": "concurrently \"tspc --watch --preserveWatchOutput --project tsconfig.esm.json\" \"tspc --watch --preserveWatchOutput --project tsconfig.cjs.json\"",
@@ -26,8 +26,8 @@
 	},
 	"devDependencies": {
 		"@leather.io/rpc": "2.1.12",
-		"@midl-xyz/midl-js-config": "workspace:^",
-		"@midl-xyz/midl-js-core": "workspace:^",
+		"@midl/midl-js-config": "workspace:^",
+		"@midl/core": "workspace:^",
 		"@types/node": "^22.8.7"
 	},
 	"dependencies": {
@@ -35,6 +35,6 @@
 		"sats-connect": "^3.5.0"
 	},
 	"peerDependencies": {
-		"@midl-xyz/midl-js-core": "workspace:^"
+		"@midl/core": "workspace:^"
 	}
 }

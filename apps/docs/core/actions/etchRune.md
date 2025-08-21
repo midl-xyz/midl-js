@@ -10,14 +10,14 @@ the following order: funding, etching, reveal.
 ## Import
 
 ```ts
-import { etchRune } from "@midl-xyz/midl-js-core";
+import { etchRune } from "@midl/core";
 ```
 
 ## Example
 
 ```ts
-import { etchRune } from "@midl-xyz/midl-js-core";
-import { broadcastTransaction } from "@midl-xyz/midl-js-core";
+import { etchRune } from "@midl/core";
+import { broadcastTransaction } from "@midl/core";
 
 const etching = await etchRune(config, {
     name: "RUNE•NAME",

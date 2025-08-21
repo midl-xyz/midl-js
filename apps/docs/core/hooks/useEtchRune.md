@@ -5,7 +5,7 @@ Etches (mints) a rune on Bitcoin. See [etchRune](../actions/etchRune) for more d
 ## Import
 
 ```ts
-import { useEtchRune } from "@midl-xyz/midl-js-react";
+import { useEtchRune } from "@midl/react";
 ```
 
 ## Example

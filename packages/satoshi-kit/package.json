@@ -1,6 +1,6 @@
 {
-	"name": "@midl-xyz/satoshi-kit",
-	"version": "2.0.1",
+	"name": "@midl/satoshi-kit",
+	"version": "2.0.2",
 	"type": "module",
 	"scripts": {
 		"build": "pnpm run build:lib && pnpm run build:styles",
@@ -32,11 +32,11 @@
 	},
 	"files": ["dist", "styled-system"],
 	"devDependencies": {
-		"@midl-xyz/midl-js-config": "workspace:^",
-		"@midl-xyz/midl-js-connectors": "workspace:^",
-		"@midl-xyz/midl-js-core": "workspace:^",
-		"@midl-xyz/midl-js-node": "workspace:^",
-		"@midl-xyz/midl-js-react": "workspace:^",
+		"@midl/midl-js-config": "workspace:^",
+		"@midl/connectors": "workspace:^",
+		"@midl/core": "workspace:^",
+		"@midl/node": "workspace:^",
+		"@midl/react": "workspace:^",
 		"@pandacss/dev": "^0.53.1",
 		"@park-ui/panda-preset": "^0.43.1",
 		"@tanstack/react-query": "^5.69.0",
@@ -50,9 +50,9 @@
 		"vite": "^5.4.10"
 	},
 	"peerDependencies": {
-		"@midl-xyz/midl-js-connectors": "workspace:^",
-		"@midl-xyz/midl-js-core": "workspace:^",
-		"@midl-xyz/midl-js-react": "workspace:^",
+		"@midl/connectors": "workspace:^",
+		"@midl/core": "workspace:^",
+		"@midl/react": "workspace:^",
 		"@tanstack/react-query": "^5",
 		"@types/react": "*",
 		"react": "*",

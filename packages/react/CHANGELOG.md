@@ -1,3 +1,13 @@
+# @midl/react
+
+## 2.0.2
+
+### Patch Changes
+
+- fix(executor-react): context type import
+- Updated dependencies
+  - @midl/core@2.0.2
+
 # @midl-xyz/midl-js-react
 
 ## 2.0.1

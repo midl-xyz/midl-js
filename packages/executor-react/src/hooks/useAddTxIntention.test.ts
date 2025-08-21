@@ -1,4 +1,4 @@
-import { AddressPurpose, connect } from "@midl-xyz/midl-js-core";
+import { AddressPurpose, connect } from "@midl/core";
 import { renderHook, waitFor } from "@testing-library/react";
 import { zeroAddress } from "viem";
 import { beforeEach, describe, expect, it } from "vitest";

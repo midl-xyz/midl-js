@@ -5,7 +5,7 @@ Gets the EVM chain associated with the current Bitcoin network.
 ## Import
 
 ```ts
-import { useEVMChain } from "@midl-xyz/midl-js-executor-react";
+import { useEVMChain } from "@midl/executor-react";
 ```
 
 ## Example

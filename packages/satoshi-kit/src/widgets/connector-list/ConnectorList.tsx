@@ -1,5 +1,5 @@
-import type { ConnectorWithMetadata } from "@midl-xyz/midl-js-core";
-import { useConfig, useConnect } from "@midl-xyz/midl-js-react";
+import type { ConnectorWithMetadata } from "@midl/core";
+import { useConfig, useConnect } from "@midl/react";
 import { ArrowRightIcon } from "lucide-react";
 import { css } from "styled-system/css";
 import { Stack } from "styled-system/jsx";

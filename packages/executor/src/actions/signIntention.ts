@@ -2,7 +2,7 @@ import {
 	type Config,
 	type SignMessageProtocol,
 	getDefaultAccount,
-} from "@midl-xyz/midl-js-core";
+} from "@midl/core";
 import { type Client, isHex } from "viem";
 import { getTransactionCount } from "viem/actions";
 import { getPublicKey } from "~/actions/getPublicKey";

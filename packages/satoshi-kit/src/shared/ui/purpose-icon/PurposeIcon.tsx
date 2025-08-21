@@ -1,7 +1,7 @@
-import { AddressPurpose } from "@midl-xyz/midl-js-core";
+import { AddressPurpose } from "@midl/core";
+import { css } from "styled-system/css";
 import BitcoinIcon from "./BitcoinIcon";
 import RunesIcon from "./RunesIcon";
-import { css } from "styled-system/css";
 
 type PurposeIconProps = {
 	purpose: AddressPurpose;

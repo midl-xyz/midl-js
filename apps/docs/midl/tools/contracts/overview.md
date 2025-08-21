@@ -5,26 +5,26 @@ title: "Overview"
 
 # Overview
 
-`@midl-xyz/hardhat-deploy` provides tools and utilities for deploying and interacting with smart contracts in a hybrid environment using Hardhat and MIDL.js. 
+`@midl/hardhat-deploy` provides tools and utilities for deploying and interacting with smart contracts in a hybrid environment using Hardhat and MIDL.js. 
 
 In general the process of writing and deploying contracts is similar to the standard Hardhat workflow, but with some MIDL-specific features and configurations.
 
-`@midl-xyz/hardhat-deploy` relies on [`hardhat-deploy`](https://github.com/wighawag/hardhat-deploy) plugin to manage deployments execution order, however it uses its own deployment artifacts format to store MIDL-specific data.
+`@midl/hardhat-deploy` relies on [`hardhat-deploy`](https://github.com/wighawag/hardhat-deploy) plugin to manage deployments execution order, however it uses its own deployment artifacts format to store MIDL-specific data.
 
 
 ## Installation
 
 ::: code-group 
 ```bash [pnpm]
-pnpm add @midl-xyz/hardhat-deploy hardhat-deploy
+pnpm add @midl/hardhat-deploy hardhat-deploy
 ```
 
 ```bash [npm]
-npm install @midl-xyz/hardhat-deploy hardhat-deploy
+npm install @midl/hardhat-deploy hardhat-deploy
 ```
 
 ```bash [yarn]
-yarn add @midl-xyz/hardhat-deploy hardhat-deploy
+yarn add @midl/hardhat-deploy hardhat-deploy
 ```
 :::
 
@@ -45,8 +45,8 @@ For more details on the configuration options, see the [Configuration Reference]
 
 ```ts
 import "hardhat-deploy";
-import "@midl-xyz/hardhat-deploy";
-import { midlRegtest } from "@midl-xyz/midl-js-executor";
+import "@midl/hardhat-deploy";
+import { midlRegtest } from "@midl/executor";
 import { type HardhatUserConfig, vars } from "hardhat/config";
 import "@nomicfoundation/hardhat-verify";
 

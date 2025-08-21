@@ -11,7 +11,7 @@ Only two different runes could be transferred at a time due to Bitcoin's transac
 ## Import
 
 ```ts
-import { edictRune } from "@midl-xyz/midl-js-core";
+import { edictRune } from "@midl/core";
 ```
 
 ## Example

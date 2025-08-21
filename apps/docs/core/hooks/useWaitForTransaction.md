@@ -5,7 +5,7 @@ Waits for a transaction to be confirmed. You can specify the number of confirmat
 ## Import
 
 ```ts
-import { useWaitForTransaction } from '@midl-xyz/midl-js-react';
+import { useWaitForTransaction } from '@midl/react';
 ```
 
 ## Example

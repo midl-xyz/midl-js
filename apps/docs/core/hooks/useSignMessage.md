@@ -7,7 +7,7 @@ If `address` is not provided, the default account address will be used. If `prot
 ## Import
 
 ```ts
-import { useSignMessage } from "@midl-xyz/midl-js-react";
+import { useSignMessage } from "@midl/react";
 ```
 
 ## Example

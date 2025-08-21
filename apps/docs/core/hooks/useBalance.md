@@ -5,7 +5,7 @@ Fetches the balance of a given address or the default account if no address is p
 ## Import
 
 ```ts
-import { useBalance } from "@midl-xyz/midl-js-react";
+import { useBalance } from "@midl/react";
 ```
 
 ## Example

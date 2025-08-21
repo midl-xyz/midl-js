@@ -14,7 +14,7 @@ import {
 	createConnector,
 	extractXCoordinate,
 	getAddressType,
-} from "@midl-xyz/midl-js-core";
+} from "@midl/core";
 import BIP32Factory from "bip32";
 import * as bip39 from "bip39";
 import * as bitcoin from "bitcoinjs-lib";

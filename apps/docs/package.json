@@ -1,5 +1,5 @@
 {
-	"name": "@midl-xyz/midl-js-docs",
+	"name": "@midl/docs",
 	"private": true,
 	"version": "1.0.0",
 	"description": "",
@@ -14,9 +14,9 @@
 		"vitepress": "^1.6.3"
 	},
 	"dependencies": {
-		"@midl-xyz/midl-js-core": "workspace:^",
-		"@midl-xyz/midl-js-react": "workspace:^",
-		"@midl-xyz/satoshi-kit": "workspace:^",
+		"@midl/core": "workspace:^",
+		"@midl/react": "workspace:^",
+		"@midl/satoshi-kit": "workspace:^",
 		"@tanstack/react-query": "^5.67.3",
 		"vite-plugin-vitepress-auto-sidebar": "^1.7.1",
 		"vitepress-plugin-auto-sidebar": "^1.2.0",

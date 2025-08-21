@@ -1,4 +1,4 @@
-import { type Config, getUTXOs } from "@midl-xyz/midl-js-core";
+import { type Config, getUTXOs } from "@midl/core";
 import { type UseQueryOptions, useQuery } from "@tanstack/react-query";
 import { useConfig } from "~/hooks/useConfig";
 import { useConfigInternal } from "~/hooks/useConfigInternal";

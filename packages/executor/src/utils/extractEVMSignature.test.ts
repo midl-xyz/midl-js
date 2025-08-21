@@ -5,7 +5,7 @@ import {
 	disconnect,
 	getDefaultAccount,
 	signMessage,
-} from "@midl-xyz/midl-js-core";
+} from "@midl/core";
 import { schnorr } from "@noble/secp256k1";
 import { Verifier } from "bip322-js";
 import { magicHash } from "bitcoinjs-message";

@@ -1,4 +1,4 @@
-import { type Config, getDefaultAccount } from "@midl-xyz/midl-js-core";
+import { type Config, getDefaultAccount } from "@midl/core";
 import {
 	type Address,
 	type Client,

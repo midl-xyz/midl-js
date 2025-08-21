@@ -5,7 +5,7 @@ Gets the EVM address from a public key. If no public key is provided, it uses th
 ## Import
 
 ```ts
-import { useEVMAddress } from "@midl-xyz/midl-js-executor-react";
+import { useEVMAddress } from "@midl/executor-react";
 ```
 
 ## Example

@@ -1,4 +1,4 @@
-import { AddressType, type BitcoinNetwork } from "@midl-xyz/midl-js-core";
+import { AddressType, type BitcoinNetwork } from "@midl/core";
 
 type DerivationPath = Record<
 	BitcoinNetwork["network"],

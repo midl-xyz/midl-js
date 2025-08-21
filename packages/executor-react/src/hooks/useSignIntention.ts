@@ -1,14 +1,11 @@
-import { type Config, SignMessageProtocol } from "@midl-xyz/midl-js-core";
-import {
-	type TransactionIntention,
-	signIntention,
-} from "@midl-xyz/midl-js-executor";
+import { type Config, SignMessageProtocol } from "@midl/core";
+import { type TransactionIntention, signIntention } from "@midl/executor";
 import {
 	type MidlContextStore,
 	useConfigInternal,
 	useStore,
 	useStoreInternal,
-} from "@midl-xyz/midl-js-react";
+} from "@midl/react";
 import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
 import { usePublicClient } from "wagmi";
 

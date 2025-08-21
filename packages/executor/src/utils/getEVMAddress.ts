@@ -1,8 +1,4 @@
-import {
-	type Account,
-	AddressType,
-	type BitcoinNetwork,
-} from "@midl-xyz/midl-js-core";
+import { type Account, AddressType, type BitcoinNetwork } from "@midl/core";
 import { publicKeyConvert } from "secp256k1";
 import { getAddress, keccak256, toHex } from "viem";
 import { getPublicKey } from "~/actions";

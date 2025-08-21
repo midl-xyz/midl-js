@@ -1,9 +1,5 @@
 import * as ecc from "@bitcoinerlab/secp256k1";
-import {
-	AddressType,
-	extractXCoordinate,
-	getAddressType,
-} from "@midl-xyz/midl-js-core";
+import { AddressType, extractXCoordinate, getAddressType } from "@midl/core";
 import { sha256 } from "@noble/hashes/sha256";
 import * as bitcoin from "bitcoinjs-lib";
 import ECPairFactory from "ecpair";

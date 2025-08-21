@@ -4,7 +4,7 @@ import {
 	AddressType,
 	type BitcoinNetwork,
 	extractXCoordinate,
-} from "@midl-xyz/midl-js-core";
+} from "@midl/core";
 import { initEccLib, networks, payments } from "bitcoinjs-lib";
 import { toHex } from "viem";
 

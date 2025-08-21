@@ -1,4 +1,4 @@
-import { AddressType } from "@midl-xyz/midl-js-core";
+import { AddressType } from "@midl/core";
 import { OutScript, Transaction, p2sh, p2wpkh } from "@scure/btc-signer";
 import { BIP322 } from "bip322-js";
 

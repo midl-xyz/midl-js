@@ -5,7 +5,7 @@ Signs a transaction intention.
 ## Import
 
 ```ts
-import { useSignIntention } from "@midl-xyz/midl-js-executor-react";
+import { useSignIntention } from "@midl/executor-react";
 ```
 
 ## Example

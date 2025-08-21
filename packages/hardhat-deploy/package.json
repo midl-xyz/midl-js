@@ -1,6 +1,6 @@
 {
-	"name": "@midl-xyz/hardhat-deploy",
-	"version": "2.0.1",
+	"name": "@midl/hardhat-deploy",
+	"version": "2.0.2",
 	"scripts": {
 		"build": "pnpm run clean && tspc --project tsconfig.esm.json && tspc --project tsconfig.cjs.json",
 		"dev": "concurrently \"tspc --watch --preserveWatchOutput --project tsconfig.esm.json\" \"tspc --watch --preserveWatchOutput --project tsconfig.cjs.json\"",
@@ -25,7 +25,7 @@
 		}
 	},
 	"devDependencies": {
-		"@midl-xyz/midl-js-config": "workspace:^",
+		"@midl/midl-js-config": "workspace:^",
 		"hardhat": "^2.22.17",
 		"hardhat-deploy": "^1.0.3"
 	},
@@ -33,12 +33,12 @@
 		"hardhat": "^2.22.17"
 	},
 	"dependencies": {
-		"@midl-xyz/logger": "workspace:*",
-		"@midl-xyz/midl-js-core": "workspace:^",
-		"@midl-xyz/midl-js-executor": "workspace:^",
-		"@midl-xyz/midl-js-node": "workspace:^",
+		"@midl/logger": "workspace:*",
+		"@midl/core": "workspace:^",
+		"@midl/executor": "workspace:^",
+		"@midl/node": "workspace:^",
 		"@nomicfoundation/hardhat-viem": "^2.0.6",
-		"viem": "npm:@midl-xyz/midl-viem",
+		"viem": "npm:@midl/viem",
 		"zustand": "^5.0.1"
 	}
 }

@@ -1,8 +1,4 @@
-import {
-	type Config,
-	type EtchRuneParams,
-	etchRune,
-} from "@midl-xyz/midl-js-core";
+import { type Config, type EtchRuneParams, etchRune } from "@midl/core";
 import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
 import { useConfigInternal } from "~/hooks/useConfigInternal";
 

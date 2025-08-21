@@ -5,7 +5,7 @@ Retrieves UTXOs for the specified address.
 ## Import
 
 ```ts
-import { useUTXOs } from '@midl-xyz/midl-js-react';
+import { useUTXOs } from '@midl/react';
 ```
 
 ## Example

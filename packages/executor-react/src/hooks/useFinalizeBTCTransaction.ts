@@ -2,13 +2,13 @@ import type {
 	Config,
 	EdictRuneResponse,
 	TransferBTCResponse,
-} from "@midl-xyz/midl-js-core";
-import { finalizeBTCTransaction } from "@midl-xyz/midl-js-executor";
+} from "@midl/core";
+import { finalizeBTCTransaction } from "@midl/executor";
 import {
 	type MidlContextStore,
 	useConfigInternal,
 	useStoreInternal,
-} from "@midl-xyz/midl-js-react";
+} from "@midl/react";
 import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
 import type { StateOverride } from "viem";
 import { usePublicClient } from "wagmi";

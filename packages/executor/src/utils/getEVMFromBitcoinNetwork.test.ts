@@ -1,4 +1,4 @@
-import { regtest, testnet4 } from "@midl-xyz/midl-js-core";
+import { regtest, testnet4 } from "@midl/core";
 import { describe, expect, it } from "vitest";
 import { midlRegtest, midlTestnet4 } from "~/config/chains";
 import { getEVMFromBitcoinNetwork } from "~/utils/getEVMFromBitcoinNetwork";

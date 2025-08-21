@@ -1,6 +1,6 @@
 "use client";
 
-import { useBalance, useDefaultAccount } from "@midl-xyz/midl-js-react";
+import { useBalance, useDefaultAccount } from "@midl/react";
 import { useSatoshiKit } from "~/app";
 import { formatBTC, shortenAddress } from "~/shared";
 import { Button } from "~/shared/ui/button";

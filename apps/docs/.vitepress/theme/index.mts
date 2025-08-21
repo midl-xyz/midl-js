@@ -1,6 +1,6 @@
 import DefaultTheme from "vitepress/theme";
 import "./custom.css";
-import "@midl-xyz/satoshi-kit/styles.css";
+import "@midl/satoshi-kit/styles.css";
 
 // biome-ignore lint/style/useNodejsImportProtocol: polyfill
 import { Buffer } from "buffer";

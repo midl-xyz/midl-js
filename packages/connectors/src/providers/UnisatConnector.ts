@@ -10,7 +10,7 @@ import {
 	get,
 	getAddressPurpose,
 	getAddressType,
-} from "@midl-xyz/midl-js-core";
+} from "@midl/core";
 import type { Unisat } from "~/types/unisat";
 
 export class UnisatConnector implements Connector {

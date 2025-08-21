@@ -5,7 +5,7 @@ Checks if the configuration store has been hydrated (i.e., loaded from persisten
 ## Import
 
 ```ts
-import { useHydrated } from "@midl-xyz/midl-js-react";
+import { useHydrated } from "@midl/react";
 ```
 
 ## Example

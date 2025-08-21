@@ -3,7 +3,7 @@ import {
 	type SignMessageProtocol,
 	getDefaultAccount,
 	signMessage,
-} from "@midl-xyz/midl-js-core";
+} from "@midl/core";
 import {
 	type Client,
 	type TransactionSerializableBTC,

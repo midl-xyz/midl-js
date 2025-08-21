@@ -1,14 +1,8 @@
 "use client";
 
-import {
-	mainnet,
-	regtest,
-	signet,
-	testnet,
-	testnet4,
-} from "@midl-xyz/midl-js-core";
-import { MidlProvider } from "@midl-xyz/midl-js-react";
-import { SatoshiKitProvider, createMidlConfig } from "@midl-xyz/satoshi-kit";
+import { mainnet, regtest, signet, testnet, testnet4 } from "@midl/core";
+import { MidlProvider } from "@midl/react";
+import { SatoshiKitProvider, createMidlConfig } from "@midl/satoshi-kit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
 

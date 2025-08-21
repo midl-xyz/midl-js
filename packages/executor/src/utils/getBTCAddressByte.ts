@@ -1,8 +1,4 @@
-import {
-	type Account,
-	AddressType,
-	getAddressType,
-} from "@midl-xyz/midl-js-core";
+import { type Account, AddressType, getAddressType } from "@midl/core";
 
 /**
  * Returns a byte value derived from the public key of a Bitcoin account, depending on its address type.

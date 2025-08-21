@@ -5,7 +5,7 @@ Provides access to the connected user's accounts and connection state.
 ## Import
 
 ```ts
-import { useAccounts } from "@midl-xyz/midl-js-react";
+import { useAccounts } from "@midl/react";
 ```
 
 ## Params

@@ -7,7 +7,7 @@ Gets the recommended fee rate
 ## Import
 
 ```ts
-import { getFeeRate } from "@midl-xyz/midl-js-core";
+import { getFeeRate } from "@midl/core";
 ```
 
 ## Example

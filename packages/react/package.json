@@ -1,6 +1,6 @@
 {
-	"name": "@midl-xyz/midl-js-react",
-	"version": "2.0.1",
+	"name": "@midl/react",
+	"version": "2.0.2",
 	"scripts": {
 		"build": "pnpm run clean && tspc --project tsconfig.esm.json && tspc --project tsconfig.cjs.json",
 		"dev": "concurrently \"tspc --watch --preserveWatchOutput --project tsconfig.esm.json\" \"tspc --watch --preserveWatchOutput --project tsconfig.cjs.json\"",
@@ -26,8 +26,8 @@
 	"files": ["dist"],
 	"devDependencies": {
 		"@bitcoinerlab/secp256k1": "^1.2.0",
-		"@midl-xyz/midl-js-config": "workspace:^",
-		"@midl-xyz/midl-js-node": "workspace:^",
+		"@midl/midl-js-config": "workspace:^",
+		"@midl/node": "workspace:^",
 		"@tanstack/react-query": "*",
 		"@types/react": "^18.3.11",
 		"bitcoinjs-lib": "^6.1.6",
@@ -36,7 +36,7 @@
 		"react-dom": "^18.3.1"
 	},
 	"dependencies": {
-		"@midl-xyz/midl-js-core": "workspace:^",
+		"@midl/core": "workspace:^",
 		"zustand": "^5.0.1"
 	},
 	"peerDependencies": {

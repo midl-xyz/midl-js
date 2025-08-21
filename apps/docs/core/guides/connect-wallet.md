@@ -13,7 +13,7 @@ The ability to connect a wallet is a crucial part of interacting with the blockc
 ### 1. Create a Configuration Object
 
 
-In the example below we are using `xverseConnector` to connect to the Xverse wallet. You can use any connector from `@midl-xyz/midl-js-connectors` or create your own.
+In the example below we are using `xverseConnector` to connect to the Xverse wallet. You can use any connector from `@midl/connectors` or create your own.
 
 ::: code-group
 
@@ -21,8 +21,8 @@ In the example below we are using `xverseConnector` to connect to the Xverse wal
 import {
   createConfig,
   regtest,
-} from "@midl-xyz/midl-js-core";
-import { xverseConnector } from "@midl-xyz/midl-js-connectors";
+} from "@midl/core";
+import { xverseConnector } from "@midl/connectors";
 
 export const midlConfig = createConfig({
   networks: [regtest],
@@ -38,7 +38,7 @@ export const midlConfig = createConfig({
 ::: code-group
 
 ```tsx [App.tsx]
-import { MidlProvider } from "@midl-xyz/midl-js-react";
+import { MidlProvider } from "@midl/react";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./query-client";
 import { midlConfig } from "./midlConfig";
@@ -67,8 +67,8 @@ export const queryClient = new QueryClient();
 ::: code-group
 
 ```tsx [ConnectWallet.tsx]
-import { AddressPurpose } from "@midl-xyz/midl-js-core";
-import { useConnect } from "@midl-xyz/midl-js-react";
+import { AddressPurpose } from "@midl/core";
+import { useConnect } from "@midl/react";
 
 export function ConnectWallet() {
   const { connectors, connect } = useConnect({
@@ -98,7 +98,7 @@ export function ConnectWallet() {
 ::: code-group
 
 ```tsx [ConnectedAccounts.tsx]
-import { useAccounts } from "@midl-xyz/midl-js-react";
+import { useAccounts } from "@midl/react";
 
 export function ConnectedAccounts() {
   const { accounts } = useAccounts();
@@ -123,7 +123,7 @@ export function ConnectedAccounts() {
 ```tsx
 import { ConnectWallet } from "./ConnectWallet";
 import { ConnectedAccounts } from "./ConnectedAccounts";
-import { useAccounts } from "@midl-xyz/midl-js-react";
+import { useAccounts } from "@midl/react";
 
 export function YourApp() {
   const { isConnected } = useAccounts();
@@ -150,7 +150,7 @@ import {
 	type CreateConnectorFn,
   type Connector,
 	createConnector,
-} from "@midl-xyz/midl-js-core";
+} from "@midl/core";
 
 export const myCustomConnector: CreateConnectorFn = ({ metadata } = {}) =>
 	createConnector(

@@ -10,7 +10,7 @@ assignees: ""
 A clear and concise description of what the bug is.
 
 **Affected Package(s)**  
-[Specify which package(s) in the monorepo are affected. For example: `@midl-xyz/midl-js-core`, `@midl-xyz/midl-js-react`, etc.]
+[Specify which package(s) in the monorepo are affected. For example: `@midl/core`, `@midl/react`, etc.]
 
 **Steps to Reproduce**
 

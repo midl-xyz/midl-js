@@ -1,9 +1,6 @@
-import type { Config } from "@midl-xyz/midl-js-core";
-import {
-	type GetBTCFeeRateResponse,
-	getBTCFeeRate,
-} from "@midl-xyz/midl-js-executor";
-import { useConfig, useConfigInternal } from "@midl-xyz/midl-js-react";
+import type { Config } from "@midl/core";
+import { type GetBTCFeeRateResponse, getBTCFeeRate } from "@midl/executor";
+import { useConfig, useConfigInternal } from "@midl/react";
 import { type UseQueryOptions, useQuery } from "@tanstack/react-query";
 import { usePublicClient } from "wagmi";
 

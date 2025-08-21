@@ -3,7 +3,7 @@ import {
 	type GetRuneBalanceParams,
 	type RuneBalanceResponse,
 	getRuneBalance,
-} from "@midl-xyz/midl-js-core";
+} from "@midl/core";
 import { type UseQueryOptions, useQuery } from "@tanstack/react-query";
 import { useAccounts } from "~/hooks/useAccounts";
 import { useConfigInternal } from "~/hooks/useConfigInternal";
