@@ -1,4 +1,4 @@
-import { MidlProvider } from "@midl-xyz/midl-js-react";
+import { MidlProvider } from "@midl/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { ReactNode } from "react";
 import { midlConfig } from "~/__tests__/midlConfig";

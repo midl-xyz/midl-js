@@ -7,13 +7,13 @@ Disconnects the current wallet connection and clears associated accounts.
 ## Import
 
 ```ts
-import { disconnect } from "@midl-xyz/midl-js-core";
+import { disconnect } from "@midl/core";
 ```
 
 ## Example
 
 ```ts
-import { disconnect } from "@midl-xyz/midl-js-core";
+import { disconnect } from "@midl/core";
 
 await disconnect(config);
 ```

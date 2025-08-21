@@ -1,5 +1,5 @@
 {
-	"name": "@midl-xyz/midl-js-executor",
+	"name": "@midl/executor",
 	"version": "2.0.1",
 	"scripts": {
 		"build": "pnpm run clean && tspc --project tsconfig.esm.json && tspc --project tsconfig.cjs.json",
@@ -26,27 +26,27 @@
 	},
 	"files": ["dist"],
 	"devDependencies": {
-		"@midl-xyz/midl-js-config": "workspace:^",
-		"@midl-xyz/midl-js-node": "workspace:^",
+		"@midl/midl-js-config": "workspace:^",
+		"@midl/node": "workspace:^",
 		"@types/node": "^22.8.7",
 		"@wagmi/cli": "^2.1.15",
 		"bitcoinjs-lib": "7.0.0-rc.0",
 		"bitcoinjs-message": "^2.2.0",
 		"msw": "^2.7.0",
-		"viem": "npm:@midl-xyz/midl-viem"
+		"viem": "npm:@midl/viem"
 	},
 	"dependencies": {
 		"@bitcoinerlab/secp256k1": "^1.2.0",
-		"@midl-xyz/contracts": "^0.1.1",
-		"@midl-xyz/logger": "workspace:*",
-		"@midl-xyz/midl-js-core": "workspace:^",
+		"@midl/contracts": "^0.1.1",
+		"@midl/logger": "workspace:*",
+		"@midl/core": "workspace:^",
 		"@noble/secp256k1": "1.7.1",
 		"@scure/btc-signer": "1.4.0",
 		"bip322-js": "^2.0.0",
 		"secp256k1": "^4.0.3"
 	},
 	"peerDependencies": {
-		"@midl-xyz/midl-viem": "*",
+		"@midl/viem": "*",
 		"bitcoinjs-lib": "7.0.0-rc.0"
 	}
 }

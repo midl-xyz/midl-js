@@ -30,7 +30,7 @@ import {
 	useEtchRune,
 	useRune,
 	useWaitForTransaction,
-} from "@midl-xyz/midl-js-react";
+} from "@midl/react";
 import { useMutation } from "@tanstack/react-query";
 import { Loader2Icon } from "lucide-react";
 import { useRef, useState } from "react";

@@ -5,7 +5,7 @@ Accesses the global state within the Midl context. Under the hood, it uses [`zus
 ## Import
 
 ```ts
-import { useStore } from '@midl-xyz/midl-js-react';
+import { useStore } from '@midl/react';
 ```
 
 ## Example
@@ -33,7 +33,7 @@ const store = useStore(customStore);
 You can extend the MIDL context interface to include your own state.
 
 ```ts
-declare module "@midl-xyz/midl-js-react" {
+declare module "@midl/react" {
 	type State = {
         user: {
             address: string;

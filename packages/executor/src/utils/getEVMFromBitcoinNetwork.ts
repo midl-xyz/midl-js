@@ -4,7 +4,7 @@ import {
 	signet,
 	testnet,
 	testnet4,
-} from "@midl-xyz/midl-js-core";
+} from "@midl/core";
 import {
 	midlRegtest,
 	midlSignet,

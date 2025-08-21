@@ -7,13 +7,13 @@ Creates a CompleteTx Intention. This prepares an EVM transaction that calls the 
 ## Import
 
 ```ts
-import { addCompleteTxIntention } from "@midl-xyz/midl-js";
+import { addCompleteTxIntention } from "@midl/executor";
 ```
 
 ## Example
 
 ```ts
-import { addCompleteTxIntention } from "@midl-xyz/midl-js";
+import { addCompleteTxIntention } from "@midl/executor";
 
 const intention = await addCompleteTxIntention(config, [btcAddress, runeAddress]);
 ```

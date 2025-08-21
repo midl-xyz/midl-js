@@ -1,5 +1,5 @@
 ---
-title: "@midl-xyz/midl-js-executor"
+title: "@midl/executor"
 order: 100
 ---
 

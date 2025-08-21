@@ -7,7 +7,7 @@ Signs an EVM transaction using the provided configuration and options.
 ## Import
 
 ```ts
-import { signTransaction } from "@midl-xyz/midl-js-executor";
+import { signTransaction } from "@midl/executor";
 ```
 
 ## Example

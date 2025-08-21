@@ -7,7 +7,7 @@ Signs a PSBT with the given parameters. Optionally, it can broadcast the transac
 ## Import
 
 ```ts
-import { signPSBT } from "@midl-xyz/midl-js-core";
+import { signPSBT } from "@midl/core";
 ```
 
 ## Example

@@ -10,15 +10,15 @@ Install MIDL.js via your package manager of choice.
 ::: code-group
 
 ```bash [pnpm]
-pnpm add @midl-xyz/midl-js-core @midl-xyz/midl-js-react @mild-xyz/midl-js-connectors
+pnpm add @midl/core @midl/react @mild-xyz/midl-js-connectors
 ```
 
 ```bash [npm]
-npm install @midl-xyz/midl-js-core @midl-xyz/midl-js-react @mild-xyz/midl-js-connectors
+npm install @midl/core @midl/react @mild-xyz/midl-js-connectors
 ```
 
 ```bash [yarn]
-yarn add @midl-xyz/midl-js-core @midl-xyz/midl-js-react @mild-xyz/midl-js-connectors
+yarn add @midl/core @midl/react @mild-xyz/midl-js-connectors
 ```
 
 :::
@@ -30,8 +30,8 @@ Create and export a new MIDL.js config file in your project. And wrap your app w
 ::: code-group
 
 ```ts [midl.config.ts]
-import { createConfig, regtest } from "@midl-xyz/midl-js-core";
-import { xverseConnector } from "@midl-xyz/midl-js-connectors";
+import { createConfig, regtest } from "@midl/core";
+import { xverseConnector } from "@midl/connectors";
 
 export const config = createConfig({
   networks: [regtest],
@@ -41,7 +41,7 @@ export const config = createConfig({
 ```
 
 ```tsx [app.tsx]
-import { MidlProvider } from "@midl-xyz/midl-js-react";
+import { MidlProvider } from "@midl/react";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./query-client";
 import { config } from "./midl.config";
@@ -67,7 +67,7 @@ Use MIDL.js hooks to interact with the blockchain.
 ::: code-group
 
 ```tsx [index.tsx]
-import { useConnect, useAccounts } from "@midl-xyz/midl-js-react";
+import { useConnect, useAccounts } from "@midl/react";
 
 function Page() {
   const { connect, connectors } = useConnect();

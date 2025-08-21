@@ -7,7 +7,7 @@ Signs the intention with the given options. The intention is signed as a generic
 ## Import
 
 ```ts
-import { signIntention } from "@midl-xyz/midl-js-executor";
+import { signIntention } from "@midl/executor";
 ```
 
 ## Example

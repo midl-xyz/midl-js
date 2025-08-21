@@ -1,6 +1,6 @@
-import { type Config, getDefaultAccount } from "@midl-xyz/midl-js-core";
-import { getEVMAddress } from "@midl-xyz/midl-js-executor";
-import { useConfig, useConfigInternal } from "@midl-xyz/midl-js-react";
+import { type Config, getDefaultAccount } from "@midl/core";
+import { getEVMAddress } from "@midl/executor";
+import { useConfig, useConfigInternal } from "@midl/react";
 import { zeroAddress } from "viem";
 
 type UseEVMAddressParams = {

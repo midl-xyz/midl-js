@@ -7,7 +7,7 @@ For `P2TR` addresses, returns the hex-encoded x-only public key (after removing 
 ## Import
 
 ```ts
-import { usePublicKey } from "@midl-xyz/midl-js-executor-react";
+import { usePublicKey } from "@midl/executor-react";
 ```
 
 ## Example

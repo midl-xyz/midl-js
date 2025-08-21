@@ -8,7 +8,7 @@ import { createConfig } from "~/createConfig";
 import { regtest } from "~/networks";
 
 describe("core | actions | disconnect", async () => {
-	const { keyPairConnector } = await import("@midl-xyz/midl-js-node");
+	const { keyPairConnector } = await import("@midl/node");
 
 	it("disconnects and saves latest network", async () => {
 		const config = createConfig({

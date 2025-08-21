@@ -1,9 +1,6 @@
-import type { Config } from "@midl-xyz/midl-js-core";
-import {
-	type Chain,
-	getEVMFromBitcoinNetwork,
-} from "@midl-xyz/midl-js-executor";
-import { useConfig } from "@midl-xyz/midl-js-react";
+import type { Config } from "@midl/core";
+import { type Chain, getEVMFromBitcoinNetwork } from "@midl/executor";
+import { useConfig } from "@midl/react";
 
 type UseEVMChainParams = {
 	/**

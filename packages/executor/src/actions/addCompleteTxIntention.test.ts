@@ -1,4 +1,4 @@
-import { AddressPurpose, connect, disconnect } from "@midl-xyz/midl-js-core";
+import { AddressPurpose, connect, disconnect } from "@midl/core";
 import { decodeFunctionData, maxUint256 } from "viem";
 import { afterEach, describe, expect, it } from "vitest";
 import { midlConfig, midlConfigP2SH } from "~/__tests__/midlConfig";

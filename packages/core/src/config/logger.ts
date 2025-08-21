@@ -1,3 +1,3 @@
-import { getLogger } from "@midl-xyz/logger";
+import { getLogger } from "@midl/logger";
 
-export const logger = getLogger(["@midl-xyz/midl-js-core"]);
+export const logger = getLogger(["@midl/core"]);

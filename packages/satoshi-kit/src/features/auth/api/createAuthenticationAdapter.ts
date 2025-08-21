@@ -1,8 +1,4 @@
-import type {
-	Account,
-	BitcoinNetwork,
-	SignMessageProtocol,
-} from "@midl-xyz/midl-js-core";
+import type { Account, BitcoinNetwork, SignMessageProtocol } from "@midl/core";
 
 export type AuthenticationAdapter = {
 	verify({

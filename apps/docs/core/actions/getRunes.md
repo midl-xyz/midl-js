@@ -7,7 +7,7 @@ Gets the runes for an address, with optional limit and offset.
 ## Import
 
 ```ts
-import { getRunes } from "@midl-xyz/midl-js-core";
+import { getRunes } from "@midl/core";
 ```
 
 ## Example

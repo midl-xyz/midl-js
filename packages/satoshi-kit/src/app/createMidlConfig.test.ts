@@ -1,4 +1,4 @@
-import { regtest } from "@midl-xyz/midl-js-core";
+import { regtest } from "@midl/core";
 import { describe, expect, it } from "vitest";
 import { createMidlConfig } from "~/app/createMidlConfig";
 

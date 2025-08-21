@@ -7,7 +7,7 @@ Gets the BTC fee rate defined in the Executor contract.
 ## Import
 
 ```ts
-import { getBTCFeeRate } from "@midl-xyz/midl-js-executor";
+import { getBTCFeeRate } from "@midl/executor";
 ```
 
 ## Example

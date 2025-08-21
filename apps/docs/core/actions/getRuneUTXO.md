@@ -8,7 +8,7 @@ This is useful for obtaining the necessary UTXOs to create a PSBT for that rune.
 ## Import
 
 ```ts
-import { getRuneUTXO } from "@midl-xyz/midl-js-core";
+import { getRuneUTXO } from "@midl/core";
 ```
 
 ## Example

@@ -1,14 +1,11 @@
-import type { Config } from "@midl-xyz/midl-js-core";
-import {
-	type PartialIntention,
-	addTxIntention,
-} from "@midl-xyz/midl-js-executor";
+import type { Config } from "@midl/core";
+import { type PartialIntention, addTxIntention } from "@midl/executor";
 import {
 	type MidlContextStore,
 	useConfigInternal,
 	useStore,
 	useStoreInternal,
-} from "@midl-xyz/midl-js-react";
+} from "@midl/react";
 import { useMutation } from "@tanstack/react-query";
 
 type UseAddTxIntentionParams = {

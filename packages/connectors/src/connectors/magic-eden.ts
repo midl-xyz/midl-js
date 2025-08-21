@@ -1,7 +1,4 @@
-import {
-	type CreateConnectorFn,
-	createConnector,
-} from "@midl-xyz/midl-js-core";
+import { type CreateConnectorFn, createConnector } from "@midl/core";
 import { SatsConnectConnector } from "~/providers";
 
 // DO NOT USE THIS CONNECTOR

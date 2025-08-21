@@ -1,10 +1,7 @@
 "use client";
 
-import {
-	type Chain,
-	getEVMFromBitcoinNetwork,
-} from "@midl-xyz/midl-js-executor";
-import { useConfig } from "@midl-xyz/midl-js-react";
+import { type Chain, getEVMFromBitcoinNetwork } from "@midl/executor";
+import { useConfig } from "@midl/react";
 import { useEffect, useMemo } from "react";
 import { http, zeroAddress } from "viem";
 import { WagmiProvider, createConfig, useConnect, useSwitchChain } from "wagmi";

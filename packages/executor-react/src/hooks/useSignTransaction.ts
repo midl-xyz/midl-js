@@ -1,7 +1,7 @@
 // TODO: UNUSED HOOK - Remove if not needed
-import { type Config, SignMessageProtocol } from "@midl-xyz/midl-js-core";
-import { signTransaction } from "@midl-xyz/midl-js-executor";
-import { useConfigInternal } from "@midl-xyz/midl-js-react";
+import { type Config, SignMessageProtocol } from "@midl/core";
+import { signTransaction } from "@midl/executor";
+import { useConfigInternal } from "@midl/react";
 import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
 import type { TransactionSerializableBTC } from "viem";
 import { usePublicClient, useWalletClient } from "wagmi";

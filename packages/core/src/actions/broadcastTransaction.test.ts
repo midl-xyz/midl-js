@@ -6,7 +6,7 @@ import { createConfig } from "~/createConfig";
 import { regtest } from "~/networks";
 
 describe("core | actions | broadcastTransaction", async () => {
-	const { keyPairConnector } = await import("@midl-xyz/midl-js-node");
+	const { keyPairConnector } = await import("@midl/node");
 
 	beforeAll(() => {
 		mockServer.listen();

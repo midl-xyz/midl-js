@@ -1,8 +1,8 @@
 "use client";
 
 import { Portal } from "@ark-ui/react";
-import { AddressPurpose } from "@midl-xyz/midl-js-core";
-import { useAccounts, useDisconnect } from "@midl-xyz/midl-js-react";
+import { AddressPurpose } from "@midl/core";
+import { useAccounts, useDisconnect } from "@midl/react";
 import { ClipboardIcon, LogOutIcon, XIcon } from "lucide-react";
 import { css } from "styled-system/css";
 import { Stack } from "styled-system/jsx";

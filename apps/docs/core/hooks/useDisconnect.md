@@ -5,7 +5,7 @@ Disconnects the app from the wallet.
 ## Import
 
 ```ts
-import { useDisconnect } from "@midl-xyz/midl-js-react";
+import { useDisconnect } from "@midl/react";
 ```
 
 ## Example

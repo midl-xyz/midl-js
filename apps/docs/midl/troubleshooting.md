@@ -5,7 +5,7 @@ order: 6
 
 ## Module not found: Can't resolve '../../../../../../styled-system/css'
 
-This error typically occurs when the `SatoshiKit` conflicts with the Next.JS turbopack feature. To resolve this, you can either disable turbopack or transpile the `@midl-xyz/satoshi-kit` package.
+This error typically occurs when the `SatoshiKit` conflicts with the Next.JS turbopack feature. To resolve this, you can either disable turbopack or transpile the `@midl/satoshi-kit` package.
 
 To disable turbopack, you can add the following to your `next.config.js`:
 
@@ -28,11 +28,11 @@ It could also be configured in the `start` script in your `package.json`:
 }
 ```
 
-To transpile the `@midl-xyz/satoshi-kit` package, you can add the following to your `next.config.js`:
+To transpile the `@midl/satoshi-kit` package, you can add the following to your `next.config.js`:
 
 ```js
 module.exports = {
-  transpilePackages: ["@midl-xyz/satoshi-kit"],
+  transpilePackages: ["@midl/satoshi-kit"],
 };
 ```
 

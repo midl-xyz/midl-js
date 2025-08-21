@@ -8,7 +8,7 @@ order: -1
 MIDL.js provides React hooks for easy integration your React applications with the blockchain.
 The hooks are designed to be simple to use and provide a seamless experience for developers.
 
-Under the hood the hooks use the `@midl-xyz/midl-js-core` for blockchain interactions
+Under the hood the hooks use the `@midl/core` for blockchain interactions
 and [`@tanstack/react-query`](https://tanstack.com/query/v5) to manage state and data fetching.
 
 ## Getting started
@@ -16,7 +16,7 @@ and [`@tanstack/react-query`](https://tanstack.com/query/v5) to manage state and
 ### Install the package
 
 ```bash
-pnpm add @midl-xyz/midl-js-react
+pnpm add @midl/react
 ```
 
 ### Wrap your app with the `MidlProvider`
@@ -24,7 +24,7 @@ pnpm add @midl-xyz/midl-js-react
 Wrap your app with the `MidlProvider` to provide the context to the hooks.
 
 ```tsx
-import { MidlProvider } from "@midl-xyz/midl-js-react";
+import { MidlProvider } from "@midl/react";
 import midlConfig from "./midlConfig";
 
 function App() {

@@ -1,5 +1,5 @@
-import { getRune, waitForTransaction } from "@midl-xyz/midl-js-core";
-import { type Wallet, createTest } from "@midl-xyz/playwright-btc-wallets";
+import { getRune, waitForTransaction } from "@midl/core";
+import { type Wallet, createTest } from "@midl/playwright";
 import type { Page } from "@playwright/test";
 import { midlConfig } from "../config";
 

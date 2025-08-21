@@ -5,7 +5,7 @@ Broadcasts a transaction to the Bitcoin network.
 ## Import
 
 ```ts
-import { useBroadcastTransaction } from "@midl-xyz/midl-js-react";
+import { useBroadcastTransaction } from "@midl/react";
 ```
 
 ## Example

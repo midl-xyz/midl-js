@@ -13,7 +13,7 @@ import { regtest } from "~/networks";
 import * as mod from "./getRuneUTXO";
 
 describe("core | actions | edictRune", async () => {
-	const { keyPairConnector } = await import("@midl-xyz/midl-js-node");
+	const { keyPairConnector } = await import("@midl/node");
 
 	let config: Config;
 

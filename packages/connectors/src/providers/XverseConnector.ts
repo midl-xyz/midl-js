@@ -1,4 +1,4 @@
-import type { NetworkConfig } from "@midl-xyz/midl-js-core";
+import type { NetworkConfig } from "@midl/core";
 import { BitcoinNetworkType, request } from "sats-connect";
 import { SatsConnectConnector } from "~/providers/SatsConnectConnector";
 

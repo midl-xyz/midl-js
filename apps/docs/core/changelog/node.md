@@ -1,5 +1,5 @@
 ---
-title: "@midl-xyz/midl-js-node"
+title: "@midl/node"
 order: 100
 ---
 

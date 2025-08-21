@@ -1,4 +1,4 @@
-import { AddressPurpose, connect } from "@midl-xyz/midl-js-core";
+import { AddressPurpose, connect } from "@midl/core";
 import { renderHook } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { midlConfig, wrapper } from "~/__tests__/wrapper";

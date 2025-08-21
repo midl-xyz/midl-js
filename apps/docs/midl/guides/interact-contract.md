@@ -40,10 +40,10 @@ import {
     useAddTxIntention,
     useFinalizeBTCTransaction,
     useSignIntention,
-} from "@midl-xyz/midl-js-executor-react";
+} from "@midl/executor-react";
 import {
     useWaitForTransaction
-} from "@midl-xyz/midl-js-react";
+} from "@midl/react";
 import { encodeFunctionData } from "viem";
 import { usePublicClient, useReadContract } from "wagmi";
 import { SimpleStorage } from "./SimpleStorage";
@@ -248,7 +248,7 @@ Add the `WriteContract` component to your app:
 ::: code-group
 
 ```tsx{4,15} [YourApp.tsx]
-import { useAccounts } from "@midl-xyz/midl-js-react";
+import { useAccounts } from "@midl/react";
 import { ConnectWallet } from "./ConnectWallet";
 import { ConnectedAccounts } from "./ConnectedAccounts";
 import { WriteContract } from "./WriteContract";

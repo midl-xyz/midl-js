@@ -1,8 +1,4 @@
-import {
-	type Config,
-	type NetworkConfig,
-	addNetwork,
-} from "@midl-xyz/midl-js-core";
+import { type Config, type NetworkConfig, addNetwork } from "@midl/core";
 import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
 import { useConfigInternal } from "~/hooks/useConfigInternal";
 

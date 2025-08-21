@@ -6,7 +6,7 @@ import {
 	disconnect,
 	extractXCoordinate,
 	regtest,
-} from "@midl-xyz/midl-js-core";
+} from "@midl/core";
 import { Verifier } from "bip322-js";
 import * as bitcoin from "bitcoinjs-lib";
 import { Psbt } from "bitcoinjs-lib";

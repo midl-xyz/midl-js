@@ -5,7 +5,7 @@ Sends a batch of MIDL transactions. Expects `serializedTransactions` to be an ar
 ## Import
 
 ```ts
-import { useSendBTCTransactions } from "@midl-xyz/midl-js-executor-react";
+import { useSendBTCTransactions } from "@midl/executor-react";
 ```
 
 ## Example

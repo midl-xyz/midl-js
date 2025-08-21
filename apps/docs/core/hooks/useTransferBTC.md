@@ -5,7 +5,7 @@ Creates a Bitcoin transaction to transfer BTC to one or more recipients using th
 ## Import
 
 ```ts
-import { useTransferBTC } from '@midl-xyz/midl-js-react';
+import { useTransferBTC } from '@midl/react';
 ```
 
 ## Example

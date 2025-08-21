@@ -7,7 +7,7 @@ Gets the balance of a rune for an address
 ## Import
 
 ```ts
-import { getRuneBalance } from "@midl-xyz/midl-js-core";
+import { getRuneBalance } from "@midl/core";
 ```
 
 ## Example
