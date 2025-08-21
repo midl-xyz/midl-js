@@ -1,1 +1,1 @@
-import "./@midl/react/context";
+import "./context";
