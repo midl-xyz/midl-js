@@ -1,5 +1,13 @@
 # @midl-xyz/midl-js-core
 
+## 2.0.2
+
+### Patch Changes
+
+- fix(executor-react): context type import
+- Updated dependencies
+  - @midl/logger@2.0.2
+
 ## 2.0.1
 
 ### Patch Changes
