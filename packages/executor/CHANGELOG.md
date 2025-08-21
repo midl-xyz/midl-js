@@ -1,4 +1,4 @@
-# @midl-xyz/midl-js-executor
+# @midl/executor
 
 ## 2.0.2
 
@@ -8,6 +8,9 @@
 - Updated dependencies
   - @midl/logger@2.0.2
   - @midl/core@2.0.2
+
+# @midl-xyz/midl-js-executor
+
 
 ## 2.0.1
 
