@@ -4,76 +4,53 @@ import { regtest } from "../networks/regtest";
 import { signet } from "../networks/signet";
 import { testnet } from "../networks/testnet";
 import { testnet4 } from "../networks/testnet4";
-import { getBitcoinAddress } from "./fixtures/getBitcoinAddress";
+import { getBitcoinAddress } from "./fixtures";
 import { isCorrectAddress } from "./isCorrectAddress";
 
 describe("core | utils | isCorrectAddress", () => {
 	it("returns true for P2WPKH addresses on all networks", () => {
-		const { p2wpkhMainnet } = getBitcoinAddress();
-		const { p2wpkhTestnet } = getBitcoinAddress();
-		const { p2wpkhRegtest } = getBitcoinAddress();
+		const { p2wpkhMainnet, p2wpkhTestnet, p2wpkhRegtest } = getBitcoinAddress();
 
 		// biome-ignore lint/style/noNonNullAssertion: <explanation>
-		expect(isCorrectAddress(p2wpkhMainnet!, mainnet)).toBeTruthy;
+		expect(isCorrectAddress(p2wpkhMainnet.address!, mainnet)).toBeTruthy;
 		// biome-ignore lint/style/noNonNullAssertion: <explanation>
-		expect(isCorrectAddress(p2wpkhTestnet!, testnet)).toBeTruthy;
+		expect(isCorrectAddress(p2wpkhTestnet.address!, testnet)).toBeTruthy;
 		// biome-ignore lint/style/noNonNullAssertion: <explanation>
-		expect(isCorrectAddress(p2wpkhTestnet!, signet)).toBeTruthy;
+		expect(isCorrectAddress(p2wpkhTestnet.address!, signet)).toBeTruthy;
 		// biome-ignore lint/style/noNonNullAssertion: <explanation>
-		expect(isCorrectAddress(p2wpkhTestnet!, testnet4)).toBeTruthy;
+		expect(isCorrectAddress(p2wpkhTestnet.address!, testnet4)).toBeTruthy;
 		// biome-ignore lint/style/noNonNullAssertion: <explanation>
-		expect(isCorrectAddress(p2wpkhRegtest!, regtest)).toBeTruthy;
+		expect(isCorrectAddress(p2wpkhRegtest.address!, regtest)).toBeTruthy;
 	});
 
 	it("returns true for P2SH-P2WPKH addresses on all networks", () => {
-		const { p2shMainnet } = getBitcoinAddress();
-		const { p2shTestnet } = getBitcoinAddress();
-		const { p2shRegtest } = getBitcoinAddress();
+		const { p2shMainnet, p2shTestnet, p2shRegtest } = getBitcoinAddress();
 
 		// biome-ignore lint/style/noNonNullAssertion: <explanation>
-		expect(isCorrectAddress(p2shMainnet!, mainnet)).toBeTruthy;
+		expect(isCorrectAddress(p2shMainnet.address!, mainnet)).toBeTruthy;
 		// biome-ignore lint/style/noNonNullAssertion: <explanation>
-		expect(isCorrectAddress(p2shTestnet!, testnet)).toBeTruthy;
+		expect(isCorrectAddress(p2shTestnet.address!, testnet)).toBeTruthy;
 		// biome-ignore lint/style/noNonNullAssertion: <explanation>
-		expect(isCorrectAddress(p2shTestnet!, testnet4)).toBeTruthy;
+		expect(isCorrectAddress(p2shTestnet.address!, testnet4)).toBeTruthy;
 		// biome-ignore lint/style/noNonNullAssertion: <explanation>
-		expect(isCorrectAddress(p2shTestnet!, signet)).toBeTruthy;
+		expect(isCorrectAddress(p2shTestnet.address!, signet)).toBeTruthy;
 		// biome-ignore lint/style/noNonNullAssertion: <explanation>
-		expect(isCorrectAddress(p2shRegtest!, regtest)).toBeTruthy;
+		expect(isCorrectAddress(p2shRegtest.address!, regtest)).toBeTruthy;
 	});
 
 	it("returns true for P2TR addresses on all networks", () => {
-		const { p2trMainnet } = getBitcoinAddress();
-		const { p2trTestnet } = getBitcoinAddress();
-		const { p2trRegtest } = getBitcoinAddress();
+		const { p2trMainnet, p2trTestnet, p2trRegtest } = getBitcoinAddress();
 
 		// biome-ignore lint/style/noNonNullAssertion: <explanation>
-		expect(isCorrectAddress(p2trMainnet!, mainnet)).toBeTruthy;
+		expect(isCorrectAddress(p2trMainnet.address!, mainnet)).toBeTruthy;
 		// biome-ignore lint/style/noNonNullAssertion: <explanation>
-		expect(isCorrectAddress(p2trTestnet!, testnet)).toBeTruthy;
+		expect(isCorrectAddress(p2trTestnet.address!, testnet)).toBeTruthy;
 		// biome-ignore lint/style/noNonNullAssertion: <explanation>
-		expect(isCorrectAddress(p2trTestnet!, testnet4)).toBeTruthy;
+		expect(isCorrectAddress(p2trTestnet.address!, testnet4)).toBeTruthy;
 		// biome-ignore lint/style/noNonNullAssertion: <explanation>
-		expect(isCorrectAddress(p2trTestnet!, signet)).toBeTruthy;
+		expect(isCorrectAddress(p2trTestnet.address!, signet)).toBeTruthy;
 		// biome-ignore lint/style/noNonNullAssertion: <explanation>
-		expect(isCorrectAddress(p2trRegtest!, regtest)).toBeTruthy;
-	});
-
-	it("returns true for P2PKH addresses on all networks", () => {
-		const { p2pkhMainnet } = getBitcoinAddress();
-		const { p2pkhTestnet } = getBitcoinAddress();
-		const { p2pkhRegtest } = getBitcoinAddress();
-
-		// biome-ignore lint/style/noNonNullAssertion: <explanation>
-		expect(isCorrectAddress(p2pkhMainnet!, mainnet)).toBeTruthy;
-		// biome-ignore lint/style/noNonNullAssertion: <explanation>
-		expect(isCorrectAddress(p2pkhTestnet!, testnet)).toBeTruthy;
-		// biome-ignore lint/style/noNonNullAssertion: <explanation>
-		expect(isCorrectAddress(p2pkhTestnet!, testnet4)).toBeTruthy;
-		// biome-ignore lint/style/noNonNullAssertion: <explanation>
-		expect(isCorrectAddress(p2pkhTestnet!, signet)).toBeTruthy;
-		// biome-ignore lint/style/noNonNullAssertion: <explanation>
-		expect(isCorrectAddress(p2pkhRegtest!, regtest)).toBeTruthy;
+		expect(isCorrectAddress(p2trRegtest.address!, regtest)).toBeTruthy;
 	});
 
 	it("throws error if address that does not match the network configuration", () => {
