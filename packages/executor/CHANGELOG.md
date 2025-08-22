@@ -1,5 +1,13 @@
 # @midl/executor
 
+## 2.0.3
+
+### Patch Changes
+
+- 92b3da9: feat(executor): addRuneERC20 action & hook
+  - @midl/core@2.0.3
+  - @midl/logger@2.0.3
+
 ## 2.0.2
 
 ### Patch Changes
@@ -10,7 +18,6 @@
   - @midl/core@2.0.2
 
 # @midl-xyz/midl-js-executor
-
 
 ## 2.0.1
 

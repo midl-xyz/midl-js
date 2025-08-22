@@ -1,5 +1,15 @@
 # @midl/hardhat-deploy
 
+## 2.0.3
+
+### Patch Changes
+
+- Updated dependencies [92b3da9]
+  - @midl/executor@2.0.3
+  - @midl/core@2.0.3
+  - @midl/logger@2.0.3
+  - @midl/node@2.0.3
+
 ## 2.0.2
 
 ### Patch Changes
@@ -12,7 +22,6 @@
   - @midl/node@2.0.2
 
 # @midl-xyz/hardhat-deploy
-
 
 ## 2.0.1
 

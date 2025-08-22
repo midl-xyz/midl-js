@@ -1,5 +1,15 @@
 # @midl/executor-react
 
+## 2.0.3
+
+### Patch Changes
+
+- 92b3da9: feat(executor): addRuneERC20 action & hook
+- Updated dependencies [92b3da9]
+  - @midl/executor@2.0.3
+  - @midl/core@2.0.3
+  - @midl/react@2.0.3
+
 ## 2.0.2
 
 ### Patch Changes
