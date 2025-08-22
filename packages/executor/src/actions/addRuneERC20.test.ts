@@ -20,9 +20,9 @@ describe("executor | actions | addRune", () => {
 			...(await importOriginal<typeof import("@midl/core")>()),
 			getBlockNumber: vi.fn().mockResolvedValue(100),
 			getRune: vi.fn().mockImplementation((config, runeId) => {
-				if (runeId === "RUNE123456789") {
+				if (runeId === "JUSTETHCEDRUNE") {
 					return {
-						name: "RUNE123456789",
+						name: "JUSTETHCEDRUNE",
 						location: { block_height: 95 },
 					};
 				}
@@ -58,7 +58,7 @@ describe("executor | actions | addRune", () => {
 
 	it("throws error if confirmations is less than 6", async () => {
 		await expect(() =>
-			addRuneERC20(config, client, "RUNE123456789"),
+			addRuneERC20(config, client, "JUSTETHCEDRUNE"),
 		).rejects.toThrow("Confirmations must be at least 6");
 	});
 
@@ -80,7 +80,7 @@ describe("executor | actions | addRune", () => {
 	});
 
 	it("does not publish the transaction if publish is false", async () => {
-		await addRuneERC20(config, client, "RUNE1234567890", {
+		await addRuneERC20(config, client, "RUNEWITHVALIDNAME", {
 			publish: false,
 		});
 		expect(edictRune).toHaveBeenCalledWith(
@@ -90,7 +90,7 @@ describe("executor | actions | addRune", () => {
 	});
 
 	it("publishes the transaction if publish is true", async () => {
-		await addRuneERC20(config, client, "RUNE1234567890", {
+		await addRuneERC20(config, client, "RUNEWITHVALIDNAME", {
 			publish: true,
 		});
 		expect(edictRune).toHaveBeenCalledWith(
