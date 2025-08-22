@@ -1,6 +1,8 @@
 import ecc from "@bitcoinerlab/secp256k1";
 import * as bitcoin from "bitcoinjs-lib";
 import ECPairFactory from "ecpair";
+import { AddressPurpose, AddressType } from "~/constants";
+import { extractXCoordinate } from "~/utils/extractXCoordinate";
 
 export const getBitcoinAddress = () => {
 	const ECPair = ECPairFactory(ecc);
@@ -14,22 +16,46 @@ export const getBitcoinAddress = () => {
 	const keyPairTestnet = ECPair.makeRandom({ network: testnetNetwork });
 	const keyPairRegtest = ECPair.makeRandom({ network: regtestNetwork });
 
-	const { address: p2wpkhMainnet } = bitcoin.payments.p2wpkh({
+	const p2wpkhMainnet = bitcoin.payments.p2wpkh({
 		pubkey: keyPairMainnet.publicKey,
 		network: mainnetNetwork,
 	});
 
-	const { address: p2wpkhTestnet } = bitcoin.payments.p2wpkh({
+	const accountp2wpkhMainnet = {
+		// biome-ignore lint/style/noNonNullAssertion: <explanation>
+		address: p2wpkhMainnet.address!,
+		publicKey: keyPairMainnet.publicKey.toString("hex"),
+		purpose: AddressPurpose.Payment,
+		addressType: AddressType.P2WPKH,
+	};
+
+	const p2wpkhTestnet = bitcoin.payments.p2wpkh({
 		pubkey: keyPairTestnet.publicKey,
 		network: testnetNetwork,
 	});
 
-	const { address: p2wpkhRegtest } = bitcoin.payments.p2wpkh({
+	const accountp2wpkhTestnet = {
+		// biome-ignore lint/style/noNonNullAssertion: <explanation>
+		address: p2wpkhTestnet.address!,
+		publicKey: keyPairTestnet.publicKey,
+		purpose: AddressPurpose.Payment,
+		addressType: AddressType.P2WPKH,
+	};
+
+	const p2wpkhRegtest = bitcoin.payments.p2wpkh({
 		pubkey: keyPairRegtest.publicKey,
 		network: regtestNetwork,
 	});
 
-	const { address: p2shMainnet } = bitcoin.payments.p2sh({
+	const accountp2wpkhRegtest = {
+		// biome-ignore lint/style/noNonNullAssertion: <explanation>
+		address: p2wpkhRegtest.address!,
+		publicKey: keyPairRegtest.publicKey,
+		purpose: AddressPurpose.Payment,
+		addressType: AddressType.P2WPKH,
+	};
+
+	const p2shMainnet = bitcoin.payments.p2sh({
 		redeem: bitcoin.payments.p2wpkh({
 			pubkey: keyPairMainnet.publicKey,
 			network: mainnetNetwork,
@@ -37,7 +63,15 @@ export const getBitcoinAddress = () => {
 		network: mainnetNetwork,
 	});
 
-	const { address: p2shTestnet } = bitcoin.payments.p2sh({
+	const accountp2shMainnet = {
+		// biome-ignore lint/style/noNonNullAssertion: <explanation>
+		address: p2shMainnet.address!,
+		publicKey: keyPairMainnet.publicKey,
+		purpose: AddressPurpose.Payment,
+		addressType: AddressType.P2SH_P2WPKH,
+	};
+
+	const p2shTestnet = bitcoin.payments.p2sh({
 		redeem: bitcoin.payments.p2wpkh({
 			pubkey: keyPairTestnet.publicKey,
 			network: testnetNetwork,
@@ -45,7 +79,15 @@ export const getBitcoinAddress = () => {
 		network: testnetNetwork,
 	});
 
-	const { address: p2shRegtest } = bitcoin.payments.p2sh({
+	const accountp2shTestnet = {
+		// biome-ignore lint/style/noNonNullAssertion: <explanation>
+		address: p2shTestnet.address!,
+		publicKey: keyPairTestnet.publicKey.toString("hex"),
+		purpose: AddressPurpose.Payment,
+		addressType: AddressType.P2SH_P2WPKH,
+	};
+
+	const p2shRegtest = bitcoin.payments.p2sh({
 		redeem: bitcoin.payments.p2wpkh({
 			pubkey: keyPairRegtest.publicKey,
 			network: regtestNetwork,
@@ -53,37 +95,95 @@ export const getBitcoinAddress = () => {
 		network: regtestNetwork,
 	});
 
-	const { address: p2trMainnet } = bitcoin.payments.p2tr({
-		pubkey: keyPairMainnet.publicKey.slice(1, 33),
+	const accountp2shRegtest = {
+		// biome-ignore lint/style/noNonNullAssertion: <explanation>
+		address: p2shRegtest.address!,
+		publicKey: keyPairRegtest.publicKey.toString("hex"),
+		purpose: AddressPurpose.Payment,
+		addressType: AddressType.P2SH_P2WPKH,
+	};
+
+	const p2trMainnet = bitcoin.payments.p2tr({
+		internalPubkey: Buffer.from(
+			extractXCoordinate(keyPairMainnet.publicKey.slice(1, 33).toString("hex")),
+			"hex",
+		),
 		network: mainnetNetwork,
 	});
 
-	const { address: p2trTestnet } = bitcoin.payments.p2tr({
-		pubkey: keyPairTestnet.publicKey.slice(1, 33),
+	const accountp2trMainnet = {
+		// biome-ignore lint/style/noNonNullAssertion: <explanation>
+		address: p2trMainnet.address!,
+		publicKey: keyPairMainnet.publicKey.slice(1, 33).toString("hex"),
+		purpose: AddressPurpose.Ordinals,
+		addressType: AddressType.P2TR,
+	};
+
+	const p2trTestnet = bitcoin.payments.p2tr({
+		internalPubkey: Buffer.from(
+			extractXCoordinate(keyPairTestnet.publicKey.slice(1, 33).toString("hex")),
+			"hex",
+		),
 		network: testnetNetwork,
 	});
 
-	const { address: p2trRegtest } = bitcoin.payments.p2tr({
-		pubkey: keyPairRegtest.publicKey.slice(1, 33),
+	const accountp2trTestnet = {
+		address: p2trTestnet.address,
+		publicKey: keyPairTestnet.publicKey.slice(1, 33).toString("hex"),
+		purpose: AddressPurpose.Ordinals,
+		addressType: AddressType.P2TR,
+	};
+
+	const p2trRegtest = bitcoin.payments.p2tr({
+		internalPubkey: Buffer.from(
+			extractXCoordinate(keyPairRegtest.publicKey.slice(1, 33).toString("hex")),
+			"hex",
+		),
 		network: regtestNetwork,
 	});
 
-	const { address: p2pkhMainnet } = bitcoin.payments.p2pkh({
+	const accountp2trRegtest = {
+		// biome-ignore lint/style/noNonNullAssertion: <explanation>
+		address: p2trRegtest.address!,
+		publicKey: keyPairRegtest.publicKey.slice(1, 33).toString("hex"),
+		purpose: AddressPurpose.Ordinals,
+		addressType: AddressType.P2TR,
+	};
+
+	const incorrectAddressTypeAddressMainnet = bitcoin.payments.p2pkh({
 		pubkey: keyPairMainnet.publicKey,
 		network: mainnetNetwork,
 	});
 
-	const { address: p2pkhTestnet } = bitcoin.payments.p2pkh({
+	const incorrectAddressTypeAddressTestnet = bitcoin.payments.p2pkh({
 		pubkey: keyPairTestnet.publicKey,
 		network: testnetNetwork,
 	});
 
-	const { address: p2pkhRegtest } = bitcoin.payments.p2pkh({
+	const incorrectAddressTypeAddressRegtest = bitcoin.payments.p2pkh({
 		pubkey: keyPairRegtest.publicKey,
 		network: regtestNetwork,
 	});
 
+	const accountIncorrectAddressTypeAddress = {
+		// biome-ignore lint/style/noNonNullAssertion: <explanation>
+		address: incorrectAddressTypeAddressMainnet.address!,
+		publicKey: keyPairMainnet.publicKey.toString("hex"),
+		purpose: AddressPurpose.Payment,
+		addressType: undefined as unknown as AddressType,
+	};
+
 	return {
+		accountp2wpkhMainnet,
+		accountp2wpkhTestnet,
+		accountp2wpkhRegtest,
+		accountp2shMainnet,
+		accountp2shTestnet,
+		accountp2shRegtest,
+		accountp2trMainnet,
+		accountp2trTestnet,
+		accountp2trRegtest,
+		accountIncorrectAddressTypeAddress,
 		p2wpkhMainnet,
 		p2wpkhTestnet,
 		p2wpkhRegtest,
@@ -93,8 +193,8 @@ export const getBitcoinAddress = () => {
 		p2trMainnet,
 		p2trTestnet,
 		p2trRegtest,
-		p2pkhMainnet,
-		p2pkhTestnet,
-		p2pkhRegtest,
+		incorrectAddressTypeAddressMainnet,
+		incorrectAddressTypeAddressTestnet,
+		incorrectAddressTypeAddressRegtest,
 	};
 };
