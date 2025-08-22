@@ -6,3 +6,4 @@ export * from "./getBTCFeeRate";
 export * from "./getPublicKey";
 export * from "./signIntention";
 export * from "./signTransaction";
+export * from "./addRuneERC20";

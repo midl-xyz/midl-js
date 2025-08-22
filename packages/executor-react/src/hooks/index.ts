@@ -12,3 +12,4 @@ export * from "./useSendBTCTransactions";
 export * from "./useSignIntention";
 export * from "./useSignTransaction";
 export * from "./useToken";
+export * from "./useAddRuneERC20";
