@@ -1,6 +1,6 @@
 # useAddRuneERC20
 
-Adds an ERC20 Rune to the Midl network. Wraps `addRuneERC20` and exposes a React Query mutation for creating the mint transaction.
+Adds an ERC20 Rune to the Midl network. Wraps [`addRuneERC20`](../actions/addRuneERC20.md) and exposes a React Query mutation for creating the transaction.
 
 ## Import
 
