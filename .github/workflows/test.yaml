@@ -5,10 +5,23 @@ on:
     branches:
       - main
       - next
+    paths:
+      - 'packages/**'
+      - 'pnpm-lock.yaml'
+      - 'vitest.config.ts'
+      - 'biome.json'
+      - '.github/workflows/test.yaml'
   push:
     branches:
       - main
       - next
+    paths:
+      - 'packages/**'
+      - 'pnpm-lock.yaml'
+      - 'vitest.config.ts'
+      - 'biome.json'
+      - '.github/workflows/test.yaml'
+
   workflow_dispatch:
 
 jobs:
