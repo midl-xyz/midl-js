@@ -12,7 +12,12 @@ import { useAddRuneERC20 } from "@midl/executor-react";
 
 ```ts
 const { addRuneERC20 } = useAddRuneERC20();
-addRuneERC20({ runeId: "RUNE1234567890", publish: true });
+
+addRuneERC20({ runeId: "RUNEWITHVALIDNAME", publish: true });
+
+// or with rune ID "blockHeight:txIndex"
+addRuneERC20({ runeId: "123456:0", publish: true });
+
 ```
 
 ## Parameters

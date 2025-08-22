@@ -20,7 +20,10 @@ import { addRuneERC20 } from "@midl/executor";
 ```ts
 import { addRuneERC20 } from "@midl/executor";
 
-const result = await addRuneERC20(config, client, "RUNE1234567890", { publish: true });
+const result = await addRuneERC20(config, client, "RUNEWITHVALIDNAME", { publish: true });
+// or with rune ID "blockHeight:txIndex"
+// await addRuneERC20(config, client, "123456:0", { publish: true });
+
 console.log(result.tx.id);
 ```
 
