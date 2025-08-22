@@ -1,4 +1,3 @@
-````markdown
 # addRuneERC20
 
 > **addRuneERC20**(`config`, `client`, `runeId`, `options?`): `Promise<EdictRuneResponse>`
@@ -48,4 +47,3 @@ console.log(result.tx.id);
 
 `Promise<EdictRuneResponse>` — The transaction response (PSBT/hex and metadata) returned by `edictRune`.
 
-```
