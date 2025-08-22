@@ -1,5 +1,11 @@
 # @midl/node
 
+## 2.0.3
+
+### Patch Changes
+
+- @midl/core@2.0.3
+
 ## 2.0.2
 
 ### Patch Changes
@@ -9,7 +15,6 @@
   - @midl/core@2.0.2
 
 # @midl-xyz/midl-js-node
-
 
 ## 2.0.1
 
