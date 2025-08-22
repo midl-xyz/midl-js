@@ -22,7 +22,7 @@ describe("executor | hooks | useAddRuneERC20", () => {
 		const { result } = renderHook(() => useAddRuneERC20(), { wrapper });
 
 		result.current.addRuneERC20({
-			runeId: "RUNE1234567890",
+			runeId: "RUNENAME",
 			publish: true,
 		});
 
@@ -36,7 +36,7 @@ describe("executor | hooks | useAddRuneERC20", () => {
 		expect(addRuneERC20).toHaveBeenCalledWith(
 			expect.any(Object),
 			expect.any(Object),
-			"RUNE1234567890",
+			"RUNENAME",
 			{ publish: true },
 		);
 	});
@@ -45,7 +45,7 @@ describe("executor | hooks | useAddRuneERC20", () => {
 		const { result } = renderHook(() => useAddRuneERC20(), { wrapper });
 
 		result.current.addRuneERC20({
-			runeId: "RUNE1234567890",
+			runeId: "RUNENAME",
 			publish: false,
 		});
 
@@ -55,7 +55,7 @@ describe("executor | hooks | useAddRuneERC20", () => {
 		expect(addRuneERC20).toHaveBeenCalledWith(
 			expect.any(Object),
 			expect.any(Object),
-			"RUNE1234567890",
+			"RUNENAME",
 			{ publish: false },
 		);
 	});
