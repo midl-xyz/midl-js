@@ -2,10 +2,6 @@ import type { BitcoinNetwork } from "~/createConfig";
 import type {
 	AbstractProvider,
 	FeeRateResponse,
-	RuneBalanceResponse,
-	RuneResponse,
-	RuneUTXO,
-	RunesResponse,
 	TransactionStatusResponse,
 	UTXO,
 } from "~/providers/AbstractProvider";

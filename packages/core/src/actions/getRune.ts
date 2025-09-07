@@ -14,11 +14,11 @@ import type { Config } from "~/createConfig";
  * @returns The rune object
  */
 export const getRune = async (config: Config, runeId: string) => {
-	const { network, provider } = config.getState();
+	const { network, runesProvider } = config.getState();
 
 	if (!network) {
 		throw new Error("No network found");
 	}
 
-	return provider.getRune(network, runeId);
+	return runesProvider.getRune(network, runeId);
 };
