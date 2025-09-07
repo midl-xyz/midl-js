@@ -37,9 +37,9 @@ export const getRunes = async (
 	config: Config,
 	{ address, limit = 20, offset = 0 }: GetRunesParams,
 ) => {
-	const { network, provider } = config.getState();
+	const { network, runesProvider } = config.getState();
 
-	return provider.getRunes(network, address, {
+	return runesProvider.getRunes(network, address, {
 		limit,
 		offset,
 	});

@@ -20,7 +20,7 @@ export const getRuneUTXO = async (
 	address: string,
 	runeId: string,
 ) => {
-	const { network, provider } = config.getState();
+	const { network, runesProvider } = config.getState();
 
-	return provider.getRuneUTXOs(network, address, runeId);
+	return runesProvider.getRuneUTXOs(network, address, runeId);
 };
