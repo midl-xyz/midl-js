@@ -11,7 +11,7 @@ describe("core | utils | runeUTXOSelect", () => {
 					{
 						runeid: "1:1",
 						divisibility: 18,
-						amount: formatUnits(100n, 18),
+						amount: 100n,
 					},
 				],
 			},
@@ -20,7 +20,7 @@ describe("core | utils | runeUTXOSelect", () => {
 					{
 						runeid: "1:1",
 						divisibility: 18,
-						amount: formatUnits(100n, 18),
+						amount: 100n,
 					},
 				],
 			},
@@ -38,7 +38,7 @@ describe("core | utils | runeUTXOSelect", () => {
 					{
 						runeid: "1:1",
 						divisibility: 18,
-						amount: formatUnits(100n, 18),
+						amount: 100n,
 					},
 				],
 			},
