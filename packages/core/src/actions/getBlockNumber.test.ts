@@ -27,7 +27,7 @@ describe("core | actions | getBlockNumber", () => {
 	});
 
 	afterAll(() => {
-		mockServer.close();
+		server.close();
 	});
 
 	it("returns the correct mainnet block number", async () => {
