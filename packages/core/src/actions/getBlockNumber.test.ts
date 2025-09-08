@@ -1,20 +1,42 @@
-import { describe, expect, it } from "vitest";
+import { http, HttpResponse, type RequestHandler } from "msw";
+import { setupServer } from "msw/node";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { mockServer } from "~/__tests__/mockServer";
 import { createConfig } from "~/createConfig";
 import { mainnet, regtest, testnet4 } from "~/networks";
 import { getBlockNumber } from "./getBlockNumber";
 
+const expectedBlockNumberTestnet = 2345;
+const expectedBlockNumberMainnet = 87654;
+
+const handlers: RequestHandler[] = [
+	http.get("https://mempool.space/api/blocks/tip/height", () => {
+		return HttpResponse.text(expectedBlockNumberMainnet.toString());
+	}),
+
+	http.get("https://mempool.space/testnet4/api/blocks/tip/height", () => {
+		return HttpResponse.text(expectedBlockNumberTestnet.toString());
+	}),
+];
+
+const server = setupServer(...handlers);
+
 describe("core | actions | getBlockNumber", () => {
+	beforeAll(() => {
+		server.listen();
+	});
+
+	afterAll(() => {
+		mockServer.close();
+	});
+
 	it("returns the correct mainnet block number", async () => {
 		const config = createConfig({
 			networks: [mainnet],
 			connectors: [],
 		});
-		const url = "https://mempool.space/api/blocks/tip/height";
-		const response = await fetch(url);
 
-		expect(await getBlockNumber(config)).toEqual(
-			Number.parseInt(await response.text(), 10),
-		);
+		expect(await getBlockNumber(config)).toEqual(expectedBlockNumberMainnet);
 	});
 
 	it("returns the correct testnet block number", async () => {
@@ -23,24 +45,17 @@ describe("core | actions | getBlockNumber", () => {
 			connectors: [],
 		});
 
-		const url = "https://mempool.space/testnet4/api/blocks/tip/height";
-		const response = await fetch(url);
-
-		expect(await getBlockNumber(config)).toEqual(
-			Number.parseInt(await response.text(), 10),
-		);
+		expect(await getBlockNumber(config)).toEqual(expectedBlockNumberTestnet);
 	});
 
 	it("returns the correct regtest block number", async () => {
+		mockServer.listen();
+
 		const config = createConfig({
 			networks: [regtest],
 			connectors: [],
 		});
 
-		const url = "https://mempool.regtest.midl.xyz/api/blocks/tip/height";
-		const response = await fetch(url);
-		expect(await getBlockNumber(config)).toEqual(
-			Number.parseInt(await response.text(), 10),
-		);
+		expect(await getBlockNumber(config)).toEqual(0);
 	});
 });
