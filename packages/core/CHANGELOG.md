@@ -1,5 +1,12 @@
 # @midl/core
 
+## 2.0.5
+
+### Patch Changes
+
+- fix: export ms provider
+  - @midl/logger@2.0.5
+
 ## 2.0.4
 
 ### Patch Changes

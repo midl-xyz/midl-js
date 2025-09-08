@@ -1,5 +1,13 @@
 # @midl/executor
 
+## 2.0.5
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl/core@2.0.5
+  - @midl/logger@2.0.5
+
 ## 2.0.4
 
 ### Patch Changes
