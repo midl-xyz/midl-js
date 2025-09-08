@@ -16,7 +16,7 @@ export type RuneResponse = {
 	/**
 	 * The rune number
 	 */
-	number: number;
+	number?: number;
 	/**
 	 * The rune divisibility
 	 */
@@ -25,16 +25,16 @@ export type RuneResponse = {
 	 * The rune symbol
 	 */
 	symbol: string;
-	turbo: boolean;
-	mint_terms: {
-		amount: number | null;
-		cap: number | null;
+
+	mint_terms?: {
+		amount: bigint | null;
+		cap: bigint | null;
 		height_start: number | null;
 		height_end: number | null;
 		offset_start: number | null;
 		offset_end: number | null;
 	};
-	supply: {
+	supply?: {
 		current: string;
 		minted: string;
 		total_mints: string;
@@ -44,7 +44,7 @@ export type RuneResponse = {
 		total_burns: string;
 		premine: string;
 	};
-	location: {
+	location?: {
 		block_hash: string;
 		block_height: number;
 		tx_id: string;
@@ -61,7 +61,7 @@ export type RuneBalanceResponse = {
 	/**
 	 * The balance of the rune
 	 */
-	balance: string;
+	balance: bigint;
 };
 
 export type RunesResponse = {
@@ -86,14 +86,14 @@ export type RunesResponse = {
 		 * */
 		rune: {
 			id: string;
-			number: number;
+			number?: number;
 			name: string;
 			spaced_name: string;
 		};
 		/**
 		 * The balance of the rune
 		 */
-		balance: string;
+		balance: bigint;
 		/**
 		 * The address
 		 */
@@ -122,20 +122,17 @@ export type RuneUTXO = {
 	 * The amount of satoshis
 	 */
 	satoshis: number;
-	/**
-	 * The scriptPubKey
-	 */
-	scriptPk: string;
+
 	/**
 	 * The runes in the UTXO
 	 */
 	runes: {
-		rune: string;
+		// rune: string;
 		runeid: string;
-		spacedRune: string;
-		amount: string;
-		symbol: string;
-		divisibility: number;
+		// spacedRune: string;
+		amount: bigint;
+		// symbol: string;
+		// divisibility: number;
 	}[];
 };
 

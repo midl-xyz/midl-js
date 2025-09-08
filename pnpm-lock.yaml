@@ -317,6 +317,9 @@ importers:
       ecpair:
         specifier: ^2.1.0
         version: 2.1.0
+      openapi-fetch:
+        specifier: ^0.14.0
+        version: 0.14.0
       runelib:
         specifier: ^1.0.7
         version: 1.0.7
@@ -2594,7 +2597,7 @@ packages:
     resolution: {integrity: sha512-Pl5pvYK5VYKflfoUk4fVBESqKMNBtAIGPIT4j+Q8KNFueAe1vB2PsbRESeNJyW5YLL9pqKaD1RVqLmgIa1yvDg==}
     peerDependencies:
       hardhat: ^2.17.0
-      viem: ^2.7.6
+      viem: npm:@midl/viem@2.21.37
 
   '@nomicfoundation/solidity-analyzer-darwin-arm64@0.1.2':
     resolution: {integrity: sha512-JaqcWPDZENCvm++lFFGjrDd8mxtf+CtLd2MiXvMNTBD33dContTZ9TWETwNFwg7JTJT5Q9HEecH7FA+HTSsIUw==}
@@ -3880,7 +3883,7 @@ packages:
     peerDependencies:
       '@wagmi/core': 2.16.3
       typescript: '>=5.0.4'
-      viem: 2.x
+      viem: npm:@midl/viem@2.21.37
     peerDependenciesMeta:
       typescript:
         optional: true
@@ -3890,7 +3893,7 @@ packages:
     peerDependencies:
       '@tanstack/query-core': '>=5.0.0'
       typescript: '>=5.0.4'
-      viem: 2.x
+      viem: npm:@midl/viem@2.21.37
     peerDependenciesMeta:
       '@tanstack/query-core':
         optional: true
@@ -7505,6 +7508,12 @@ packages:
   oniguruma-to-es@2.3.0:
     resolution: {integrity: sha512-bwALDxriqfKGfUufKGGepCzu9x7nJQuoRoAFp4AnwehhC2crqrDIAP/uN2qdlsAvSMpeRC3+Yzhqc7hLmle5+g==}
 
+  openapi-fetch@0.14.0:
+    resolution: {integrity: sha512-PshIdm1NgdLvb05zp8LqRQMNSKzIlPkyMxYFxwyHR+UlKD4t2nUjkDhNxeRbhRSEd3x5EUNh2w5sJYwkhOH4fg==}
+
+  openapi-typescript-helpers@0.0.15:
+    resolution: {integrity: sha512-opyTPaunsklCBpTK8JGef6mfPhLSnyy5a0IN9vKtx3+4aExf+KxEqYwIy3hqkedXIB97u357uLMJsOnm3GVjsw==}
+
   optionator@0.9.4:
     resolution: {integrity: sha512-6IpQ7mKUxRcZNLIObR0hz7lxsapSSIYNZJwXPGeF0mTVqGKFIXj1DQcMoT22S3ROcLyY/rz0PWaWZ9ayWmad9g==}
     engines: {node: '>= 0.8.0'}
@@ -9382,7 +9391,7 @@ packages:
       '@tanstack/react-query': 5.69.0
       react: '>=18'
       typescript: '>=5.0.4'
-      viem: 2.x
+      viem: npm:@midl/viem@2.21.37
     peerDependenciesMeta:
       typescript:
         optional: true
@@ -18654,6 +18663,12 @@ snapshots:
       emoji-regex-xs: 1.0.0
       regex: 5.1.1
       regex-recursion: 5.1.1
+
+  openapi-fetch@0.14.0:
+    dependencies:
+      openapi-typescript-helpers: 0.0.15
+
+  openapi-typescript-helpers@0.0.15: {}
 
   optionator@0.9.4:
     dependencies:

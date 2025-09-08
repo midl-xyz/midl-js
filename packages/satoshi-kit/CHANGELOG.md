@@ -1,5 +1,15 @@
 # @midl/satoshi-kit
 
+## 2.0.4
+
+### Patch Changes
+
+- Updated dependencies [a2f595b]
+- Updated dependencies [ca11335]
+  - @midl/core@2.0.4
+  - @midl/connectors@2.0.4
+  - @midl/react@2.0.4
+
 ## 2.0.3
 
 ### Patch Changes
