@@ -16,7 +16,7 @@ export type RuneResponse = {
 	/**
 	 * The rune number
 	 */
-	number: number;
+	number?: number;
 	/**
 	 * The rune divisibility
 	 */
@@ -25,8 +25,8 @@ export type RuneResponse = {
 	 * The rune symbol
 	 */
 	symbol: string;
-	turbo: boolean;
-	mint_terms: {
+
+	mint_terms?: {
 		amount: number | null;
 		cap: number | null;
 		height_start: number | null;
@@ -34,7 +34,7 @@ export type RuneResponse = {
 		offset_start: number | null;
 		offset_end: number | null;
 	};
-	supply: {
+	supply?: {
 		current: string;
 		minted: string;
 		total_mints: string;
@@ -44,7 +44,7 @@ export type RuneResponse = {
 		total_burns: string;
 		premine: string;
 	};
-	location: {
+	location?: {
 		block_hash: string;
 		block_height: number;
 		tx_id: string;
@@ -86,7 +86,7 @@ export type RunesResponse = {
 		 * */
 		rune: {
 			id: string;
-			number: number;
+			number?: number;
 			name: string;
 			spaced_name: string;
 		};
