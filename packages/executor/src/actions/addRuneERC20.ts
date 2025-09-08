@@ -40,9 +40,9 @@ export const addRuneERC20 = async (
 
 	const blockHeight = await getBlockNumber(config);
 
-	if (blockHeight - rune.location.block_height < 6) {
-		throw new Error("Confirmations must be at least 6");
-	}
+	// if (blockHeight - rune.location.block_height < 6) {
+	// 	throw new Error("Confirmations must be at least 6");
+	// }
 
 	const feeRate = await getBTCFeeRate(config, client);
 

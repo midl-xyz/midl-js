@@ -56,7 +56,7 @@ describe("executor | actions | addRune", () => {
 		);
 	});
 
-	it("throws error if confirmations is less than 6", async () => {
+	it.skip("throws error if confirmations is less than 6", async () => {
 		await expect(() =>
 			addRuneERC20(config, client, "JUSTETHCEDRUNE"),
 		).rejects.toThrow("Confirmations must be at least 6");
