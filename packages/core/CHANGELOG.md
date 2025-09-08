@@ -1,5 +1,13 @@
 # @midl/core
 
+## 2.0.4
+
+### Patch Changes
+
+- a2f595b: feat: separate runehook & mempool providers
+- ca11335: feat: maestro symphony runes
+  - @midl/logger@2.0.4
+
 ## 2.0.3
 
 ### Patch Changes
