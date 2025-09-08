@@ -78,7 +78,7 @@ export class MaestroSymphonyProvider implements AbstractRunesProvider {
 
 		return {
 			address,
-			balance: response.data.data,
+			balance: BigInt(response.data.data),
 		};
 	}
 
@@ -92,6 +92,7 @@ export class MaestroSymphonyProvider implements AbstractRunesProvider {
 		const response = await this.client.GET(
 			"/addresses/{address}/runes/balances",
 			{
+				baseUrl: url,
 				address,
 				params: {
 					path: { address },
@@ -109,11 +110,11 @@ export class MaestroSymphonyProvider implements AbstractRunesProvider {
 			results: response.data.data.map((rune) => ({
 				rune: {
 					id: rune.id,
-					name: rune.name, // TODO: check if name is always present
-					spaced_name: rune.spaced_name, // TODO: check if spaced_name is always present
+					name: "Symphony doesn't provide rune name", // TODO: check if name is always present
+					spaced_name: "Symphony doesn't provider rune name", // TODO: check if spaced_name is always present
 				},
 				address,
-				balance: rune.amount,
+				balance: BigInt(rune.amount),
 			})),
 		};
 	}
@@ -144,15 +145,17 @@ export class MaestroSymphonyProvider implements AbstractRunesProvider {
 			);
 		}
 
-		throw new Error("Not implemented yet");
-
-		// return response.data.data.map((utxo) => ({
-		//     height: utxo.height,
-		//     address,
-		//     txid: utxo.txid,
-		//     vout: utxo.vout,
-		//     satoshis: utxo.satoshis,
-		// }));
+		return response.data.data.map((utxo) => ({
+			height: utxo.height,
+			address,
+			txid: utxo.tx_hash,
+			vout: utxo.output_index,
+			satoshis: Number.parseInt(utxo.satoshis, 10),
+			runes: utxo.runes.map((rune) => ({
+				runeid: rune.id,
+				amount: BigInt(rune.amount),
+			})),
+		}));
 	}
 
 	private getApiURL(network: BitcoinNetwork) {

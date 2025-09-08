@@ -27,8 +27,8 @@ export type RuneResponse = {
 	symbol: string;
 
 	mint_terms?: {
-		amount: number | null;
-		cap: number | null;
+		amount: bigint | null;
+		cap: bigint | null;
 		height_start: number | null;
 		height_end: number | null;
 		offset_start: number | null;
@@ -61,7 +61,7 @@ export type RuneBalanceResponse = {
 	/**
 	 * The balance of the rune
 	 */
-	balance: string;
+	balance: bigint;
 };
 
 export type RunesResponse = {
@@ -93,7 +93,7 @@ export type RunesResponse = {
 		/**
 		 * The balance of the rune
 		 */
-		balance: string;
+		balance: bigint;
 		/**
 		 * The address
 		 */
@@ -122,20 +122,17 @@ export type RuneUTXO = {
 	 * The amount of satoshis
 	 */
 	satoshis: number;
-	/**
-	 * The scriptPubKey
-	 */
-	scriptPk: string;
+
 	/**
 	 * The runes in the UTXO
 	 */
 	runes: {
-		rune: string;
+		// rune: string;
 		runeid: string;
-		spacedRune: string;
-		amount: string;
-		symbol: string;
-		divisibility: number;
+		// spacedRune: string;
+		amount: bigint;
+		// symbol: string;
+		// divisibility: number;
 	}[];
 };
 

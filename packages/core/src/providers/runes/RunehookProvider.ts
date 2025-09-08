@@ -1,3 +1,5 @@
+import createClient, { type Client } from "openapi-fetch";
+import { parseUnits } from "viem";
 import type { BitcoinNetwork } from "~/createConfig";
 import type {
 	AbstractRunesProvider,
@@ -6,6 +8,7 @@ import type {
 	RuneUTXO,
 	RunesResponse,
 } from "~/providers/runes/AbstractRunesProvider";
+import type { paths } from "~/providers/runes/scheme/runehook";
 
 export const runehookRPC: Record<BitcoinNetwork["id"], string> = {
 	mainnet: "https://mempool.space",
@@ -16,12 +19,16 @@ export const runehookRPC: Record<BitcoinNetwork["id"], string> = {
 };
 
 export class RunehookProvider implements AbstractRunesProvider {
+	private readonly client: Client<paths>;
+
 	constructor(
 		private readonly rpcUrlMap: Record<
 			BitcoinNetwork["id"],
 			string
 		> = runehookRPC,
-	) {}
+	) {
+		this.client = createClient<paths>();
+	}
 
 	private getApURL(network: BitcoinNetwork) {
 		return this.rpcUrlMap[network.id] || this.rpcUrlMap.mainnet;
@@ -31,43 +38,70 @@ export class RunehookProvider implements AbstractRunesProvider {
 		network: BitcoinNetwork,
 		runeId: string,
 	): Promise<RuneResponse> {
-		const url = `${this.getApURL(network)}/runes/v1/etchings/${runeId}`;
-
-		const response = await fetch(url, {
-			method: "GET",
-			headers: {
-				"Content-Type": "application/json",
+		const response = await this.client.GET("/runes/v1/etchings/{etching}", {
+			baseUrl: this.getApURL(network),
+			params: {
+				path: {
+					etching: runeId,
+				},
 			},
 		});
 
-		if (!response.ok) {
-			throw new Error(`Failed to fetch rune: ${response.statusText}`);
+		if (!response.data) {
+			throw new Error(`Failed to fetch rune with ID ${runeId}`);
 		}
 
-		const rune: RuneResponse = await response.json();
-
-		return rune;
+		return {
+			...response.data,
+			mint_terms: response.data.mint_terms
+				? {
+						...response.data.mint_terms,
+						amount: response.data.mint_terms.amount
+							? parseUnits(
+									response.data.mint_terms.amount,
+									response.data.divisibility,
+								)
+							: null,
+						cap: response.data.mint_terms.cap
+							? parseUnits(
+									response.data.mint_terms.cap,
+									response.data.divisibility,
+								)
+							: null,
+					}
+				: undefined,
+		};
 	}
 	async getRuneBalance(
 		network: BitcoinNetwork,
 		address: string,
 		runeId: string,
 	): Promise<RuneBalanceResponse> {
-		const url = `${this.getApURL(network)}/runes/v1/etchings/${runeId}/holders/${address}`;
-		const response = await fetch(url, {
-			method: "GET",
-			headers: {
-				"Content-Type": "application/json",
+		const response = await this.client.GET(
+			"/runes/v1/etchings/{etching}/holders/{address}",
+			{
+				baseUrl: this.getApURL(network),
+				params: {
+					path: {
+						etching: runeId,
+						address,
+					},
+				},
 			},
-		});
+		);
 
-		if (!response.ok) {
-			throw new Error(`Failed to fetch rune balance: ${response.statusText}`);
+		if (!response.data) {
+			throw new Error("Failed to fetch rune balance");
 		}
 
-		const data: RuneBalanceResponse = await response.json();
-		return data;
+		const rune = await this.getRune(network, runeId);
+
+		return {
+			...response.data,
+			balance: parseUnits(response.data.balance, rune.divisibility),
+		};
 	}
+
 	async getRunes(
 		network: BitcoinNetwork,
 		address: string,
@@ -82,20 +116,29 @@ export class RunehookProvider implements AbstractRunesProvider {
 			offset: 0,
 		},
 	): Promise<RunesResponse> {
-		const url = `${this.getApURL(network)}/runes/v1/addresses/${address}/balances?limit=${limit}&offset=${offset}`;
-		const response = await fetch(url, {
-			method: "GET",
-			headers: {
-				"Content-Type": "application/json",
+		const response = await this.client.GET(
+			"/runes/v1/addresses/{address}/balances",
+			{
+				baseUrl: this.getApURL(network),
+				params: {
+					path: { address },
+					query: { limit, offset },
+				},
 			},
-		});
+		);
 
-		if (!response.ok) {
-			throw new Error(`Failed to fetch runes: ${response.statusText}`);
+		if (!response.data) {
+			throw new Error(`Failed to fetch runes for address ${address}`);
 		}
 
-		const data: RunesResponse = await response.json();
-		return data;
+		return {
+			...response.data,
+			results: response.data.results.map((rune) => ({
+				...rune,
+				address: address,
+				balance: parseUnits(rune.balance, rune.rune.divisibility),
+			})),
+		};
 	}
 	async getRuneUTXOs(
 		network: BitcoinNetwork,
@@ -114,7 +157,32 @@ export class RunehookProvider implements AbstractRunesProvider {
 			throw new Error(`Failed to fetch rune UTXOs: ${response.statusText}`);
 		}
 
-		const data: RuneUTXO[] = await response.json();
-		return data;
+		type TxOutput = {
+			txid: string;
+			vout: number;
+			address: string;
+			scriptPk: string;
+			satoshis: number;
+			height: number;
+			confirmations: number;
+			runes: {
+				runeid: string;
+				rune: string;
+				spacedRune: string;
+				symbol: string;
+				divisibility: number;
+				amount: string;
+			}[];
+		};
+
+		const data: TxOutput[] = await response.json();
+
+		return data.map((utxo) => ({
+			...utxo,
+			runes: utxo.runes.map((rune) => ({
+				...rune,
+				amount: parseUnits(rune.amount, rune.divisibility),
+			})),
+		}));
 	}
 }
