@@ -1,5 +1,15 @@
 # @midl/hardhat-deploy
 
+## 2.0.6
+
+### Patch Changes
+
+- fix(hardhat-deploy): use zustand vanilla
+  - @midl/core@2.0.6
+  - @midl/executor@2.0.6
+  - @midl/logger@2.0.6
+  - @midl/node@2.0.6
+
 ## 2.0.5
 
 ### Patch Changes

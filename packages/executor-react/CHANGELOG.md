@@ -1,5 +1,13 @@
 # @midl/executor-react
 
+## 2.0.6
+
+### Patch Changes
+
+- @midl/core@2.0.6
+- @midl/executor@2.0.6
+- @midl/react@2.0.6
+
 ## 2.0.5
 
 ### Patch Changes
