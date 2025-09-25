@@ -8,6 +8,7 @@
 	],
 	"compilerOptions": {
 		"sourceMap": true,
+		"inlineSources": true,
 		"declaration": true,
 		"declarationDir": "./dist",
 		"outDir": "./dist"

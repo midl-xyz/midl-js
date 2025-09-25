@@ -4,6 +4,8 @@
 	"compilerOptions": {
 		"moduleResolution": "Bundler",
 		"baseUrl": ".",
+		"sourceMap": true,
+		"inlineSources": true,
 		"paths": {
 			"~/*": ["./src/*"]
 		},
