@@ -1,7 +1,7 @@
 import type { BitcoinNetwork } from "~/createConfig";
 
-export const mainnet: BitcoinNetwork = {
+export const mainnet = {
 	id: "mainnet",
 	network: "bitcoin",
 	explorerUrl: "https://mempool.space",
-};
+} satisfies BitcoinNetwork;
