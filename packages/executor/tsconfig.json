@@ -3,6 +3,8 @@
 	"include": ["src/**/*.ts"],
 	"compilerOptions": {
 		"baseUrl": ".",
+		"sourceMap": true,
+		"inlineSources": true,
 		"paths": {
 			"~/*": ["./src/*"]
 		},

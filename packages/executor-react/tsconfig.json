@@ -4,6 +4,8 @@
 	"compilerOptions": {
 		"baseUrl": ".",
 		"jsx": "react-jsx",
+		"sourceMap": true,
+		"inlineSources": true,
 		"paths": {
 			"~/*": ["./src/*"]
 		},
