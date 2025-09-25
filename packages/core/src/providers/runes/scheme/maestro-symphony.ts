@@ -161,7 +161,27 @@ export interface paths {
 		patch?: never;
 		trace?: never;
 	};
-	"/{rune}/utxos/{utxo}/balance": {
+	"/runes/{rune}": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/**
+		 * Info by Rune
+		 * @description Given a rune identifier (name or id), returns the rune info.
+		 */
+		get: operations["rune_info"];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/runes/{rune}/utxos/{utxo}/balance": {
 		parameters: {
 			query?: never;
 			header?: never;
@@ -221,6 +241,15 @@ export interface components {
 		RuneAndAmount: {
 			amount: string;
 			id: string;
+		};
+		RuneBalanceWithInfo: {
+			amount: string;
+			id: string;
+			info?: null | components["schemas"]["RuneInfo"];
+		};
+		RuneBalancesParam: {
+			include_info?: boolean;
+			mempool?: boolean;
 		};
 		RuneEdict: {
 			amount: string;
@@ -289,6 +318,22 @@ export interface components {
 			};
 			indexer_info: components["schemas"]["IndexerInfo"];
 		};
+		ServeResponse_RuneInfo: {
+			data: {
+				/** Format: int32 */
+				divisibility: number;
+				/** Format: int64 */
+				etching_height: number;
+				etching_tx: string;
+				id: string;
+				name: string;
+				premine: string;
+				spaced_name: string;
+				symbol?: string | null;
+				terms?: null | components["schemas"]["RuneTerms"];
+			};
+			indexer_info: components["schemas"]["IndexerInfo"];
+		};
 		ServeResponse_String: {
 			data: string;
 			indexer_info: components["schemas"]["IndexerInfo"];
@@ -308,6 +353,14 @@ export interface components {
 			data: {
 				amount: string;
 				id: string;
+			}[];
+			indexer_info: components["schemas"]["IndexerInfo"];
+		};
+		ServeResponse_Vec_RuneBalanceWithInfo: {
+			data: {
+				amount: string;
+				id: string;
+				info?: null | components["schemas"]["RuneInfo"];
 			}[];
 			indexer_info: components["schemas"]["IndexerInfo"];
 		};
@@ -353,6 +406,8 @@ export interface operations {
 			query?: {
 				/** @description Mempool-aware (default: false) */
 				mempool?: boolean;
+				/** @description Include rune info for each balance (default: false) */
+				include_info?: boolean;
 			};
 			header?: never;
 			path: {
@@ -375,12 +430,44 @@ export interface operations {
 					/** @example {
 					 *       "data": [
 					 *         {
+					 *           "amount": "100000000",
 					 *           "id": "30562:50",
-					 *           "amount": "100000000"
+					 *           "info": {
+					 *             "divisibility": 8,
+					 *             "etching_height": 30562,
+					 *             "etching_tx": "63937d48e35d15a7c5530469210c202104cc94a945cc848554f336b3f4f24121",
+					 *             "id": "30562:50",
+					 *             "name": "BESTINSLOTXYZ",
+					 *             "premine": "100000000",
+					 *             "spaced_name": "BESTINSLOT•XYZ",
+					 *             "symbol": "ʃ",
+					 *             "terms": {
+					 *               "amount": "100000000",
+					 *               "cap": "3402823669209384634633746074316",
+					 *               "end_height": null,
+					 *               "start_height": null
+					 *             }
+					 *           }
 					 *         },
 					 *         {
-					 *           "id": "65103:2",
-					 *           "amount": "300000"
+					 *           "amount": "990000",
+					 *           "id": "63523:1",
+					 *           "info": {
+					 *             "divisibility": 2,
+					 *             "etching_height": 63523,
+					 *             "etching_tx": "3bcc9e8f8eaf120ea5af65a378925b703f6fb1960435629eef5cb5900c19bec9",
+					 *             "id": "63523:1",
+					 *             "name": "JFMJFMJFMHHHAAA",
+					 *             "premine": "1000000",
+					 *             "spaced_name": "JFMJFMJFMHHHAAA",
+					 *             "symbol": "J",
+					 *             "terms": {
+					 *               "amount": "100000",
+					 *               "cap": "100",
+					 *               "end_height": null,
+					 *               "start_height": 63515
+					 *             }
+					 *           }
 					 *         }
 					 *       ],
 					 *       "indexer_info": {
@@ -388,11 +475,11 @@ export interface operations {
 					 *           "block_hash": "00000000000000108a4cd9755381003a01bea7998ca2d770fe09b576753ac7ef",
 					 *           "block_height": 31633
 					 *         },
-					 *         "mempool_timestamp": null,
-					 *         "estimated_blocks": []
+					 *         "estimated_blocks": [],
+					 *         "mempool_timestamp": null
 					 *       }
 					 *     } */
-					"application/json": components["schemas"]["ServeResponse_Vec_RuneAndAmount"];
+					"application/json": components["schemas"]["ServeResponse_Vec_RuneBalanceWithInfo"];
 				};
 			};
 			/** @description Malformed query parameters */
@@ -454,8 +541,8 @@ export interface operations {
 					 *           "block_hash": "00000000000000108a4cd9755381003a01bea7998ca2d770fe09b576753ac7ef",
 					 *           "block_height": 31633
 					 *         },
-					 *         "mempool_timestamp": null,
-					 *         "estimated_blocks": []
+					 *         "estimated_blocks": [],
+					 *         "mempool_timestamp": null
 					 *       }
 					 *     } */
 					"application/json": components["schemas"]["ServeResponse_String"];
@@ -516,10 +603,10 @@ export interface operations {
 					/** @example {
 					 *       "data": [
 					 *         {
-					 *           "rune_id": "30562:50",
 					 *           "amount": "100000000",
+					 *           "block_height": 30562,
 					 *           "output": 1,
-					 *           "block_height": 30562
+					 *           "rune_id": "30562:50"
 					 *         }
 					 *       ],
 					 *       "indexer_info": {
@@ -527,8 +614,8 @@ export interface operations {
 					 *           "block_hash": "00000000000000108a4cd9755381003a01bea7998ca2d770fe09b576753ac7ef",
 					 *           "block_height": 31633
 					 *         },
-					 *         "mempool_timestamp": null,
-					 *         "estimated_blocks": []
+					 *         "estimated_blocks": [],
+					 *         "mempool_timestamp": null
 					 *       }
 					 *     } */
 					"application/json": components["schemas"]["ServeResponse_Vec_RuneEdict"];
@@ -584,16 +671,16 @@ export interface operations {
 					/** @example {
 					 *       "data": [
 					 *         {
-					 *           "tx_hash": "63937d48e35d15a7c5530469210c202104cc94a945cc848554f336b3f4f24121",
-					 *           "output_index": 1,
 					 *           "height": 30562,
-					 *           "satoshis": "10000",
+					 *           "output_index": 1,
 					 *           "runes": [
 					 *             {
-					 *               "id": "30562:50",
-					 *               "amount": "100000000"
+					 *               "amount": "100000000",
+					 *               "id": "30562:50"
 					 *             }
-					 *           ]
+					 *           ],
+					 *           "satoshis": "10000",
+					 *           "tx_hash": "63937d48e35d15a7c5530469210c202104cc94a945cc848554f336b3f4f24121"
 					 *         }
 					 *       ],
 					 *       "indexer_info": {
@@ -601,8 +688,8 @@ export interface operations {
 					 *           "block_hash": "00000000000000108a4cd9755381003a01bea7998ca2d770fe09b576753ac7ef",
 					 *           "block_height": 31633
 					 *         },
-					 *         "mempool_timestamp": null,
-					 *         "estimated_blocks": []
+					 *         "estimated_blocks": [],
+					 *         "mempool_timestamp": null
 					 *       }
 					 *     } */
 					"application/json": components["schemas"]["ServeResponse_Vec_RuneUtxo"];
@@ -663,16 +750,16 @@ export interface operations {
 					/** @example {
 					 *       "data": [
 					 *         {
-					 *           "tx_hash": "63937d48e35d15a7c5530469210c202104cc94a945cc848554f336b3f4f24121",
-					 *           "output_index": 1,
 					 *           "height": 30562,
-					 *           "satoshis": "10000",
+					 *           "output_index": 1,
 					 *           "runes": [
 					 *             {
-					 *               "id": "30562:50",
-					 *               "amount": "100000000"
+					 *               "amount": "100000000",
+					 *               "id": "30562:50"
 					 *             }
-					 *           ]
+					 *           ],
+					 *           "satoshis": "10000",
+					 *           "tx_hash": "63937d48e35d15a7c5530469210c202104cc94a945cc848554f336b3f4f24121"
 					 *         }
 					 *       ],
 					 *       "indexer_info": {
@@ -680,8 +767,8 @@ export interface operations {
 					 *           "block_hash": "00000000000000108a4cd9755381003a01bea7998ca2d770fe09b576753ac7ef",
 					 *           "block_height": 31633
 					 *         },
-					 *         "mempool_timestamp": null,
-					 *         "estimated_blocks": []
+					 *         "estimated_blocks": [],
+					 *         "mempool_timestamp": null
 					 *       }
 					 *     } */
 					"application/json": components["schemas"]["ServeResponse_Vec_RuneUtxo"];
@@ -741,8 +828,8 @@ export interface operations {
 					 *           "block_hash": "0000000004af5483f4e54ebf8f1d728b003d19ebc184761b82c50b8e86ec2a0a",
 					 *           "block_height": 91625
 					 *         },
-					 *         "mempool_timestamp": null,
-					 *         "estimated_blocks": []
+					 *         "estimated_blocks": [],
+					 *         "mempool_timestamp": null
 					 *       }
 					 *     } */
 					"application/json": components["schemas"]["ServeResponse_u64"];
@@ -798,10 +885,10 @@ export interface operations {
 					/** @example {
 					 *       "data": [
 					 *         {
-					 *           "tx_hash": "63937d48e35d15a7c5530469210c202104cc94a945cc848554f336b3f4f24121",
-					 *           "output_index": 1,
 					 *           "height": 30562,
-					 *           "satoshis": "10000"
+					 *           "output_index": 1,
+					 *           "satoshis": "10000",
+					 *           "tx_hash": "63937d48e35d15a7c5530469210c202104cc94a945cc848554f336b3f4f24121"
 					 *         }
 					 *       ],
 					 *       "indexer_info": {
@@ -809,8 +896,8 @@ export interface operations {
 					 *           "block_hash": "00000000000000108a4cd9755381003a01bea7998ca2d770fe09b576753ac7ef",
 					 *           "block_height": 31633
 					 *         },
-					 *         "mempool_timestamp": null,
-					 *         "estimated_blocks": []
+					 *         "estimated_blocks": [],
+					 *         "mempool_timestamp": null
 					 *       }
 					 *     } */
 					"application/json": components["schemas"]["ServeResponse_Vec_AddressUtxo"];
@@ -868,20 +955,20 @@ export interface operations {
 					/** @example {
 					 *       "data": {
 					 *         "30562:50": {
+					 *           "divisibility": 8,
+					 *           "etching_height": 30562,
+					 *           "etching_tx": "63937d48e35d15a7c5530469210c202104cc94a945cc848554f336b3f4f24121",
 					 *           "id": "30562:50",
 					 *           "name": "BESTINSLOTXYZ",
+					 *           "premine": "100000000",
 					 *           "spaced_name": "BESTINSLOT•XYZ",
 					 *           "symbol": "ʃ",
-					 *           "divisibility": 8,
-					 *           "etching_tx": "63937d48e35d15a7c5530469210c202104cc94a945cc848554f336b3f4f24121",
-					 *           "etching_height": 30562,
 					 *           "terms": {
 					 *             "amount": "100000000",
 					 *             "cap": "3402823669209384634633746074316",
-					 *             "start_height": null,
-					 *             "end_height": null
-					 *           },
-					 *           "premine": "100000000"
+					 *             "end_height": null,
+					 *             "start_height": null
+					 *           }
 					 *         },
 					 *         "ABCDEF": null
 					 *       },
@@ -890,8 +977,8 @@ export interface operations {
 					 *           "block_hash": "00000000000000108a4cd9755381003a01bea7998ca2d770fe09b576753ac7ef",
 					 *           "block_height": 31633
 					 *         },
-					 *         "mempool_timestamp": null,
-					 *         "estimated_blocks": []
+					 *         "estimated_blocks": [],
+					 *         "mempool_timestamp": null
 					 *       }
 					 *     } */
 					"application/json": components["schemas"]["ServeResponse_HashMap_String_Option_RuneInfo"];
@@ -905,6 +992,79 @@ export interface operations {
 				content?: never;
 			};
 			/** @description Requested entity not found on-chain */
+			404: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+			/** @description Internal server error */
+			500: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+		};
+	};
+	rune_info: {
+		parameters: {
+			query?: {
+				/** @description Mempool-aware */
+				mempool?: boolean;
+			};
+			header?: never;
+			path: {
+				/** @description Rune identifier (name or id) */
+				rune: string;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Requested data */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					/** @example {
+					 *       "data": {
+					 *         "divisibility": 8,
+					 *         "etching_height": 30562,
+					 *         "etching_tx": "63937d48e35d15a7c5530469210c202104cc94a945cc848554f336b3f4f24121",
+					 *         "id": "30562:50",
+					 *         "name": "BESTINSLOTXYZ",
+					 *         "premine": "100000000",
+					 *         "spaced_name": "BESTINSLOT•XYZ",
+					 *         "symbol": "ʃ",
+					 *         "terms": {
+					 *           "amount": "100000000",
+					 *           "cap": "3402823669209384634633746074316",
+					 *           "end_height": null,
+					 *           "start_height": null
+					 *         }
+					 *       },
+					 *       "indexer_info": {
+					 *         "chain_tip": {
+					 *           "block_hash": "00000000000000108a4cd9755381003a01bea7998ca2d770fe09b576753ac7ef",
+					 *           "block_height": 31633
+					 *         },
+					 *         "estimated_blocks": [],
+					 *         "mempool_timestamp": null
+					 *       }
+					 *     } */
+					"application/json": components["schemas"]["ServeResponse_RuneInfo"];
+				};
+			};
+			/** @description Malformed query parameters */
+			400: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+			/** @description Requested rune not found on-chain */
 			404: {
 				headers: {
 					[name: string]: unknown;
@@ -956,8 +1116,8 @@ export interface operations {
 					 *           "block_hash": "00000000000000108a4cd9755381003a01bea7998ca2d770fe09b576753ac7ef",
 					 *           "block_height": 31633
 					 *         },
-					 *         "mempool_timestamp": null,
-					 *         "estimated_blocks": []
+					 *         "estimated_blocks": [],
+					 *         "mempool_timestamp": null
 					 *       }
 					 *     } */
 					"application/json": components["schemas"]["ServeResponse_String"];
