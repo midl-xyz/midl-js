@@ -1,4 +1,5 @@
 import createClient, { type Client } from "openapi-fetch";
+import { logger } from "~/config";
 import type { BitcoinNetwork } from "~/createConfig";
 import type {
 	AbstractRunesProvider,
@@ -89,12 +90,20 @@ export class MaestroSymphonyProvider implements AbstractRunesProvider {
 	): Promise<RunesResponse> {
 		const url = this.getApiURL(network);
 
+		if (params?.limit || params?.offset) {
+			logger.warn(
+				"MaestroSymphonyProvider does not support pagination parameters. Ignoring limit and offset.",
+			);
+		}
+
 		const response = await this.client.GET(
 			"/addresses/{address}/runes/balances",
 			{
 				baseUrl: url,
-				address,
 				params: {
+					query: {
+						include_info: true,
+					},
 					path: { address },
 				},
 			},
@@ -110,8 +119,8 @@ export class MaestroSymphonyProvider implements AbstractRunesProvider {
 			results: response.data.data.map((rune) => ({
 				rune: {
 					id: rune.id,
-					name: "Symphony doesn't provide rune name", // TODO: check if name is always present
-					spaced_name: "Symphony doesn't provider rune name", // TODO: check if spaced_name is always present
+					name: rune.info?.name || "Unknown",
+					spaced_name: rune.info?.spaced_name || "Unknown",
 				},
 				address,
 				balance: BigInt(rune.amount),

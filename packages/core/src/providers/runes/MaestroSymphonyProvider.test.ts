@@ -1,16 +1,46 @@
-import { run } from "node:test";
-import { describe, expect, it } from "vitest";
+import type { ClientOptions } from "openapi-fetch";
+import { describe, expect, it, vi } from "vitest";
 import { regtest } from "~/networks";
 import { MaestroSymphonyProvider } from "~/providers/runes/MaestroSymphonyProvider";
 
+const fetchMock = vi.fn();
+
+vi.mock("openapi-fetch", async (importActual) => {
+	const actual = await importActual<typeof import("openapi-fetch")>();
+
+	return {
+		...actual,
+		default: (options: ClientOptions) =>
+			actual.default({
+				...options,
+				fetch: fetchMock,
+			}),
+	};
+});
+
 describe("MaestroSymphonyProvider", () => {
-	it.skip("gets rune", async () => {
-		const provider = new MaestroSymphonyProvider();
+	it("calls getRunes with include_info parameter", async () => {
+		const ms = new MaestroSymphonyProvider();
 
-		const rune = provider.getRune(regtest, "11893:1");
+		fetchMock.mockResolvedValueOnce({
+			ok: true,
+			headers: new Headers({ "Content-Type": "application/json" }),
+			json: async () => ({
+				data: [],
+			}),
+		} as Response);
 
-		expect(rune).resolves.toEqual({
-			id: "11893:1",
-		});
+		await ms.getRunes(regtest, "address");
+
+		const req = new Request(
+			"https://runes.regtest.midl.xyz/addresses/address/runes/balances?include_info=true",
+		);
+
+		expect(fetchMock).toHaveBeenCalledWith(
+			expect.objectContaining({
+				url: req.url,
+			}),
+			undefined,
+		);
 	});
 });
