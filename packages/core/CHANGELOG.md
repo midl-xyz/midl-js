@@ -1,5 +1,14 @@
 # @midl/core
 
+## 2.0.7
+
+### Patch Changes
+
+- c639384: fix: inline source maps
+- 716a0e0: feat: improve typings for addresses
+- 8e4c5cc: feat(core): add runes info for maestro symphony
+  - @midl/logger@2.0.7
+
 ## 2.0.6
 
 ### Patch Changes

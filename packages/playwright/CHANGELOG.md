@@ -1,5 +1,15 @@
 # @midl/playwright
 
+## 2.0.7
+
+### Patch Changes
+
+- c639384: fix: inline source maps
+- Updated dependencies [c639384]
+- Updated dependencies [716a0e0]
+- Updated dependencies [8e4c5cc]
+  - @midl/core@2.0.7
+
 ## 2.0.6
 
 ### Patch Changes

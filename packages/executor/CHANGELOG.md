@@ -1,5 +1,17 @@
 # @midl/executor
 
+## 2.0.7
+
+### Patch Changes
+
+- c639384: fix: inline source maps
+- 716a0e0: feat: improve typings for addresses
+- Updated dependencies [c639384]
+- Updated dependencies [716a0e0]
+- Updated dependencies [8e4c5cc]
+  - @midl/core@2.0.7
+  - @midl/logger@2.0.7
+
 ## 2.0.6
 
 ### Patch Changes
