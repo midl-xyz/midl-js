@@ -31,16 +31,20 @@ export class MaestroSymphonyProvider implements AbstractRunesProvider {
 	): Promise<RuneResponse> {
 		const url = this.getApiURL(network);
 
-		const { data } = await this.client.POST("/runes/info", {
+		const { data } = await this.client.GET("/runes/{rune}", {
 			baseUrl: url,
-			body: [runeId],
+			params: {
+				path: {
+					rune: runeId,
+				},
+			},
 		});
 
-		if (!data || !data.data || !data.data[runeId]) {
+		if (!data || !data.data) {
 			throw new Error(`Rune with ID ${runeId} not found.`);
 		}
 
-		const runeData = data.data[runeId];
+		const runeData = data.data;
 
 		return {
 			id: runeData.id,
