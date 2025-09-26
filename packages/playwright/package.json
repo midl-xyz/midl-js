@@ -1,6 +1,6 @@
 {
 	"name": "@midl/playwright",
-	"version": "2.0.7",
+	"version": "2.0.8",
 	"bin": {
 		"playwright-btc-wallets": "./dist/index.js"
 	},
