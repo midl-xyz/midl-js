@@ -6,11 +6,7 @@ import type {
 	TransactionStatusResponse,
 	UTXO,
 } from "~/providers/AbstractProvider";
-import type { paths as bitcoinPaths } from "~/providers/scheme/maestro/bitcoin";
-import type { paths as mempoolPaths } from "~/providers/scheme/maestro/mempool";
-import type { paths as nodeRPCPaths } from "~/providers/scheme/maestro/rpc";
-
-type paths = bitcoinPaths & nodeRPCPaths & mempoolPaths;
+import type { paths } from "./scheme/maestro";
 
 type RPCUrlMap = Partial<Record<BitcoinNetwork["id"], string>>;
 
@@ -67,7 +63,7 @@ export class MaestroProvider implements AbstractProvider {
 		network: BitcoinNetwork,
 		txHex: string,
 	): Promise<string> {
-		const { data } = await this.client.POST("/transaction/submit", {
+		const { data } = await this.client.POST("/rpc/transaction/submit", {
 			baseUrl: this.getApURL(network),
 			body: txHex,
 		});
@@ -80,7 +76,7 @@ export class MaestroProvider implements AbstractProvider {
 	}
 
 	async getLatestBlockHeight(network: BitcoinNetwork): Promise<number> {
-		const { data } = await this.client.GET("/block/latest", {
+		const { data } = await this.client.GET("/rpc/block/latest", {
 			baseUrl: this.getApURL(network),
 		});
 
@@ -115,7 +111,7 @@ export class MaestroProvider implements AbstractProvider {
 		network: BitcoinNetwork,
 		txid: string,
 	): Promise<TransactionStatusResponse> {
-		const { data } = await this.client.GET("/transaction/{tx_hash}", {
+		const { data } = await this.client.GET("/rpc/transaction/{tx_hash}", {
 			baseUrl: this.getApURL(network),
 			params: {
 				path: {
@@ -149,17 +145,20 @@ export class MaestroProvider implements AbstractProvider {
 		network: BitcoinNetwork,
 		txid: string,
 	): Promise<string> {
-		// @ts-ignore @Vardominator this endpoint is missing from the OpenAPI spec
-		const { data } = await this.client.GET("/transactions/{tx_hash}/hex", {
+		const { data } = await this.client.GET("/esplora/tx/{txid}/hex", {
 			baseUrl: this.getApURL(network),
 			params: {
 				path: {
-					tx_hash: txid,
+					txid,
 				},
 			},
 		});
 
-		return data as string;
+		if (!data) {
+			throw new Error(`Transaction ${txid} not found.`);
+		}
+
+		return data;
 	}
 
 	private getApURL(network: BitcoinNetwork): string {
