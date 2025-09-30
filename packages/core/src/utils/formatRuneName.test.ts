@@ -54,7 +54,7 @@ describe("core | utils | formatRuneName", () => {
 	it("throws error if length of the rune name is more than 26 letters", async () => {
 		expect(() =>
 			formatRuneName("IN•THIS•RUNE•NAME•TWENTY•SEVEN•SY"),
-		).toThrowError("Rune name can contain no more than 26 letters");
+		).toThrowError("Rune name can contain up to 26 letters");
 	});
 
 	it("returns rune name if length contains 26 letter", async () => {
