@@ -28,8 +28,6 @@ const handlers: RequestHandler[] = [
 				status: {
 					confirmed: true,
 					block_height: 0,
-					block_hash: Buffer.alloc(32).toString("hex"),
-					block_time: 0,
 				},
 			},
 		];
