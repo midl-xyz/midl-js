@@ -1,4 +1,5 @@
 import createClient, { type Client } from "openapi-fetch";
+import { logger } from "~/config";
 import type { BitcoinNetwork } from "~/createConfig";
 import type {
 	AbstractProvider,
@@ -27,9 +28,28 @@ export class MaestroProvider implements AbstractProvider {
 			testnet: "https://xbt-testnet.gomaestro-api.org/v0",
 		},
 	) {
-		this.client = createClient<paths>({
-			headers: {
-				"x-api-key": this.apiKey,
+		this.client = createClient<paths>();
+
+		this.client.use({
+			onRequest: async ({ request }) => {
+				request.headers.set("api-key", this.apiKey);
+
+				return request;
+			},
+			onResponse: async ({ response }) => {
+				if (!response.ok) {
+					const responseJSON = await response.clone().json();
+
+					logger.error("Maestro API error", {
+						status: response.status,
+						statusText: response.statusText,
+					});
+
+					throw new MaestroAPIError(
+						`Maestro API error: ${response.status} ${responseJSON?.message ?? response.statusText}`,
+						response.status,
+					);
+				}
 			},
 		});
 	}
@@ -76,16 +96,17 @@ export class MaestroProvider implements AbstractProvider {
 	}
 
 	async getLatestBlockHeight(network: BitcoinNetwork): Promise<number> {
-		const { data } = await this.client.GET("/rpc/block/latest", {
+		const { data } = await this.client.GET("/esplora/blocks/tip/height", {
 			baseUrl: this.getApURL(network),
 		});
 
-		if (typeof data?.data?.height === "undefined") {
-			throw new Error("Failed to fetch latest block height.");
+		if (!data) {
+			throw new Error("Failed to fetch block height.");
 		}
 
-		return data.data.height;
+		return data;
 	}
+
 	async getFeeRate(network: BitcoinNetwork): Promise<FeeRateResponse> {
 		const { data } = await this.client.GET("/mempool/fee_rates", {
 			baseUrl: this.getApURL(network),
@@ -169,5 +190,15 @@ export class MaestroProvider implements AbstractProvider {
 		}
 
 		return url;
+	}
+}
+
+class MaestroAPIError extends Error {
+	constructor(
+		message: string,
+		public status: number,
+	) {
+		super(message);
+		this.name = "MaestroAPIError";
 	}
 }
