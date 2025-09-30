@@ -64,7 +64,7 @@ export const connect = async (
 
 	config.setState({
 		connection: connector,
-		accounts,
+		accounts: accounts.sort((a, b) => b.purpose.localeCompare(a.purpose)),
 		network: params.network ?? network,
 	});
 
