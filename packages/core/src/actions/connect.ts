@@ -1,5 +1,6 @@
-import type { AddressPurpose } from "~/constants";
+import { AddressPurpose } from "~/constants";
 import type { BitcoinNetwork, Config } from "~/createConfig";
+import type { EnsureAllEnum } from "~/types";
 
 export type ConnectParams = {
 	purposes: AddressPurpose[];
@@ -26,6 +27,11 @@ export class WalletConnectionError extends ConnectError {
 		this.name = "WalletConnectionError";
 	}
 }
+
+const purposeOrder: EnsureAllEnum<typeof AddressPurpose> = [
+	AddressPurpose.Payment,
+	AddressPurpose.Ordinals,
+];
 
 /**
  * Connects to a wallet connector and retrieves user accounts for the specified purposes and network.
@@ -64,7 +70,10 @@ export const connect = async (
 
 	config.setState({
 		connection: connector,
-		accounts: accounts.sort((a, b) => b.purpose.localeCompare(a.purpose)),
+		accounts: accounts.sort(
+			(a, b) =>
+				purposeOrder.indexOf(a.purpose) - purposeOrder.indexOf(b.purpose),
+		),
 		network: params.network ?? network,
 	});
 
