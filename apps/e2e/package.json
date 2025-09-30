@@ -1,7 +1,6 @@
 {
 	"name": "e2e",
 	"version": "1.0.44",
-	"description": "",
 	"main": "index.js",
 	"type": "module",
 	"scripts": {
@@ -10,9 +9,7 @@
 		"preview": "vite preview ./app",
 		"test": "playwright test"
 	},
-	"keywords": [],
-	"author": "",
-	"license": "ISC",
+	"license": "MIT",
 	"devDependencies": {
 		"@midl/midl-js-config": "workspace:^",
 		"@playwright/test": "^1.48.2",

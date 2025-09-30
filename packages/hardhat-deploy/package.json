@@ -1,6 +1,7 @@
 {
 	"name": "@midl/hardhat-deploy",
 	"version": "2.0.8",
+	"license": "MIT",
 	"scripts": {
 		"build": "pnpm run clean && tspc --project tsconfig.esm.json && tspc --project tsconfig.cjs.json",
 		"dev": "concurrently \"tspc --watch --preserveWatchOutput --project tsconfig.esm.json\" \"tspc --watch --preserveWatchOutput --project tsconfig.cjs.json\"",

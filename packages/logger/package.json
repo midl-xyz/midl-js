@@ -1,6 +1,7 @@
 {
 	"name": "@midl/logger",
 	"version": "2.0.8",
+	"license": "MIT",
 	"type": "module",
 	"dependencies": {
 		"@logtape/logtape": "^1.0.4"

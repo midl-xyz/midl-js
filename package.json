@@ -3,6 +3,7 @@
 	"private": true,
 	"description": "",
 	"packageManager": "pnpm@10.13.1",
+	"license": "MIT",
 	"scripts": {
 		"ci:publish": "pnpm publish -r",
 		"build:packages": "turbo run build --filter='./packages/*'",
