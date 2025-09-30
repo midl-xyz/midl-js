@@ -22,13 +22,15 @@ describe("core | actions | getFeeRate", () => {
 
 	it("throws error if config doesn't contains network", async () => {
 		const config = createConfig({
-			networks: [],
+			networks: [regtest],
 			connectors: [],
 			provider: mockProvider,
 		});
 
-		mockProvider.getFeeRate.mockRejectedValue(new Error("No network"));
+		mockProvider.getFeeRate.mockRejectedValue(
+			new Error("Failed to get fee rate"),
+		);
 
-		await expect(getFeeRate(config)).rejects.toThrow("No network");
+		await expect(getFeeRate(config)).rejects.toThrow("Failed to get fee rate");
 	});
 });
