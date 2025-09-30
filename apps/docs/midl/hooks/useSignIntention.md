@@ -5,7 +5,7 @@ Signs a transaction intention.
 ## Import
 
 ```ts
-import { useSignIntention } from "@midl-xyz/midl-js-executor-react";
+import { useSignIntention } from "@midl/executor-react";
 ```
 
 ## Example
@@ -24,6 +24,7 @@ signIntention({ intention, txId });
 | `mutation`         | `UseMutationOptions` (optional)  | Mutation options for React Query.             |
 | `options.protocol` | `SignMessageProtocol` (optional) | Protocol to use for signing the intention.    |
 | `options.from`     | `string` (optional)              | BTC address used to sign the transactions.    |
+| `options.nonce`    | `number` (optional)              | Starting nonce for the intentions.            |
 
 
 ## Returns

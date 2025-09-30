@@ -7,7 +7,7 @@ Transfers BTC with the given parameters. Optionally, it can broadcast the transa
 ## Import
 
 ```ts
-import { transferBTC } from "@midl-xyz/midl-js-core";
+import { transferBTC } from "@midl/core";
 ```
 
 ## Example

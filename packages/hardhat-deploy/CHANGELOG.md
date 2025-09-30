@@ -1,4 +1,90 @@
+# @midl/hardhat-deploy
+
+## 2.0.8
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl/core@2.0.8
+  - @midl/executor@2.0.8
+  - @midl/node@2.0.8
+  - @midl/logger@2.0.8
+
+## 2.0.7
+
+### Patch Changes
+
+- c639384: fix: inline source maps
+- Updated dependencies [c639384]
+- Updated dependencies [716a0e0]
+- Updated dependencies [8e4c5cc]
+  - @midl/executor@2.0.7
+  - @midl/core@2.0.7
+  - @midl/node@2.0.7
+  - @midl/logger@2.0.7
+
+## 2.0.6
+
+### Patch Changes
+
+- fix(hardhat-deploy): use zustand vanilla
+  - @midl/core@2.0.6
+  - @midl/executor@2.0.6
+  - @midl/logger@2.0.6
+  - @midl/node@2.0.6
+
+## 2.0.5
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl/core@2.0.5
+  - @midl/executor@2.0.5
+  - @midl/node@2.0.5
+  - @midl/logger@2.0.5
+
+## 2.0.4
+
+### Patch Changes
+
+- Updated dependencies [a2f595b]
+- Updated dependencies [ca11335]
+  - @midl/core@2.0.4
+  - @midl/executor@2.0.4
+  - @midl/node@2.0.4
+  - @midl/logger@2.0.4
+
+## 2.0.3
+
+### Patch Changes
+
+- Updated dependencies [92b3da9]
+  - @midl/executor@2.0.3
+  - @midl/core@2.0.3
+  - @midl/logger@2.0.3
+  - @midl/node@2.0.3
+
+## 2.0.2
+
+### Patch Changes
+
+- fix(executor-react): context type import
+- Updated dependencies
+  - @midl/executor@2.0.2
+  - @midl/logger@2.0.2
+  - @midl/core@2.0.2
+  - @midl/node@2.0.2
+
 # @midl-xyz/hardhat-deploy
+
+## 2.0.1
+
+### Patch Changes
+
+- @midl-xyz/midl-js-core@2.0.1
+- @midl-xyz/midl-js-executor@2.0.1
+- @midl-xyz/logger@2.0.1
+- @midl-xyz/midl-js-node@2.0.1
 
 ## 2.0.0
 

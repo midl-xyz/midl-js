@@ -12,13 +12,13 @@ Adds a new network configuration to a connector. Throws if the connector is not 
 ## Import
 
 ```ts
-import { addNetwork } from "@midl-xyz/midl-js-core";
+import { addNetwork } from "@midl/core";
 ```
 
 ## Example
 
 ```ts
-import { addNetwork } from "@midl-xyz/midl-js-core";
+import { addNetwork } from "@midl/core";
 
 await addNetwork(config, "my-connector", {
   id: "testnet",

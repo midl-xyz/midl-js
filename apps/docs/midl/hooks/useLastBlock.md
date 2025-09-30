@@ -5,7 +5,7 @@ Retrieve last BTC block processed by the executor contract.
 ## Import
 
 ```ts
-import { useLastBlock } from "@midl-xyz/midl-js-executor-react";
+import { useLastBlock } from "@midl/executor-react";
 ```
 
 ## Example

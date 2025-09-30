@@ -11,8 +11,8 @@ Follow the [Connect Wallet](connect-wallet.md) guide to configure the app.
 ### 2. Sign a message
 
 ```tsx [SignMessage.tsx]
-import { SignMessageProtocol } from "@midl-xyz/midl-js-core";
-import { useAccounts, useSignMessage } from "@midl-xyz/midl-js-react";
+import { SignMessageProtocol } from "@midl/core";
+import { useAccounts, useSignMessage } from "@midl/react";
 
 export function SignMessage() {
   const { signMessage, data } = useSignMessage();
@@ -49,7 +49,7 @@ export function SignMessage() {
 ```tsx{4,15} [YourApp.tsx]
 import { ConnectWallet } from "./ConnectWallet";
 import { ConnectedAccounts } from "./ConnectedAccounts";
-import { useAccounts } from "@midl-xyz/midl-js-react";
+import { useAccounts } from "@midl/react";
 import { SignMessage } from "./SignMessage";
 
 export function YourApp() {

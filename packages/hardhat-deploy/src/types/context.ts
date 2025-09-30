@@ -1,6 +1,6 @@
-import "@midl-xyz/midl-js-executor";
+import "@midl/executor";
 
-declare module "@midl-xyz/midl-js-executor" {
+declare module "@midl/executor" {
 	export interface TransactionIntention {
 		meta?: {
 			contractName?: string;

@@ -10,7 +10,6 @@
 		"target": "es2020",
 		"module": "CommonJS",
 		"moduleResolution": "node",
-		"outDir": "./dist/cjs",
-		"sourceMap": true
+		"outDir": "./dist/cjs"
 	}
 }

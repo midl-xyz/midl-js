@@ -7,7 +7,7 @@ Waits for a transaction to be confirmed with the given parameters.
 ## Import
 
 ```ts
-import { waitForTransaction } from "@midl-xyz/midl-js-core";
+import { waitForTransaction } from "@midl/core";
 ```
 
 ## Example

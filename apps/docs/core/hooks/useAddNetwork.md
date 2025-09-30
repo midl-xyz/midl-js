@@ -9,7 +9,7 @@ The `addNetwork` method is currently supported only by XVerse wallet. Other conn
 ## Import
 
 ```ts
-import { useAddNetwork } from "@midl-xyz/midl-js-react";
+import { useAddNetwork } from "@midl/react";
 ```
 
 ## Example

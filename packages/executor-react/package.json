@@ -1,6 +1,6 @@
 {
-	"name": "@midl-xyz/midl-js-executor-react",
-	"version": "2.0.0",
+	"name": "@midl/executor-react",
+	"version": "2.0.8",
 	"scripts": {
 		"build": "pnpm run clean && tspc --project tsconfig.esm.json && tspc --project tsconfig.cjs.json",
 		"dev": "concurrently \"tspc --watch --preserveWatchOutput --project tsconfig.esm.json\" \"tspc --watch --preserveWatchOutput --project tsconfig.cjs.json\"",
@@ -25,27 +25,27 @@
 	},
 	"files": ["dist"],
 	"devDependencies": {
-		"@midl-xyz/midl-js-config": "workspace:^",
-		"@midl-xyz/midl-js-node": "workspace:^",
-		"@midl-xyz/midl-js-react": "workspace:^",
+		"@midl/midl-js-config": "workspace:^",
+		"@midl/node": "workspace:^",
+		"@midl/react": "workspace:^",
 		"@tanstack/react-query": "^5.59.9",
 		"@types/node": "^22.8.7",
 		"@types/react": "^18",
 		"bitcoinjs-lib": "7.0.0-rc.0",
 		"happy-dom": "^15.11.7",
 		"react": "^18.3.1",
-		"viem": "npm:@midl-xyz/midl-viem",
+		"viem": "npm:@midl/viem",
 		"wagmi": "^2.*",
 		"zustand": "^5.0.1"
 	},
 	"dependencies": {
-		"@midl-xyz/contracts": "^0.1.1",
-		"@midl-xyz/midl-js-core": "workspace:^",
-		"@midl-xyz/midl-js-executor": "workspace:^"
+		"@midl/contracts": "^0.1.1",
+		"@midl/core": "workspace:^",
+		"@midl/executor": "workspace:^"
 	},
 	"peerDependencies": {
-		"@midl-xyz/midl-js-react": "workspace:^",
-		"@midl-xyz/midl-viem": "*",
+		"@midl/react": "workspace:^",
+		"@midl/viem": "*",
 		"@tanstack/react-query": "^5.59.9",
 		"@types/react": "^18",
 		"bitcoinjs-lib": "7.0.0-rc.0",

@@ -7,4 +7,4 @@ order: 100
 
 All notable changes to this project will be documented in this file.
 
-[@midl-xyz/satoshi-kit](./satoshi-kit.md)
+[@midl/satoshi-kit](./satoshi-kit.md)

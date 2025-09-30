@@ -2,18 +2,10 @@
 	"$schema": "https://unpkg.com/@changesets/config@3.0.2/schema.json",
 	"changelog": "@changesets/cli/changelog",
 	"commit": false,
-	"fixed": [],
-	"linked": [
-		[
-			"@midl-xyz/*"
-		]
-	],
+	"fixed": [["@midl/*"]],
+	"linked": [],
 	"access": "public",
-	"baseBranch": "next",
+	"baseBranch": "main",
 	"updateInternalDependencies": "patch",
-	"ignore": [
-		"e2e",
-		"@midl-xyz/midl-js-docs",
-		"@midl-xyz/rune-etcher"
-	]
+	"ignore": ["e2e", "@midl/docs", "@midl/rune-etcher"]
 }

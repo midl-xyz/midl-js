@@ -1,4 +1,4 @@
-import { AddressPurpose, type Config } from "@midl-xyz/midl-js-core";
+import { AddressPurpose, type Config } from "@midl/core";
 import { useIsMutating, useQuery } from "@tanstack/react-query";
 import { useConfig } from "~/hooks/useConfig";
 import { ConnectMutationKey } from "~/hooks/useConnect";

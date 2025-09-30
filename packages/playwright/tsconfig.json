@@ -1,0 +1,11 @@
+{
+	"extends": "@midl/midl-js-config/tsconfig.base.json",
+	"include": ["./src/**/*.ts"],
+	"compilerOptions": {
+		"moduleResolution": "Bundler",
+		"baseUrl": ".",
+		"paths": {
+			"~/*": ["./src/*"]
+		}
+	}
+}

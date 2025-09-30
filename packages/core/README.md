@@ -1,6 +1,6 @@
-## @midl-xyz/midl-js-core
+## @midl/core
 
-`@midl-xyz/midl-js-core` provides the basic building blocks for interacting with Bitcoin and the MIDL Protocol. It includes utilities for creating and managing Bitcoin transactions, signing messages, and more.
+`@midl/core` provides the basic building blocks for interacting with Bitcoin and the MIDL Protocol. It includes utilities for creating and managing Bitcoin transactions, signing messages, and more.
 
 ### Features
 
@@ -16,7 +16,7 @@
 Install the package via your package manager of choice:
 
 ```bash
-pnpm add @midl-xyz/midl-js-core
+pnpm add @midl/core
 ```
 
 ### Documentation

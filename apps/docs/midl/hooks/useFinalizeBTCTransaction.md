@@ -5,7 +5,7 @@ Prepares a Bitcoin transaction for the provided intentions. Calculates gas limit
 ## Import
 
 ```ts
-import { useFinalizeBTCTransaction } from "@midl-xyz/midl-js-executor-react";
+import { useFinalizeBTCTransaction } from "@midl/executor-react";
 ```
 
 ## Example

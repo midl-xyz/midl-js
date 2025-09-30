@@ -5,8 +5,8 @@ import {
 	phantomConnector,
 	unisatConnector,
 	xverseConnector,
-} from "@midl-xyz/midl-js-connectors";
-import { createConfig } from "@midl-xyz/midl-js-core";
+} from "@midl/connectors";
+import { createConfig } from "@midl/core";
 
 type ConfigParams = Omit<Parameters<typeof createConfig>[0], "connectors"> & {
 	connectors?: Parameters<typeof createConfig>[0]["connectors"];
@@ -14,7 +14,6 @@ type ConfigParams = Omit<Parameters<typeof createConfig>[0], "connectors"> & {
 
 export const createMidlConfig = (params: ConfigParams) => {
 	return createConfig({
-		...params,
 		connectors: [
 			leatherConnector({
 				metadata: {
@@ -32,5 +31,6 @@ export const createMidlConfig = (params: ConfigParams) => {
 			phantomConnector(),
 			magicEdenConnector(),
 		],
+		...params,
 	});
 };

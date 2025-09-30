@@ -5,7 +5,7 @@ Adds a complete transaction intention. Wraps `addCompleteTxIntention` and stores
 ## Import
 
 ```ts
-import { useAddCompleteTxIntention } from "@midl-xyz/midl-js-executor-react";
+import { useAddCompleteTxIntention } from "@midl/executor-react";
 ```
 
 ## Example
@@ -32,9 +32,9 @@ addCompleteTxIntention({ assetsToWithdraw: [address1, address2] });
 | `addCompleteTxIntentionAsync` | `(variables: AddCompleteTxIntentionVariables) => Promise<TransactionIntention>` | Async mutation function.                                   |
 | `...rest`                     | `object`                                                                        | Additional mutation state from React Query.                |
 
-### AddCompleteTxIntentionVariables
+### AddCompleteTxIntentionVariables 
 
-| Name               | Type                              | Description                               |
-| ------------------ | --------------------------------- | ----------------------------------------- |
-| `assetsToWithdraw` | `[Address] \| [Address, Address]` | Asset addresses to withdraw (BTC, Runes). |
+The `AddCompleteTxIntentionVariables` type uses the same structure as the `Withdrawal` type.
+
+See the [Withdrawal documentation](../actions/addTxIntention.md#withdrawal) for a detailed description of its fields and usage.
 

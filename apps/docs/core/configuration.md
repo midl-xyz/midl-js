@@ -14,8 +14,8 @@ To create a configuration object, use the `createConfig` function:
 import {
   createConfig,
   regtest,
-} from "@midl-xyz/midl-js-core";
-import { xverseConnector } from "@midl-xyz/midl-js-connectors";
+} from "@midl/core";
+import { xverseConnector } from "@midl/connectors";
 
 export const config = createConfig({
   networks: [regtest],
@@ -47,7 +47,7 @@ MIDL.js supports the following networks:
 #### Importing Networks
 
 ```ts
-import { mainnet, testnet, regtest, testnet4, signet } from "@midl-xyz/midl-js-core";
+import { mainnet, testnet, regtest, testnet4, signet } from "@midl/core";
 ```
 
 ### Supported Connectors (Wallets)
@@ -62,7 +62,7 @@ MIDL.js supports the following connectors:
 - [`MagicEden`](https://wallet.magiceden.io/)
 - `keyPair` - ECPair key pair connector
 
-You can also create your own custom connector by implementing the `CreateConnectorFn` interface. You can find an implementation examples in the `@midl-xyz/midl-js-connectors` package.
+You can also create your own custom connector by implementing the `CreateConnectorFn` interface. You can find an implementation examples in the `@midl/connectors` package.
 
 #### Importing Connectors
 
@@ -74,7 +74,7 @@ import {
   phantomConnector,
   bitgetConnector,
   magicEdenConnector,
- } from "@midl-xyz/midl-js-connectors";
+ } from "@midl/connectors";
 
- import {  keyPairConnector } from "@midl-xyz/midl-js-node";
+ import {  keyPairConnector } from "@midl/node";
 ```

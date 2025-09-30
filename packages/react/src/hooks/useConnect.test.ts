@@ -1,8 +1,8 @@
-import { describe, expect, it } from "vitest";
+import { AddressPurpose } from "@midl/core";
 import { renderHook } from "@testing-library/react";
-import { useConnect } from "~/hooks/useConnect";
-import { AddressPurpose } from "@midl-xyz/midl-js-core";
+import { describe, expect, it } from "vitest";
 import { wrapper } from "~/__tests__/wrapper";
+import { useConnect } from "~/hooks/useConnect";
 
 describe("useConnect", () => {
 	it("returns the correct values", () => {

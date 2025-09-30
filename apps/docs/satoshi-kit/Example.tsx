@@ -1,10 +1,10 @@
-import { regtest } from "@midl-xyz/midl-js-core";
-import { MidlProvider } from "@midl-xyz/midl-js-react";
+import { regtest } from "@midl/core";
+import { MidlProvider } from "@midl/react";
 import {
 	ConnectButton,
 	SatoshiKitProvider,
 	createMidlConfig,
-} from "@midl-xyz/satoshi-kit";
+} from "@midl/satoshi-kit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React from "react";
 

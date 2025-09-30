@@ -42,6 +42,6 @@ jobs:
           if [[ "${GITHUB_REF##*/}" == "next" ]]; then
             TAG="--tag next --publish-branch next"
           fi
-          pnpm publish -r --filter="./packages/*" --access public $TAG
+          pnpm publish -r --filter="./packages/*" --no-git-checks --access public $TAG
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

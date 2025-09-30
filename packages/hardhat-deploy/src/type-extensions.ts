@@ -2,7 +2,7 @@ import type {
 	AbstractProvider,
 	AddressPurpose,
 	BitcoinNetwork,
-} from "@midl-xyz/midl-js-core";
+} from "@midl/core";
 import "hardhat/types/config";
 import "hardhat/types/runtime";
 import type { MidlHardhatEnvironment } from "~/MidlHardhatEnvironment";

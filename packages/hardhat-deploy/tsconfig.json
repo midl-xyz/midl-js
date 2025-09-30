@@ -1,9 +1,11 @@
 {
-	"extends": "@midl-xyz/midl-js-config/tsconfig.base.json",
+	"extends": "@midl/midl-js-config/tsconfig.base.json",
 	"include": ["./src/**/*.ts"],
 	"compilerOptions": {
 		"moduleResolution": "Bundler",
 		"baseUrl": ".",
+		"sourceMap": true,
+		"inlineSources": true,
 		"paths": {
 			"~/*": ["./src/*"]
 		},

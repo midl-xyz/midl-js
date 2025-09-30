@@ -1,7 +1,4 @@
-import {
-	type CreateConnectorFn,
-	createConnector,
-} from "@midl-xyz/midl-js-core";
+import { type CreateConnectorFn, createConnector } from "@midl/core";
 import { UnisatConnector } from "~/providers";
 
 export const bitgetConnector: CreateConnectorFn = ({ metadata } = {}) =>

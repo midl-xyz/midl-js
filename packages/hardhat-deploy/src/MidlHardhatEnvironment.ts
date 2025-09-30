@@ -15,12 +15,8 @@ import {
 	testnet,
 	testnet4,
 	waitForTransaction,
-} from "@midl-xyz/midl-js-core";
-import type {
-	Chain,
-	TransactionIntention,
-	Withdrawal,
-} from "@midl-xyz/midl-js-executor";
+} from "@midl/core";
+import type { Chain, TransactionIntention, Withdrawal } from "@midl/executor";
 import {
 	addCompleteTxIntention,
 	addTxIntention,
@@ -28,8 +24,8 @@ import {
 	getEVMAddress,
 	getEVMFromBitcoinNetwork,
 	signIntention,
-} from "@midl-xyz/midl-js-executor";
-import { keyPairConnector } from "@midl-xyz/midl-js-node";
+} from "@midl/executor";
+import { keyPairConnector } from "@midl/node";
 import {
 	type Libraries,
 	resolveBytecodeWithLinkedLibraries,
@@ -53,7 +49,7 @@ import {
 	keccak256,
 } from "viem";
 import { sendBTCTransactions, waitForTransactionReceipt } from "viem/actions";
-import { type StoreApi, createStore } from "zustand";
+import { type StoreApi, createStore } from "zustand/vanilla";
 import "~/types/context";
 
 export class MidlHardhatEnvironment {

@@ -5,7 +5,7 @@ Edicts (transfers) one or more runes to one or more receivers. The transaction w
 ## Import
 
 ```ts
-import { useEdictRune } from "@midl-xyz/midl-js-react";
+import { useEdictRune } from "@midl/react";
 ```
 
 ## Example

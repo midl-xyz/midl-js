@@ -1,13 +1,6 @@
 "use client";
 
-import {
-	useAccounts,
-	useEdictRune,
-	useRune,
-	useRunes,
-} from "@midl-xyz/midl-js-react";
 import { Button } from "@/components/ui/button";
-import { SendIcon } from "lucide-react";
 import {
 	Dialog,
 	DialogClose,
@@ -18,12 +11,14 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useToast } from "@/hooks/use-toast";
+import { useAccounts, useEdictRune, useRune, useRunes } from "@midl/react";
+import { SendIcon } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { parseEther, parseUnits } from "viem";
-import { useToast } from "@/hooks/use-toast";
 
 type FormValues = {
 	address: string;

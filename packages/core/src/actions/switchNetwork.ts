@@ -11,7 +11,7 @@ export class NetworkError extends CommonError {}
  *
  * @example
  * ```ts
- * import { mainnet } from "@midl-xyz/midl-js-core";
+ * import { mainnet } from "@midl/core";
  *
  * await switchNetwork(config, mainnet);
  * ```

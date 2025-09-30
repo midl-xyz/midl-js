@@ -1,5 +1,5 @@
 ---
-title: "@midl-xyz/hardhat-deploy"
+title: "@midl/hardhat-deploy"
 order: 100
 ---
 

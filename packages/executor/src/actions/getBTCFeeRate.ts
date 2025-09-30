@@ -1,4 +1,4 @@
-import type { Config } from "@midl-xyz/midl-js-core";
+import type { Config } from "@midl/core";
 import type { Address, Client } from "viem";
 import { readContract } from "viem/actions";
 import { executorAddress } from "~/config";

@@ -1,7 +1,14 @@
+import { regtest } from "@midl/core";
 import { describe, expect, it } from "vitest";
+import { createMidlConfig } from "~/app/createMidlConfig";
 
 describe("createMidlConfig", () => {
-	it("works", () => {
-		expect(true).toBe(true);
+	it("allows overriding connectors", () => {
+		const config = createMidlConfig({
+			networks: [regtest],
+			connectors: [],
+		});
+
+		expect(config.getInitialState().connectors).toEqual([]);
 	});
 });

@@ -7,7 +7,7 @@ Gets a rune by its ID
 ## Import
 
 ```ts
-import { getRune } from "@midl-xyz/midl-js-core";
+import { getRune } from "@midl/core";
 ```
 
 ## Example

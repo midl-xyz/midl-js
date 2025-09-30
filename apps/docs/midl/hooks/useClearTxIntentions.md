@@ -5,7 +5,7 @@ Clears all transaction intentions from the store.
 ## Import
 
 ```ts
-import { useClearTxIntentions } from "@midl-xyz/midl-js-executor-react";
+import { useClearTxIntentions } from "@midl/executor-react";
 ```
 
 ## Example

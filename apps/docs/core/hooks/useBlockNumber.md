@@ -5,7 +5,7 @@ Fetches the latest block number from the configured network and can optionally p
 ## Import
 
 ```ts
-import { useBlockNumber } from "@midl-xyz/midl-js-react";
+import { useBlockNumber } from "@midl/react";
 ```
 
 ## Example

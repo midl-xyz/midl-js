@@ -1,5 +1,5 @@
 ---
-title: "@midl-xyz/midl-js-connectors"
+title: "@midl/connectors"
 order: 100
 ---
 

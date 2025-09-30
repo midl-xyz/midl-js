@@ -1,7 +1,4 @@
-import {
-	type CreateConnectorFn,
-	createConnector,
-} from "@midl-xyz/midl-js-core";
+import { type CreateConnectorFn, createConnector } from "@midl/core";
 import { PhantomConnector } from "~/providers/PhantomConnector";
 
 export const phantomConnector: CreateConnectorFn = ({ metadata } = {}) =>

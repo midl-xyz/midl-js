@@ -5,7 +5,7 @@ Gets the balance of a rune for an address. See [getRuneBalance](../actions/getRu
 ## Import
 
 ```ts
-import { useRuneBalance } from "@midl-xyz/midl-js-react";
+import { useRuneBalance } from "@midl/react";
 ```
 
 ## Example

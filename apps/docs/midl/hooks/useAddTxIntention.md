@@ -5,7 +5,7 @@ Adds a transaction intention. Wraps `addTxIntention` and stores the resulting in
 ## Import
 
 ```ts
-import { useAddTxIntention } from "@midl-xyz/midl-js-executor-react";
+import { useAddTxIntention } from "@midl/executor-react";
 ```
 
 ## Example

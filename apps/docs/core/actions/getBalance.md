@@ -7,7 +7,7 @@ Gets the balance of an address accumulated from UTXOs
 ## Import
 
 ```ts
-import { getBalance } from "@midl-xyz/midl-js-core";
+import { getBalance } from "@midl/core";
 ```
 
 ## Example

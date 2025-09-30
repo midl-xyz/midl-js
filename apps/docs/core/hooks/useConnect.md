@@ -5,7 +5,7 @@ Connects to a wallet using the specified connector.
 ## Import
 
 ```ts
-import { useConnect } from "@midl-xyz/midl-js-react";
+import { useConnect } from "@midl/react";
 ```
 
 ## Example

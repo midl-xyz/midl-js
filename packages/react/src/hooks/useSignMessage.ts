@@ -5,7 +5,7 @@ import {
 	type SignMessageResponse,
 	getDefaultAccount,
 	signMessage,
-} from "@midl-xyz/midl-js-core";
+} from "@midl/core";
 import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
 import { useConfig } from "~/hooks/useConfig";
 import { useConfigInternal } from "~/hooks/useConfigInternal";

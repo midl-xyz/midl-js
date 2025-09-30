@@ -45,8 +45,8 @@ export type AuthenticationAdapter = {
 ## Example
 
 ```tsx
-import { SatoshiKitProvider, createMidlConfig, createAuthenticationAdapter } from "@midl-xyz/satoshi-kit";
-import { regtest } from "@midl-xyz/midl-js-core";
+import { SatoshiKitProvider, createMidlConfig, createAuthenticationAdapter } from "@midl/satoshi-kit";
+import { regtest } from "@midl/core";
 
 const midlConfig = createMidlConfig({
     networks: [regtest],

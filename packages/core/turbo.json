@@ -3,7 +3,7 @@
 	"extends": ["//"],
 	"tasks": {
 		"test": {
-			"dependsOn": ["^build", "@midl-xyz/midl-js-node#build"],
+			"dependsOn": ["^build", "@midl/node#build"],
 			"cache": false,
 			"outputs": []
 		}

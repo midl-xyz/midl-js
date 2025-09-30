@@ -1,6 +1,6 @@
 {
-	"name": "@midl-xyz/playwright-btc-wallets",
-	"version": "2.0.0",
+	"name": "@midl/playwright",
+	"version": "2.0.8",
 	"bin": {
 		"playwright-btc-wallets": "./dist/index.js"
 	},
@@ -17,14 +17,14 @@
 	"types": "dist/index.d.ts",
 	"files": ["dist", "scripts"],
 	"devDependencies": {
-		"@midl-xyz/midl-js-config": "workspace:^",
+		"@midl/midl-js-config": "workspace:^",
 		"@playwright/test": "^1.48.2"
 	},
 	"peerDependencies": {
 		"@playwright/test": "^1.48.2"
 	},
 	"dependencies": {
-		"@midl-xyz/midl-js-core": "workspace:^",
+		"@midl/core": "workspace:^",
 		"rxjs": "^7.8.2"
 	}
 }

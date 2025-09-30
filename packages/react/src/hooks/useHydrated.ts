@@ -1,4 +1,4 @@
-import type { Config } from "@midl-xyz/midl-js-core";
+import type { Config } from "@midl/core";
 import { useEffect, useState } from "react";
 import { useConfigInternal } from "~/hooks/useConfigInternal";
 

@@ -7,13 +7,13 @@ Switches the network to the given network.
 ## Import
 
 ```ts
-import { switchNetwork } from "@midl-xyz/midl-js-core";
+import { switchNetwork } from "@midl/core";
 ```
 
 ## Example
 
 ```ts
-import { switchNetwork, mainnet } from "@midl-xyz/midl-js-core";
+import { switchNetwork, mainnet } from "@midl/core";
 
 await switchNetwork(config, mainnet);
 ```

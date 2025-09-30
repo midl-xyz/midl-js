@@ -7,13 +7,13 @@ Creates a state override for EVM simulation based on the provided transaction in
 ## Import
 
 ```ts
-import { createStateOverride } from "@midl-xyz/midl-js-executor";
+import { createStateOverride } from "@midl/executor";
 ```
 
 ## Example
 
 ```ts
-import { createStateOverride } from "@midl-xyz/midl-js-executor";
+import { createStateOverride } from "@midl/executor";
 
 const overrides = await createStateOverride(config, client, intentions);
 // Use overrides in EVM simulation or testing

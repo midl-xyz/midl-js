@@ -7,14 +7,14 @@ Connects to a wallet connector and retrieves user accounts for the specified pur
 ## Import
 
 ```ts
-import { connect } from "@midl-xyz/midl-js-core";
+import { connect } from "@midl/core";
 ```
 
 ## Example
 
 ```ts
-import { connect } from "@midl-xyz/midl-js-core";
-import { AddressPurpose } from "@midl-xyz/midl-js-core";
+import { connect } from "@midl/core";
+import { AddressPurpose } from "@midl/core";
 
 const accounts = await connect(config, { purposes: [AddressPurpose.Payment] });
 console.log(accounts);

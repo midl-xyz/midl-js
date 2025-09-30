@@ -11,7 +11,6 @@
 		"module": "CommonJS",
 		"moduleResolution": "node",
 		"outDir": "./dist/cjs",
-		"sourceMap": true,
 		"noImplicitAny": false
 	}
 }

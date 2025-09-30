@@ -5,7 +5,7 @@ Retrieve the ERC20 address associated with a Rune.
 ## Import
 
 ```ts
-import { useERC20Rune } from "@midl-xyz/midl-js-executor-react";
+import { useERC20Rune } from "@midl/executor-react";
 ```
 
 ## Example

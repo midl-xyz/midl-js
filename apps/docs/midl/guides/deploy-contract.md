@@ -1,6 +1,6 @@
 # Deploy Contract
 
-The process of deploying a contract to MIDL is similar to deploying on EVM-compatible networks, with the key difference that every deployment and write transaction requires interaction with Bitcoin L1. For the best experience, we recommend using the `@midl-xyz/hardhat-deploy` plugin together with [hardhat-deploy](https://github.com/wighawag/hardhat-deploy).
+The process of deploying a contract to MIDL is similar to deploying on EVM-compatible networks, with the key difference that every deployment and write transaction requires interaction with Bitcoin L1. For the best experience, we recommend using the `@midl/hardhat-deploy` plugin together with [hardhat-deploy](https://github.com/wighawag/hardhat-deploy).
 
 You can find advanced examples in [this repo](https://github.com/midl-xyz/smart-contract-deploy-starter).
 
@@ -28,7 +28,7 @@ First, create a new project using the following commands:
 mkdir hardhat-midl
 cd hardhat-midl
 pnpm init
-pnpm add -D hardhat @midl-xyz/hardhat-deploy hardhat-deploy @midl-xyz/midl-js-executor
+pnpm add -D hardhat @midl/hardhat-deploy hardhat-deploy @midl/executor
 ```
 
 ## Initialize Hardhat
@@ -85,11 +85,11 @@ Add the following lines to your `hardhat.config.ts`. For more configuration opti
 
 ```ts [hardhat.config.ts]
 import "@typechain/hardhat";
-import "@midl-xyz/hardhat-deploy";
+import "@midl/hardhat-deploy";
 import "hardhat-deploy";
 import "@nomicfoundation/hardhat-verify";
 import { vars, type HardhatUserConfig } from "hardhat/config";
-import { midlRegtest } from "@midl-xyz/midl-js-executor";
+import { midlRegtest } from "@midl/executor";
 
 const config: HardhatUserConfig = {
   solidity: "0.8.28",

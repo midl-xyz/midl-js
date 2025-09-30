@@ -1,8 +1,4 @@
-import {
-	AddressPurpose,
-	AddressType,
-	type Config,
-} from "@midl-xyz/midl-js-core";
+import { AddressPurpose, AddressType, type Config } from "@midl/core";
 import * as bitcoin from "bitcoinjs-lib";
 import {
 	type Address,

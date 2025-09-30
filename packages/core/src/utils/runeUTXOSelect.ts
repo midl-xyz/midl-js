@@ -1,4 +1,3 @@
-import { parseUnits } from "viem/utils";
 import type { RuneUTXO } from "~/providers";
 
 export const runeUTXOSelect = (
@@ -20,9 +19,9 @@ export const runeUTXOSelect = (
 			continue;
 		}
 
-		const { amount: runeAmount, divisibility } = rune;
+		const { amount: runeAmount } = rune;
 		selectedUTXOs.push(utxo);
-		selectedAmount += parseUnits(runeAmount, divisibility);
+		selectedAmount += runeAmount;
 	}
 
 	if (selectedAmount < amount) {

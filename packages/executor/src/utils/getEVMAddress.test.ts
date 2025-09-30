@@ -1,4 +1,4 @@
-import { AddressPurpose, connect } from "@midl-xyz/midl-js-core";
+import { AddressPurpose, connect } from "@midl/core";
 import { describe, expect, it } from "vitest";
 import { midlConfig } from "~/__tests__/midlConfig";
 import { getEVMAddress } from "~/utils/getEVMAddress";

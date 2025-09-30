@@ -8,7 +8,7 @@ import {
 	ensureMoreThanDust,
 	getDefaultAccount,
 	transferBTC,
-} from "@midl-xyz/midl-js-core";
+} from "@midl/core";
 import type { Client, StateOverride } from "viem";
 import { estimateGasMulti } from "viem/actions";
 import { createStateOverride } from "~/actions/createStateOverride";

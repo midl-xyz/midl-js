@@ -1,20 +1,12 @@
-import { AddressPurpose, connect, disconnect } from "@midl-xyz/midl-js-core";
-import type { TransactionIntention } from "@midl-xyz/midl-js-executor";
-import { createStore } from "@midl-xyz/midl-js-react";
+import { AddressPurpose, connect, disconnect } from "@midl/core";
+import type { TransactionIntention } from "@midl/executor";
+import { createStore } from "@midl/react";
 import { renderHook } from "@testing-library/react";
 import { zeroAddress } from "viem";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { wrapper } from "~/__tests__";
 import { midlConfig } from "~/__tests__/midlConfig";
 import { useSignIntention } from "~/hooks/useSignIntention";
-
-vi.mock("~/hooks/useLastNonce", async () => {
-	const actual = await vi.importActual("~/hooks");
-	return {
-		...actual,
-		useLastNonce: vi.fn(() => 1),
-	};
-});
 
 describe("executor-react | hooks | useSignIntention", () => {
 	beforeEach(async () => {

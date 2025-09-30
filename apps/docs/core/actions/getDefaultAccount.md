@@ -12,13 +12,13 @@ The selection order is:
 ## Import
 
 ```ts
-import { getDefaultAccount } from "@midl-xyz/midl-js-core";
+import { getDefaultAccount } from "@midl/core";
 ```
 
 ## Example
 
 ```ts
-import { getDefaultAccount } from "@midl-xyz/midl-js-core";
+import { getDefaultAccount } from "@midl/core";
 
 const account = getDefaultAccount(config, acc => acc.address === 'bcrt1q...');
 console.log(account);

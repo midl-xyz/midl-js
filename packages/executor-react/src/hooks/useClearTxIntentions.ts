@@ -1,7 +1,4 @@
-import {
-	type MidlContextStore,
-	useStoreInternal,
-} from "@midl-xyz/midl-js-react";
+import { type MidlContextStore, useStoreInternal } from "@midl/react";
 
 type UseClearTxIntentionsParams = {
 	/**

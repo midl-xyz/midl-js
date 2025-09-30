@@ -5,7 +5,7 @@ Gets the runes for an address, with optional limit and offset. If no address is 
 ## Import
 
 ```ts
-import { useRunes } from "@midl-xyz/midl-js-react";
+import { useRunes } from "@midl/react";
 ```
 
 ## Example

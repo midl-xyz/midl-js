@@ -16,13 +16,13 @@ You can customize the `ConnectButton` component by passing the `hideBalance`, `h
 
 ### Props
 
-| Name              | Type      | Description                                                                                   |
-| ----------------- | --------- | --------------------------------------------------------------------------------------------- |
-| `hideBalance`     | `boolean` | If true, the balance will be hidden
-| `hideAvatar`      | `boolean` | If true, the avatar will be hidden in the account button                                       |
-| `hideAddress`     | `boolean` | If true, the address will be hidden
-| `children`        | `function`| A function that receives the `openConnectDialog`, `openAccountDialog`, `isConnected`, and `isConnecting` props. This function should return a React node that will be rendered as the button content. |
-| `beforeConnect`   | `function`| A function that will be called before the connect dialog is opened. It receives the connector id as an argument and can return a promise or void. This can be used to perform any actions before the user connects their wallet. |
+| Name            | Type       | Description                                                                                                                                                                                                                      |
+| --------------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `hideBalance`   | `boolean`  | If true, the balance will be hidden                                                                                                                                                                                              |
+| `hideAvatar`    | `boolean`  | If true, the avatar will be hidden in the account button                                                                                                                                                                         |
+| `hideAddress`   | `boolean`  | If true, the address will be hidden                                                                                                                                                                                              |
+| `children`      | `function` | A function that receives the `openConnectDialog`, `openAccountDialog`, `isConnected`, and `isConnecting` props. This function should return a React node that will be rendered as the button content.                            |
+| `beforeConnect` | `function` | A function that will be called before the connect dialog is opened. It receives the connector id as an argument and can return a promise or void. This can be used to perform any actions before the user connects their wallet. |
 
 
 ::: tip
@@ -31,7 +31,7 @@ You can use the `beforeConnect` prop to perform any actions before the user conn
 
 
 ```tsx
-import { ConnectButton } from "@midl-xyz/satoshi-kit";
+import { ConnectButton } from "@midl/satoshi-kit";
 
 export const CustomConnectButton = () => {
     return (

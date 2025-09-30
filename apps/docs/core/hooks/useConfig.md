@@ -5,7 +5,7 @@ Retrieves the current configuration.
 ## Import
 
 ```ts
-import { useConfig } from "@midl-xyz/midl-js-react";
+import { useConfig } from "@midl/react";
 ```
 
 ## Example

@@ -7,7 +7,7 @@ Gets the current block number
 ## Import
 
 ```ts
-import { getBlockNumber } from "@midl-xyz/midl-js-core";
+import { getBlockNumber } from "@midl/core";
 ```
 
 ## Example

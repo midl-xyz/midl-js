@@ -7,13 +7,13 @@ Broadcasts a transaction to the bitcoin network. If the transaction is successfu
 ## Import
 
 ```ts
-import { broadcastTransaction } from "@midl-xyz/midl-js-core";
+import { broadcastTransaction } from "@midl/core";
 ```
 
 ## Example
 
 ```ts
-import { broadcastTransaction } from "@midl-xyz/midl-js-core";
+import { broadcastTransaction } from "@midl/core";
 
 const txHex = "02000000000101...";
 const txHash = await broadcastTransaction(config, txHex);

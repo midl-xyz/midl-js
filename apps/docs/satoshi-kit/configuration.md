@@ -4,12 +4,12 @@ order: 1
 
 # Configuration
 
-To configure SatoshiKit, you need to create a midl config using `createMidlConfig` from `@midl-xyz/satoshi-kit`. This config will automatically set up the connectors for you.
+To configure SatoshiKit, you need to create a midl config using `createMidlConfig` from `@midl/satoshi-kit`. This config will automatically set up the connectors for you.
 
 
 ```ts
-import { createMidlConfig } from "@midl-xyz/satoshi-kit";
-import { regtest } from "@midl-xyz/midl-js-core";
+import { createMidlConfig } from "@midl/satoshi-kit";
+import { regtest } from "@midl/core";
 
 
 export const midlConfig = createMidlConfig({
@@ -21,9 +21,9 @@ export const midlConfig = createMidlConfig({
 If you want to use SatoshiKit with a specific wallets, you can pass the `connectors` option to `createMidlConfig`. This will allow you to specify which wallets you want to use with SatoshiKit.
 
 ```ts
-import { createMidlConfig } from "@midl-xyz/satoshi-kit";
-import { regtest } from "@midl-xyz/midl-js-core";
-import { xverseConnector } from "@midl-xyz/midl-js-connectors";
+import { createMidlConfig } from "@midl/satoshi-kit";
+import { regtest } from "@midl/core";
+import { xverseConnector } from "@midl/connectors";
 
 export const midlConfig = createMidlConfig({
   networks: [regtest],
@@ -36,9 +36,9 @@ export const midlConfig = createMidlConfig({
 You can also set custom metadata for the connectors by passing `metadata` option to the connector function. This metadata will be used to display the wallet in a specific category in the wallet list.
 
 ```ts
-import { createMidlConfig } from "@midl-xyz/satoshi-kit";
-import { regtest } from "@midl-xyz/midl-js-core";
-import { xverseConnector } from "@midl-xyz/midl-js-connectors";
+import { createMidlConfig } from "@midl/satoshi-kit";
+import { regtest } from "@midl/core";
+import { xverseConnector } from "@midl/connectors";
 
 export const midlConfig = createMidlConfig({
   networks: [regtest],
@@ -63,18 +63,18 @@ You can specify the `purposes`, `authenticationAdapter`, and `config` props to c
 
 ### Props
 
-| Name                     | Type                                                                 | Description                                                                                   |
-| ------------------------ | -------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| `purposes`               | `AddressPurpose[]`  (optional)                                                 | The purposes for which addresses will be generated. This is an array of `AddressPurpose` values. If not provided, defaults to `[AddressPurpose.Payment, AddressPurpose.Ordinals]`. |
-| `authenticationAdapter`  | `AuthenticationAdapter` (optional)                     | An optional authentication adapter to handle user authentication. If not provided, SatoshiKit will use a default authentication flow. |
-| `config`                 | `Config` (optional)                                                | The midl config object. If not provided, SatoshiKit will use the default config. |
+| Name                    | Type                               | Description                                                                                                                                                                        |
+| ----------------------- | ---------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `purposes`              | `AddressPurpose[]`  (optional)     | The purposes for which addresses will be generated. This is an array of `AddressPurpose` values. If not provided, defaults to `[AddressPurpose.Payment, AddressPurpose.Ordinals]`. |
+| `authenticationAdapter` | `AuthenticationAdapter` (optional) | An optional authentication adapter to handle user authentication. If not provided, SatoshiKit will use a default authentication flow.                                              |
+| `config`                | `Config` (optional)                | The midl config object. If not provided, SatoshiKit will use the default config.                                                                                                   |
 
 For details on implementing the `authenticationAdapter`, see the [Authentication documentation](./authentication.md).
 
 
 ```tsx
-import { SatoshiKitProvider } from "@midl-xyz/satoshi-kit";
-import { AddressPurpose } from "@midl-xyz/midl-js-core";
+import { SatoshiKitProvider } from "@midl/satoshi-kit";
+import { AddressPurpose } from "@midl/core";
 import { midlConfig } from "./config";
 
 export const App = () => {
