@@ -34,6 +34,11 @@ export default withSidebar(
 					"https://github.com/midl-xyz/midl-js/edit/main/apps/docs/:path",
 				text: "Edit this page on GitHub",
 			},
+			footer: {
+				copyright: "Copyright © 2025 MIDL LABS Inc.",
+				message:
+					"Released under the <a href='https://github.com/midl-xyz/midl-js/blob/main/LICENSE'>MIT License</a>.",
+			},
 		},
 		cleanUrls: true,
 		rewrites: {
