@@ -96,15 +96,15 @@ export class MaestroProvider implements AbstractProvider {
 	}
 
 	async getLatestBlockHeight(network: BitcoinNetwork): Promise<number> {
-		const { data } = await this.client.GET("/esplora/blocks/tip/height", {
+		const { data } = await this.client.GET("/rpc/block/latest/height", {
 			baseUrl: this.getApURL(network),
 		});
 
-		if (!data) {
+		if (typeof data?.data !== "number") {
 			throw new Error("Failed to fetch block height.");
 		}
 
-		return data;
+		return data.data;
 	}
 
 	async getFeeRate(network: BitcoinNetwork): Promise<FeeRateResponse> {
@@ -166,20 +166,20 @@ export class MaestroProvider implements AbstractProvider {
 		network: BitcoinNetwork,
 		txid: string,
 	): Promise<string> {
-		const { data } = await this.client.GET("/esplora/tx/{txid}/hex", {
+		const { data } = await this.client.GET("/rpc/transaction/{tx_hash}/hex", {
 			baseUrl: this.getApURL(network),
 			params: {
 				path: {
-					txid,
+					tx_hash: txid,
 				},
 			},
 		});
 
-		if (!data) {
+		if (!data?.data) {
 			throw new Error(`Transaction ${txid} not found.`);
 		}
 
-		return data;
+		return data.data;
 	}
 
 	private getApURL(network: BitcoinNetwork): string {

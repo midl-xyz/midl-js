@@ -1061,6 +1061,27 @@ export interface paths {
 		patch?: never;
 		trace?: never;
 	};
+	"/rpc/block/latest/height": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/**
+		 * Latest Block Height
+		 * @description Block height of the chain tip.
+		 *     Useful for quickly checking the current chain tip without fetching full block data.
+		 */
+		get: operations["rpc_latest_block_height"];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/rpc/block/range/{start_height}/{end_height}": {
 		parameters: {
 			query?: never;
@@ -1487,6 +1508,26 @@ export interface paths {
 		 * @description This endpoint returns detailed information for a specific Bitcoin transaction, by its unique transaction hash.
 		 */
 		get: operations["rpc_transaction_info"];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/rpc/transaction/{tx_hash}/hex": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/**
+		 * Transaction Hex
+		 * @description Raw encoded hex of a transaction.
+		 */
+		get: operations["rpc_transaction_hex"];
 		put?: never;
 		post?: never;
 		delete?: never;
@@ -4096,6 +4137,10 @@ export interface components {
 			data?: components["schemas"]["api_bitcoin.BitcoinTransactionVerbose"][];
 			last_updated?: components["schemas"]["api_bitcoin.LastUpdatedBlock"];
 		};
+		"api_bitcoin.BlockHeightResponseBody": {
+			data?: number;
+			last_updated?: components["schemas"]["api_bitcoin.LastUpdatedBlock"];
+		};
 		"api_bitcoin.BlockMinerResponseBody": {
 			data?: components["schemas"]["api_bitcoin.MinerInfo"];
 			last_updated?: components["schemas"]["api_bitcoin.LastUpdatedBlock"];
@@ -4339,6 +4384,10 @@ export interface components {
 			base?: number;
 			descendant?: number;
 			modified?: number;
+		};
+		"api_bitcoin.TxHexResponseBody": {
+			data?: string;
+			last_updated?: components["schemas"]["api_bitcoin.LastUpdatedBlock"];
 		};
 		"api_bitcoin.Vin": {
 			coinbase?: string;
@@ -10100,6 +10149,35 @@ export interface operations {
 			};
 		};
 	};
+	rpc_latest_block_height: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description OK */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["api_bitcoin.BlockHeightResponseBody"];
+				};
+			};
+			/** @description Error getting block height. */
+			500: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["api_bitcoin.APIError"];
+				};
+			};
+		};
+	};
 	rpc_block_range_info: {
 		parameters: {
 			query?: {
@@ -11121,6 +11199,58 @@ export interface operations {
 					"application/json":
 						| components["schemas"]["api_bitcoin.APIError"]
 						| components["schemas"]["api_bitcoin.APIError"];
+				};
+			};
+		};
+	};
+	rpc_transaction_hex: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				/** @description Transaction hash. */
+				tx_hash: string;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description OK */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["api_bitcoin.TxHexResponseBody"];
+				};
+			};
+			/** @description Invalid request. */
+			400: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json":
+						| components["schemas"]["api_bitcoin.NodeRPCError"]
+						| components["schemas"]["api_bitcoin.APIError"];
+				};
+			};
+			/** @description Transaction not found. */
+			404: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["api_bitcoin.APIError"];
+				};
+			};
+			/** @description Error processing transaction response. */
+			500: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["api_bitcoin.APIError"];
 				};
 			};
 		};
