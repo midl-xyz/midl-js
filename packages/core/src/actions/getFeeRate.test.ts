@@ -28,10 +28,12 @@ describe("core | actions | getFeeRate", () => {
 		});
 
 		mockProvider.getFeeRate.mockRejectedValue(
-			new Error("Failed to get fee rate"),
+			new Error("Failed to fetch fee rate"),
 		);
 
-		await expect(getFeeRate(config)).rejects.toThrow("Failed to get fee rate");
+		await expect(getFeeRate(config)).rejects.toThrow(
+			"Failed to fetch fee rate",
+		);
 	});
 
 	it("throws error if config doesn't contains network", async () => {

@@ -36,11 +36,11 @@ describe("core | actions | getRune", () => {
 		});
 
 		mockRuneProvider.getRune.mockRejectedValue(
-			new Error("Failed to get rune object"),
+			new Error("Rune with ID not found"),
 		);
 
 		await expect(getRune(config, runeId)).rejects.toThrow(
-			"Failed to get rune object",
+			"Rune with ID not found",
 		);
 	});
 
