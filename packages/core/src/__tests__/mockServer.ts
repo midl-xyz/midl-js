@@ -1,7 +1,8 @@
+import { randomBytes } from "node:crypto";
 import { http, HttpResponse, type RequestHandler } from "msw";
 import { setupServer } from "msw/node";
-import { randomBytes } from "node:crypto";
 import type { RuneUTXO, UTXO } from "~/providers";
+import { operations } from "~/providers/runes/scheme/runehook";
 
 const handlers: RequestHandler[] = [
 	http.get("https://mempool.regtest.midl.xyz/api/v1/fees/recommended", () => {
@@ -38,7 +39,8 @@ const handlers: RequestHandler[] = [
 	http.get("https://mempool.regtest.midl.xyz/utxos/:address", ({ request }) => {
 		const url = new URL(request.url);
 
-		const runeUTXOS: RuneUTXO[] = [
+		// biome-ignore lint/suspicious/noExplicitAny: TODO: specify type
+		const runeUTXOS: any[] = [
 			{
 				height: 0,
 				txid: Buffer.alloc(32).toString("hex"),

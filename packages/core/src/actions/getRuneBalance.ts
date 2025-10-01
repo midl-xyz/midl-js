@@ -31,7 +31,7 @@ export const getRuneBalance = async (
 	config: Config,
 	{ address, runeId }: GetRuneBalanceParams,
 ) => {
-	const { network, provider } = config.getState();
+	const { network, runesProvider } = config.getState();
 
-	return provider.getRuneBalance(network, address, runeId);
+	return runesProvider.getRuneBalance(network, address, runeId);
 };

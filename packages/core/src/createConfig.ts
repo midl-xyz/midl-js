@@ -3,6 +3,10 @@ import { createStore } from "zustand/vanilla";
 import type { Account, Connector, ConnectorWithMetadata } from "~/connectors";
 import type { AddressPurpose } from "~/constants";
 import { type AbstractProvider, MempoolSpaceProvider } from "~/providers";
+import {
+	type AbstractRunesProvider,
+	RunehookProvider,
+} from "~/providers/runes";
 
 export type BitcoinNetwork = {
 	/**
@@ -46,6 +50,12 @@ type ConfigParams = {
 	provider?: AbstractProvider;
 
 	/**
+	 * The runes data provider to use
+	 * @default RunehookProvider
+	 */
+	runesProvider?: AbstractRunesProvider;
+
+	/**
 	 * The default address to use for signing transactions, etc.
 	 */
 	defaultPurpose?: AddressPurpose;
@@ -58,6 +68,7 @@ export type ConfigState = {
 	readonly accounts?: Account[];
 	readonly connectors: ConnectorWithMetadata[];
 	readonly provider: AbstractProvider;
+	readonly runesProvider: AbstractRunesProvider;
 	readonly defaultPurpose?: AddressPurpose;
 };
 
@@ -83,6 +94,7 @@ export const createConfig = (params: ConfigParams) => {
 				connectors: params.connectors,
 				network,
 				provider: params.provider ?? new MempoolSpaceProvider(),
+				runesProvider: params.runesProvider ?? new RunehookProvider(),
 			}),
 			{
 				name: persistStorageKey,

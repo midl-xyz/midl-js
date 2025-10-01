@@ -49,7 +49,7 @@ import {
 	keccak256,
 } from "viem";
 import { sendBTCTransactions, waitForTransactionReceipt } from "viem/actions";
-import { type StoreApi, createStore } from "zustand";
+import { type StoreApi, createStore } from "zustand/vanilla";
 import "~/types/context";
 
 export class MidlHardhatEnvironment {

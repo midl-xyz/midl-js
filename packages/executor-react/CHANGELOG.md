@@ -1,5 +1,53 @@
 # @midl/executor-react
 
+## 2.0.8
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl/core@2.0.8
+  - @midl/executor@2.0.8
+  - @midl/react@2.0.8
+
+## 2.0.7
+
+### Patch Changes
+
+- c639384: fix: inline source maps
+- Updated dependencies [c639384]
+- Updated dependencies [716a0e0]
+- Updated dependencies [8e4c5cc]
+  - @midl/executor@2.0.7
+  - @midl/react@2.0.7
+  - @midl/core@2.0.7
+
+## 2.0.6
+
+### Patch Changes
+
+- @midl/core@2.0.6
+- @midl/executor@2.0.6
+- @midl/react@2.0.6
+
+## 2.0.5
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl/core@2.0.5
+  - @midl/executor@2.0.5
+  - @midl/react@2.0.5
+
+## 2.0.4
+
+### Patch Changes
+
+- Updated dependencies [a2f595b]
+- Updated dependencies [ca11335]
+  - @midl/core@2.0.4
+  - @midl/executor@2.0.4
+  - @midl/react@2.0.4
+
 ## 2.0.3
 
 ### Patch Changes

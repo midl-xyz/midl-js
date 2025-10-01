@@ -3,21 +3,43 @@
 layout: home
 
 hero:
-  name: "MIDL.js"
-  tagline: "A JavaScript library that makes it easy to interact with the Bitcoin and MIDL Protocol"
+  name: "MIDL Javascript SDK"
+  tagline: "Build Web3 apps on Bitcoin and MIDL with ease."
   actions:
     - theme: brand
       text: Get Started
       link: /getting-started
     - theme: alt
-      text: View on GitHub
+      text: Star on GitHub 
       link: https://github.com/midl-xyz/midl-js
 
 features:
   - title: Simple API
-    details: MIDL.js provides a simple and intuitive API to interact with the blockchain.
+    details: Easily interact with the Bitcoin blockchain and MIDL using a straightforward API.
   - title: TypeScript Support
-    details: MIDL.js is written in TypeScript and provides type definitions.
+    details: Built with TypeScript for type safety and better developer experience.
   - title: React Hooks
-    details: MIDL.js provides React hooks to interact with the blockchain in your React app.
+    details: Seamlessly integrate with React applications using custom hooks.
 ---
+
+
+
+### Quick Example
+
+```tsx
+import { useBroadcastTransaction } from "@midl/react";
+
+function App () {
+  const { broadcastTransaction } = useBroadcastTransaction();
+
+  const handleClick = async () => {
+    broadcastTransaction({
+      tx: "020000001...",
+    });
+
+    console.log("Transaction broadcasted:", result);
+  };
+
+  return <button onClick={handleClick}>Broadcast Transaction</button>;
+}
+```
