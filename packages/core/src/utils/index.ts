@@ -1,5 +1,7 @@
 export * from "./ensureMoreThanDust";
+
 export * from "./extractXCoordinate";
+
 export * from "./formatRuneName";
 export * from "./get";
 export * from "./getAddressPurpose";

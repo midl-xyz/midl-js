@@ -1,5 +1,42 @@
 # @midl/core
 
+## 2.0.8
+
+### Patch Changes
+
+- fix(core): maestro symphony get rune
+  - @midl/logger@2.0.8
+
+## 2.0.7
+
+### Patch Changes
+
+- c639384: fix: inline source maps
+- 716a0e0: feat: improve typings for addresses
+- 8e4c5cc: feat(core): add runes info for maestro symphony
+  - @midl/logger@2.0.7
+
+## 2.0.6
+
+### Patch Changes
+
+- @midl/logger@2.0.6
+
+## 2.0.5
+
+### Patch Changes
+
+- fix: export ms provider
+  - @midl/logger@2.0.5
+
+## 2.0.4
+
+### Patch Changes
+
+- a2f595b: feat: separate runehook & mempool providers
+- ca11335: feat: maestro symphony runes
+  - @midl/logger@2.0.4
+
 ## 2.0.3
 
 ### Patch Changes

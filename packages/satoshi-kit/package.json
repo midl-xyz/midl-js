@@ -1,6 +1,7 @@
 {
 	"name": "@midl/satoshi-kit",
-	"version": "2.0.3",
+	"version": "2.0.8",
+	"license": "MIT",
 	"type": "module",
 	"scripts": {
 		"build": "pnpm run build:lib && pnpm run build:styles",

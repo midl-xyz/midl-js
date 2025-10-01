@@ -3,6 +3,8 @@
 	"include": ["./src/**/*.ts"],
 	"compilerOptions": {
 		"moduleResolution": "Bundler",
+		"sourceMap": true,
+		"inlineSources": true,
 		"baseUrl": ".",
 		"paths": {
 			"~/*": ["./src/*"]

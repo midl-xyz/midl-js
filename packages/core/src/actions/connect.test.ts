@@ -23,7 +23,7 @@ describe("core | actions | connect", async () => {
 		expect(network).toBeDefined();
 	});
 
-	it("throws error", async () => {
+	it("throws error if no accounts", async () => {
 		const config = createConfig({
 			networks: [regtest],
 			connectors: [keyPairConnector({ mnemonic: __TEST__MNEMONIC__ })],
@@ -34,5 +34,21 @@ describe("core | actions | connect", async () => {
 				purposes: [],
 			}),
 		).rejects.throw(EmptyAccountsError);
+	});
+
+	it("sorts accounts by purpose", async () => {
+		const config = createConfig({
+			networks: [regtest],
+			connectors: [keyPairConnector({ mnemonic: __TEST__MNEMONIC__ })],
+		});
+
+		await connect(config, {
+			purposes: [AddressPurpose.Payment, AddressPurpose.Ordinals],
+		});
+
+		const { accounts } = config.getState();
+
+		expect(accounts?.[0]?.purpose).toBe(AddressPurpose.Payment);
+		expect(accounts?.[1]?.purpose).toBe(AddressPurpose.Ordinals);
 	});
 });
