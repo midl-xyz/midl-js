@@ -66,11 +66,11 @@ describe("core | actions | getRunes", () => {
 		});
 
 		mockRuneProvider.getRunes.mockRejectedValue(
-			new Error("Failed to get runes for the address"),
+			new Error("Failed to fetch runes for address"),
 		);
 
 		await expect(getRunes(config, { address: address })).rejects.toThrow(
-			"Failed to get runes for the address",
+			"Failed to fetch runes for address",
 		);
 	});
 });
