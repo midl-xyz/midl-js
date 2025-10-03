@@ -28,11 +28,11 @@ describe("core | actions | getBlockNumber", () => {
 		});
 
 		mockProvider.getLatestBlockHeight.mockRejectedValue(
-			new Error("Failed to get block number"),
+			new Error("Failed to fetch block height"),
 		);
 
 		await expect(getBlockNumber(config)).rejects.toThrow(
-			"Failed to get block number",
+			"Failed to fetch block height",
 		);
 	});
 });

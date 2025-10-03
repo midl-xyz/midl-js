@@ -35,11 +35,11 @@ describe("core | actions | getRuneBalance", () => {
 		});
 
 		mockRuneProvider.getRuneBalance.mockRejectedValue(
-			new Error("Failed to get rune balance"),
+			new Error("Failed to fetch rune balance for address"),
 		);
 
 		await expect(getRuneBalance(config, { address, runeId })).rejects.toThrow(
-			"Failed to get rune balance",
+			"Failed to fetch rune balance for address",
 		);
 	});
 });
