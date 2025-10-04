@@ -28,8 +28,6 @@ describe("core | actions | getBalance", () => {
 							status: {
 								confirmed: true,
 								block_height: 0,
-								block_hash: "block_hash",
-								block_time: 0,
 							},
 						},
 						{
@@ -39,8 +37,6 @@ describe("core | actions | getBalance", () => {
 							status: {
 								confirmed: true,
 								block_height: 0,
-								block_hash: "block_hash",
-								block_time: 0,
 							},
 						},
 					];

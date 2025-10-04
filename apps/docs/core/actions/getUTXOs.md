@@ -41,5 +41,3 @@ The UTXOs for the address
 | status              | `object`  | The status of the UTXO         |
 | status.confirmed    | `boolean` | Whether the UTXO is confirmed  |
 | status.block_height | `number`  | The block height of the UTXO   |
-| status.block_hash   | `string`  | The block hash of the UTXO     |
-| status.block_time   | `number`  | The block time of the UTXO     |

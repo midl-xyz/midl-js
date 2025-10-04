@@ -25,14 +25,6 @@ export type UTXO = {
 		 * The block height of the UTXO
 		 */
 		readonly block_height: number;
-		/**
-		 * The block hash of the UTXO
-		 */
-		readonly block_hash: string;
-		/**
-		 * The block time of the UTXO
-		 */
-		readonly block_time: number;
 	};
 };
 
