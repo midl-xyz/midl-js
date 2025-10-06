@@ -6,7 +6,7 @@ import { withSidebar } from "vitepress-sidebar";
 export default withSidebar(
 	defineConfig({
 		title: "MIDL.js",
-
+		lastUpdated: true,
 		description:
 			"A JavaScript library that makes it easy to interact with the Bitcoin and MIDL Protocol",
 		themeConfig: {
@@ -35,9 +35,10 @@ export default withSidebar(
 				text: "Edit this page on GitHub",
 			},
 			footer: {
-				copyright: "Copyright © 2025 MIDL LABS Inc.",
+				copyright: "Copyright © 2025 MIDL LABS Inc",
+
 				message:
-					"Released under the <a href='https://github.com/midl-xyz/midl-js/blob/main/LICENSE'>MIT License</a>.",
+					"Released under the <a href='https://github.com/midl-xyz/midl-js/blob/main/LICENSE'>MIT License</a>",
 			},
 		},
 		cleanUrls: true,

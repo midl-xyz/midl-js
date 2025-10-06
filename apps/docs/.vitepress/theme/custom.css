@@ -1,9 +1,4 @@
 :root {
-	/*
-        TODO: Add custom CSS variables here
-        @see https://vitepress.dev/guide/extending-default-theme
-    */
-
 	--vp-c-brand-1: #000;
 	--vp-c-brand-2: #ff8533;
 	--vp-c-brand-3: #ff6600;
@@ -15,19 +10,19 @@
 	--vp-c-brand-1: #fff;
 }
 
-footer.VPFooter.has-sidebar {
-	display: block !important;
-}
+#app {
+	footer.VPFooter.has-sidebar {
+		display: block;
 
-footer.VPFooter.has-sidebar .container {
-	text-align: left;
-}
+		padding-left: calc(
+			(100vw - var(--vp-layout-max-width)) /
+			2 +
+			var(--vp-sidebar-width) +
+			32px
+		);
 
-footer.VPFooter.has-sidebar {
-	padding-left: calc(
-		(100vw - var(--vp-layout-max-width)) /
-		2 +
-		var(--vp-sidebar-width) +
-		32px
-	);
+		& .container {
+			text-align: left;
+		}
+	}
 }
