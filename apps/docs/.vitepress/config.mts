@@ -6,7 +6,7 @@ import { withSidebar } from "vitepress-sidebar";
 export default withSidebar(
 	defineConfig({
 		title: "MIDL.js",
-
+		lastUpdated: true,
 		description:
 			"A JavaScript library that makes it easy to interact with the Bitcoin and MIDL Protocol",
 		themeConfig: {
