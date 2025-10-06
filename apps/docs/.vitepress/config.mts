@@ -35,8 +35,7 @@ export default withSidebar(
 				text: "Edit this page on GitHub",
 			},
 			footer: {
-				copyright:
-					"Copyright © 2025 MIDL LABS Inc.<br/><div class='footer__legal'><a href='/terms-of-use'>Terms of Use</a> <a href='/privacy-notice'>Privacy Notice</a></div>",
+				copyright: "Copyright © 2025 MIDL LABS Inc",
 
 				message:
 					"Released under the <a href='https://github.com/midl-xyz/midl-js/blob/main/LICENSE'>MIT License</a>",

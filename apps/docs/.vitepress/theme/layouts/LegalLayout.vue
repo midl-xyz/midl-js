@@ -1,6 +1,28 @@
+<script setup lang="ts">
+import { useData } from "vitepress";
+
+const { page } = useData();
+
+const lastUpdatedValue =
+	page.value.frontmatter.lastUpdated || page.value.lastUpdated;
+
+const lastUpdated = lastUpdatedValue
+	? new Intl.DateTimeFormat("en-US", {
+			dateStyle: "long",
+		}).format(new Date(lastUpdatedValue))
+	: null;
+</script>
+
 <template>
   <div class="legal-layout">
     <div class="vp-doc container">
+      <h1>{{ page.title }}</h1>
+      <div class="page-meta">
+        <div v-if="lastUpdated"><b>Last updated:</b> {{ lastUpdated }}</div>
+        <div v-if="page.frontmatter.version">
+          <b>Version:</b> {{ page.frontmatter.version }}
+        </div>
+      </div>
       <Content />
     </div>
   </div>
@@ -52,5 +74,13 @@
       margin-left: 1.5rem;
     }
   }
+}
+
+.page-meta {
+  color: var(--vp-c-text-secondary);
+  margin: 0.75rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
 }
 </style>

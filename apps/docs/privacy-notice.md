@@ -1,22 +1,9 @@
 ---
 layout: legal
 sidebar: false
+title: Privacy Notice
+version: "1.0"
 ---
-
-<script setup lang="ts">
-import { useData } from "vitepress";
-
-const { page } = useData();
-
-const lastUpdated = new Intl.DateTimeFormat("en-US", {
-  dateStyle: "long",
-}).format(new Date(page.value.lastUpdated ?? Date.now()));
-</script>
-
-# **Privacy Notice**
-
-**Last Updated:** {{ lastUpdated }}<br/>
-**Version:** 1.0
 
 ## **This Privacy Notice**
 

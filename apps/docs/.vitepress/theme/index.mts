@@ -5,6 +5,7 @@ import "@midl/satoshi-kit/styles.css";
 // biome-ignore lint/style/useNodejsImportProtocol: polyfill
 import { Buffer } from "buffer";
 import type { EnhanceAppContext } from "vitepress";
+import Layout from "./layouts/Layout.vue";
 import LegalLayout from "./layouts/LegalLayout.vue";
 
 if (typeof window !== "undefined") {
@@ -18,6 +19,7 @@ if (typeof window !== "undefined") {
 
 const theme = {
 	extends: DefaultTheme,
+	Layout,
 	enhanceApp({ app }: EnhanceAppContext) {
 		app.component("legal", LegalLayout);
 	},
