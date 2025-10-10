@@ -44,6 +44,10 @@ type EstimateBTCTransactionOptions = {
 	gasMultiplier?: number;
 };
 
+/**
+ * Estimates the cost and gas requirements for a Bitcoin transaction with the provided intentions.
+ * Calculates gas limits for EVM transactions and total fees without executing the transaction.
+ */
 export const estimateBTCTransaction = async (
 	config: Config,
 	intentions: TransactionIntention[],
