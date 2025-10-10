@@ -15,7 +15,7 @@ import {
 
 const logger = getLogger([LoggerNamespace.Actions, "estimateBTCTransaction"]);
 
-type EstimateBTCTransactionOptions = {
+export type EstimateBTCTransactionOptions = {
 	/**
 	 * State override for EVM transactions
 	 */
@@ -44,6 +44,17 @@ type EstimateBTCTransactionOptions = {
 	gasMultiplier?: number;
 };
 
+export type EstimateBTCTransactionResponse = {
+	/**
+	 * Intentions with estimated gas limits for EVM transactions
+	 */
+	intentions: TransactionIntention[];
+	/**
+	 * Estimated fee in satoshis
+	 */
+	fee: number;
+};
+
 /**
  * Estimates the cost and gas requirements for a Bitcoin transaction with the provided intentions.
  * Calculates gas limits for EVM transactions and total fees without executing the transaction.
@@ -57,7 +68,7 @@ export const estimateBTCTransaction = async (
 		gasMultiplier = 1.2,
 		...options
 	}: EstimateBTCTransactionOptions = {},
-) => {
+): Promise<EstimateBTCTransactionResponse> => {
 	const { network } = config.getState();
 
 	if (!network) {
