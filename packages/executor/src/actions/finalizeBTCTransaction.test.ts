@@ -1,9 +1,28 @@
 import { AddressPurpose, connect, disconnect } from "@midl/core";
 import { http, type Chain, createWalletClient } from "viem";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import {
+	type Mock,
+	afterEach,
+	beforeEach,
+	describe,
+	expect,
+	it,
+	vi,
+} from "vitest";
 import { midlConfig } from "~/__tests__/midlConfig";
 import { finalizeBTCTransaction } from "~/actions/finalizeBTCTransaction";
+import type { TransactionIntention } from "~/types";
 import { getEVMFromBitcoinNetwork } from "~/utils";
+import * as estimateActions from "./estimateBTCTransaction";
+
+vi.mock("./estimateBTCTransaction", async (importActual) => {
+	const actual =
+		await importActual<typeof import("./estimateBTCTransaction")>();
+	return {
+		...actual,
+		estimateBTCTransaction: vi.fn(),
+	};
+});
 
 describe("finalizeBTCTransaction", () => {
 	const chain = getEVMFromBitcoinNetwork(midlConfig.getState().network);
@@ -21,6 +40,7 @@ describe("finalizeBTCTransaction", () => {
 
 	afterEach(async () => {
 		await disconnect(midlConfig);
+		(estimateActions.estimateBTCTransaction as Mock).mockReset();
 	});
 
 	it("throws no intentions", async () => {
@@ -29,5 +49,42 @@ describe("finalizeBTCTransaction", () => {
 		).rejects.toThrowError(
 			"Cannot finalize BTC transaction without intentions",
 		);
+	});
+
+	it("mutates original intentions", async () => {
+		(estimateActions.estimateBTCTransaction as Mock).mockResolvedValue({
+			intentions: [
+				{
+					deposit: {
+						satoshis: 1000,
+					},
+					evmTransaction: {
+						to: "0x0000000000000000000000000000000000000001",
+						value: 0n,
+						chainId: chain.id,
+						gas: 21000n,
+					},
+				},
+			],
+			fee: 1000n,
+		});
+
+		const originalIntentions: TransactionIntention[] = [
+			{
+				deposit: {
+					satoshis: 1000,
+				},
+				evmTransaction: {
+					to: "0x0000000000000000000000000000000000000001",
+					value: 0n,
+					chainId: chain.id,
+				},
+			},
+		];
+
+		await finalizeBTCTransaction(midlConfig, originalIntentions, walletClient);
+		expect(estimateActions.estimateBTCTransaction).toHaveBeenCalled();
+
+		expect(originalIntentions[0].evmTransaction?.gas).toBe(21000n);
 	});
 });
