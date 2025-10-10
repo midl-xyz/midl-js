@@ -1,5 +1,16 @@
 # @midl/core
 
+## 2.0.9
+
+### Patch Changes
+
+- 7d7c93e: fix(core): sort accounts by purpose
+- d5ca2d9: fix(core): align formatRuneName with specification
+- 96b0ea3: feat(core): add maestro provider
+- 2d4e989: chore: add license
+- Updated dependencies [2d4e989]
+  - @midl/logger@2.0.9
+
 ## 2.0.8
 
 ### Patch Changes

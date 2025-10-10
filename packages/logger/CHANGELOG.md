@@ -1,5 +1,11 @@
 # @midl/logger
 
+## 2.0.9
+
+### Patch Changes
+
+- 2d4e989: chore: add license
+
 ## 2.0.8
 
 ## 2.0.7
