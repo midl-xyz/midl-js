@@ -195,7 +195,7 @@ export const estimateBTCTransaction = async (
 	});
 
 	return {
-		totalCost,
+		fee: totalCost,
 		intentions: clonedIntentions,
 	};
 };

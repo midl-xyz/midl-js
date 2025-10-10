@@ -124,7 +124,7 @@ export const finalizeBTCTransaction = async (
 		},
 	);
 
-	const { intentions: estimatedIntentions, totalCost } =
+	const { intentions: estimatedIntentions, fee: btcFee } =
 		await estimateBTCTransaction(config, intentions, client, {
 			feeRate,
 			stateOverride: options.stateOverride,
@@ -133,14 +133,24 @@ export const finalizeBTCTransaction = async (
 			gasMultiplier,
 		});
 
-	const btcTransfer = estimatedIntentions.reduce((acc, it) => {
+	/**
+	 * Warning: we mutate the intentions here to add the estimated gas fees.
+	 * This is done to avoid having to return a new array of intentions.
+	 */
+	for (const [i, intention] of intentions.entries()) {
+		if (intention.evmTransaction) {
+			intention.evmTransaction.gas = estimatedIntentions[i].evmTransaction?.gas;
+		}
+	}
+
+	const btcTransfer = intentions.reduce((acc, it) => {
 		return acc + (it?.deposit?.satoshis ?? 0);
 	}, 0);
 
 	const transfers: EdictRuneParams["transfers"] = [
 		{
 			receiver: options.multisigAddress ?? multisigAddress[network.id],
-			amount: ensureMoreThanDust(Math.ceil(Number(totalCost) + btcTransfer)),
+			amount: ensureMoreThanDust(Math.ceil(Number(btcFee) + btcTransfer)),
 		},
 	];
 
