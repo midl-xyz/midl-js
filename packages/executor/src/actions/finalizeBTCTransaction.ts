@@ -10,17 +10,11 @@ import {
 	transferBTC,
 } from "@midl/core";
 import type { Client, StateOverride } from "viem";
-import { estimateGasMulti } from "viem/actions";
-import { createStateOverride } from "~/actions/createStateOverride";
+import { estimateBTCTransaction } from "~/actions/estimateBTCTransaction";
 import { getBTCFeeRate } from "~/actions/getBTCFeeRate";
 import { LoggerNamespace, getLogger, multisigAddress } from "~/config";
-import type { TransactionIntention, TransactionIntentionEVM } from "~/types";
-import {
-	aggregateIntentionRunes,
-	calculateTransactionsCost,
-	getEVMAddress,
-	satoshisToWei,
-} from "~/utils";
+import type { TransactionIntention } from "~/types";
+import { aggregateIntentionRunes } from "~/utils";
 
 const logger = getLogger([LoggerNamespace.Actions, "finalizeBTCTransaction"]);
 
@@ -49,6 +43,12 @@ type FinalizeBTCTransactionOptions = {
 	 * If not provided, the default multisig address for the current network will be used.
 	 */
 	multisigAddress?: string;
+
+	/**
+	 * Gas multiplier to apply to the estimated gas limit (default: 1.2).
+	 * Used to ensure the transaction has enough gas to be processed and avoid potential gas fluctuations.
+	 */
+	gasMultiplier?: number;
 };
 
 /**
@@ -72,7 +72,11 @@ export const finalizeBTCTransaction = async (
 	config: Config,
 	intentions: TransactionIntention[],
 	client: Client,
-	{ feeRate: customFeeRate, ...options }: FinalizeBTCTransactionOptions = {},
+	{
+		feeRate: customFeeRate,
+		gasMultiplier,
+		...options
+	}: FinalizeBTCTransactionOptions = {},
 ) => {
 	const { network } = config.getState();
 
@@ -99,11 +103,6 @@ export const finalizeBTCTransaction = async (
 		throw new Error("No account found for public key");
 	}
 
-	const evmAddress = getEVMAddress(account, network);
-	const evmIntentions = intentions.filter((it): it is TransactionIntentionEVM =>
-		Boolean(it.evmTransaction),
-	);
-	const evmTransactions = evmIntentions.map((it) => it.evmTransaction);
 	const runesToDeposit = aggregateIntentionRunes(intentions, "deposit");
 	const runesToWithdraw = aggregateIntentionRunes(intentions, "withdraw");
 
@@ -125,117 +124,16 @@ export const finalizeBTCTransaction = async (
 		},
 	);
 
-	if (!options.skipEstimateGas) {
-		const stateOverride =
-			options.stateOverride ??
-			(await createStateOverride(config, client, intentions));
-
-		const emvTransactionsWithoutGas = evmTransactions.filter(
-			(it) => it.gas === undefined,
-		);
-
-		let gasLimits: bigint[] = [];
-
-		if (emvTransactionsWithoutGas.length > 0) {
-			logger.debug(
-				"Estimating gas for EVM transactions: {emvTransactionsWithoutGas}, stateOverride: {stateOverride}, evmAddress: {evmAddress}",
-				{
-					emvTransactionsWithoutGas,
-					stateOverride,
-					evmAddress,
-				},
-			);
-
-			gasLimits = await estimateGasMulti(client as Client, {
-				transactions: emvTransactionsWithoutGas,
-				stateOverride,
-				account: evmAddress,
-			});
-
-			for (const [i, tx] of emvTransactionsWithoutGas.entries()) {
-				if (tx.gas !== undefined) {
-					continue;
-				}
-
-				tx.gas = gasLimits[i];
-			}
-
-			logger.trace("Estimated gas limits for EVM transactions: {gasLimits}", {
-				gasLimits,
-			});
-		}
-
-		const totalGas = evmTransactions.reduce(
-			(acc, tx) => acc + (tx.gas ?? 0n),
-			0n,
-		);
-
-		const totalCost = calculateTransactionsCost(totalGas, {
+	const { intentions: estimatedIntentions, totalCost } =
+		await estimateBTCTransaction(config, intentions, client, {
 			feeRate,
-			hasWithdraw,
-			hasRunesDeposit,
-			hasRunesWithdraw,
-			assetsToWithdrawSize: runesToWithdraw.length,
+			stateOverride: options.stateOverride,
+			from: options.from,
+			multisigAddress: options.multisigAddress,
+			gasMultiplier,
 		});
 
-		logger.debug("Total gas: {totalGas}, totalCost: {totalCost}", {
-			totalGas,
-			totalCost,
-		});
-
-		const stateOverrideWithMinFees =
-			options.stateOverride ??
-			(await createStateOverride(
-				config,
-				client,
-				intentions,
-				satoshisToWei(totalCost),
-			));
-
-		logger.debug(
-			"Creating state override with minimum fees: {stateOverrideWithMinFees}",
-			{
-				stateOverrideWithMinFees,
-			},
-		);
-
-		// Here we ensure that transactions passes with minimum fees transferred
-		await estimateGasMulti(client as Client, {
-			transactions: evmTransactions,
-			stateOverride: stateOverrideWithMinFees,
-			account: evmAddress,
-		});
-
-		for (const [i, intention] of evmIntentions.entries()) {
-			if (intention.evmTransaction.gas !== undefined) {
-				continue;
-			}
-
-			intention.evmTransaction.gas = BigInt(
-				// Increase gas limit by 20% to account for potential fluctuations
-				Math.ceil(Number(gasLimits[i]) * 1.2),
-			);
-		}
-
-		logger.debug("Final EVM transactions with gas limits: {evmTransactions}", {
-			evmTransactions,
-		});
-	}
-
-	const totalGas = evmTransactions.reduce(
-		(acc, tx) => acc + (tx.gas ?? 0n),
-		0n,
-	);
-
-	const totalCost = calculateTransactionsCost(totalGas, {
-		feeRate,
-		hasWithdraw,
-		hasRunesDeposit,
-		hasRunesWithdraw,
-		assetsToWithdrawSize: runesToWithdraw.length,
-	});
-
-	const btcTransfer = intentions.reduce((acc, it) => {
+	const btcTransfer = estimatedIntentions.reduce((acc, it) => {
 		return acc + (it?.deposit?.satoshis ?? 0);
 	}, 0);
 
