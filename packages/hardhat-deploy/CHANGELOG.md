@@ -1,5 +1,16 @@
 # @midl/hardhat-deploy
 
+## 2.0.10
+
+### Patch Changes
+
+- 89aabce: fix: set maestro symphony as a default provider
+- Updated dependencies [89aabce]
+  - @midl/core@2.0.10
+  - @midl/executor@2.0.10
+  - @midl/node@2.0.10
+  - @midl/logger@2.0.10
+
 ## 2.0.9
 
 ### Patch Changes

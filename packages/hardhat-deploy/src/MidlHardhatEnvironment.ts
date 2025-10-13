@@ -154,6 +154,7 @@ export class MidlHardhatEnvironment {
 				}),
 			],
 			defaultPurpose: this.userConfig.defaultPurpose,
+			runesProvider: this.userConfig.runesProvider,
 			provider: this.userConfig.provider,
 		});
 
