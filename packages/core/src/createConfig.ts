@@ -5,7 +5,7 @@ import type { AddressPurpose } from "~/constants";
 import { type AbstractProvider, MempoolSpaceProvider } from "~/providers";
 import {
 	type AbstractRunesProvider,
-	RunehookProvider,
+	MaestroSymphonyProvider,
 } from "~/providers/runes";
 
 export type BitcoinNetwork = {
@@ -94,7 +94,7 @@ export const createConfig = (params: ConfigParams) => {
 				connectors: params.connectors,
 				network,
 				provider: params.provider ?? new MempoolSpaceProvider(),
-				runesProvider: params.runesProvider ?? new RunehookProvider(),
+				runesProvider: params.runesProvider ?? new MaestroSymphonyProvider(),
 			}),
 			{
 				name: persistStorageKey,

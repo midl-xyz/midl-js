@@ -1,5 +1,6 @@
 import type {
 	AbstractProvider,
+	AbstractRunesProvider,
 	AddressPurpose,
 	BitcoinNetwork,
 } from "@midl/core";
@@ -20,6 +21,7 @@ declare module "hardhat/types/config" {
 					network?: string | BitcoinNetwork;
 					hardhatNetwork?: string;
 					provider?: AbstractProvider;
+					runesProvider?: AbstractRunesProvider;
 					defaultPurpose?: AddressPurpose;
 				}
 			>;

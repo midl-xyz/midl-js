@@ -1,6 +1,6 @@
 {
 	"name": "@midl/react",
-	"version": "2.0.9",
+	"version": "2.0.10",
 	"license": "MIT",
 	"scripts": {
 		"build": "pnpm run clean && tspc --project tsconfig.esm.json && tspc --project tsconfig.cjs.json",

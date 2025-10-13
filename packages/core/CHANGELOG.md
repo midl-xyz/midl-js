@@ -1,5 +1,12 @@
 # @midl/core
 
+## 2.0.10
+
+### Patch Changes
+
+- 89aabce: fix: set maestro symphony as a default provider
+  - @midl/logger@2.0.10
+
 ## 2.0.9
 
 ### Patch Changes
