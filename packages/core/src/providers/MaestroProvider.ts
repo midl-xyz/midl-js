@@ -7,11 +7,20 @@ import type {
 	TransactionStatusResponse,
 	UTXO,
 } from "~/providers/AbstractProvider";
+import type {
+	AbstractRunesProvider,
+	RuneBalanceResponse,
+	RuneResponse,
+	RuneUTXO,
+	RunesResponse,
+} from "~/providers/runes";
 import type { paths } from "./scheme/maestro";
 
 type RPCUrlMap = Partial<Record<BitcoinNetwork["id"], string>>;
 
-export class MaestroProvider implements AbstractProvider {
+export class MaestroProvider
+	implements AbstractProvider, AbstractRunesProvider
+{
 	private readonly client: Client<paths>;
 
 	constructor(
@@ -52,6 +61,107 @@ export class MaestroProvider implements AbstractProvider {
 				}
 			},
 		});
+	}
+
+	async getRune(
+		network: BitcoinNetwork,
+		runeId: string,
+	): Promise<RuneResponse> {
+		const { data } = await this.client.GET("/assets/runes/{rune}", {
+			baseUrl: this.getApURL(network),
+			params: {
+				path: { rune: runeId },
+			},
+		});
+
+		if (!data?.data) {
+			throw new Error(`Rune with ID ${runeId} not found.`);
+		}
+
+		const {
+			id,
+			name,
+			spaced_name,
+			symbol,
+			divisibility,
+			terms,
+			etching_height,
+			etching_tx,
+			circulating_supply,
+			mints,
+			premine,
+		} = data.data;
+
+		return {
+			id,
+			name,
+			spaced_name,
+			divisibility,
+			symbol: symbol ?? "¤",
+			mint_terms: {
+				amount: terms.amount_per_mint ? BigInt(terms.amount_per_mint) : null,
+				cap: terms.mint_txs_cap ? BigInt(terms.mint_txs_cap) : null,
+				height_start: terms.start_height ? Number(terms.start_height) : null,
+				height_end: terms.end_height ? Number(terms.end_height) : null,
+				offset_start: terms.start_offset ? Number(terms.start_offset) : null,
+				offset_end: terms.end_offset ? Number(terms.end_offset) : null,
+			},
+			location: {
+				block_height: Number(etching_height),
+				tx_id: etching_tx,
+			},
+			supply: {
+				current: circulating_supply,
+				total_mints: mints.toString(),
+				premine: premine as string,
+			},
+		};
+	}
+
+	async getRuneBalance(
+		network: BitcoinNetwork,
+		address: string,
+		runeId: string,
+	): Promise<RuneBalanceResponse> {
+		const { data } = await this.client.GET(
+			"/addresses/{address}/runes/{rune}",
+			{
+				baseUrl: this.getApURL(network),
+				params: {
+					path: {
+						address,
+						rune: runeId,
+					},
+				},
+			},
+		);
+
+		if (!data?.data) {
+			return {
+				address,
+				balance: BigInt(0),
+			};
+		}
+
+		return {
+			address,
+			balance: BigInt(data.data[0].rune_amount),
+		};
+	}
+
+	getRunes(
+		network: BitcoinNetwork,
+		address: string,
+		params?: { limit?: number; offset?: number },
+	): Promise<RunesResponse> {
+		throw new Error("Method not implemented.");
+	}
+	getRuneUTXOs(
+		network: BitcoinNetwork,
+		address: string,
+		runeId: string,
+	): Promise<RuneUTXO[]> {
+		throw new Error("Method not implemented.");
 	}
 
 	async getUTXOs(network: BitcoinNetwork, address: string): Promise<UTXO[]> {
