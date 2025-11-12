@@ -1,5 +1,6 @@
 import type { BitcoinNetwork } from "~/createConfig";
 
+// TODO: Update types for supply and mint_terms fields.
 export type RuneResponse = {
 	/**
 	 * The rune ID
@@ -36,20 +37,20 @@ export type RuneResponse = {
 	};
 	supply?: {
 		current: string;
-		minted: string;
+		minted?: string;
 		total_mints: string;
-		mint_percentage: string;
-		mintable: boolean;
-		burned: string;
-		total_burns: string;
+		mint_percentage?: string;
+		mintable?: boolean;
+		burned?: string;
+		total_burns?: string;
 		premine: string;
 	};
 	location?: {
-		block_hash: string;
+		block_hash?: string;
 		block_height: number;
 		tx_id: string;
-		tx_index: number;
-		timestamp: number;
+		tx_index?: number;
+		timestamp?: number;
 	};
 };
 
