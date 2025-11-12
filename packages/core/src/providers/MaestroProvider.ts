@@ -149,13 +149,41 @@ export class MaestroProvider
 		};
 	}
 
-	getRunes(
+	async getRunes(
 		network: BitcoinNetwork,
 		address: string,
 		params?: { limit?: number; offset?: number },
 	): Promise<RunesResponse> {
-		throw new Error("Method not implemented.");
+		const { data } = await this.client.GET("/addresses/{address}/runes", {
+			baseUrl: this.getApURL(network),
+			params: {
+				path: {
+					address,
+				},
+			},
+		});
+
+		if (!data?.data) {
+			return {
+				limit: 0,
+				offset: 0,
+				total: 0,
+				results: [],
+			};
+		}
+
+		const results = Object.keys(data.data).map((runeId) => ({
+			runeId,
+		}));
+
+		return {
+			limit: 0,
+			offset: 0,
+			total: results.length,
+			results,
+		};
 	}
+
 	getRuneUTXOs(
 		network: BitcoinNetwork,
 		address: string,
