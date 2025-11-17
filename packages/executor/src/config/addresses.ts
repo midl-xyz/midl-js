@@ -1,4 +1,3 @@
-import deployment from "@midl/contracts/deployments/0.1.1/Executor.json";
 import {
 	type BitcoinNetwork,
 	mainnet,
@@ -7,7 +6,6 @@ import {
 	testnet,
 	testnet4,
 } from "@midl/core";
-import type { Address } from "viem";
 
 export const multisigAddress: Record<BitcoinNetwork["id"], string> = {
 	[testnet4.id]: "tb1qsjcsryftgwyh3e0z0mvc6vdjx9pl8cx8dxrdxm",
@@ -17,10 +15,14 @@ export const multisigAddress: Record<BitcoinNetwork["id"], string> = {
 	[mainnet.id]: "",
 };
 
-export const executorAddress: Record<BitcoinNetwork["id"], Address> = {
-	[regtest.id]: deployment.address as Address,
-	[signet.id]: deployment.address as Address,
-	[testnet.id]: deployment.address as Address,
-	[testnet4.id]: deployment.address as Address,
-	[mainnet.id]: deployment.address as Address,
-};
+export const SystemContracts = {
+	ValidatorRegistry: "0x0000000000000000000000000000000000001000",
+	Staking: "0x0000000000000000000000000000000000001001",
+	MidlToken: "0x0000000000000000000000000000000000001002",
+	Executor: "0x0000000000000000000000000000000000001003",
+	ExecutorL2: "0x0000000000000000000000000000000000001004",
+	SynthReservoir: "0x0000000000000000000000000000000000001005",
+	GlobalParams: "0x0000000000000000000000000000000000001006",
+	FeesDistributor: "0x0000000000000000000000000000000000001007",
+	Treasury: "0x0000000000000000000000000000000000001008",
+} as const;
