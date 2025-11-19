@@ -160,6 +160,9 @@ export class MaestroProvider
 				path: {
 					address,
 				},
+				query: {
+					include_info: true,
+				},
 			},
 		});
 
@@ -184,12 +187,41 @@ export class MaestroProvider
 		};
 	}
 
-	getRuneUTXOs(
+	async getRuneUTXOs(
 		network: BitcoinNetwork,
 		address: string,
 		runeId: string,
 	): Promise<RuneUTXO[]> {
-		throw new Error("Method not implemented.");
+		const { data } = await this.client.GET(
+			"/mempool/addresses/{address}/runes/utxos",
+			{
+				baseUrl: this.getApURL(network),
+				params: {
+					path: {
+						address,
+					},
+					query: {
+						rune: runeId,
+					},
+				},
+			},
+		);
+
+		if (!data?.data) {
+			return [];
+		}
+
+		return data.data.map((it) => ({
+			height: it.height,
+			address: address,
+			txid: it.txid,
+			vout: it.vout,
+			satoshis: Number.parseInt(it.satoshis, 10),
+			runes: it.runes.map((rune) => ({
+				runeid: rune.rune_id,
+				amount: BigInt(rune.amount),
+			})),
+		}));
 	}
 
 	async getUTXOs(network: BitcoinNetwork, address: string): Promise<UTXO[]> {
