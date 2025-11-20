@@ -20,7 +20,7 @@ export const getTSSAddress = async (config: Config, client: Client) => {
 
 	const p2trScriptPubKey = Buffer.from(`5120${data.slice(2)}`, "hex");
 	const witnessVersion = p2trScriptPubKey[0] - 0x50;
-	const witnessProgram = p2trScriptPubKey.slice(2);
+	const witnessProgram = Uint8Array.from(p2trScriptPubKey).slice(2);
 
 	return bitcoin.address.toBech32(
 		witnessProgram,
