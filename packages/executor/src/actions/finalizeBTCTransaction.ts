@@ -12,7 +12,8 @@ import {
 import type { Client, StateOverride } from "viem";
 import { estimateBTCTransaction } from "~/actions/estimateBTCTransaction";
 import { getBTCFeeRate } from "~/actions/getBTCFeeRate";
-import { LoggerNamespace, getLogger, multisigAddress } from "~/config";
+import { getTSSAddress } from "~/actions/getTSSAddress";
+import { LoggerNamespace, getLogger } from "~/config";
 import type { TransactionIntention } from "~/types";
 import { aggregateIntentionRunes } from "~/utils";
 
@@ -147,16 +148,18 @@ export const finalizeBTCTransaction = async (
 		return acc + (it?.deposit?.satoshis ?? 0);
 	}, 0);
 
+	const tssAddress = await getTSSAddress(config, client);
+
 	const transfers: EdictRuneParams["transfers"] = [
 		{
-			receiver: options.multisigAddress ?? multisigAddress[network.id],
+			receiver: options.multisigAddress ?? tssAddress,
 			amount: ensureMoreThanDust(Math.ceil(Number(btcFee) + btcTransfer)),
 		},
 	];
 
 	for (const rune of runesToDeposit) {
 		transfers.push({
-			receiver: options.multisigAddress ?? multisigAddress[network.id],
+			receiver: options.multisigAddress ?? tssAddress,
 			amount: rune.value,
 			runeId: rune.id,
 		});

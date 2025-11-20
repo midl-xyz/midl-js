@@ -7,14 +7,6 @@ import {
 	testnet4,
 } from "@midl/core";
 
-export const multisigAddress: Record<BitcoinNetwork["id"], string> = {
-	[testnet4.id]: "tb1qsjcsryftgwyh3e0z0mvc6vdjx9pl8cx8dxrdxm",
-	[testnet.id]: "tb1qsjcsryftgwyh3e0z0mvc6vdjx9pl8cx8dxrdxm",
-	[regtest.id]: "bcrt1q65a572l6n7vqqpqpvnrcxps8205fuzcfr0gmew",
-	[signet.id]: "",
-	[mainnet.id]: "",
-};
-
 export const SystemContracts = {
 	ValidatorRegistry: "0x0000000000000000000000000000000000001000",
 	Staking: "0x0000000000000000000000000000000000001001",

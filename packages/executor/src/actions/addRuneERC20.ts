@@ -1,7 +1,7 @@
 import { type Config, edictRune, getBlockNumber, getRune } from "@midl/core";
 import type { Client } from "viem";
 import { getBTCFeeRate } from "~/actions/getBTCFeeRate";
-import { multisigAddress } from "~/config";
+import { getTSSAddress } from "~/actions/getTSSAddress";
 import { calculateTransactionsCost } from "~/utils";
 
 /**
@@ -51,16 +51,18 @@ export const addRuneERC20 = async (
 		hasRunesDeposit: true,
 	});
 
+	const tssAddress = await getTSSAddress(config, client);
+
 	const tx = await edictRune(config, {
 		transfers: [
 			{
-				receiver: multisigAddress[network.id],
+				receiver: tssAddress,
 				amount: mintFee,
 			},
 			{
 				runeId,
 				amount: 1n,
-				receiver: multisigAddress[network.id],
+				receiver: tssAddress,
 			},
 		],
 		publish,
