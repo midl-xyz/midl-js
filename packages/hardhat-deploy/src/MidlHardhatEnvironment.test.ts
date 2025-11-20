@@ -1,4 +1,5 @@
 import { getBalance } from "@midl/core";
+import { getTSSAddress } from "@midl/executor";
 import { type Address, erc20Abi, getAddress } from "viem";
 import { getTransactionReceipt, readContract } from "viem/actions";
 import { describe, expect, it } from "vitest";
@@ -50,6 +51,9 @@ describe("MidlHardhatEnvironment", () => {
 			abi: erc20Abi,
 			address: RuneID.address,
 		});
+
+		// biome-ignore lint/style/noNonNullAssertion: <explanation>
+		console.log(getTSSAddress(midl.getConfig()!, await midl.getWalletClient()));
 
 		const runeId = RuneID.runeId;
 		const runeAddress = RuneID.address;
