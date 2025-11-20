@@ -44,7 +44,7 @@ export const addRuneERC20 = async (
 	// 	throw new Error("Confirmations must be at least 6");
 	// }
 
-	const feeRate = await getBTCFeeRate(config, client);
+	const feeRate = await getBTCFeeRate(client);
 
 	const mintFee = calculateTransactionsCost(0n, {
 		feeRate: Number(feeRate),

@@ -110,7 +110,7 @@ export const finalizeBTCTransaction = async (
 	const hasRunesWithdraw = runesToWithdraw.length > 0;
 	const hasRunesDeposit = runesToDeposit.length > 0;
 
-	const feeRate = customFeeRate ?? Number(await getBTCFeeRate(config, client));
+	const feeRate = customFeeRate ?? Number(await getBTCFeeRate(client));
 
 	logger.debug(
 		"Finalizing BTC transaction with fee rate: {feeRate}, hasWithdraw: {hasWithdraw}, hasRunesWithdraw: {hasRunesWithdraw}, hasRunesDeposit: {hasRunesDeposit}, runesToDeposit: {runesToDeposit}, runesToWithdraw: {runesToWithdraw}",
