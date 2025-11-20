@@ -18,16 +18,13 @@ export const getTSSAddress = async (config: Config, client: Client) => {
 		functionName: "getTSSAddress",
 	});
 
-	const xOnly = Buffer.from(data.slice(2), "hex");
+	const p2trScriptPubKey = Buffer.from(`5120${data.slice(2)}`, "hex");
+	const witnessVersion = p2trScriptPubKey[0] - 0x50;
+	const witnessProgram = p2trScriptPubKey.slice(2);
 
-	const { address } = bitcoin.payments.p2tr({
-		internalPubkey: xOnly,
-		network: bitcoin.networks[network.network],
-	});
-
-	if (!address) {
-		throw new Error("Failed to derive TSS address");
-	}
-
-	return address;
+	return bitcoin.address.toBech32(
+		witnessProgram,
+		witnessVersion,
+		network.network,
+	);
 };
