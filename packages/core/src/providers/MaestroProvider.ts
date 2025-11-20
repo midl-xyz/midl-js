@@ -14,6 +14,7 @@ import type {
 	RuneUTXO,
 	RunesResponse,
 } from "~/providers/runes";
+import type { components } from "~/providers/runes/scheme/maestro-symphony";
 import type { paths } from "./scheme/maestro";
 
 type RPCUrlMap = Partial<Record<BitcoinNetwork["id"], string>>;
@@ -175,9 +176,26 @@ export class MaestroProvider
 			};
 		}
 
-		const results = Object.keys(data.data).map((runeId) => ({
-			runeId,
-		}));
+		const response = data.data as unknown as Record<
+			string,
+			{
+				amount: string;
+				id: string;
+				info?: null | components["schemas"]["RuneInfo"];
+			}
+		>;
+
+		const results: RunesResponse["results"] = Object.keys(response).map(
+			(runeId) => ({
+				rune: {
+					id: response[runeId].id,
+					name: response[runeId].info?.name || "Unknown",
+					spaced_name: response[runeId].info?.spaced_name || "Unknown",
+				},
+				address,
+				balance: BigInt(response[runeId].amount),
+			}),
+		);
 
 		return {
 			limit: 0,

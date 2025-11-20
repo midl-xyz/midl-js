@@ -876,6 +876,27 @@ export interface paths {
 		patch?: never;
 		trace?: never;
 	};
+	"/mempool/transactions/send": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		/**
+		 * Transaction Propagator
+		 * @description Propagates a hex-encoded transaction to a globally distributed network of peers using Maestro's Global Mempool (MGM) system.
+		 *     Read more about [MGM](https://docs.gomaestro.org/bitcoin/mempool-monitoring-api/overview#global-mempool-infrastructure).
+		 */
+		post: operations["send_transaction"];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/mempool/transactions/{tx_hash}/metaprotocols": {
 		parameters: {
 			query?: never;
@@ -2552,8 +2573,10 @@ export interface components {
 			 */
 			weight_units: number;
 		};
-		/** @description For transactions within a block, these are the lowest, median and highest
-		 *     satoshis per virtual-byte values. */
+		/**
+		 * @description For transactions within a block, these are the lowest, median and highest
+		 *     satoshis per virtual-byte values.
+		 */
 		BlockSatsPerVb: {
 			/**
 			 * Format: int64
@@ -2749,9 +2772,11 @@ export interface components {
 			offset: number;
 		};
 		InscriptionByAddress: {
-			/** @description String representation of the inscription ID, whose first coordinate is the reveal
+			/**
+			 * @description String representation of the inscription ID, whose first coordinate is the reveal
 			 *     transaction hash, and the second coordinate is the index of inscription in the reveal
-			 *     transaction. */
+			 *     transaction.
+			 */
 			inscription_id: string;
 			/** @description Total number of satoshis in the UTxO containing the inscription. */
 			satoshis: string;
@@ -2781,8 +2806,10 @@ export interface components {
 		InscriptionInfo: {
 			/** @description Symbol of collection that the inscription belongs to. */
 			collection_symbol?: string | null;
-			/** @description Preview of inscription content body raw data. Max: 100 bytes.
-			 *     Supported types: "text/plain", "text/plain;charset=utf-8", "application/json". */
+			/**
+			 * @description Preview of inscription content body raw data. Max: 100 bytes.
+			 *     Supported types: "text/plain", "text/plain;charset=utf-8", "application/json".
+			 */
 			content_body_preview?: string | null;
 			/**
 			 * Format: int64
@@ -2797,9 +2824,11 @@ export interface components {
 			 */
 			created_at: number;
 			current_location: components["schemas"]["InscriptionLocation"];
-			/** @description String representation of the inscription ID, whose first coordinate is the reveal
+			/**
+			 * @description String representation of the inscription ID, whose first coordinate is the reveal
 			 *     transaction hash, and the second coordinate is the index of inscription in the reveal
-			 *     transaction. */
+			 *     transaction.
+			 */
 			inscription_id: string;
 			/**
 			 * Format: int64
@@ -3172,6 +3201,23 @@ export interface components {
 			terms: components["schemas"]["Terms"];
 			/** Format: int64 */
 			unique_holders: number;
+		};
+		RuneInfoBrief: {
+			/**
+			 * Format: int32
+			 * @description If no divisibility was specified, then this equals 0
+			 */
+			divisibility: number;
+			etching_cenotaph: boolean;
+			/** Format: int64 */
+			etching_height: number;
+			etching_tx: string;
+			id: string;
+			name: string;
+			premine?: string | null;
+			spaced_name: string;
+			symbol?: string | null;
+			terms: components["schemas"]["Terms"];
 		};
 		RuneUtxo: {
 			address?: string | null;
@@ -3828,6 +3874,14 @@ export interface components {
 			/** Format: int32 */
 			vout: number;
 		};
+		SendTransactionRequest: {
+			/** @description Hex-encoded raw transaction bytes */
+			tx_hex: string;
+		};
+		SendTransactionResponse: {
+			/** @description Transaction hash (present if success is true) */
+			txid?: string | null;
+		};
 		MempoolWalletPaginatedActivityByAddress: {
 			data: components["schemas"]["WalletActivityByAddress"][];
 			indexer_info: components["schemas"]["MempoolLastUpdated"];
@@ -4460,14 +4514,16 @@ export interface components {
 			 */
 			values?: components["schemas"]["google.protobuf.Value"][];
 		};
-		/** @description `Struct` represents a structured data value, consisting of fields
+		/**
+		 * @description `Struct` represents a structured data value, consisting of fields
 		 *      which map to dynamically typed values. In some languages, `Struct`
 		 *      might be supported by a native representation. For example, in
 		 *      scripting languages like JS a struct is represented as an
 		 *      object. The details of that representation are described together
 		 *      with the proto support for the language.
 		 *
-		 *      The JSON representation for `Struct` is JSON object. */
+		 *      The JSON representation for `Struct` is JSON object.
+		 */
 		"google.protobuf.Struct": {
 			[key: string]: components["schemas"]["google.protobuf.Value"];
 		};
@@ -4478,12 +4534,14 @@ export interface components {
 			/** value */
 			value?: components["schemas"]["google.protobuf.Value"];
 		};
-		/** @description `Value` represents a dynamically typed value which can be either
+		/**
+		 * @description `Value` represents a dynamically typed value which can be either
 		 *      null, a number, a string, a boolean, a recursive struct value, or a
 		 *      list of values. A producer of value is expected to set one of these
 		 *      variants. Absence of any variant indicates an error.
 		 *
-		 *      The JSON representation for `Value` is JSON value. */
+		 *      The JSON representation for `Value` is JSON value.
+		 */
 		"google.protobuf.Value":
 			| null
 			| number
@@ -4571,8 +4629,6 @@ export interface components {
 		 *     ```
 		 *     !(this.key in ['sender', 'receiver', 'sender_or_receiver', 'transaction_id']) || this.operator == '='
 		 *     ```
-		 *
-		 *
 		 */
 		"public.event_manager.v1.Filter": {
 			/**
@@ -4990,11 +5046,13 @@ export interface components {
 			data?: components["schemas"]["models.RuneRegistry"][];
 		};
 		"models.SupportedDexList": {
-			/** @example [
+			/**
+			 * @example [
 			 *       "all",
 			 *       "magiceden",
 			 *       "dotswap"
-			 *     ] */
+			 *     ]
+			 */
 			data?: string[];
 		};
 		"models.Trade": {
@@ -5132,10 +5190,12 @@ export interface components {
 			/** @description Hash of the next block, if available */
 			next_best?: string;
 		};
-		/** @example [
+		/**
+		 * @example [
 		 *       "5a7a9fe2c911c482c89a7ea1dbf35a7c9b68892ec5b2d92e93858a9f4a85b08e",
 		 *       "b1fea5241d34b276c3f8a5a934ae9e5e2bb23ecad1c7426ec1dfde3e07aa55a9"
-		 *     ] */
+		 *     ]
+		 */
 		BlockTxids: string[];
 		RbfTransaction: {
 			txid: string;
@@ -5373,7 +5433,8 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					/** @example {
+					/**
+					 * @example {
 					 *       "data": [
 					 *         {
 					 *           "amount": "4456732",
@@ -5395,7 +5456,8 @@ export interface operations {
 					 *         "block_height": 892719
 					 *       },
 					 *       "next_cursor": null
-					 *     } */
+					 *     }
+					 */
 					"application/json": components["schemas"]["PaginatedActivityByAddress"];
 				};
 			};
@@ -5443,13 +5505,15 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					/** @example {
+					/**
+					 * @example {
 					 *       "data": "695100",
 					 *       "last_updated": {
 					 *         "block_hash": "000000000000000000005075404edd6edc806976389a9f7e2ff71db1c2cf9b83",
 					 *         "block_height": 884991
 					 *       }
-					 *     } */
+					 *     }
+					 */
 					"application/json": components["schemas"]["TimestampedSatoshis"];
 				};
 			};
@@ -5510,7 +5574,8 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					/** @example {
+					/**
+					 * @example {
 					 *       "data": [
 					 *         {
 					 *           "confirmations": 932,
@@ -5542,7 +5607,8 @@ export interface operations {
 					 *         "block_height": 900834
 					 *       },
 					 *       "next_cursor": null
-					 *     } */
+					 *     }
+					 */
 					"application/json": components["schemas"]["PaginatedHistoricalSatBalanceByAddress"];
 				};
 			};
@@ -5590,7 +5656,8 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					/** @example {
+					/**
+					 * @example {
 					 *       "data": {
 					 *         "ABCD": {
 					 *           "available": "0.123",
@@ -5601,7 +5668,8 @@ export interface operations {
 					 *         "block_hash": "000000009ed3f5385c1807ca04630b9b2273398670726f93282fd41ba88dc6b8",
 					 *         "block_height": 2413542
 					 *       }
-					 *     } */
+					 *     }
+					 */
 					"application/json": components["schemas"]["TimestampedBrc20Quantities"];
 				};
 			};
@@ -5661,7 +5729,8 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					/** @example {
+					/**
+					 * @example {
 					 *       "data": [
 					 *         {
 					 *           "inscription_id": "1da6ca5f0c07634d3e233197997a21091f10907c942b2a8e77a4d77381ca96b8i0",
@@ -5680,7 +5749,8 @@ export interface operations {
 					 *         "block_height": 851921
 					 *       },
 					 *       "next_cursor": null
-					 *     } */
+					 *     }
+					 */
 					"application/json": components["schemas"]["PaginatedTransferInscriptionByAddress"];
 				};
 			};
@@ -5733,7 +5803,8 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					/** @example {
+					/**
+					 * @example {
 					 *       "data": [
 					 *         {
 					 *           "inscription_id": "f02da3d6bebab13d5d604be1ed73d9a9c677dadf6ca71bc5fff7d99cdead11b0i0",
@@ -5768,7 +5839,8 @@ export interface operations {
 					 *         "block_height": 866710
 					 *       },
 					 *       "next_cursor": null
-					 *     } */
+					 *     }
+					 */
 					"application/json": components["schemas"]["PaginatedInscriptionByAddress"];
 				};
 			};
@@ -5838,7 +5910,8 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					/** @example {
+					/**
+					 * @example {
 					 *       "data": [
 					 *         {
 					 *           "confirmations": 60911,
@@ -5896,7 +5969,8 @@ export interface operations {
 					 *         "block_height": 897627
 					 *       },
 					 *       "next_cursor": null
-					 *     } */
+					 *     }
+					 */
 					"application/json": components["schemas"]["PaginatedInscriptionActivityByAddress"];
 				};
 			};
@@ -5925,7 +5999,10 @@ export interface operations {
 	};
 	runes_by_address: {
 		parameters: {
-			query?: never;
+			query?: {
+				/** @description Include full rune information for each rune (default: false) */
+				include_info?: boolean | null;
+			};
 			header?: never;
 			path: {
 				/**
@@ -5944,16 +6021,38 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					/** @example {
+					/**
+					 * @example {
 					 *       "data": {
-					 *         "2584333:39": "100000.00",
-					 *         "2585186:140": "100000.000000000000"
+					 *         "840000:1": {
+					 *           "balance": "1111.00",
+					 *           "info": {
+					 *             "divisibility": 2,
+					 *             "etching_cenotaph": false,
+					 *             "etching_height": 840000,
+					 *             "etching_tx": "2bb85f4b004be6da54f766c17c1e855187327112c231ef2ff35ebad0ea67c69e",
+					 *             "id": "840000:1",
+					 *             "name": "ZZZZZFEHUZZZZZ",
+					 *             "premine": "110000000.00",
+					 *             "spaced_name": "Z•Z•Z•Z•Z•FEHU•Z•Z•Z•Z•Z",
+					 *             "symbol": "ᚠ",
+					 *             "terms": {
+					 *               "amount_per_mint": "1.00",
+					 *               "end_height": null,
+					 *               "end_offset": null,
+					 *               "mint_txs_cap": "1111111",
+					 *               "start_height": null,
+					 *               "start_offset": null
+					 *             }
+					 *           }
+					 *         }
 					 *       },
 					 *       "last_updated": {
 					 *         "block_hash": "0000000088bee3b517745636443c8f11aff45209449300a5d8461c336e467925",
 					 *         "block_height": 2815520
 					 *       }
-					 *     } */
+					 *     }
+					 */
 					"application/json": components["schemas"]["TimestampedRuneQuantities"];
 				};
 			};
@@ -6023,7 +6122,8 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					/** @example {
+					/**
+					 * @example {
 					 *       "data": [
 					 *         {
 					 *           "confirmations": 21684,
@@ -6076,7 +6176,8 @@ export interface operations {
 					 *         "block_height": 897627
 					 *       },
 					 *       "next_cursor": null
-					 *     } */
+					 *     }
+					 */
 					"application/json": components["schemas"]["PaginatedRuneActivityByAddress"];
 				};
 			};
@@ -6142,7 +6243,8 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					/** @example {
+					/**
+					 * @example {
 					 *       "data": [
 					 *         {
 					 *           "confirmations": 13636,
@@ -6241,7 +6343,8 @@ export interface operations {
 					 *         "block_height": 890589
 					 *       },
 					 *       "next_cursor": null
-					 *     } */
+					 *     }
+					 */
 					"application/json": components["schemas"]["PaginatedRuneUtxoByAddress"];
 				};
 			};
@@ -6305,7 +6408,8 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					/** @example {
+					/**
+					 * @example {
 					 *       "data": [
 					 *         {
 					 *           "confirmations": 13634,
@@ -6369,7 +6473,8 @@ export interface operations {
 					 *         "block_height": 890587
 					 *       },
 					 *       "next_cursor": null
-					 *     } */
+					 *     }
+					 */
 					"application/json": components["schemas"]["PaginatedDeprecatedRuneUtxoByAddress"];
 				};
 			};
@@ -6417,7 +6522,8 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					/** @example {
+					/**
+					 * @example {
 					 *       "data": {
 					 *         "runes": false,
 					 *         "sat_balance": "209258",
@@ -6433,7 +6539,8 @@ export interface operations {
 					 *         "block_hash": "000000000000000000017e71733448d2c8e2f4c08105d97f7c1868acb4acc7ba",
 					 *         "block_height": 903881
 					 *       }
-					 *     } */
+					 *     }
+					 */
 					"application/json": components["schemas"]["TimestampedAddressStatistics"];
 				};
 			};
@@ -6494,7 +6601,8 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					/** @example {
+					/**
+					 * @example {
 					 *       "data": [
 					 *         {
 					 *           "height": 5277680,
@@ -6514,7 +6622,8 @@ export interface operations {
 					 *         "block_height": 5277710
 					 *       },
 					 *       "next_cursor": "AAAAAABQh_JgAAlg2axFrzK36N15_YRShqxqvAEFvDndTWSe_VF1_DeAe60"
-					 *     } */
+					 *     }
+					 */
 					"application/json": components["schemas"]["PaginatedInvolvedTransaction"];
 				};
 			};
@@ -6581,7 +6690,8 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					/** @example {
+					/**
+					 * @example {
 					 *       "data": [
 					 *         {
 					 *           "address": "bc1phyrmjs2jm5c98tldke2ykp0h66lsx3wy0ey8ug2fjj5mxsn8ftqsa24un8",
@@ -6621,7 +6731,8 @@ export interface operations {
 					 *         "block_height": 2815520
 					 *       },
 					 *       "next_cursor": "AAAAAAAq9gxgU3m2iSrUAW0KesE5sSrO7HT9AYyIQarG3kIqqlsJEmNgAAAAAQ"
-					 *     } */
+					 *     }
+					 */
 					"application/json": components["schemas"]["PaginatedUtxo"];
 				};
 			};
@@ -6668,7 +6779,8 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					/** @example {
+					/**
+					 * @example {
 					 *       "data": [
 					 *         "aosi",
 					 *         "ap'q",
@@ -6679,7 +6791,8 @@ export interface operations {
 					 *         "block_height": 850368
 					 *       },
 					 *       "next_cursor": "BGZjdGI"
-					 *     } */
+					 *     }
+					 */
 					"application/json": components["schemas"]["PaginatedBrc20Ticker"];
 				};
 			};
@@ -6727,7 +6840,8 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					/** @example {
+					/**
+					 * @example {
 					 *       "data": {
 					 *         "deploy_inscription": "3d983a724310f511cfca0031ee2b980b474a0abe1e7e995b7e6d2873e2cbfd5fi0",
 					 *         "holders": 7,
@@ -6745,7 +6859,8 @@ export interface operations {
 					 *         "block_hash": "0000000000000000000214bfa0a73e1cc7663917a933bfb1c66a6613f88dabdd",
 					 *         "block_height": 851556
 					 *       }
-					 *     } */
+					 *     }
+					 */
 					"application/json": components["schemas"]["TimestampedBrc20Info"];
 				};
 			};
@@ -6798,7 +6913,8 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					/** @example {
+					/**
+					 * @example {
 					 *       "data": [
 					 *         {
 					 *           "address": "bc1q764zfcx3uw0dcvcdh7nnwm5fvsml0c2tgn942v",
@@ -6816,7 +6932,8 @@ export interface operations {
 					 *         "block_height": 850534
 					 *       },
 					 *       "next_cursor": "19FwuaejD9hE1R4ckTQKaqe0ecA"
-					 *     } */
+					 *     }
+					 */
 					"application/json": components["schemas"]["PaginatedBrc20Holder"];
 				};
 			};
@@ -6869,7 +6986,8 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					/** @example {
+					/**
+					 * @example {
 					 *       "data": [
 					 *         "85a4c2531f149cd8c69a34a9139cace0bdce99e906ee5ad5a4620cdef6adfc6ci0",
 					 *         "7d75fe5bea7f11823050d029d281a8b23e9660c5cc133ad3f8b36fef8c8329c0i0",
@@ -6887,7 +7005,8 @@ export interface operations {
 					 *         "block_height": 876644
 					 *       },
 					 *       "next_cursor": null
-					 *     } */
+					 *     }
+					 */
 					"application/json": components["schemas"]["PaginatedInscriptionsByCollectionSymbol"];
 				};
 			};
@@ -6935,7 +7054,8 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					/** @example {
+					/**
+					 * @example {
 					 *       "data": {
 					 *         "chain": "btc",
 					 *         "createdAt": "Sun, 17 Sep 2023 06:38:15 GMT",
@@ -6956,7 +7076,8 @@ export interface operations {
 					 *         "block_hash": "00000000000000000001998e2059bcbb25f76fd0ef39db8ddfc5c31c5ea95f1f",
 					 *         "block_height": 876644
 					 *       }
-					 *     } */
+					 *     }
+					 */
 					"application/json": components["schemas"]["TimestampedCollectionMetadataBySymbol"];
 				};
 			};
@@ -7004,7 +7125,8 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					/** @example {
+					/**
+					 * @example {
 					 *       "data": {
 					 *         "floorPrice": "0.05",
 					 *         "inscriptionNumberMax": "200000",
@@ -7020,7 +7142,8 @@ export interface operations {
 					 *         "block_hash": "00000000000000000001998e2059bcbb25f76fd0ef39db8ddfc5c31c5ea95f1f",
 					 *         "block_height": 876644
 					 *       }
-					 *     } */
+					 *     }
+					 */
 					"application/json": components["schemas"]["TimestampedCollectionStatsBySymbol"];
 				};
 			};
@@ -7068,7 +7191,8 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					/** @example {
+					/**
+					 * @example {
 					 *       "data": {
 					 *         "collection_symbol": "kikalepuppete",
 					 *         "content_body_preview": null,
@@ -7089,7 +7213,8 @@ export interface operations {
 					 *         "block_hash": "000000000000000000018ebea33e7361bc4059eb6ff35d0a80836717accfc4a9",
 					 *         "block_height": 888637
 					 *       }
-					 *     } */
+					 *     }
+					 */
 					"application/json": components["schemas"]["TimestampedInscriptionInfo"];
 				};
 			};
@@ -7144,7 +7269,8 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					/** @example {
+					/**
+					 * @example {
 					 *       "data": [
 					 *         {
 					 *           "from": {
@@ -7188,7 +7314,8 @@ export interface operations {
 					 *         "block_height": 839908
 					 *       },
 					 *       "next_cursor": null
-					 *     } */
+					 *     }
+					 */
 					"application/json": components["schemas"]["PaginatedTxByInscription"];
 				};
 			};
@@ -7236,7 +7363,8 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					/** @example {
+					/**
+					 * @example {
 					 *       "data": {
 					 *         "chain": "btc",
 					 *         "createdAt": "Fri, 26 May 2023 04:23:17 GMT",
@@ -7257,7 +7385,8 @@ export interface operations {
 					 *         "block_hash": "00000000000000000001998e2059bcbb25f76fd0ef39db8ddfc5c31c5ea95f1f",
 					 *         "block_height": 876644
 					 *       }
-					 *     } */
+					 *     }
+					 */
 					"application/json": components["schemas"]["TimestampedCollectionMetadataByInscription"];
 				};
 			};
@@ -7310,7 +7439,8 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					/** @example {
+					/**
+					 * @example {
 					 *       "data": {
 					 *         "content_body_page": "AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8gISIjJCUmJygpKissLS4vMDEyMzQ1Njc4OTo7PD0+P0BBQkNERUZHSElKS0xNTk9QUVJTVFVWV1hZWltcXV5fYGFiYw==",
 					 *         "remaining_bytes": 2935,
@@ -7321,7 +7451,8 @@ export interface operations {
 					 *         "block_height": 866710
 					 *       },
 					 *       "next_cursor": "AAAAAAAAAGQ"
-					 *     } */
+					 *     }
+					 */
 					"application/json": components["schemas"]["PaginatedContentBody"];
 				};
 			};
@@ -7369,7 +7500,8 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					/** @example {
+					/**
+					 * @example {
 					 *       "data": {
 					 *         "chain": "btc",
 					 *         "collection": {
@@ -7435,7 +7567,8 @@ export interface operations {
 					 *         "block_hash": "00000000000000000001998e2059bcbb25f76fd0ef39db8ddfc5c31c5ea95f1f",
 					 *         "block_height": 876644
 					 *       }
-					 *     } */
+					 *     }
+					 */
 					"application/json": components["schemas"]["TimestampedTokenMetadataByInscription"];
 				};
 			};
@@ -7482,7 +7615,8 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					/** @example {
+					/**
+					 * @example {
 					 *       "data": [
 					 *         {
 					 *           "id": "840000:1",
@@ -7502,7 +7636,8 @@ export interface operations {
 					 *         "block_height": 840002
 					 *       },
 					 *       "next_cursor": "AAAAAAAM0UAAAAAD"
-					 *     } */
+					 *     }
+					 */
 					"application/json": components["schemas"]["PaginatedRuneIdAndName"];
 				};
 			};
@@ -7550,8 +7685,10 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					/** @example {
+					/**
+					 * @example {
 					 *       "data": {
+					 *         "circulating_supply": "5226.00",
 					 *         "divisibility": 2,
 					 *         "etching_cenotaph": false,
 					 *         "etching_height": 840000,
@@ -7577,7 +7714,8 @@ export interface operations {
 					 *         "block_hash": "00000000000000000001332b3017e2b72bdd063145bbf808b3c1722a0fd60859",
 					 *         "block_height": 840051
 					 *       }
-					 *     } */
+					 *     }
+					 */
 					"application/json": components["schemas"]["TimestampedRuneInfo"];
 				};
 			};
@@ -7636,7 +7774,8 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					/** @example {
+					/**
+					 * @example {
 					 *       "data": [
 					 *         {
 					 *           "burned": null,
@@ -7747,7 +7886,8 @@ export interface operations {
 					 *         "block_height": 840470
 					 *       },
 					 *       "next_cursor": "AAAAAAAM0bJgAQFgKBhIMEgJYluZ8q4QTnQ8srIp2wkXI4nOzb4UigPpjDU"
-					 *     } */
+					 *     }
+					 */
 					"application/json": components["schemas"]["PaginatedTxsByRune"];
 				};
 			};
@@ -7800,7 +7940,8 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					/** @example {
+					/**
+					 * @example {
 					 *       "data": [
 					 *         {
 					 *           "address": "bc1q764zfcx3uw0dcvcdh7nnwm5fvsml0c2tgn942v",
@@ -7818,7 +7959,8 @@ export interface operations {
 					 *         "block_height": 850534
 					 *       },
 					 *       "next_cursor": "19FwuaejD9hE1R4ckTQKaqe0ecA"
-					 *     } */
+					 *     }
+					 */
 					"application/json": components["schemas"]["PaginatedRuneHolder"];
 				};
 			};
@@ -7877,7 +8019,8 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					/** @example {
+					/**
+					 * @example {
 					 *       "data": [
 					 *         {
 					 *           "address": "bc1ql8k89mfzqwjaqnq0y9uxummllp6v92fkykkv78",
@@ -7905,7 +8048,8 @@ export interface operations {
 					 *         "block_height": 840051
 					 *       },
 					 *       "next_cursor": "AAAAAAAM0UFggP18Oo9en7nfd3f2_svMf7VolEuorRu9XdQr77Z4I0VgAAAAAA"
-					 *     } */
+					 *     }
+					 */
 					"application/json": components["schemas"]["PaginatedRuneUtxo"];
 				};
 			};
@@ -7956,7 +8100,8 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					/** @example {
+					/**
+					 * @example {
 					 *       "data": {
 					 *         "coinbase_tag": "A8tlDQgvVmlhQlRDLyz6vm1tPXaDOuJgXZs6zuF9J7o+V55Fu/UWyF9S+hZG5d/z+c8QAAAAAAAAABDThC4BY8HxNM7fc9SQsQ8AAAAAAA==",
 					 *         "hash": "000000000000000000004fe9dc835b41f2da749287c4d1fca9055d83b2e06fa4",
@@ -7979,7 +8124,8 @@ export interface operations {
 					 *         "block_hash": "00000000000000000002467d678b845978ef175b424cff2985860bb156280c53",
 					 *         "block_height": 878064
 					 *       }
-					 *     } */
+					 *     }
+					 */
 					"application/json": components["schemas"]["TimestampedBlock"];
 				};
 			};
@@ -8032,7 +8178,8 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					/** @example {
+					/**
+					 * @example {
 					 *       "data": [
 					 *         {
 					 *           "from": {
@@ -8072,7 +8219,8 @@ export interface operations {
 					 *         "block_height": 811063
 					 *       },
 					 *       "next_cursor": "ARxgAQE"
-					 *     } */
+					 *     }
+					 */
 					"application/json": components["schemas"]["PaginatedInscriptionActivityByBlock"];
 				};
 			};
@@ -8125,7 +8273,8 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					/** @example {
+					/**
+					 * @example {
 					 *       "data": [
 					 *         {
 					 *           "fees": "0",
@@ -8225,7 +8374,8 @@ export interface operations {
 					 *         "block_height": 878055
 					 *       },
 					 *       "next_cursor": "AQE"
-					 *     } */
+					 *     }
+					 */
 					"application/json": components["schemas"]["PaginatedTxsByBlock"];
 				};
 			};
@@ -8273,7 +8423,8 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					/** @example {
+					/**
+					 * @example {
 					 *       "data": {
 					 *         "block_hash": "0000000000000000000224d324bbb5df0e74e202d9ccf752d76341046fab3ec0",
 					 *         "confirmations": 20035,
@@ -8330,7 +8481,8 @@ export interface operations {
 					 *         "block_hash": "00000000000000000000c0ab8525c3e1839e991ff6e06665d206370133ca2c96",
 					 *         "block_height": 875448
 					 *       }
-					 *     } */
+					 *     }
+					 */
 					"application/json": components["schemas"]["TimestampedTxInfo"];
 				};
 			};
@@ -8383,7 +8535,8 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					/** @example {
+					/**
+					 * @example {
 					 *       "data": [
 					 *         {
 					 *           "from": {
@@ -8421,7 +8574,8 @@ export interface operations {
 					 *         "block_height": 811063
 					 *       },
 					 *       "next_cursor": "AAAAAAAAAAI"
-					 *     } */
+					 *     }
+					 */
 					"application/json": components["schemas"]["PaginatedInscriptionActivityByTx"];
 				};
 			};
@@ -8469,7 +8623,8 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					/** @example {
+					/**
+					 * @example {
 					 *       "data": {
 					 *         "block_hash": "000000000000000000011c58d06536d2c1453a4742274efc2d4456921f027e98",
 					 *         "confirmations": 95,
@@ -8572,7 +8727,8 @@ export interface operations {
 					 *         "block_hash": "00000000000000000001676a1898b7804be18303e68e8ceacc00c713011b0ef4",
 					 *         "block_height": 866902
 					 *       }
-					 *     } */
+					 *     }
+					 */
 					"application/json": components["schemas"]["TimestampedTxInfoMetaprotocols"];
 				};
 			};
@@ -8625,7 +8781,8 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					/** @example {
+					/**
+					 * @example {
 					 *       "data": {
 					 *         "address": "3G7gSaxPY7BhbEASd2pnZY5cg7uEQMQvd8",
 					 *         "inscriptions": [],
@@ -8643,7 +8800,8 @@ export interface operations {
 					 *         "block_hash": "00000000000000000000f2e6c4af3271ca47435d5178eca0bd6d86612d96d4b3",
 					 *         "block_height": 884469
 					 *       }
-					 *     } */
+					 *     }
+					 */
 					"application/json": components["schemas"]["TimestampedTxOutMetaprotocols"];
 				};
 			};
@@ -8691,7 +8849,8 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					/** @example {
+					/**
+					 * @example {
 					 *       "data": "695100",
 					 *       "indexer_info": {
 					 *         "chain_tip": {
@@ -8710,7 +8869,8 @@ export interface operations {
 					 *         ],
 					 *         "mempool_timestamp": "2025-01-06 16:43:32"
 					 *       }
-					 *     } */
+					 *     }
+					 */
 					"application/json": components["schemas"]["MempoolTimestampedSatoshis"];
 				};
 			};
@@ -8742,6 +8902,8 @@ export interface operations {
 			query?: {
 				/** @description Limit the number of estimated mempool blocks to be reflected in the data (default: as many as available) */
 				mempool_blocks_limit?: number | null;
+				/** @description Include full rune information for each rune (default: false) */
+				include_info?: boolean | null;
 			};
 			header?: never;
 			path: {
@@ -8761,9 +8923,31 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					/** @example {
+					/**
+					 * @example {
 					 *       "data": {
-					 *         "867138:1861": "230000"
+					 *         "840000:1": {
+					 *           "balance": "1111.00",
+					 *           "info": {
+					 *             "divisibility": 2,
+					 *             "etching_cenotaph": false,
+					 *             "etching_height": 840000,
+					 *             "etching_tx": "2bb85f4b004be6da54f766c17c1e855187327112c231ef2ff35ebad0ea67c69e",
+					 *             "id": "840000:1",
+					 *             "name": "ZZZZZFEHUZZZZZ",
+					 *             "premine": "110000000.00",
+					 *             "spaced_name": "Z•Z•Z•Z•Z•FEHU•Z•Z•Z•Z•Z",
+					 *             "symbol": "ᚠ",
+					 *             "terms": {
+					 *               "amount_per_mint": "1.00",
+					 *               "end_height": null,
+					 *               "end_offset": null,
+					 *               "mint_txs_cap": "1111111",
+					 *               "start_height": null,
+					 *               "start_offset": null
+					 *             }
+					 *           }
+					 *         }
 					 *       },
 					 *       "indexer_info": {
 					 *         "chain_tip": {
@@ -8782,7 +8966,8 @@ export interface operations {
 					 *         ],
 					 *         "mempool_timestamp": "2025-01-06 16:43:32"
 					 *       }
-					 *     } */
+					 *     }
+					 */
 					"application/json": components["schemas"]["MempoolTimestampedRuneQuantities"];
 				};
 			};
@@ -8848,7 +9033,8 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					/** @example {
+					/**
+					 * @example {
 					 *       "data": [
 					 *         {
 					 *           "confirmations": 20674,
@@ -8908,7 +9094,8 @@ export interface operations {
 					 *         "mempool_timestamp": "2025-05-21 00:47:53"
 					 *       },
 					 *       "next_cursor": null
-					 *     } */
+					 *     }
+					 */
 					"application/json": components["schemas"]["MempoolPaginatedRuneUtxoByAddress"];
 				};
 			};
@@ -8977,7 +9164,8 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					/** @example {
+					/**
+					 * @example {
 					 *       "data": [
 					 *         {
 					 *           "address": "bc1pkh05juaxqc3d388klrjq8msszzzfr33nnn5kt2na00jja3mue89q5wxvew",
@@ -9035,7 +9223,8 @@ export interface operations {
 					 *         "mempool_timestamp": "2025-01-06 16:43:32"
 					 *       },
 					 *       "next_cursor": null
-					 *     } */
+					 *     }
+					 */
 					"application/json": components["schemas"]["MempoolPaginatedUtxo"];
 				};
 			};
@@ -9088,7 +9277,8 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					/** @example {
+					/**
+					 * @example {
 					 *       "data": [
 					 *         {
 					 *           "address": "bc1q764zfcx3uw0dcvcdh7nnwm5fvsml0c2tgn942v",
@@ -9119,7 +9309,8 @@ export interface operations {
 					 *         "mempool_timestamp": "2025-01-06 16:43:32"
 					 *       },
 					 *       "next_cursor": null
-					 *     } */
+					 *     }
+					 */
 					"application/json": components["schemas"]["MempoolPaginatedRuneHolder"];
 				};
 			};
@@ -9161,7 +9352,8 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					/** @example {
+					/**
+					 * @example {
 					 *       "data": [
 					 *         {
 					 *           "block_height": 874585,
@@ -9189,7 +9381,8 @@ export interface operations {
 					 *         ],
 					 *         "mempool_timestamp": "2025-01-06 16:43:32"
 					 *       }
-					 *     } */
+					 *     }
+					 */
 					"application/json": components["schemas"]["MempoolTimestampedFeeRates"];
 				};
 			};
@@ -9202,6 +9395,44 @@ export interface operations {
 			};
 			/** @description Requested entity not found on-chain */
 			404: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+			/** @description Internal server error */
+			500: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+		};
+	};
+	send_transaction: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": components["schemas"]["SendTransactionRequest"];
+			};
+		};
+		responses: {
+			/** @description Transaction sent successfully */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["SendTransactionResponse"];
+				};
+			};
+			/** @description Malformed query parameters */
+			400: {
 				headers: {
 					[name: string]: unknown;
 				};
@@ -9237,7 +9468,8 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					/** @example {
+					/**
+					 * @example {
 					 *       "data": {
 					 *         "fees": "508",
 					 *         "height": 900962,
@@ -9326,7 +9558,8 @@ export interface operations {
 					 *         ],
 					 *         "mempool_timestamp": "2025-06-12 17:27:29"
 					 *       }
-					 *     } */
+					 *     }
+					 */
 					"application/json": components["schemas"]["MempoolTimestampedTxInfoMetaprotocols"];
 				};
 			};
@@ -9379,7 +9612,8 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					/** @example {
+					/**
+					 * @example {
 					 *       "data": {
 					 *         "address": "bc1qr46dacxy28zz5apsjrvs5jdgvs5sdcf2ed4tvl",
 					 *         "inscriptions": [],
@@ -9405,7 +9639,8 @@ export interface operations {
 					 *         ],
 					 *         "mempool_timestamp": "2025-05-23 11:43:08"
 					 *       }
-					 *     } */
+					 *     }
+					 */
 					"application/json": components["schemas"]["MempoolTimestampedTxOutMetaprotocols"];
 				};
 			};
@@ -9470,7 +9705,8 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					/** @example {
+					/**
+					 * @example {
 					 *       "data": [
 					 *         {
 					 *           "confirmations": 1,
@@ -9502,7 +9738,8 @@ export interface operations {
 					 *         "mempool_timestamp": "2025-06-19 19:57:37"
 					 *       },
 					 *       "next_cursor": null
-					 *     } */
+					 *     }
+					 */
 					"application/json": components["schemas"]["MempoolWalletPaginatedActivityByAddress"];
 				};
 			};
@@ -9563,7 +9800,8 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					/** @example {
+					/**
+					 * @example {
 					 *       "data": [
 					 *         {
 					 *           "confirmations": 53,
@@ -9634,7 +9872,8 @@ export interface operations {
 					 *         "mempool_timestamp": null
 					 *       },
 					 *       "next_cursor": null
-					 *     } */
+					 *     }
+					 */
 					"application/json": components["schemas"]["MempoolWalletPaginatedActivityByAddressWithMetaprotocols"];
 				};
 			};
@@ -9695,7 +9934,8 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					/** @example {
+					/**
+					 * @example {
 					 *       "data": [
 					 *         {
 					 *           "confirmations": 932,
@@ -9727,7 +9967,8 @@ export interface operations {
 					 *         "block_height": 900834
 					 *       },
 					 *       "next_cursor": null
-					 *     } */
+					 *     }
+					 */
 					"application/json": components["schemas"]["PaginatedHistoricalSatBalanceByAddress"];
 				};
 			};
@@ -9799,7 +10040,8 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					/** @example {
+					/**
+					 * @example {
 					 *       "data": [
 					 *         {
 					 *           "confirmations": 0,
@@ -9876,7 +10118,8 @@ export interface operations {
 					 *         "mempool_timestamp": "2025-06-18 16:28:43"
 					 *       },
 					 *       "next_cursor": "Aw3ClAEBkT6kAe5S87KgWU2DFht0nC4phXeX1PgxfPgRDw5ztgk"
-					 *     } */
+					 *     }
+					 */
 					"application/json": components["schemas"]["MempoolWalletPaginatedInscriptionActivityByAddress"];
 				};
 			};
@@ -9948,7 +10191,8 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					/** @example {
+					/**
+					 * @example {
 					 *       "data": [
 					 *         {
 					 *           "confirmations": 0,
@@ -9987,7 +10231,8 @@ export interface operations {
 					 *         "mempool_timestamp": "2025-06-17 21:38:09"
 					 *       },
 					 *       "next_cursor": "Aw3CKgEl0U1Epkzt4JxiCDSx2xCEJP8sdn5c85h6BlPGji-qZCI"
-					 *     } */
+					 *     }
+					 */
 					"application/json": components["schemas"]["MempoolWalletPaginatedRuneActivityByAddress"];
 				};
 			};
@@ -10035,7 +10280,8 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					/** @example {
+					/**
+					 * @example {
 					 *       "data": {
 					 *         "pending": {
 					 *           "inputs": 1,
@@ -10075,7 +10321,8 @@ export interface operations {
 					 *         ],
 					 *         "mempool_timestamp": "2025-07-04 15:26:13"
 					 *       }
-					 *     } */
+					 *     }
+					 */
 					"application/json": components["schemas"]["MempoolWalletTimestampedAddressStatistics"];
 				};
 			};
