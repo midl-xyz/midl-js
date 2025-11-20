@@ -1,5 +1,14 @@
 # @midl/executor-react
 
+## 2.0.11
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl/core@2.0.11
+  - @midl/executor@2.0.11
+  - @midl/react@2.0.11
+
 ## 2.0.10
 
 ### Patch Changes
