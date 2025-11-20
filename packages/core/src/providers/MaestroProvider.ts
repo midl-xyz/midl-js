@@ -14,8 +14,7 @@ import type {
 	RuneUTXO,
 	RunesResponse,
 } from "~/providers/runes";
-import type { components } from "~/providers/runes/scheme/maestro-symphony";
-import type { paths } from "./scheme/maestro";
+import type { components, paths } from "./scheme/maestro";
 
 type RPCUrlMap = Partial<Record<BitcoinNetwork["id"], string>>;
 
@@ -181,7 +180,7 @@ export class MaestroProvider
 			{
 				amount: string;
 				id: string;
-				info?: null | components["schemas"]["RuneInfo"];
+				info?: null | components["schemas"]["RuneInfoBrief"];
 			}
 		>;
 

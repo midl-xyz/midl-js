@@ -1,5 +1,12 @@
 # @midl/core
 
+## 2.0.11
+
+### Patch Changes
+
+- feat: support runes for maestro provider
+  - @midl/logger@2.0.11
+
 ## 2.0.10
 
 ### Patch Changes
