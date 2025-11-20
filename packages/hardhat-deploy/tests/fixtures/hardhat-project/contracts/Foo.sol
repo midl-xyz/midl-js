@@ -1,6 +1,8 @@
 // "SPDX-License-Identifier: UNLICENSED
 
 contract Foo {
+    
+
     struct InitReserveInput {
         address aTokenImpl;
         address stableDebtTokenImpl;
@@ -18,6 +20,8 @@ contract Foo {
         string stableDebtTokenSymbol;
         bytes params;
     }
+
+    constructor(uint256 _randomArg) {}
 
     function initReserves(InitReserveInput[] calldata input) external {}
 }

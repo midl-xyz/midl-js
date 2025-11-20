@@ -195,7 +195,7 @@ describe("MidlHardhatEnvironment", () => {
 		await midl.execute();
 	});
 
-	it.skip("deploys Foo", async () => {
+	it("deploys Foo", async () => {
 		const {
 			hre: { midl },
 		} = globalThis;
@@ -209,7 +209,20 @@ describe("MidlHardhatEnvironment", () => {
 		console.log(midl.getAccount().address);
 		console.log((await midl.getWalletClient()).transport);
 
-		await midl.deploy("Foo", { args: [] });
+		await midl.deploy(
+			"Foo",
+			{
+				args: [
+					// random uint256 constructor arg
+					Number(Date.now()),
+				],
+			},
+			{
+				deposit: {
+					satoshis: Math.floor(10000 + Math.random() * 10000),
+				},
+			},
+		);
 		await midl.execute();
 
 		await midl.initialize();

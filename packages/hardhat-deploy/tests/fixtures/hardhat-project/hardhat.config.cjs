@@ -7,7 +7,7 @@ require("hardhat-deploy");
 module.exports = {
 	solidity: "0.8.28",
 	midl: {
-		path: "deployments",
+		path: `deployments/${Date.now()}`,
 		networks: {
 			default: {
 				mnemonic:
