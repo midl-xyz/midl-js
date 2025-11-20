@@ -25,6 +25,6 @@ export const getTSSAddress = async (config: Config, client: Client) => {
 	return bitcoin.address.toBech32(
 		witnessProgram,
 		witnessVersion,
-		network.network,
+		bitcoin.networks[network.network].bech32,
 	);
 };
