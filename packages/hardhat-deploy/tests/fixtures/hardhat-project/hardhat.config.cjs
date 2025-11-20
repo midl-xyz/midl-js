@@ -1,3 +1,5 @@
+const { MaestroSymphonyProvider, MempoolSpaceProvider } = require("@midl/core");
+
 require("../../../dist/cjs/index");
 require("hardhat-deploy");
 
@@ -6,7 +8,6 @@ module.exports = {
 	solidity: "0.8.28",
 	midl: {
 		path: "deployments",
-
 		networks: {
 			default: {
 				mnemonic:
@@ -15,16 +16,22 @@ module.exports = {
 				btcConfirmationsRequired: 1,
 				hardhatNetwork: "default",
 				network: {
-					explorerUrl: "https://mempool.regtest.midl.xyz",
+					explorerUrl: "https://mempool.staging.midl.xyz",
 					id: "regtest",
 					network: "regtest",
 				},
+				runesProvider: new MaestroSymphonyProvider({
+					regtest: "https://runes.staging.midl.xyz",
+				}),
+				provider: new MempoolSpaceProvider({
+					regtest: "https://mempool.staging.midl.xyz",
+				}),
 			},
 		},
 	},
 	networks: {
 		default: {
-			url: "https://rpc.regtest.midl.xyz",
+			url: "https://rpc.staging.midl.xyz",
 			chainId: 777,
 		},
 	},

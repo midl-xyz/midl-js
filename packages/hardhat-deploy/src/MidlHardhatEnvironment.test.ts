@@ -1,3 +1,4 @@
+import { getBalance } from "@midl/core";
 import { type Address, erc20Abi, getAddress } from "viem";
 import { getTransactionReceipt, readContract } from "viem/actions";
 import { describe, expect, it } from "vitest";
@@ -199,6 +200,14 @@ describe("MidlHardhatEnvironment", () => {
 			hre: { midl },
 		} = globalThis;
 		await midl.initialize();
+
+		// biome-ignore lint/style/noNonNullAssertion: <explanation>
+		const config = midl.getConfig()!;
+
+		console.log(await getBalance(config, midl.getAccount().address));
+		console.log("EVM Address:", midl.getEVMAddress());
+		console.log(midl.getAccount().address);
+		console.log((await midl.getWalletClient()).transport);
 
 		await midl.deploy("Foo", { args: [] });
 		await midl.execute();
