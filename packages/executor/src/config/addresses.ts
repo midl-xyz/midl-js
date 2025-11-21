@@ -1,12 +1,3 @@
-import {
-	type BitcoinNetwork,
-	mainnet,
-	regtest,
-	signet,
-	testnet,
-	testnet4,
-} from "@midl/core";
-
 export const SystemContracts = {
 	ValidatorRegistry: "0x0000000000000000000000000000000000001000",
 	Staking: "0x0000000000000000000000000000000000001001",
