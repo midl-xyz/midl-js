@@ -2,8 +2,10 @@ import { parseUnits } from "viem";
 import { GAS_PRICE } from "~/config";
 
 export const ONE_SATOSHI = parseUnits("1", 10);
-export const KEYGEN_TX_SIZE = 15n;
+export const KEYGEN_TX_SIZE = 11n;
+export const BTC_TX_MIN_OUTGOING_BYTES = 363n;
 export const RUNES_MAGIC_VALUE = 546n;
+export const BTC_TX_INPUT_VBYTES = 58n;
 
 const DEPOSIT_BTC = 1 << 0;
 const DEPOSIT_RUNES = 1 << 1;
@@ -67,7 +69,9 @@ export const calculateTransactionsCost = (
 	const fees =
 		(GAS_PRICE * totalGas) / ONE_SATOSHI +
 		(KEYGEN_TX_SIZE +
+			BTC_TX_MIN_OUTGOING_BYTES +
 			scriptSize +
+			(assetsToWithdrawSize > 0 ? BTC_TX_INPUT_VBYTES : 0n) +
 			BigInt(assetsToWithdrawSize) * RUNES_MAGIC_VALUE) *
 			BigInt(feeRate);
 

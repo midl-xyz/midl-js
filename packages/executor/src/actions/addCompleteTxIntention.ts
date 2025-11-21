@@ -1,7 +1,6 @@
 import { AddressPurpose, AddressType, type Config } from "@midl/core";
 import * as bitcoin from "bitcoinjs-lib";
 import {
-	type Address,
 	encodeFunctionData,
 	maxUint256,
 	padBytes,
@@ -11,7 +10,7 @@ import {
 } from "viem";
 import { getPublicKey } from "~/actions";
 import { addTxIntention } from "~/actions/addTxIntention";
-import { executorAddress } from "~/config";
+import { SystemContracts } from "~/config";
 import { executorAbi } from "~/contracts/abi";
 import type { TransactionIntention, Withdrawal } from "~/types";
 import { satoshisToWei } from "~/utils";
@@ -109,7 +108,7 @@ export const addCompleteTxIntention = async (
 	return addTxIntention(config, {
 		withdraw,
 		evmTransaction: {
-			to: executorAddress[network.id] as Address,
+			to: SystemContracts.Executor,
 			// We set the gas limit to a high value to ensure the transaction goes through
 			gas: COMPLETE_TX_GAS,
 			value: satoshisToWei(satoshisToWithdraw),

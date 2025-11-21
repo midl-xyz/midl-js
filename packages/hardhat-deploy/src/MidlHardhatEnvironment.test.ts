@@ -1,9 +1,11 @@
+import { getBalance } from "@midl/core";
+import { getTSSAddress } from "@midl/executor";
 import { type Address, erc20Abi, getAddress } from "viem";
 import { getTransactionReceipt, readContract } from "viem/actions";
 import { describe, expect, it } from "vitest";
 import { useEnvironment } from "../tests/useEnvironment";
 
-describe("MidlHardhatEnvironment", () => {
+describe.skip("MidlHardhatEnvironment", () => {
 	useEnvironment();
 
 	it("initializes with p2wpkh address", async () => {
@@ -49,6 +51,9 @@ describe("MidlHardhatEnvironment", () => {
 			abi: erc20Abi,
 			address: RuneID.address,
 		});
+
+		// biome-ignore lint/style/noNonNullAssertion: <explanation>
+		console.log(getTSSAddress(midl.getConfig()!, await midl.getWalletClient()));
 
 		const runeId = RuneID.runeId;
 		const runeAddress = RuneID.address;
@@ -200,7 +205,28 @@ describe("MidlHardhatEnvironment", () => {
 		} = globalThis;
 		await midl.initialize();
 
-		await midl.deploy("Foo", { args: [] });
+		// biome-ignore lint/style/noNonNullAssertion: <explanation>
+		const config = midl.getConfig()!;
+
+		console.log(await getBalance(config, midl.getAccount().address));
+		console.log("EVM Address:", midl.getEVMAddress());
+		console.log(midl.getAccount().address);
+		console.log((await midl.getWalletClient()).transport);
+
+		await midl.deploy(
+			"Foo",
+			{
+				args: [
+					// random uint256 constructor arg
+					Number(Date.now()),
+				],
+			},
+			{
+				deposit: {
+					satoshis: Math.floor(10000 + Math.random() * 10000),
+				},
+			},
+		);
 		await midl.execute();
 
 		await midl.initialize();

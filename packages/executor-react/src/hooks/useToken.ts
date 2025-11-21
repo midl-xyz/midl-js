@@ -48,12 +48,11 @@ export const useToken = (
 	address: Address,
 	{ query, config: customConfig }: UseERC20Params = {},
 ) => {
-	const { data: bytes32RuneId, ...bytes32State } = useReadContract({
+	const { data, ...bytes32State } = useReadContract({
 		abi: executorAbi,
 		functionName: "getRuneIdByAssetAddress",
 		// TODO: address depends on the network
 		address: deployment.address as `0x${string}`,
-		contractType: 1,
 		args: [address],
 		query: {
 			enabled: query?.enabled ? query.enabled : !!address,
@@ -63,9 +62,10 @@ export const useToken = (
 
 	let runeId = "";
 
+	const [bytes32RuneId] = data ?? [];
+
 	try {
-		// biome-ignore lint/style/noNonNullAssertion: <explanation>
-		runeId = bytes32toRuneId(bytes32RuneId!);
+		runeId = bytes32toRuneId(bytes32RuneId as `0x${string}`);
 	} catch (e) {
 		// do nothing
 	}

@@ -1,6 +1,6 @@
 import type { Config } from "@midl/core";
 import { type GetBTCFeeRateResponse, getBTCFeeRate } from "@midl/executor";
-import { useConfig, useConfigInternal } from "@midl/react";
+import { useConfig } from "@midl/react";
 import { type UseQueryOptions, useQuery } from "@tanstack/react-query";
 import { usePublicClient } from "wagmi";
 
@@ -20,7 +20,6 @@ export const useBTCFeeRate = ({
 	query,
 	config: customConfig,
 }: UseBTCFeeRateParams = {}) => {
-	const config = useConfigInternal(customConfig);
 	const { network } = useConfig(customConfig);
 	const client = usePublicClient();
 
@@ -28,7 +27,7 @@ export const useBTCFeeRate = ({
 		queryKey: ["btcFeeRate", ...(query?.queryKey ?? [])],
 		queryFn: () => {
 			// biome-ignore lint/style/noNonNullAssertion: client is defined
-			return getBTCFeeRate(config, client!);
+			return getBTCFeeRate(client!);
 		},
 		enabled:
 			typeof query?.enabled === "boolean" ? query.enabled : Boolean(network),

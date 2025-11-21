@@ -24,6 +24,11 @@ vi.mock("viem/actions", async (importActual) => {
 	};
 });
 
+vi.mock("~/actions/getBTCFeeRate", async (importOriginal) => ({
+	...(await importOriginal<typeof import("~/actions/getBTCFeeRate")>()),
+	getBTCFeeRate: vi.fn().mockResolvedValue(2n),
+}));
+
 describe("executor | actions | estimateTransaction", () => {
 	const chain = getEVMFromBitcoinNetwork(midlConfig.getState().network);
 

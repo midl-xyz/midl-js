@@ -5,6 +5,18 @@ import { addRuneERC20 } from "~/actions/addRuneERC20";
 import { midlRegtest } from "~/config";
 import "@midl/core";
 
+vi.mock("./getTSSAddress", async (importActual) => {
+	const actual = await importActual<typeof import("./getTSSAddress")>();
+	return {
+		...actual,
+		getTSSAddress: vi
+			.fn()
+			.mockResolvedValue(
+				"bcrt1prdz97t7n4fqvrqzh3f3syknpjutcz8y23fmn47klhaaq95nl24fq57u8tq",
+			),
+	};
+});
+
 describe("executor | actions | addRune", () => {
 	const config = createConfig({
 		networks: [regtest],
