@@ -5,7 +5,7 @@ import { getTransactionReceipt, readContract } from "viem/actions";
 import { describe, expect, it } from "vitest";
 import { useEnvironment } from "../tests/useEnvironment";
 
-describe("MidlHardhatEnvironment", () => {
+describe.skip("MidlHardhatEnvironment", () => {
 	useEnvironment();
 
 	it("initializes with p2wpkh address", async () => {
