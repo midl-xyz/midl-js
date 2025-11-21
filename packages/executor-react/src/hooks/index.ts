@@ -14,7 +14,6 @@ export * from "./useEVMChain";
 export * from "./useEstimateBTCTransaction";
 export * from "./useFinalizeBTCTransaction";
 
-export * from "./useLastBlock";
 export * from "./usePublicKey";
 export * from "./useSendBTCTransactions";
 

@@ -1,5 +1,16 @@
 # @midl/executor
 
+## 3.0.0-next.0
+
+### Minor Changes
+
+- feat: consensus update
+
+### Patch Changes
+
+- @midl/core@3.0.0-next.0
+- @midl/logger@3.0.0-next.0
+
 ## 2.0.11
 
 ### Patch Changes

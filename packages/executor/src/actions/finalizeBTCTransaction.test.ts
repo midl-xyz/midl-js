@@ -24,6 +24,18 @@ vi.mock("./estimateBTCTransaction", async (importActual) => {
 	};
 });
 
+vi.mock("./getTSSAddress", async (importActual) => {
+	const actual = await importActual<typeof import("./getTSSAddress")>();
+	return {
+		...actual,
+		getTSSAddress: vi
+			.fn()
+			.mockResolvedValue(
+				"bcrt1prdz97t7n4fqvrqzh3f3syknpjutcz8y23fmn47klhaaq95nl24fq57u8tq",
+			),
+	};
+});
+
 describe("finalizeBTCTransaction", () => {
 	const chain = getEVMFromBitcoinNetwork(midlConfig.getState().network);
 
@@ -82,7 +94,9 @@ describe("finalizeBTCTransaction", () => {
 			},
 		];
 
-		await finalizeBTCTransaction(midlConfig, originalIntentions, walletClient);
+		await finalizeBTCTransaction(midlConfig, originalIntentions, walletClient, {
+			feeRate: 1,
+		});
 		expect(estimateActions.estimateBTCTransaction).toHaveBeenCalled();
 
 		expect(originalIntentions[0].evmTransaction?.gas).toBe(21000n);

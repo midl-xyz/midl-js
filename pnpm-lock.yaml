@@ -349,8 +349,8 @@ importers:
         specifier: ^1.2.0
         version: 1.2.0
       '@midl/contracts':
-        specifier: ^0.1.1
-        version: 0.1.1(hardhat@2.22.18(bufferutil@4.0.9)(ts-node@10.9.2(@swc/core@1.10.11(@swc/helpers@0.5.15))(@types/node@22.12.0)(typescript@5.7.2))(typescript@5.7.2)(utf-8-validate@5.0.10))
+        specifier: ^1.0.5
+        version: 1.0.5
       '@midl/core':
         specifier: workspace:^
         version: link:../core
@@ -2399,6 +2399,9 @@ packages:
   '@midl/contracts@0.1.1':
     resolution: {integrity: sha512-6Oh5DE5YKe7c1bU8CLSbD+faSl6rkoT88Ov6X/U+89hMlLyvGGNv/jP9+b1JzbWbxQZA5GAC6hKjTGK+/DX2xA==}
 
+  '@midl/contracts@1.0.5':
+    resolution: {integrity: sha512-vNRa9hLI0FWDsKE0nf1dwUHf+WGGvKtgAPZiyesufxlJsSEPOZGAbSi2TIO8dQaNFmzie4s4prGOLasyeGZn2A==}
+
   '@midl/viem@2.21.37':
     resolution: {integrity: sha512-+/z2H3/3i47a7ijYU2CsyR3g4Q1u6ANbCyA88UCJ8BGCqpWiiPrDztH9BAXv+f0zSig7ZiAUy56mzY03X6OK4g==}
     peerDependencies:
@@ -2597,7 +2600,7 @@ packages:
     resolution: {integrity: sha512-Pl5pvYK5VYKflfoUk4fVBESqKMNBtAIGPIT4j+Q8KNFueAe1vB2PsbRESeNJyW5YLL9pqKaD1RVqLmgIa1yvDg==}
     peerDependencies:
       hardhat: ^2.17.0
-      viem: npm:@midl/viem@2.21.37
+      viem: ^2.7.6
 
   '@nomicfoundation/solidity-analyzer-darwin-arm64@0.1.2':
     resolution: {integrity: sha512-JaqcWPDZENCvm++lFFGjrDd8mxtf+CtLd2MiXvMNTBD33dContTZ9TWETwNFwg7JTJT5Q9HEecH7FA+HTSsIUw==}
@@ -3883,7 +3886,7 @@ packages:
     peerDependencies:
       '@wagmi/core': 2.16.3
       typescript: '>=5.0.4'
-      viem: npm:@midl/viem@2.21.37
+      viem: 2.x
     peerDependenciesMeta:
       typescript:
         optional: true
@@ -3893,7 +3896,7 @@ packages:
     peerDependencies:
       '@tanstack/query-core': '>=5.0.0'
       typescript: '>=5.0.4'
-      viem: npm:@midl/viem@2.21.37
+      viem: 2.x
     peerDependenciesMeta:
       '@tanstack/query-core':
         optional: true
@@ -9391,7 +9394,7 @@ packages:
       '@tanstack/react-query': 5.69.0
       react: '>=18'
       typescript: '>=5.0.4'
-      viem: npm:@midl/viem@2.21.37
+      viem: 2.x
     peerDependenciesMeta:
       typescript:
         optional: true
@@ -11742,6 +11745,8 @@ snapshots:
       hardhat-abi-exporter: 2.11.0(hardhat@2.22.18(bufferutil@4.0.9)(ts-node@10.9.2(@swc/core@1.10.11(@swc/helpers@0.5.15))(@types/node@22.12.0)(typescript@5.7.2))(typescript@5.7.2)(utf-8-validate@5.0.10))
     transitivePeerDependencies:
       - hardhat
+
+  '@midl/contracts@1.0.5': {}
 
   '@midl/viem@2.21.37(bufferutil@4.0.9)(typescript@5.6.3)(utf-8-validate@5.0.10)(zod@3.24.1)':
     dependencies:

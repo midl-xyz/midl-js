@@ -1,8 +1,7 @@
 import { AddressPurpose, connect, disconnect } from "@midl/core";
-import { type TransactionIntention, executorAddress } from "@midl/executor";
+import { SystemContracts, type TransactionIntention } from "@midl/executor";
 import { createStore } from "@midl/react";
 import { renderHook } from "@testing-library/react";
-import { zeroAddress } from "viem";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { wrapper } from "~/__tests__";
 import { midlConfig } from "~/__tests__/midlConfig";
@@ -35,8 +34,6 @@ describe("executor-react | hooks | useAddCompleteTxIntention", () => {
 
 		const [intention] = store.getState().intentions as TransactionIntention[];
 
-		expect(intention.evmTransaction?.to).toBe(
-			executorAddress[midlConfig.getState().network.id],
-		);
+		expect(intention.evmTransaction?.to).toBe(SystemContracts.Executor);
 	});
 });
