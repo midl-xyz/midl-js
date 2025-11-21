@@ -5,7 +5,7 @@
 	"fixed": [["@midl/*"]],
 	"linked": [],
 	"access": "public",
-	"baseBranch": "main",
+	"baseBranch": "next",
 	"updateInternalDependencies": "patch",
 	"ignore": ["e2e", "@midl/docs", "@midl/rune-etcher"]
 }

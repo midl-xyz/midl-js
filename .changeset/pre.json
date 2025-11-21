@@ -1,0 +1,21 @@
+{
+	"mode": "pre",
+	"tag": "next",
+	"initialVersions": {
+		"@midl/docs": "1.0.0",
+		"e2e": "1.0.44",
+		"@midl/rune-etcher": "0.1.27",
+		"@midl/midl-js-config": "2.0.11",
+		"@midl/connectors": "2.0.11",
+		"@midl/core": "2.0.11",
+		"@midl/executor": "2.0.11",
+		"@midl/executor-react": "2.0.11",
+		"@midl/hardhat-deploy": "2.0.11",
+		"@midl/logger": "2.0.11",
+		"@midl/node": "2.0.11",
+		"@midl/playwright": "2.0.11",
+		"@midl/react": "2.0.11",
+		"@midl/satoshi-kit": "2.0.11"
+	},
+	"changesets": []
+}
