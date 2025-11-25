@@ -1,0 +1,19 @@
+{
+	"$schema": "https://turbo.build/schema.json",
+	"extends": ["//"],
+	"tasks": {
+		"test:compile": {
+			"dependsOn": ["build"],
+			"outputs": [],
+			"cache": false
+		},
+		"test": {
+			"dependsOn": ["build", "^build", "test:compile"],
+			"persistent": true,
+			"env": ["E2E", "CI"],
+			"interactive": true,
+			"cache": false,
+			"outputs": []
+		}
+	}
+}
