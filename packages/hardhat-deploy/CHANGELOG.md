@@ -1,5 +1,16 @@
 # @midl/hardhat-deploy
 
+## 3.0.0-next.1
+
+### Patch Changes
+
+- feat: update tx cost calculation
+- Updated dependencies
+  - @midl/executor@3.0.0-next.1
+  - @midl/core@3.0.0-next.1
+  - @midl/logger@3.0.0-next.1
+  - @midl/node@3.0.0-next.1
+
 ## 3.0.0-next.0
 
 ### Minor Changes
