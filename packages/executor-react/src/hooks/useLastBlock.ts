@@ -31,7 +31,6 @@ export const useLastBlock = ({ query }: UseLastBlockParams = {}) => {
 	const { data: lastBlock, ...rest } = useReadContract({
 		abi: executorAbi,
 		functionName: "lastCommittedMidlBlock",
-		contractType: 1,
 		// TODO: address depends on the network
 		address: deployment.address as `0x${string}`,
 		query: {

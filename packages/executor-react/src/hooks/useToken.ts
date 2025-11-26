@@ -53,7 +53,6 @@ export const useToken = (
 		functionName: "getRuneIdByAssetAddress",
 		// TODO: address depends on the network
 		address: deployment.address as `0x${string}`,
-		contractType: 1,
 		args: [address],
 		query: {
 			enabled: query?.enabled ? query.enabled : !!address,
