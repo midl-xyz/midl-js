@@ -18,7 +18,7 @@ import { useAccounts, useEdictRune, useRune, useRunes } from "@midl/react";
 import { SendIcon } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { parseEther, parseUnits } from "viem";
+import { parseUnits } from "viem";
 
 type FormValues = {
 	address: string;

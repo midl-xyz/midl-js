@@ -2,12 +2,19 @@ const { MaestroSymphonyProvider, MempoolSpaceProvider } = require("@midl/core");
 
 require("../../../dist/cjs/index");
 require("hardhat-deploy");
+const fs = require("node:fs");
+const os = require("node:os");
+const path = require("node:path");
+
+const deploymentsDir = fs.mkdtempSync(
+	path.join(os.tmpdir(), "midl-hardhat-deploy-"),
+);
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
 	solidity: "0.8.28",
 	midl: {
-		path: `deployments/${Date.now()}`,
+		path: deploymentsDir,
 		networks: {
 			default: {
 				mnemonic:

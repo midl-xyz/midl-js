@@ -80,10 +80,12 @@ export class MidlHardhatEnvironment {
 			];
 		this.initializeNetwork();
 
-		this.deploymentsPath = path.join(
-			this.hre.config.paths.root,
-			this.hre.userConfig.midl.path ?? "deployments",
-		);
+		const deploymentsPath = this.hre.userConfig.midl.path ?? "deployments";
+
+		this.deploymentsPath = deploymentsPath.startsWith("/")
+			? deploymentsPath
+			: path.join(this.hre.config.paths.root, deploymentsPath);
+
 		this.confirmationsRequired = this.userConfig.confirmationsRequired ?? 5;
 		this.btcConfirmationsRequired =
 			this.userConfig.btcConfirmationsRequired ?? 1;

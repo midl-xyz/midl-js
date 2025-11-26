@@ -6,6 +6,9 @@ export const KEYGEN_TX_SIZE = 11n;
 export const BTC_TX_MIN_OUTGOING_BYTES = 363n;
 export const RUNES_MAGIC_VALUE = 546n;
 export const BTC_TX_INPUT_VBYTES = 58n;
+export const BTC_EDICT_SIZE = 32n;
+export const BTC_TX_MAX_OUTPUT_VBYTES = 43n;
+export const BTC_WITHDRAWAL_VBYTES = 20n;
 
 const DEPOSIT_BTC = 1 << 0;
 const DEPOSIT_RUNES = 1 << 1;
@@ -13,14 +16,34 @@ const WITHDRAW_BTC = 1 << 2;
 const WITHDRAW_RUNES = 1 << 3;
 
 const scriptSizeMap = new Map<number, bigint>([
-	[DEPOSIT_BTC, 190n],
-	[DEPOSIT_BTC | DEPOSIT_RUNES, 453n],
-	[DEPOSIT_BTC | WITHDRAW_BTC, 233n],
-	[DEPOSIT_BTC | DEPOSIT_RUNES | WITHDRAW_BTC, 496n],
-	[DEPOSIT_BTC | WITHDRAW_RUNES, 428n],
-	[DEPOSIT_BTC | WITHDRAW_BTC | WITHDRAW_RUNES, 471n],
-	[DEPOSIT_BTC | DEPOSIT_RUNES | WITHDRAW_BTC | WITHDRAW_RUNES, 539n],
+	[DEPOSIT_BTC, BTC_TX_MIN_OUTGOING_BYTES],
+	[DEPOSIT_BTC | DEPOSIT_RUNES, BTC_TX_MIN_OUTGOING_BYTES],
+	[
+		DEPOSIT_BTC | WITHDRAW_BTC,
+		BTC_TX_MIN_OUTGOING_BYTES + BTC_WITHDRAWAL_VBYTES,
+	],
+	[
+		DEPOSIT_BTC | DEPOSIT_RUNES | WITHDRAW_BTC,
+		BTC_TX_MIN_OUTGOING_BYTES + BTC_WITHDRAWAL_VBYTES,
+	],
+	[
+		DEPOSIT_BTC | WITHDRAW_RUNES,
+		BTC_TX_MIN_OUTGOING_BYTES + BTC_TX_MAX_OUTPUT_VBYTES,
+	],
+	[
+		DEPOSIT_BTC | WITHDRAW_BTC | WITHDRAW_RUNES,
+		BTC_TX_MIN_OUTGOING_BYTES +
+			BTC_WITHDRAWAL_VBYTES +
+			BTC_TX_MAX_OUTPUT_VBYTES,
+	],
+	[
+		DEPOSIT_BTC | DEPOSIT_RUNES | WITHDRAW_BTC | WITHDRAW_RUNES,
+		BTC_TX_MIN_OUTGOING_BYTES +
+			BTC_WITHDRAWAL_VBYTES +
+			BTC_TX_MAX_OUTPUT_VBYTES,
+	],
 ]);
+
 /**
  * Calculate the cost of transactions batch
  *
@@ -53,7 +76,7 @@ export const calculateTransactionsCost = (
 
 	if (hasRunesDeposit) scriptSizeKey |= DEPOSIT_RUNES;
 	if (hasRunesWithdraw) scriptSizeKey |= WITHDRAW_RUNES;
-	if (hasWithdraw || hasRunesWithdraw) scriptSizeKey |= WITHDRAW_BTC;
+	if (hasWithdraw) scriptSizeKey |= WITHDRAW_BTC;
 
 	let scriptSize = scriptSizeMap.get(scriptSizeKey);
 
@@ -67,12 +90,12 @@ export const calculateTransactionsCost = (
 	}
 
 	const fees =
-		(GAS_PRICE * totalGas) / ONE_SATOSHI +
-		(KEYGEN_TX_SIZE +
-			BTC_TX_MIN_OUTGOING_BYTES +
-			scriptSize +
-			(assetsToWithdrawSize > 0 ? BTC_TX_INPUT_VBYTES : 0n) +
-			BigInt(assetsToWithdrawSize) * RUNES_MAGIC_VALUE) *
+		(GAS_PRICE * totalGas) / ONE_SATOSHI + // Fee for gas
+		(scriptSize +
+			KEYGEN_TX_SIZE +
+			(hasRunesDeposit ? BTC_TX_INPUT_VBYTES : 0n) +
+			BigInt(assetsToWithdrawSize) * BTC_EDICT_SIZE +
+			(assetsToWithdrawSize > 0 ? RUNES_MAGIC_VALUE : 0n)) *
 			BigInt(feeRate);
 
 	return Number(fees);

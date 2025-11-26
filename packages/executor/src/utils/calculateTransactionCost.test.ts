@@ -3,15 +3,15 @@
 import { describe, expect, it } from "vitest";
 import { calculateTransactionsCost } from "~/utils/calculateTransactionsCost";
 
-describe.skip("calculateTransactionCost", () => {
+describe("calculateTransactionCost", () => {
 	it("deposit", async () => {
-		expect(calculateTransactionsCost(0n, { feeRate: 2 })).toBe(410);
+		expect(calculateTransactionsCost(0n, { feeRate: 2 })).toBe(748);
 	});
 
 	it("withdraw", async () => {
 		expect(
 			calculateTransactionsCost(0n, { feeRate: 2, hasWithdraw: true }),
-		).toBe(496);
+		).toBe(788);
 	});
 
 	it("runes deposit", async () => {
@@ -20,7 +20,7 @@ describe.skip("calculateTransactionCost", () => {
 				feeRate: 2,
 				hasRunesDeposit: true,
 			}),
-		).toBe(936);
+		).toBe(864);
 	});
 
 	it("runes withdraw", async () => {
@@ -30,6 +30,6 @@ describe.skip("calculateTransactionCost", () => {
 				hasRunesWithdraw: true,
 				assetsToWithdrawSize: 1,
 			}),
-		).toBe(2064);
+		).toBe(1990);
 	});
 });

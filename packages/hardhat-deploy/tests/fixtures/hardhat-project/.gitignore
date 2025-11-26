@@ -1,4 +1,3 @@
 deployments
 cache
-artifacts/build-info
-artifacts/**/*.dbg.json
+artifacts
