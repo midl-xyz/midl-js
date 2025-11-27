@@ -36,7 +36,7 @@ const btcTx = await finalizeBTCTransaction(config, intentions, client, { feeRate
 | `from`                 | `string` (optional)        | BTC address of the account to use for signing.      |
 | `feeRate`              | `number` (optional)        | Custom fee rate (sats/vB).                          |
 | `assetsToWithdrawSize` | `number` (optional)        | Number of assets to withdraw.                       |
-| `skipEstimateGasMulti` | `boolean` (optional)       | If true, skips gas estimation for EVM transactions. |
+| `skipEstimateGas`      | `boolean` (optional)       | If true, skips gas estimation for EVM transactions. |
 | `multisigAddress`      | `string` (optional)        | Multisig address to use for the transaction.        |
 | `gasMultiplier`        | `number` (optional)        | Multiplier to apply to estimated gas.               |
 

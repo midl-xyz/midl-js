@@ -132,6 +132,7 @@ export const finalizeBTCTransaction = async (
 			from: options.from,
 			multisigAddress: options.multisigAddress,
 			gasMultiplier,
+			skipEstimateGas: options.skipEstimateGas,
 		});
 
 	/**
@@ -139,7 +140,7 @@ export const finalizeBTCTransaction = async (
 	 * This is done to avoid having to return a new array of intentions.
 	 */
 	for (const [i, intention] of intentions.entries()) {
-		if (intention.evmTransaction) {
+		if (intention.evmTransaction && !intention.evmTransaction.gas) {
 			intention.evmTransaction.gas = estimatedIntentions[i].evmTransaction?.gas;
 		}
 	}

@@ -101,4 +101,110 @@ describe("finalizeBTCTransaction", () => {
 
 		expect(originalIntentions[0].evmTransaction?.gas).toBe(21000n);
 	});
+
+	it("skips estimating gas when gas is already set", async () => {
+		(estimateActions.estimateBTCTransaction as Mock).mockResolvedValue({
+			intentions: [
+				{
+					deposit: {
+						satoshis: 1000,
+					},
+					evmTransaction: {
+						to: "0x0000000000000000000000000000000000000001",
+						value: 0n,
+						chainId: chain.id,
+						gas: 21000n,
+					},
+				},
+				{
+					deposit: {
+						satoshis: 1000,
+					},
+					evmTransaction: {
+						to: "0x0000000000000000000000000000000000000001",
+						value: 0n,
+						chainId: chain.id,
+						gas: 23000n,
+					},
+				},
+			],
+			fee: 1000n,
+		});
+
+		const originalIntentions: TransactionIntention[] = [
+			{
+				deposit: {
+					satoshis: 1000,
+				},
+				evmTransaction: {
+					to: "0x0000000000000000000000000000000000000001",
+					value: 0n,
+					chainId: chain.id,
+					gas: 25000n,
+				},
+			},
+			{
+				deposit: {
+					satoshis: 1000,
+				},
+				evmTransaction: {
+					to: "0x0000000000000000000000000000000000000001",
+					value: 0n,
+					chainId: chain.id,
+				},
+			},
+		];
+
+		await finalizeBTCTransaction(midlConfig, originalIntentions, walletClient, {
+			feeRate: 1,
+		});
+		expect(estimateActions.estimateBTCTransaction).toHaveBeenCalled();
+
+		expect(originalIntentions[0].evmTransaction?.gas).toBe(25000n);
+		expect(originalIntentions[1].evmTransaction?.gas).toBe(23000n);
+	});
+
+	it("skips estimating gas when skipEstimateGas is true", async () => {
+		const originalIntentions: TransactionIntention[] = [
+			{
+				deposit: {
+					satoshis: 1000,
+				},
+				evmTransaction: {
+					to: "0x0000000000000000000000000000000000000001",
+					value: 0n,
+					chainId: chain.id,
+				},
+			},
+		];
+
+		(estimateActions.estimateBTCTransaction as Mock).mockResolvedValue({
+			intentions: [
+				{
+					deposit: {
+						satoshis: 1000,
+					},
+					evmTransaction: {
+						to: "0x0000000000000000000000000000000000000001",
+						value: 0n,
+						chainId: chain.id,
+					},
+				},
+			],
+			fee: 1000n,
+		});
+
+		await finalizeBTCTransaction(midlConfig, originalIntentions, walletClient, {
+			feeRate: 1,
+			skipEstimateGas: true,
+		});
+		expect(estimateActions.estimateBTCTransaction).toHaveBeenCalledWith(
+			expect.anything(),
+			originalIntentions,
+			expect.anything(),
+			expect.objectContaining({
+				skipEstimateGas: true,
+			}),
+		);
+	});
 });
