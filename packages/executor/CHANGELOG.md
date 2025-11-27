@@ -1,5 +1,13 @@
 # @midl/executor
 
+## 3.0.0-next.2
+
+### Patch Changes
+
+- fix: estimate gas
+  - @midl/core@3.0.0-next.2
+  - @midl/logger@3.0.0-next.2
+
 ## 3.0.0-next.1
 
 ### Patch Changes

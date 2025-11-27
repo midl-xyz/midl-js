@@ -273,4 +273,31 @@ describe("executor | actions | estimateTransaction", () => {
 			estimateBTCTransaction(midlConfig, originalIntentions, walletClient),
 		).rejects.toThrow("Failed to estimate gas");
 	});
+
+	it("skips estimating gas when option is set", async () => {
+		const originalIntentions: TransactionIntention[] = [
+			{
+				deposit: {
+					satoshis: 1000,
+				},
+				evmTransaction: {
+					to: "0x0000000000000000000000000000000000000001",
+					value: 0n,
+					chainId: chain.id,
+				},
+			},
+		];
+
+		const { intentions } = await estimateBTCTransaction(
+			midlConfig,
+			originalIntentions,
+			walletClient,
+			{
+				skipEstimateGas: true,
+			},
+		);
+
+		expect(viemActions.estimateGasMulti).not.toHaveBeenCalled();
+		expect(intentions[0].evmTransaction?.gas).toBeUndefined();
+	});
 });

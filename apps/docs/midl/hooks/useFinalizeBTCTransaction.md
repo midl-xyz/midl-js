@@ -39,5 +39,5 @@ finalizeBTCTransaction({ feeRate: 10 });
 | `stateOverride`        | `StateOverride` (optional) | State override to estimate the cost of the transaction. |
 | `assetsToWithdrawSize` | `number` (optional)        | Number of assets to withdraw (for fee calculation).     |
 | `feeRate`              | `number` (optional)        | Custom fee rate in sats/vB.                             |
-| `skipEstimateGasMulti` | `boolean` (optional)       | If true, skip the gas estimation for EVM transactions.  |
+| `skipEstimateGas`      | `boolean` (optional)       | If true, skip the gas estimation for EVM transactions.  |
 | `from`                 | `string` (optional)        | BTC address used to sign the transactions.              |

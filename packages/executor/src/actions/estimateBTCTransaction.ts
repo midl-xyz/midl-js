@@ -42,6 +42,11 @@ export type EstimateBTCTransactionOptions = {
 	 * Used to ensure the transaction has enough gas to be processed and avoid potential gas fluctuations.
 	 */
 	gasMultiplier?: number;
+
+	/**
+	 * If true skips estimate gas for EVM transactions
+	 */
+	skipEstimateGas?: boolean;
 };
 
 export type EstimateBTCTransactionResponse = {
@@ -131,7 +136,7 @@ export const estimateBTCTransaction = async (
 
 	let gasLimits: bigint[] = [];
 
-	if (emvTransactionsWithoutGas.length > 0) {
+	if (emvTransactionsWithoutGas.length > 0 && !options.skipEstimateGas) {
 		logger.debug(
 			"Estimating gas for EVM transactions: {evmTransactions}, stateOverride: {stateOverride}, evmAddress: {evmAddress}",
 			{
@@ -181,7 +186,7 @@ export const estimateBTCTransaction = async (
 	/**
 	 * If stateOverride is not provided, create one with minimum fees to ensure transactions pass
 	 */
-	if (!options.stateOverride) {
+	if (!options.stateOverride && !options.skipEstimateGas) {
 		const stateOverrideWithMinFees =
 			options.stateOverride ??
 			(await createStateOverride(
