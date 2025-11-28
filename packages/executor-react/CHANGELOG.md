@@ -1,5 +1,14 @@
 # @midl/executor-react
 
+## 3.0.0-next.3
+
+### Patch Changes
+
+- Updated dependencies [98691f4]
+  - @midl/executor@3.0.0-next.3
+  - @midl/core@3.0.0-next.3
+  - @midl/react@3.0.0-next.3
+
 ## 3.0.0-next.2
 
 ### Patch Changes

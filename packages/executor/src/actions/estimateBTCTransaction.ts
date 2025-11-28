@@ -126,10 +126,6 @@ export const estimateBTCTransaction = async (
 		},
 	);
 
-	const stateOverride =
-		options.stateOverride ??
-		(await createStateOverride(config, client, intentions));
-
 	const emvTransactionsWithoutGas = evmTransactions.filter(
 		(it) => it.gas === undefined,
 	);
@@ -137,6 +133,10 @@ export const estimateBTCTransaction = async (
 	let gasLimits: bigint[] = [];
 
 	if (emvTransactionsWithoutGas.length > 0 && !options.skipEstimateGas) {
+		const stateOverride =
+			options.stateOverride ??
+			(await createStateOverride(config, client, intentions));
+
 		logger.debug(
 			"Estimating gas for EVM transactions: {evmTransactions}, stateOverride: {stateOverride}, evmAddress: {evmAddress}",
 			{
