@@ -1,4 +1,3 @@
-import { addRuneERC20 } from "@midl/executor";
 import { describe, it } from "vitest";
 import { useEnvironment } from "../../../tests/useEnvironment";
 

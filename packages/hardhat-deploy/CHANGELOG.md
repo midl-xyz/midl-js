@@ -1,5 +1,16 @@
 # @midl/hardhat-deploy
 
+## 3.0.0-next.3
+
+### Patch Changes
+
+- 98691f4: fix(executor): skip stateOverride if no estimateGas
+- Updated dependencies [98691f4]
+  - @midl/executor@3.0.0-next.3
+  - @midl/core@3.0.0-next.3
+  - @midl/logger@3.0.0-next.3
+  - @midl/node@3.0.0-next.3
+
 ## 3.0.0-next.2
 
 ### Patch Changes
