@@ -1,10 +1,3 @@
-import {
-	SystemContracts,
-	addRuneERC20,
-	executorAbi,
-	runeIdToBytes32,
-} from "@midl/executor";
-import { readContract } from "viem/actions";
 import { describe, it } from "vitest";
 import { useEnvironment } from "../../../tests/useEnvironment";
 
