@@ -9,10 +9,11 @@ export type RunesTransfer = {
 	 * The amount to transfer
 	 */
 	amount: bigint;
+
 	/**
-	 * ERC20 address of the rune
+	 * ERC20 Address corresponding to the rune. If not provided, it will be derived using Create2.
 	 */
-	address: Address;
+	address?: Address;
 };
 
 export type Deposit = {
