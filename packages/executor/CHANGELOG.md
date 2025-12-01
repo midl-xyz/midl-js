@@ -1,5 +1,14 @@
 # @midl/executor
 
+## 3.0.0-next.4
+
+### Patch Changes
+
+- 8dad3d1: feat(executor): add rune erc20 intention
+- c6fd873: feat(executor): compute rune erc20 address
+  - @midl/core@3.0.0-next.4
+  - @midl/logger@3.0.0-next.4
+
 ## 3.0.0-next.3
 
 ### Patch Changes
