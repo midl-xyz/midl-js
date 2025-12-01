@@ -1,14 +1,7 @@
 import { AddressPurpose, AddressType, type Config } from "@midl/core";
 import * as bitcoin from "bitcoinjs-lib";
-import {
-	encodeFunctionData,
-	maxUint256,
-	padBytes,
-	padHex,
-	toHex,
-	zeroAddress,
-} from "viem";
-import { getPublicKey } from "~/actions";
+import { encodeFunctionData, maxUint256, padBytes, padHex, toHex } from "viem";
+import { getCreate2RuneAddress, getPublicKey } from "~/actions";
 import { addTxIntention } from "~/actions/addTxIntention";
 import { SystemContracts } from "~/config";
 import { executorAbi } from "~/contracts/abi";
@@ -48,10 +41,7 @@ export const addCompleteTxIntention = async (
 		accounts?.find((it) => it.purpose === AddressPurpose.Payment) ??
 		runesReceiver;
 
-	if (
-		!runesReceiver &&
-		assetsToWithdraw?.find((it) => it.address !== zeroAddress)
-	) {
+	if (!runesReceiver) {
 		throw new Error("No ordinals account found to withdraw runes");
 	}
 
@@ -118,7 +108,9 @@ export const addCompleteTxIntention = async (
 				args: [
 					receiver,
 					receiverBTC,
-					assetsToWithdraw?.map((rune) => rune.address) ?? [],
+					assetsToWithdraw?.map(
+						(rune) => rune.address ?? getCreate2RuneAddress(rune.id),
+					) ?? [],
 					assetsToWithdraw?.map((rune) =>
 						// TODO: When new contracts are deployed, we should use the actual rune amount. For we indicate 0n as maxUint256 to withdraw all available runes.
 						rune.amount === maxUint256 ? 0n : rune.amount,

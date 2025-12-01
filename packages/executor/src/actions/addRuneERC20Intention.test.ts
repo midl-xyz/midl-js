@@ -73,7 +73,6 @@ describe("executor | actions | addRune", () => {
 					{
 						id: "RUNEWITHVALIDNAME",
 						amount: 1n,
-						address: "0x0000000000000000000000000000000000000000",
 					},
 				],
 			}),

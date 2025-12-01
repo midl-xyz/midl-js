@@ -36,7 +36,6 @@ describe("executor | actions | addCompleteTxIntention", () => {
 			runes: [
 				{
 					id: "1:1",
-					address: "0x17C646bad1Ee22e6945E3fC5D9732077ED211560",
 					amount: maxUint256,
 				},
 			],
@@ -47,10 +46,6 @@ describe("executor | actions | addCompleteTxIntention", () => {
 			// biome-ignore lint/style/noNonNullAssertion: Data is guaranteed to be present
 			data: intention.evmTransaction?.data!,
 		});
-
-		expect(txData.args[2]).toStrictEqual([
-			"0x17C646bad1Ee22e6945E3fC5D9732077ED211560",
-		]);
 
 		expect(txData.args[3]).toStrictEqual([0n]);
 	});

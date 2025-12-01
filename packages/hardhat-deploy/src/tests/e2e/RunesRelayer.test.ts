@@ -1,20 +1,20 @@
-import { waitForTransaction } from "@midl/core";
 import {
 	SystemContracts,
-	addRuneERC20,
+	addRuneERC20Intention,
 	executorAbi,
 	finalizeBTCTransaction,
+	getCreate2RuneAddress,
 	runeIdToBytes32,
 	signIntention,
 } from "@midl/executor";
-import { readContract } from "viem/actions";
+import { readContract, waitForTransactionReceipt } from "viem/actions";
 import { describe, it } from "vitest";
 import { useEnvironment } from "../../../tests/useEnvironment";
 
 const isE2ETest = Boolean(process.env.E2E);
 
 describe.runIf(isE2ETest)("RunesRelayer", async () => {
-	useEnvironment();
+	useEnvironment(true);
 
 	it("adds rune", async () => {
 		const {
@@ -25,52 +25,49 @@ describe.runIf(isE2ETest)("RunesRelayer", async () => {
 		// biome-ignore lint/style/noNonNullAssertion: <explanation>
 		const config = midl.getConfig()!;
 		const walletClient = await midl.getWalletClient();
+		const runeId = "21779:1";
 
-		const tx = await addRuneERC20(config, walletClient, "7467:1", {
-			publish: true,
-		});
+		const tx = await addRuneERC20Intention(config, runeId);
 
 		const btcTx = await finalizeBTCTransaction(config, [tx], walletClient, {
 			skipEstimateGas: true,
 		});
 
-		// const signedIntention = await signIntention(
-		// 	config,
-		// 	walletClient,
-		// 	tx,
-		// 	[tx],
-		// 	{
-		// 		txId: btcTx.tx.id,
-		// 	},
-		// );
+		const signedIntention = await signIntention(
+			config,
+			walletClient,
+			tx,
+			[tx],
+			{
+				txId: btcTx.tx.id,
+			},
+		);
 
-		const res2 = await readContract(await midl.getWalletClient(), {
-			abi: executorAbi,
-			address: SystemContracts.Executor,
-			functionName: "getAssetAddressByRuneId",
-			args: [runeIdToBytes32("7467:1")],
-		});
+		console.log(
+			`Rune ERC20 create2 address will be: ${getCreate2RuneAddress(runeId)}`,
+		);
 
-		console.log("res before finalization:", res2);
-
-		await walletClient.sendBTCTransactions({
+		const txs = await walletClient.sendBTCTransactions({
 			btcTransaction: btcTx.tx.hex,
-			serializedTransactions: [],
+			serializedTransactions: [signedIntention],
 		});
 
-		console.log("BTC TX ID:", btcTx.tx.id);
+		for (const tx of txs) {
+			console.log(`Waiting for tx ${tx} to be mined...`);
+			await waitForTransactionReceipt(walletClient, {
+				hash: tx,
+			});
+			console.log(`Transaction ${tx} mined.`);
+		}
 
-		// biome-ignore lint/style/noNonNullAssertion: <explanation>
-		await waitForTransaction(midl.getConfig()!, btcTx.tx.id);
-
-		const res = await readContract(await midl.getWalletClient(), {
+		const [address] = await readContract(walletClient, {
 			abi: executorAbi,
 			address: SystemContracts.Executor,
 			functionName: "getAssetAddressByRuneId",
-			args: [runeIdToBytes32("7467:1")],
+			args: [runeIdToBytes32(runeId)],
 		});
 
-		console.log(res);
+		console.log("Rune ERC20 Address:", address);
 	});
 
 	// it("deploys RunesRelayer contract", async () => {

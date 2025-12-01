@@ -15,3 +15,4 @@ export * from "./getPublicKey";
 export * from "./getTSSAddress";
 export * from "./signIntention";
 export * from "./signTransaction";
+export * from "./getCreate2RuneAddress";
