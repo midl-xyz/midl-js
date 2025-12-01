@@ -1,0 +1,43 @@
+# addRuneERC20Intention
+
+> **addRuneERC20Intention**(`config`, `client`, `runeId`, `options?`): `Promise<TransactionIntention>`
+
+Creates a transaction intention to add a Rune via the ERC20 interface. It validates the Rune, then prepares an intention that deposits the Rune (amount 1) to the multisig.
+
+## Import
+
+```ts
+import { addRuneERC20Intention } from "@midl/executor";
+```
+
+## Example
+
+```ts
+import { addRuneERC20Intention } from "@midl/executor";
+
+const intention = await addRuneERC20Intention(config, client, "RUNEWITHVALIDNAME");
+// or with rune ID "blockHeight:txIndex"
+// await addRuneERC20Intention(config, client, "123456:0");
+
+console.log(intention);
+```
+
+## Parameters
+
+| Name      | Type                | Description                                                           |
+| --------- | ------------------- | --------------------------------------------------------------------- |
+| `config`  | `Config`            | The Midl configuration object.                                        |
+| `client`  | `Client` (viem)     | EVM/JSON-RPC client used for network queries.                         |
+| `runeId`  | `string`            | The rune name or ID to add. Rune name must be at least 12 characters. |
+| `options` | `object` (optional) | Reserved for future use.                                              |
+
+## Behavior & Validation
+
+- Validates the rune name length: the rune's `name` must be at least 12 characters long.
+- Ensures the rune has at least 6 confirmations based on current block height.
+- Creates a transaction intention via `addTxIntention` with a Rune deposit:
+  - `runes: [{ id: runeId, amount: 1n, address: 0x0000000000000000000000000000000000000000 }]`
+
+## Returns
+
+`Promise<TransactionIntention>` — The created transaction intention.
