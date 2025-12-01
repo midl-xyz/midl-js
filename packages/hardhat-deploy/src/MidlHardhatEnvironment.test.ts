@@ -13,7 +13,7 @@ describe("MidlHardhatEnvironment", () => {
 		await midl.initialize();
 
 		expect(midl.getAccount().address).toBe(
-			"bcrt1qz4yz7junaupmav0ycmwheglahya7wuy0g7n6tc",
+			"bcrt1qquv9lg5g2r4jkr0ahun0ddfg5xntxjelwjpnuw",
 		);
 	});
 
@@ -24,7 +24,7 @@ describe("MidlHardhatEnvironment", () => {
 		await midl.initialize(1);
 
 		expect(midl.getAccount().address).toBe(
-			"bcrt1qldp99gjlh5qhj624qu9hg7cw3tztj0h6urds2z",
+			"bcrt1qddd479298yf4mtzdxwudkd7npj7ln3s5g9awk3",
 		);
 	});
 
@@ -47,30 +47,5 @@ describe("MidlHardhatEnvironment", () => {
 
 		expect(newConfig).not.toEqual(prevConfig);
 		expect(prevAddress).not.toEqual(newAddress);
-	});
-
-	it.skip("return correct evm address", async () => {
-		const {
-			hre: { midl },
-		} = globalThis;
-
-		await midl.initialize();
-
-		const evmAddress = midl.getEVMAddress();
-
-		await midl.deploy("StructFunctionParam", { args: [] });
-		await midl.execute();
-
-		const deployment = await midl.getDeployment("StructFunctionParam");
-
-		if (!deployment) {
-			throw new Error("StructFunctionParam not found");
-		}
-
-		const receipt = await getTransactionReceipt(await midl.getWalletClient(), {
-			hash: deployment.txId,
-		});
-
-		expect(getAddress(receipt.from)).toEqual(evmAddress);
 	});
 });

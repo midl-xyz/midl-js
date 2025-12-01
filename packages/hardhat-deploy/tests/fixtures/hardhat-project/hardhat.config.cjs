@@ -18,7 +18,8 @@ module.exports = {
 		networks: {
 			default: {
 				mnemonic:
-					"face spike layer label health knee cry taste carpet found elegant october",
+					process.env.MNEMONIC ||
+					"test test test test test test test test test test test junk",
 				confirmationsRequired: 1,
 				btcConfirmationsRequired: 1,
 				hardhatNetwork: "default",

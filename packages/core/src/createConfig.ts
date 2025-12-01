@@ -32,7 +32,7 @@ type ConfigParams = {
 	/**
 	 * The connectors to use
 	 */
-	connectors: ConnectorWithMetadata[];
+	connectors: [ConnectorWithMetadata, ...ConnectorWithMetadata[]];
 	/**
 	 * If true, the config will persist in local storage
 	 */
@@ -66,7 +66,7 @@ export type ConfigState = {
 	readonly networks: BitcoinNetwork[];
 	readonly connection?: Connector;
 	readonly accounts?: Account[];
-	readonly connectors: ConnectorWithMetadata[];
+	readonly connectors: [ConnectorWithMetadata, ...ConnectorWithMetadata[]];
 	readonly provider: AbstractProvider;
 	readonly runesProvider: AbstractRunesProvider;
 	readonly defaultPurpose?: AddressPurpose;

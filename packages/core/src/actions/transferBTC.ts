@@ -6,7 +6,6 @@ import { broadcastTransaction } from "~/actions/broadcastTransaction";
 import { WalletConnectionError } from "~/actions/connect";
 import { getFeeRate } from "~/actions/getFeeRate";
 import { getUTXOs } from "~/actions/getUTXOs";
-import { AddressPurpose } from "~/constants";
 import type { Config } from "~/createConfig";
 import { makePSBTInputs } from "~/utils";
 

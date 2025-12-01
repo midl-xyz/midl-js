@@ -68,7 +68,7 @@ describe("executor | actions | addCompleteTxIntention", () => {
 		});
 
 		expect(txData.args[1]).toBe(
-			"0x00000000000000000000001415482f4b93ef03beb1e4c6dd7ca3fdb93be7708f",
+			"0x00000000000000000000001407185fa28850eb2b0dfdbf26f6b528a1a6b34b3f",
 		);
 	});
 
@@ -86,7 +86,7 @@ describe("executor | actions | addCompleteTxIntention", () => {
 		});
 
 		expect(txData.args[1]).toBe(
-			"0x000000000000000000a9148229402b9417ef59116b7196a8ae655fbfd9777b87",
+			"0x000000000000000000a9146699cd1847db9a8f6e1120bad6fae4d5ee13334f87",
 		);
 
 		await disconnect(midlConfigP2SH);

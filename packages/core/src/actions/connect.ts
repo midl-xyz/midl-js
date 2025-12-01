@@ -59,6 +59,10 @@ export const connect = async (
 	const connector =
 		connectors.find((c) => c.id === connectorId) ?? connectors[0];
 
+	if (!connector) {
+		throw new ConnectError("No connector found");
+	}
+
 	const accounts = await connector.connect({
 		...params,
 		network: params.network ?? network,

@@ -5,7 +5,7 @@ import { midlConfig, wrapper } from "~/__tests__/wrapper";
 import { useConfig } from "~/hooks/useConfig";
 
 describe("useConfig", () => {
-	it.skip("returns the current connection", async () => {
+	it("returns the current connection", async () => {
 		const { result, rerender } = renderHook(() => useConfig(), {
 			wrapper,
 		});
