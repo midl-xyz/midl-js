@@ -46,7 +46,7 @@ describe("useAccounts", () => {
 		expect(result.current.isConnected).toBe(false);
 	});
 
-	it.skip("should set correctly isConnected", async () => {
+	it("should set correctly isConnected", async () => {
 		const { result, rerender } = renderHook(() => useAccounts(), { wrapper });
 
 		await connect(midlConfig, {

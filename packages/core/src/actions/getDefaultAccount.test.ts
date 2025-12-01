@@ -9,13 +9,16 @@ import { getDefaultAccount } from "./getDefaultAccount";
 describe("core | actions | getDefaultAccount", async () => {
 	const { keyPairConnector } = await import("@midl/node");
 	const ordinalsAddress =
-		"bcrt1puwn2akldaf2hqv64kmkjt3lgutk4se8rlmr8rcpk2v0ygg6zqqtqzzjdq9";
-	const paymentAddress = "bcrt1qz4yz7junaupmav0ycmwheglahya7wuy0g7n6tc";
+		"bcrt1pfewlxm8meyyvgjydfu7v8j4ej64symj6ut8sf66h9germp94qgzs92e5zv";
+	const paymentAddress = "bcrt1qquv9lg5g2r4jkr0ahun0ddfg5xntxjelwjpnuw";
+	const keyPair = keyPairConnector({
+		mnemonic: __TEST__MNEMONIC__,
+	});
 
 	it("throws error if no connection", () => {
 		const config = createConfig({
 			networks: [regtest],
-			connectors: [],
+			connectors: [keyPair],
 		});
 
 		expect(() => getDefaultAccount(config)).toThrow(WalletConnectionError);
@@ -24,11 +27,7 @@ describe("core | actions | getDefaultAccount", async () => {
 	it("returns default payment account correctly if purposes is payment", async () => {
 		const config = createConfig({
 			networks: [regtest],
-			connectors: [
-				keyPairConnector({
-					mnemonic: __TEST__MNEMONIC__,
-				}),
-			],
+			connectors: [keyPair],
 		});
 
 		await connect(config, {
@@ -42,11 +41,7 @@ describe("core | actions | getDefaultAccount", async () => {
 	it("returns default ordinals account correctly if purposes is ordinals", async () => {
 		const config = createConfig({
 			networks: [regtest],
-			connectors: [
-				keyPairConnector({
-					mnemonic: __TEST__MNEMONIC__,
-				}),
-			],
+			connectors: [keyPair],
 		});
 
 		await connect(config, {
@@ -60,11 +55,7 @@ describe("core | actions | getDefaultAccount", async () => {
 	it("returns default payment account correctly if purposes is both payment and ordinals", async () => {
 		const config = createConfig({
 			networks: [regtest],
-			connectors: [
-				keyPairConnector({
-					mnemonic: __TEST__MNEMONIC__,
-				}),
-			],
+			connectors: [keyPair],
 		});
 
 		await connect(config, {
@@ -78,11 +69,7 @@ describe("core | actions | getDefaultAccount", async () => {
 	it("returns default ordinals account correctly if default purpose is set to ordinals", async () => {
 		const config = createConfig({
 			networks: [regtest],
-			connectors: [
-				keyPairConnector({
-					mnemonic: __TEST__MNEMONIC__,
-				}),
-			],
+			connectors: [keyPair],
 			defaultPurpose: AddressPurpose.Ordinals,
 		});
 
@@ -97,7 +84,7 @@ describe("core | actions | getDefaultAccount", async () => {
 	it("returns the correct account matching the predicate", async () => {
 		const config = createConfig({
 			networks: [regtest],
-			connectors: [keyPairConnector({ mnemonic: __TEST__MNEMONIC__ })],
+			connectors: [keyPair],
 		});
 
 		await connect(config, {
@@ -114,7 +101,7 @@ describe("core | actions | getDefaultAccount", async () => {
 	it("throws error if no match predicate", async () => {
 		const config = createConfig({
 			networks: [regtest],
-			connectors: [keyPairConnector({ mnemonic: __TEST__MNEMONIC__ })],
+			connectors: [keyPair],
 		});
 
 		await connect(config, {

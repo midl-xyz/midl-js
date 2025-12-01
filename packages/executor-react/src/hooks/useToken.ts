@@ -1,7 +1,5 @@
-import deployment from "@midl/contracts/deployments/0.1.1/Executor.json";
 import type { Config } from "@midl/core";
-import { executorAbi } from "@midl/executor";
-import { bytes32toRuneId } from "@midl/executor";
+import { SystemContracts, bytes32toRuneId, executorAbi } from "@midl/executor";
 import { useRune } from "@midl/react";
 import type { Address } from "viem";
 import { type UseReadContractParameters, useReadContract } from "wagmi";
@@ -51,8 +49,7 @@ export const useToken = (
 	const { data, ...bytes32State } = useReadContract({
 		abi: executorAbi,
 		functionName: "getRuneIdByAssetAddress",
-		// TODO: address depends on the network
-		address: deployment.address as `0x${string}`,
+		address: SystemContracts.Executor,
 		args: [address],
 		query: {
 			enabled: query?.enabled ? query.enabled : !!address,

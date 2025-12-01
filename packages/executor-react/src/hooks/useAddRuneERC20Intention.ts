@@ -1,32 +1,43 @@
 import type { Config } from "@midl/core";
-import { addRuneERC20 } from "@midl/executor";
-import { useConfigInternal } from "@midl/react";
+import { addRuneERC20Intention } from "@midl/executor";
+import {
+	type MidlContextStore,
+	useConfigInternal,
+	useStoreInternal,
+} from "@midl/react";
 import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
-import { usePublicClient } from "wagmi";
 
-type AddRuneERC20Response = Awaited<ReturnType<typeof addRuneERC20>>;
+type AddRuneERC20IntentionResponse = Awaited<
+	ReturnType<typeof addRuneERC20Intention>
+>;
 
 type UseAddRuneERC20Params = {
 	config?: Config;
+
+	store?: MidlContextStore;
 	/**
 	 * Mutation options for React Query.
 	 */
 	mutation?: Omit<
-		UseMutationOptions<AddRuneERC20Response, Error, AddRuneERC20Variables>,
+		UseMutationOptions<
+			AddRuneERC20IntentionResponse,
+			Error,
+			AddRuneERC20IntentionVariables
+		>,
 		"mutationFn"
 	>;
 };
 
-type AddRuneERC20Variables = {
+type AddRuneERC20IntentionVariables = {
 	/**
 	 * The name or ID of the Rune to be added.
 	 */
 	runeId: string;
 
 	/**
-	 * If true
+	 * If true, the array of intentions will be cleared before adding the new one
 	 */
-	publish?: boolean;
+	reset?: boolean;
 };
 
 /**
@@ -41,19 +52,27 @@ type AddRuneERC20Variables = {
  * const { addRuneERC20 } = useAddRuneERC20();
  * addRuneERC20({ runeId: "RUNE1234567890", publish: true });
  */
-export const useAddRuneERC20 = ({
+export const useAddRuneERC20Intention = ({
 	config: customConfig,
+	store: customStore,
 	mutation,
 }: UseAddRuneERC20Params = {}) => {
 	const config = useConfigInternal(customConfig);
-	const client = usePublicClient();
+	const store = useStoreInternal(customStore);
 
 	const { mutate, mutateAsync, ...rest } = useMutation({
-		mutationFn: async ({ runeId, publish }: AddRuneERC20Variables) => {
-			// biome-ignore lint/style/noNonNullAssertion: client is defined
-			return addRuneERC20(config, client!, runeId, {
-				publish,
+		mutationFn: async ({ runeId, reset }: AddRuneERC20IntentionVariables) => {
+			const intention = await addRuneERC20Intention(config, runeId);
+
+			store.setState((state) => {
+				return {
+					intentions: reset
+						? [intention]
+						: [...(state.intentions || []), intention],
+				};
 			});
+
+			return intention;
 		},
 		...mutation,
 	});

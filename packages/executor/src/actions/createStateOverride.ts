@@ -72,13 +72,25 @@ export const createStateOverride = async (
 		.flatMap((intention) => {
 			return (
 				intention.deposit?.runes?.map((rune) => ({
-					address: rune.address ?? evmAddress,
+					address: rune.address, // TODO: calculate ERC20 address from rune ID if missing
 					balance: rune.amount,
+					runeId: rune.id,
 				})) || []
 			);
 		})
 		.reduce(
 			(acc, rune) => {
+				if (!rune.address) {
+					logger.warn(
+						"Skipping rune with id {runeId} due to missing ERC20 address in intention",
+						{
+							runeId: rune.runeId,
+						},
+					);
+
+					return acc;
+				}
+
 				if (!acc[rune.address]) {
 					acc[rune.address] = { address: rune.address, balance: 0n };
 				}

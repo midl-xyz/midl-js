@@ -24,7 +24,7 @@ export function SendBitcoin() {
       transfers: [
         {
           amount: 10000,
-          receiver: "bcrt1qz4yz7junaupmav0ycmwheglahya7wuy0g7n6tc",
+          receiver: "bcrt1qquv9lg5g2r4jkr0ahun0ddfg5xntxjelwjpnuw",
         },
       ],
       publish: true,
@@ -37,7 +37,7 @@ export function SendBitcoin() {
         {
           runeId: "rune1", // Your rune ID
           amount: 10000n,
-          receiver: "bcrt1qz4yz7junaupmav0ycmwheglahya7wuy0g7n6tc",
+          receiver: "bcrt1qquv9lg5g2r4jkr0ahun0ddfg5xntxjelwjpnuw",
         },
       ],
       publish: true,

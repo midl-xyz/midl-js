@@ -35,7 +35,7 @@ describe("useAddTxIntention", () => {
 		expect(result.current.txIntentions?.[0]).toEqual({
 			evmTransaction: {
 				to: zeroAddress,
-				from: "0x5E5b88DEfa1A412C69644CB47E68107d97807E35",
+				from: "0x7c88591052C56f2c0F94d34d4D73fcC1fDdbAFC1",
 				value: 1n,
 				chainId: 1,
 			},

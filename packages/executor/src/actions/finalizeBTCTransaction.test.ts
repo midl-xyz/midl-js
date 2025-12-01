@@ -1,4 +1,4 @@
-import { AddressPurpose, connect, disconnect } from "@midl/core";
+import { AddressPurpose, connect, disconnect, transferBTC } from "@midl/core";
 import { http, type Chain, createWalletClient } from "viem";
 import {
 	type Mock,
@@ -24,6 +24,17 @@ vi.mock("./estimateBTCTransaction", async (importActual) => {
 	};
 });
 
+vi.mock("@midl/core", async (importOriginal) => ({
+	...(await importOriginal<typeof import("@midl/core")>()),
+	transferBTC: vi.fn().mockResolvedValue({
+		psbt: "base64-encoded-psbt",
+		tx: {
+			id: "tx-hash",
+			hex: "transaction-hex",
+		},
+	}),
+}));
+
 vi.mock("./getTSSAddress", async (importActual) => {
 	const actual = await importActual<typeof import("./getTSSAddress")>();
 	return {
@@ -46,7 +57,7 @@ describe("finalizeBTCTransaction", () => {
 
 	beforeEach(async () => {
 		await connect(midlConfig, {
-			purposes: [AddressPurpose.Payment],
+			purposes: [AddressPurpose.Payment, AddressPurpose.Ordinals],
 		});
 	});
 

@@ -43,7 +43,7 @@ describe("executor | actions | createStateOverride", async () => {
 
 		expect(override).toEqual([
 			{
-				address: "0xB4269d2BB4f19EB780f6698e1182B165729D69D5",
+				address: "0xC352456F2121D9087e91CddCFdBcc21573580D04",
 				balance: satoshisToWei(1000),
 			},
 		]);
@@ -70,7 +70,7 @@ describe("executor | actions | createStateOverride", async () => {
 
 		expect(override).toEqual([
 			{
-				address: "0xB4269d2BB4f19EB780f6698e1182B165729D69D5",
+				address: "0xC352456F2121D9087e91CddCFdBcc21573580D04",
 				balance: satoshisToWei(3000),
 			},
 		]);
@@ -98,14 +98,14 @@ describe("executor | actions | createStateOverride", async () => {
 
 		expect(override).toEqual([
 			{
-				address: "0xB4269d2BB4f19EB780f6698e1182B165729D69D5",
+				address: "0xC352456F2121D9087e91CddCFdBcc21573580D04",
 				balance: 0n,
 			},
 			{
 				address: "0x17C646bad1Ee22e6945E3fC5D9732077ED211560",
 				stateDiff: [
 					{
-						slot: "0xb5262877dcb2e05e4c2fcd36b53fa917897266d4584d1ae9ba4cda3c06a3e566",
+						slot: "0x43aa7f5234ae948b329328d8a23c0950f62f29f83d050ffb6df33834cb32aebe",
 						value: toHex(100n, { size: 32 }),
 					},
 				],
@@ -140,14 +140,14 @@ describe("executor | actions | createStateOverride", async () => {
 
 		expect(override).toEqual([
 			{
-				address: "0xB4269d2BB4f19EB780f6698e1182B165729D69D5",
+				address: "0xC352456F2121D9087e91CddCFdBcc21573580D04",
 				balance: 0n,
 			},
 			{
 				address: "0x17C646bad1Ee22e6945E3fC5D9732077ED211560",
 				stateDiff: [
 					{
-						slot: "0xb5262877dcb2e05e4c2fcd36b53fa917897266d4584d1ae9ba4cda3c06a3e566",
+						slot: "0x43aa7f5234ae948b329328d8a23c0950f62f29f83d050ffb6df33834cb32aebe",
 						value: toHex(100n, { size: 32 }),
 					},
 				],
@@ -156,7 +156,7 @@ describe("executor | actions | createStateOverride", async () => {
 				address: "0x1234567890abcdef1234567890abcdef12345678",
 				stateDiff: [
 					{
-						slot: "0xb5262877dcb2e05e4c2fcd36b53fa917897266d4584d1ae9ba4cda3c06a3e566",
+						slot: "0x43aa7f5234ae948b329328d8a23c0950f62f29f83d050ffb6df33834cb32aebe",
 						value: toHex(200n, { size: 32 }),
 					},
 				],
@@ -197,14 +197,14 @@ describe("executor | actions | createStateOverride", async () => {
 
 		expect(override).toEqual([
 			{
-				address: "0xB4269d2BB4f19EB780f6698e1182B165729D69D5",
+				address: "0xC352456F2121D9087e91CddCFdBcc21573580D04",
 				balance: 0n,
 			},
 			{
 				address: "0x17C646bad1Ee22e6945E3fC5D9732077ED211560",
 				stateDiff: [
 					{
-						slot: "0xb5262877dcb2e05e4c2fcd36b53fa917897266d4584d1ae9ba4cda3c06a3e566",
+						slot: "0x43aa7f5234ae948b329328d8a23c0950f62f29f83d050ffb6df33834cb32aebe",
 						value: toHex(300n, { size: 32 }),
 					},
 				],

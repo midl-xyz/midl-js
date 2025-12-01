@@ -1,4 +1,4 @@
-import { Psbt } from "bitcoinjs-lib";
+import { Psbt, networks } from "bitcoinjs-lib";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { __TEST__MNEMONIC__ } from "~/__tests__/keyPair";
 import { makeRandomAddress } from "~/__tests__/makeRandomAddress";
@@ -20,7 +20,7 @@ describe("core | actions | transferBTC", async () => {
 		mockServer.close();
 	});
 
-	it.skip("creates correct PSBT ", async () => {
+	it("creates correct PSBT ", async () => {
 		const config = createConfig({
 			networks: [regtest],
 			connectors: [keyPairConnector({ mnemonic: __TEST__MNEMONIC__ })],
@@ -30,7 +30,7 @@ describe("core | actions | transferBTC", async () => {
 			purposes: [AddressPurpose.Payment],
 		});
 
-		const receiver = makeRandomAddress();
+		const receiver = makeRandomAddress(networks[regtest.network]);
 
 		const data = await transferBTC(config, {
 			transfers: [
@@ -41,11 +41,13 @@ describe("core | actions | transferBTC", async () => {
 			],
 		});
 
-		const psbt = Psbt.fromBase64(data.psbt);
+		const psbt = Psbt.fromBase64(data.psbt, {
+			network: networks[regtest.network],
+		});
 
 		const [output] = psbt.txOutputs;
 
+		expect(output.value).toBe(1000n);
 		expect(output.address).toBe(receiver);
-		expect(output.value).toBe(1000);
 	});
 });

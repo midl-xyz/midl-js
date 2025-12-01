@@ -5,7 +5,7 @@ import { getEVMAddress } from "~/utils/getEVMAddress";
 
 describe("utils | getEVMAddress", () => {
 	it("should return the EVM address", async () => {
-		const expectedEVMAddress = "0x5E5b88DEfa1A412C69644CB47E68107d97807E35";
+		const expectedEVMAddress = "0x7c88591052C56f2c0F94d34d4D73fcC1fDdbAFC1";
 
 		await connect(midlConfig, {
 			purposes: [AddressPurpose.Ordinals],

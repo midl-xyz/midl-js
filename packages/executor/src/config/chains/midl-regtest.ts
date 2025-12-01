@@ -1,4 +1,4 @@
-import deployment from "@midl/contracts/deployments/0.1.1/Multicall3.json";
+import { SystemContracts } from "~/config/addresses";
 import type { Chain } from "~/config/chains/chain";
 
 export const midlRegtest: Chain = {
@@ -16,7 +16,7 @@ export const midlRegtest: Chain = {
 	},
 	contracts: {
 		multicall3: {
-			address: deployment.address as `0x${string}`,
+			address: SystemContracts.Multicall3,
 		},
 	},
 };
