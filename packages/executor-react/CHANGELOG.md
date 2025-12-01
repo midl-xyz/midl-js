@@ -1,5 +1,16 @@
 # @midl/executor-react
 
+## 3.0.0-next.4
+
+### Patch Changes
+
+- 8dad3d1: feat(executor): add rune erc20 intention
+- Updated dependencies [8dad3d1]
+- Updated dependencies [c6fd873]
+  - @midl/executor@3.0.0-next.4
+  - @midl/core@3.0.0-next.4
+  - @midl/react@3.0.0-next.4
+
 ## 3.0.0-next.3
 
 ### Patch Changes
