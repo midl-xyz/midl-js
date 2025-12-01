@@ -28,7 +28,6 @@ describe("executor | hooks | useAddRuneERC20", () => {
 
 		expect(addRuneERC20Intention).toHaveBeenCalledWith(
 			expect.any(Object),
-			expect.any(Object),
 			"RUNENAME",
 		);
 	});
@@ -45,7 +44,6 @@ describe("executor | hooks | useAddRuneERC20", () => {
 		await waitFor(() => result.current.isSuccess);
 
 		expect(addRuneERC20Intention).toHaveBeenCalledWith(
-			expect.any(Object),
 			expect.any(Object),
 			"RUNENAME",
 		);

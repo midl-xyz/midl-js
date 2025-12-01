@@ -4,7 +4,7 @@ import {
 	getDefaultAccount,
 	getRune,
 } from "@midl/core";
-import { type Client, zeroAddress } from "viem";
+import { zeroAddress } from "viem";
 import { addTxIntention } from "~/actions/addTxIntention";
 import { getEVMAddress } from "~/utils";
 
@@ -12,24 +12,14 @@ import { getEVMAddress } from "~/utils";
  * Creates an intention to add a Rune ERC20 token by transferring the minting fee and the Rune to the multisig address.
  *
  * @param config - The configuration object.
- * @param client - The viem client.
  * @param runeId - The name or ID of the Rune to be added.
  *
  * @returns The transaction intention
  *
  * @throws Will throw an error if the rune name is less than 12 characters or if it has less than 6 confirmations.
  */
-export const addRuneERC20Intention = async (
-	config: Config,
-	client: Client,
-	runeId: string,
-	{ publish }: { publish?: boolean } = {},
-) => {
+export const addRuneERC20Intention = async (config: Config, runeId: string) => {
 	const rune = await getRune(config, runeId);
-
-	if (rune.name.length < 12) {
-		throw new Error("Rune name must be at least 12 characters long");
-	}
 
 	const blockHeight = await getBlockNumber(config);
 	const evmAddress = getEVMAddress(

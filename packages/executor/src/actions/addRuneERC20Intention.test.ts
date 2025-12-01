@@ -43,10 +43,6 @@ vi.mock("@midl/core", async (importOriginal) => ({
 }));
 
 describe("executor | actions | addRune", () => {
-	const client = createPublicClient({
-		transport: http(midlRegtest.rpcUrls.default.http[0]),
-	});
-
 	beforeEach(async () => {
 		await connect(midlConfig, {
 			purposes: [AddressPurpose.Payment, AddressPurpose.Ordinals],
@@ -61,24 +57,14 @@ describe("executor | actions | addRune", () => {
 		vi.restoreAllMocks();
 	});
 
-	it("throws error if rune name is less than 12 characters", async () => {
-		await expect(() =>
-			addRuneERC20Intention(midlConfig, client, "RUNEONE"),
-		).rejects.toThrow("Rune name must be at least 12 characters long");
-	});
-
 	it("throws error if confirmations is less than 6", async () => {
 		await expect(() =>
-			addRuneERC20Intention(midlConfig, client, "JUSTETHCEDRUNE"),
+			addRuneERC20Intention(midlConfig, "JUSTETHCEDRUNE"),
 		).rejects.toThrow("Confirmations must be at least 6");
 	});
 
 	it("returns intention", async () => {
-		const result = await addRuneERC20Intention(
-			midlConfig,
-			client,
-			"RUNEWITHVALIDNAME",
-		);
+		const result = await addRuneERC20Intention(midlConfig, "RUNEWITHVALIDNAME");
 		expect(result).toBeDefined();
 		expect(result.evmTransaction).toBeDefined();
 		expect(result.deposit).toEqual(

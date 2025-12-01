@@ -6,7 +6,6 @@ import {
 	useStoreInternal,
 } from "@midl/react";
 import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
-import { usePublicClient } from "wagmi";
 
 type AddRuneERC20IntentionResponse = Awaited<
 	ReturnType<typeof addRuneERC20Intention>
@@ -59,13 +58,11 @@ export const useAddRuneERC20Intention = ({
 	mutation,
 }: UseAddRuneERC20Params = {}) => {
 	const config = useConfigInternal(customConfig);
-	const client = usePublicClient();
 	const store = useStoreInternal(customStore);
 
 	const { mutate, mutateAsync, ...rest } = useMutation({
 		mutationFn: async ({ runeId, reset }: AddRuneERC20IntentionVariables) => {
-			// biome-ignore lint/style/noNonNullAssertion: client is defined
-			const intention = await addRuneERC20Intention(config, client!, runeId);
+			const intention = await addRuneERC20Intention(config, runeId);
 
 			store.setState((state) => {
 				return {
