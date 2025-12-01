@@ -1,6 +1,6 @@
 export * from "./useAddCompleteTxIntention";
 
-export * from "./useAddRuneERC20";
+export * from "./useAddRuneERC20Intention";
 
 export * from "./useAddTxIntention";
 

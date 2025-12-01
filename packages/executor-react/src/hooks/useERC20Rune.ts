@@ -1,6 +1,5 @@
-import deployment from "@midl/contracts/deployments/0.1.1/Executor.json";
 import type { Config } from "@midl/core";
-import { executorAbi, runeIdToBytes32 } from "@midl/executor";
+import { SystemContracts, executorAbi, runeIdToBytes32 } from "@midl/executor";
 import { useRune } from "@midl/react";
 import { type UseReadContractParameters, useReadContract } from "wagmi";
 
@@ -51,8 +50,7 @@ export const useERC20Rune = (
 	const { data: erc20Address, ...erc20rest } = useReadContract({
 		abi: executorAbi,
 		functionName: "getAssetAddressByRuneId",
-		// TODO: address depends on the network
-		address: deployment.address as `0x${string}`,
+		address: SystemContracts.Executor,
 		args: [bytes32RuneId],
 		query: {
 			enabled: query?.enabled ? query.enabled : !!rune,

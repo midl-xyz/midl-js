@@ -34,6 +34,7 @@ type AddCompleteTxIntentionVariables =
 	| Parameters<typeof addCompleteTxIntention>[1]
 	// biome-ignore lint/suspicious/noConfusingVoidType: This is used to allow the function to be called without parameters.
 	| void;
+
 /**
  * Adds a complete transaction intention using the provided parameters.
  *

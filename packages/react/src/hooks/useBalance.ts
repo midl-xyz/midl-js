@@ -39,10 +39,10 @@ export const useBalance = ({
 	address,
 	query = {},
 	config: customConfig,
-}: UseBalanceParams) => {
+}: UseBalanceParams = {}) => {
 	const config = useConfigInternal(customConfig);
 
-	const { data, ...rest } = useQuery({
+	const { data = 0, ...rest } = useQuery({
 		queryKey: ["balance", address, ...(query.queryKey ?? [])],
 		queryFn: async () => {
 			const account = getDefaultAccount(config);
@@ -54,7 +54,7 @@ export const useBalance = ({
 	});
 
 	return {
-		balance: data ?? 0,
+		balance: data,
 		...rest,
 	};
 };
