@@ -81,9 +81,8 @@ describe("executor | actions | createStateOverride", async () => {
 			deposit: {
 				runes: [
 					{
-						id: "rune1",
+						id: "1:1",
 						amount: 100n,
-						address: "0x17C646bad1Ee22e6945E3fC5D9732077ED211560",
 					},
 				],
 			},
@@ -102,7 +101,7 @@ describe("executor | actions | createStateOverride", async () => {
 				balance: 0n,
 			},
 			{
-				address: "0x17C646bad1Ee22e6945E3fC5D9732077ED211560",
+				address: "0xAdAC646EE206551982085B9a4069a5cEF6D51863",
 				stateDiff: [
 					{
 						slot: "0x43aa7f5234ae948b329328d8a23c0950f62f29f83d050ffb6df33834cb32aebe",
@@ -118,14 +117,12 @@ describe("executor | actions | createStateOverride", async () => {
 			deposit: {
 				runes: [
 					{
-						id: "rune1",
+						id: "1:1",
 						amount: 100n,
-						address: "0x17C646bad1Ee22e6945E3fC5D9732077ED211560",
 					},
 					{
-						id: "rune2",
+						id: "1:2",
 						amount: 200n,
-						address: "0x1234567890abcdef1234567890abcdef12345678",
 					},
 				],
 			},
@@ -144,7 +141,7 @@ describe("executor | actions | createStateOverride", async () => {
 				balance: 0n,
 			},
 			{
-				address: "0x17C646bad1Ee22e6945E3fC5D9732077ED211560",
+				address: "0xAdAC646EE206551982085B9a4069a5cEF6D51863",
 				stateDiff: [
 					{
 						slot: "0x43aa7f5234ae948b329328d8a23c0950f62f29f83d050ffb6df33834cb32aebe",
@@ -153,7 +150,7 @@ describe("executor | actions | createStateOverride", async () => {
 				],
 			},
 			{
-				address: "0x1234567890abcdef1234567890abcdef12345678",
+				address: "0x319bef31D1e19c6447B941CBfe19da597ad9ED59",
 				stateDiff: [
 					{
 						slot: "0x43aa7f5234ae948b329328d8a23c0950f62f29f83d050ffb6df33834cb32aebe",
@@ -169,9 +166,8 @@ describe("executor | actions | createStateOverride", async () => {
 			deposit: {
 				runes: [
 					{
-						id: "rune1",
+						id: "1:1",
 						amount: 100n,
-						address: "0x17C646bad1Ee22e6945E3fC5D9732077ED211560",
 					},
 				],
 			},
@@ -180,9 +176,8 @@ describe("executor | actions | createStateOverride", async () => {
 			deposit: {
 				runes: [
 					{
-						id: "rune1",
+						id: "1:1",
 						amount: 200n,
-						address: "0x17C646bad1Ee22e6945E3fC5D9732077ED211560",
 					},
 				],
 			},
@@ -201,7 +196,7 @@ describe("executor | actions | createStateOverride", async () => {
 				balance: 0n,
 			},
 			{
-				address: "0x17C646bad1Ee22e6945E3fC5D9732077ED211560",
+				address: "0xAdAC646EE206551982085B9a4069a5cEF6D51863",
 				stateDiff: [
 					{
 						slot: "0x43aa7f5234ae948b329328d8a23c0950f62f29f83d050ffb6df33834cb32aebe",

@@ -9,6 +9,7 @@ import {
 	toHex,
 } from "viem";
 import { getBalance, readContract } from "viem/actions";
+import { getCreate2RuneAddress } from "~/actions/getCreate2RuneAddress";
 import { LoggerNamespace, getLogger } from "~/config";
 import type { TransactionIntention } from "~/types";
 import { getEVMAddress, satoshisToWei } from "~/utils";
@@ -70,31 +71,16 @@ export const createStateOverride = async (
 
 	const runes = intentions
 		.flatMap((intention) => {
-			return (
-				intention.deposit?.runes?.map((rune) => ({
-					address: rune.address, // TODO: calculate ERC20 address from rune ID if missing
-					balance: rune.amount,
-					runeId: rune.id,
-				})) || []
-			);
+			return intention.deposit?.runes || [];
 		})
 		.reduce(
 			(acc, rune) => {
-				if (!rune.address) {
-					logger.warn(
-						"Skipping rune with id {runeId} due to missing ERC20 address in intention",
-						{
-							runeId: rune.runeId,
-						},
-					);
+				const runeAddress = rune.address ?? getCreate2RuneAddress(rune.id);
 
-					return acc;
+				if (!acc[runeAddress]) {
+					acc[runeAddress] = { address: runeAddress, balance: 0n };
 				}
-
-				if (!acc[rune.address]) {
-					acc[rune.address] = { address: rune.address, balance: 0n };
-				}
-				acc[rune.address].balance += rune.balance;
+				acc[runeAddress].balance += rune.amount;
 				return acc;
 			},
 			{} as Record<string, { address: Address; balance: bigint }>,

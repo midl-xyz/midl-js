@@ -4,7 +4,6 @@ import {
 	getDefaultAccount,
 	getRune,
 } from "@midl/core";
-import { zeroAddress } from "viem";
 import { addTxIntention } from "~/actions/addTxIntention";
 import { getEVMAddress } from "~/utils";
 
@@ -45,7 +44,6 @@ export const addRuneERC20Intention = async (config: Config, runeId: string) => {
 				{
 					id: runeId,
 					amount: 1n,
-					address: zeroAddress,
 				},
 			],
 		},

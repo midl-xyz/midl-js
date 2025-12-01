@@ -39,8 +39,8 @@
 	"dependencies": {
 		"@bitcoinerlab/secp256k1": "^1.2.0",
 		"@midl/contracts": "^1.0.5",
-		"@midl/logger": "workspace:*",
 		"@midl/core": "workspace:^",
+		"@midl/logger": "workspace:*",
 		"@noble/secp256k1": "1.7.1",
 		"@scure/btc-signer": "1.4.0",
 		"bip322-js": "^2.0.0",
