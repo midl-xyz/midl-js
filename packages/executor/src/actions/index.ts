@@ -4,8 +4,6 @@ export * from "./addRuneERC20Intention";
 
 export * from "./addTxIntention";
 
-export * from "./createStateOverride";
-
 export * from "./estimateBTCTransaction";
 
 export * from "./finalizeBTCTransaction";
