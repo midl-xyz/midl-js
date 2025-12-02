@@ -1,6 +1,6 @@
 {
 	"name": "@midl/midl-js-config",
-	"version": "3.0.0-next.4",
+	"version": "3.0.0-next.5",
 	"license": "MIT",
 	"private": true,
 	"files": ["tsconfig.base.json"]
