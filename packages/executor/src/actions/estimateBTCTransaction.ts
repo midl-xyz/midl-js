@@ -2,7 +2,6 @@ import { type Config, getDefaultAccount } from "@midl/core";
 import { getLogger } from "@midl/logger";
 import {
 	type Client,
-	type ContractFunctionArgs,
 	type StateOverride,
 	encodeFunctionData,
 	toHex,
