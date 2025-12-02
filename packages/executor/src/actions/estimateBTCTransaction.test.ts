@@ -1,5 +1,6 @@
 import { AddressPurpose, connect, createConfig, disconnect } from "@midl/core";
-import { http, createWalletClient } from "viem";
+import { keyPairConnector } from "@midl/node";
+import { http, createWalletClient, zeroAddress } from "viem";
 import * as viemActions from "viem/actions";
 import {
 	type Mock,
@@ -10,6 +11,7 @@ import {
 	it,
 	vi,
 } from "vitest";
+import { __TEST__MNEMONIC__ } from "~/__tests__/keyPair";
 import { midlConfig } from "~/__tests__/midlConfig";
 import { estimateBTCTransaction } from "~/actions/estimateBTCTransaction";
 import type { TransactionIntention } from "~/types";
@@ -20,6 +22,13 @@ vi.mock("viem/actions", async (importActual) => {
 
 	return {
 		...actual,
+		readContract: vi.fn().mockImplementation(async (_, params) => {
+			if (params.functionName === "currentValidators") {
+				return zeroAddress;
+			}
+
+			throw new Error(`Unmocked readContract call: ${params.functionName}`);
+		}),
 		estimateGasMulti: vi.fn(),
 	};
 });
@@ -51,7 +60,7 @@ describe("executor | actions | estimateTransaction", () => {
 	it("throws if no network is provided", async () => {
 		const config = createConfig({
 			networks: [],
-			connectors: [],
+			connectors: [keyPairConnector({ mnemonic: __TEST__MNEMONIC__ })],
 		});
 
 		await expect(() =>
@@ -95,7 +104,7 @@ describe("executor | actions | estimateTransaction", () => {
 	});
 
 	it("doesn't mutate original intentions", async () => {
-		(viemActions.estimateGasMulti as Mock).mockResolvedValueOnce([21000n]);
+		(viemActions.estimateGasMulti as Mock).mockResolvedValueOnce([0n, 21000n]);
 
 		const originalIntentions: TransactionIntention[] = [
 			{
@@ -121,7 +130,7 @@ describe("executor | actions | estimateTransaction", () => {
 	});
 
 	it("increases estimate gas by gas multiplier", async () => {
-		(viemActions.estimateGasMulti as Mock).mockResolvedValueOnce([21000n]);
+		(viemActions.estimateGasMulti as Mock).mockResolvedValueOnce([0n, 21000n]);
 
 		const originalIntentions: TransactionIntention[] = [
 			{
@@ -153,7 +162,7 @@ describe("executor | actions | estimateTransaction", () => {
 	});
 
 	it("uses provided gas limit if available", async () => {
-		(viemActions.estimateGasMulti as Mock).mockResolvedValueOnce([21000n]);
+		(viemActions.estimateGasMulti as Mock).mockResolvedValueOnce([0n, 21000n]);
 
 		const originalIntentions: TransactionIntention[] = [
 			{
@@ -180,12 +189,13 @@ describe("executor | actions | estimateTransaction", () => {
 			walletClient,
 		);
 
-		expect(viemActions.estimateGasMulti).toHaveBeenCalledTimes(1);
+		expect(viemActions.estimateGasMulti).toHaveBeenCalledTimes(0);
 		expect(intentions[1].evmTransaction?.gas).toBe(30000n);
 	});
 
 	it("estimates gas only for transactions without gas limit", async () => {
 		(viemActions.estimateGasMulti as Mock).mockResolvedValueOnce([
+			0n,
 			21000n,
 			21000n,
 		]);
@@ -217,13 +227,13 @@ describe("executor | actions | estimateTransaction", () => {
 			walletClient,
 		);
 
-		expect(viemActions.estimateGasMulti).toHaveBeenCalledTimes(2);
+		expect(viemActions.estimateGasMulti).toHaveBeenCalledTimes(1);
 		expect(intentions[0].evmTransaction?.gas).toBe(30000n);
 		expect(intentions[1].evmTransaction?.gas).toBeDefined();
 	});
 
 	it("doesn't ensure gas with min fees", async () => {
-		(viemActions.estimateGasMulti as Mock).mockResolvedValueOnce([21000n]);
+		(viemActions.estimateGasMulti as Mock).mockResolvedValueOnce([0n, 21000n]);
 
 		const originalIntentions: TransactionIntention[] = [
 			{

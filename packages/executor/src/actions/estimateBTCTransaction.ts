@@ -1,15 +1,22 @@
 import { type Config, getDefaultAccount } from "@midl/core";
 import { getLogger } from "@midl/logger";
-import type { Client, StateOverride } from "viem";
-import { estimateGasMulti } from "viem/actions";
-import { createStateOverride } from "~/actions/createStateOverride";
+import {
+	type Client,
+	type ContractFunctionArgs,
+	type StateOverride,
+	encodeFunctionData,
+	toHex,
+} from "viem";
+import { estimateGasMulti, getBalance, readContract } from "viem/actions";
 import { getBTCFeeRate } from "~/actions/getBTCFeeRate";
-import { LoggerNamespace } from "~/config";
+import { LoggerNamespace, SystemContracts } from "~/config";
+import { executorAbi } from "~/contracts";
 import type { TransactionIntention, TransactionIntentionEVM } from "~/types";
 import {
 	aggregateIntentionRunes,
 	calculateTransactionsCost,
 	getEVMAddress,
+	runeIdToBytes32,
 	satoshisToWei,
 } from "~/utils";
 
@@ -59,6 +66,8 @@ export type EstimateBTCTransactionResponse = {
 	 */
 	fee: number;
 };
+
+const ONE_BITCOIN = 10 ** 8;
 
 /**
  * Estimates the cost and gas requirements for a Bitcoin transaction with the provided intentions.
@@ -113,6 +122,9 @@ export const estimateBTCTransaction = async (
 	const hasRunesWithdraw = runesToWithdraw.length > 0;
 	const hasRunesDeposit = runesToDeposit.length > 0;
 	const feeRate = customFeeRate ?? Number(await getBTCFeeRate(client));
+	const btcDeposit = intentions.reduce((acc, intention) => {
+		return acc + (intention.deposit?.satoshis || 0);
+	}, 0);
 
 	logger.debug(
 		"Estimating BTC transaction with fee rate: {feeRate}, hasWithdraw: {hasWithdraw}, hasRunesWithdraw: {hasRunesWithdraw}, hasRunesDeposit: {hasRunesDeposit}, runesToDeposit: {runesToDeposit}, runesToWithdraw: {runesToWithdraw}",
@@ -133,24 +145,77 @@ export const estimateBTCTransaction = async (
 	let gasLimits: bigint[] = [];
 
 	if (emvTransactionsWithoutGas.length > 0 && !options.skipEstimateGas) {
-		const stateOverride =
-			options.stateOverride ??
-			(await createStateOverride(config, client, intentions));
-
 		logger.debug(
-			"Estimating gas for EVM transactions: {evmTransactions}, stateOverride: {stateOverride}, evmAddress: {evmAddress}",
+			"Estimating gas for EVM transactions: {evmTransactions}, evmAddress: {evmAddress}",
 			{
 				evmTransactions,
-				stateOverride,
 				evmAddress,
 			},
 		);
 
+		// TODO: move to another function
+		const [validatorAddress] = await readContract(client, {
+			abi: [
+				{
+					type: "function",
+					name: "currentValidators",
+					stateMutability: "view",
+					inputs: [],
+					outputs: [
+						{
+							type: "address[]",
+							internatType: "address[]",
+							name: "",
+						},
+					],
+				},
+			],
+			address: SystemContracts.ValidatorRegistry,
+			functionName: "currentValidators",
+		});
+
+		const userBalance = await getBalance(client, {
+			address: evmAddress,
+		});
+
 		gasLimits = await estimateGasMulti(client as Client, {
-			transactions: evmTransactions,
-			stateOverride,
+			transactions: [
+				{
+					to: SystemContracts.Executor,
+					data: encodeFunctionData({
+						abi: executorAbi,
+						functionName: "acknowledgeTx",
+						args: [
+							{
+								txHash: toHex(crypto.getRandomValues(new Uint8Array(32))),
+								from: evmAddress,
+								// We deposit an extra 1 BTC to cover fees for the estimate gas call only
+								btcAmount: satoshisToWei(btcDeposit + ONE_BITCOIN),
+								assets: runesToDeposit.map((rune) => runeIdToBytes32(rune.id)),
+								amounts: runesToDeposit.map((rune) => rune.value),
+								metadata: runesToDeposit.map(() =>
+									toHex(crypto.getRandomValues(new Uint8Array(32))),
+								),
+								btcTx: toHex(crypto.getRandomValues(new Uint8Array(32))),
+							},
+						],
+					}),
+					// @ts-ignore Viem supports from field override but types are wrong
+					from: validatorAddress,
+				},
+				...evmTransactions,
+			],
+			stateOverride: options.stateOverride ?? [
+				{
+					address: evmAddress,
+					// We deposit an extra 1 BTC to cover fees for the estimate gas call only
+					balance: satoshisToWei(btcDeposit + ONE_BITCOIN) + userBalance,
+				},
+			],
 			account: evmAddress,
 		});
+
+		gasLimits.shift(); // Remove the first gas limit which is for acknowledgeTx
 
 		for (const [i, tx] of evmTransactions.entries()) {
 			if (tx.gas !== undefined) {
@@ -182,33 +247,6 @@ export const estimateBTCTransaction = async (
 		totalGas,
 		totalCost,
 	});
-
-	/**
-	 * If stateOverride is not provided, create one with minimum fees to ensure transactions pass
-	 */
-	if (!options.stateOverride && !options.skipEstimateGas) {
-		const stateOverrideWithMinFees =
-			options.stateOverride ??
-			(await createStateOverride(
-				config,
-				client,
-				intentions,
-				satoshisToWei(totalCost),
-			));
-
-		logger.debug(
-			"Creating state override with minimum fees: {stateOverrideWithMinFees}",
-			{
-				stateOverrideWithMinFees,
-			},
-		);
-
-		await estimateGasMulti(client as Client, {
-			transactions: evmTransactions,
-			stateOverride: stateOverrideWithMinFees,
-			account: evmAddress,
-		});
-	}
 
 	logger.debug("Final EVM transactions with gas limits: {evmTransactions}", {
 		evmTransactions,
