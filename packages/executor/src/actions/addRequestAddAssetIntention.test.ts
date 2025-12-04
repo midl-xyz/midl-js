@@ -40,8 +40,6 @@ describe("executor | actions | addRequestAddAssetIntention", () => {
 			addRequestAddAssetIntention(midlConfig, {
 				address: zeroAddress,
 				runeId: "TESTRUNE",
-				transactionHash:
-					"0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
 			}),
 		).resolves.toMatchObject({
 			evmTransaction: {
@@ -67,8 +65,6 @@ describe("executor | actions | addRequestAddAssetIntention", () => {
 			addRequestAddAssetIntention(midlConfig, {
 				address: zeroAddress,
 				runeId: "RUNEWITHNOSUPPLY",
-				transactionHash:
-					"0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
 			}),
 		).rejects.toThrowError(
 			"Rune with ID RUNEWITHNOSUPPLY has no supply information",

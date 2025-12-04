@@ -16,10 +16,6 @@ export type AddRequestAddAssetIntentionParams = {
 	 * The rune ID to associate with the asset
 	 */
 	runeId: string;
-	/**
-	 * ERC20 contract deployment transaction hash
-	 */
-	transactionHash: `0x${string}`;
 };
 
 type AddRequestAddAssetIntentionOptions = {
@@ -31,7 +27,7 @@ type AddRequestAddAssetIntentionOptions = {
 
 export const addRequestAddAssetIntention = async (
 	config: Config,
-	{ address, runeId, transactionHash }: AddRequestAddAssetIntentionParams,
+	{ address, runeId }: AddRequestAddAssetIntentionParams,
 	{ from }: AddRequestAddAssetIntentionOptions = {},
 ) => {
 	const rune = await getRune(config, runeId);
@@ -48,7 +44,7 @@ export const addRequestAddAssetIntention = async (
 				data: encodeFunctionData({
 					abi: executorAbi,
 					functionName: "requestAddAsset",
-					args: [address, runeIdToBytes32(rune.id), transactionHash],
+					args: [runeIdToBytes32(rune.id), address],
 				}),
 				value: satoshisToWei(RUNE_MAPPING_FEE),
 			},

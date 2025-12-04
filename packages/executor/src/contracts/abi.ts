@@ -153,12 +153,6 @@ export const executorAbi = [
 				indexed: false,
 			},
 			{
-				name: "deployTxHash",
-				internalType: "bytes32",
-				type: "bytes32",
-				indexed: false,
-			},
-			{
 				name: "decimals",
 				internalType: "uint8",
 				type: "uint8",
@@ -299,6 +293,13 @@ export const executorAbi = [
 	{
 		type: "function",
 		inputs: [],
+		name: "TREASURY_ADDRESS",
+		outputs: [{ name: "", internalType: "address", type: "address" }],
+		stateMutability: "view",
+	},
+	{
+		type: "function",
+		inputs: [],
 		name: "VALIDATORS_REGISTRY",
 		outputs: [{ name: "", internalType: "address", type: "address" }],
 		stateMutability: "view",
@@ -317,6 +318,7 @@ export const executorAbi = [
 					{ name: "assets", internalType: "bytes32[]", type: "bytes32[]" },
 					{ name: "amounts", internalType: "uint256[]", type: "uint256[]" },
 					{ name: "metadata", internalType: "bytes32[]", type: "bytes32[]" },
+					{ name: "synthAssets", internalType: "address[]", type: "address[]" },
 					{ name: "btcTx", internalType: "bytes", type: "bytes" },
 				],
 			},
@@ -339,19 +341,6 @@ export const executorAbi = [
 		name: "addAsset",
 		outputs: [],
 		stateMutability: "nonpayable",
-	},
-	{
-		type: "function",
-		inputs: [
-			{ name: "", internalType: "address", type: "address" },
-			{ name: "", internalType: "bytes32", type: "bytes32" },
-		],
-		name: "assetMappingRequest",
-		outputs: [
-			{ name: "deployTxHash", internalType: "bytes32", type: "bytes32" },
-			{ name: "midlERC20", internalType: "address", type: "address" },
-		],
-		stateMutability: "view",
 	},
 	{
 		type: "function",
@@ -449,7 +438,6 @@ export const executorAbi = [
 				type: "address",
 			},
 			{ name: "_runeId", internalType: "bytes32", type: "bytes32" },
-			{ name: "_deployTxHash", internalType: "bytes32", type: "bytes32" },
 		],
 		name: "requestAddAsset",
 		outputs: [],

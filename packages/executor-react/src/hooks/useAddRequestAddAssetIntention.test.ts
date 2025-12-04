@@ -42,8 +42,6 @@ describe("useAddRequestAddAssetIntention", () => {
 		result.current.addRequestAddAssetIntention({
 			runeId: "TESTRUNE",
 			address: zeroAddress,
-			transactionHash:
-				"0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
 		});
 
 		await waitFor(() => expect(result.current.isSuccess).toBe(true));

@@ -43,14 +43,12 @@ export const useAddRequestAddAssetsIntention = ({
 			from,
 			runeId,
 			address,
-			transactionHash,
 		}: AddRequestAddAssetIntentionVariables) => {
 			const intentionToAdd = await addRequestAddAssetIntention(
 				config,
 				{
 					runeId,
 					address,
-					transactionHash,
 				},
 				{ from },
 			);
