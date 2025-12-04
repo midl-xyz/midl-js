@@ -111,9 +111,9 @@ export class MaestroProvider
 				tx_id: etching_tx,
 			},
 			supply: {
-				current: circulating_supply,
+				current: BigInt(circulating_supply),
 				total_mints: mints.toString(),
-				premine: premine as string,
+				premine: BigInt(premine ?? 0),
 			},
 		};
 	}

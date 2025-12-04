@@ -53,6 +53,12 @@ export class RunehookProvider implements AbstractRunesProvider {
 
 		return {
 			...response.data,
+			supply: {
+				premine: parseUnits(
+					response.data.supply.premine,
+					response.data.divisibility,
+				),
+			},
 			mint_terms: response.data.mint_terms
 				? {
 						...response.data.mint_terms,
