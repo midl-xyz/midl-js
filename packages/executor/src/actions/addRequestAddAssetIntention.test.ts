@@ -4,6 +4,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { midlConfig } from "~/__tests__/midlConfig";
 import { addRequestAddAssetIntention } from "~/actions/addRequestAddAssetIntention";
 import { SystemContracts } from "~/config";
+import { satoshisToWei } from "~/utils";
 
 vi.mock("@midl/core", async (importOriginal) => ({
 	...(await importOriginal<typeof import("@midl/core")>()),
@@ -46,8 +47,10 @@ describe("executor | actions | addRequestAddAssetIntention", () => {
 			evmTransaction: {
 				to: SystemContracts.Executor,
 				data: expect.any(String),
+				value: satoshisToWei(10000),
 			},
 			deposit: {
+				satoshis: 10000,
 				runes: [
 					{
 						id: "TESTRUNE",

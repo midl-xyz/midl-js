@@ -3,7 +3,9 @@ import { encodeFunctionData } from "viem";
 import { addTxIntention } from "~/actions/addTxIntention";
 import { SystemContracts } from "~/config";
 import { executorAbi } from "~/contracts";
-import { runeIdToBytes32 } from "~/utils";
+import { runeIdToBytes32, satoshisToWei } from "~/utils";
+
+export const RUNE_MAPPING_FEE = 10 ** 4;
 
 export type AddRequestAddAssetIntentionParams = {
 	/**
@@ -48,8 +50,10 @@ export const addRequestAddAssetIntention = async (
 					functionName: "requestAddAsset",
 					args: [address, runeIdToBytes32(rune.id), transactionHash],
 				}),
+				value: satoshisToWei(RUNE_MAPPING_FEE),
 			},
 			deposit: {
+				satoshis: RUNE_MAPPING_FEE,
 				runes: [
 					{
 						id: rune.id,
