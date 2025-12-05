@@ -6,28 +6,6 @@ import { addRequestAddAssetIntention } from "~/actions/addRequestAddAssetIntenti
 import { SystemContracts } from "~/config";
 import { satoshisToWei } from "~/utils";
 
-vi.mock("@midl/core", async (importOriginal) => ({
-	...(await importOriginal<typeof import("@midl/core")>()),
-	getRune: vi.fn().mockImplementation((_, runeId) => {
-		if (runeId === "TESTRUNE") {
-			return {
-				id: "TESTRUNE",
-				supply: {
-					premine: BigInt(1000000),
-				},
-			};
-		}
-
-		if (runeId === "RUNEWITHNOSUPPLY") {
-			return {
-				id: "RUNEWITHNOSUPPLY",
-			};
-		}
-
-		throw new Error(`Rune with ID ${runeId} not found.`);
-	}),
-}));
-
 describe("executor | actions | addRequestAddAssetIntention", () => {
 	beforeEach(async () => {
 		await connect(midlConfig, {
@@ -35,11 +13,12 @@ describe("executor | actions | addRequestAddAssetIntention", () => {
 		});
 	});
 
-	it("creates an intention to add an asset with premine amount", async () => {
+	it("creates an intention to add an asset", async () => {
 		await expect(
 			addRequestAddAssetIntention(midlConfig, {
 				address: zeroAddress,
 				runeId: "TESTRUNE",
+				amount: 1000000n,
 			}),
 		).resolves.toMatchObject({
 			evmTransaction: {
@@ -58,16 +37,5 @@ describe("executor | actions | addRequestAddAssetIntention", () => {
 				],
 			},
 		});
-	});
-
-	it("throws an error if the rune has no supply information", async () => {
-		await expect(
-			addRequestAddAssetIntention(midlConfig, {
-				address: zeroAddress,
-				runeId: "RUNEWITHNOSUPPLY",
-			}),
-		).rejects.toThrowError(
-			"Rune with ID RUNEWITHNOSUPPLY has no supply information",
-		);
 	});
 });

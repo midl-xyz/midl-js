@@ -16,6 +16,11 @@ export type AddRequestAddAssetIntentionParams = {
 	 * The rune ID to associate with the asset
 	 */
 	runeId: string;
+
+	/**
+	 *
+	 */
+	amount: bigint;
 };
 
 type AddRequestAddAssetIntentionOptions = {
@@ -27,15 +32,9 @@ type AddRequestAddAssetIntentionOptions = {
 
 export const addRequestAddAssetIntention = async (
 	config: Config,
-	{ address, runeId }: AddRequestAddAssetIntentionParams,
+	{ address, runeId, amount }: AddRequestAddAssetIntentionParams,
 	{ from }: AddRequestAddAssetIntentionOptions = {},
 ) => {
-	const rune = await getRune(config, runeId);
-
-	if (!rune.supply?.premine) {
-		throw new Error(`Rune with ID ${runeId} has no supply information`);
-	}
-
 	return addTxIntention(
 		config,
 		{
@@ -44,7 +43,7 @@ export const addRequestAddAssetIntention = async (
 				data: encodeFunctionData({
 					abi: executorAbi,
 					functionName: "requestAddAsset",
-					args: [runeIdToBytes32(rune.id), address],
+					args: [address, runeIdToBytes32(runeId)],
 				}),
 				value: satoshisToWei(RUNE_MAPPING_FEE),
 			},
@@ -52,8 +51,8 @@ export const addRequestAddAssetIntention = async (
 				satoshis: RUNE_MAPPING_FEE,
 				runes: [
 					{
-						id: rune.id,
-						amount: rune.supply.premine,
+						id: runeId,
+						amount,
 						address,
 					},
 				],

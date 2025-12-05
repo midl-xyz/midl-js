@@ -1,12 +1,12 @@
 import { AddressPurpose, AddressType, type Config } from "@midl/core";
 import * as bitcoin from "bitcoinjs-lib";
 import { encodeFunctionData, maxUint256, padBytes, padHex, toHex } from "viem";
-import { getCreate2RuneAddress, getPublicKey } from "~/actions";
+import { getPublicKey } from "~/actions";
 import { addTxIntention } from "~/actions/addTxIntention";
 import { SystemContracts } from "~/config";
 import { executorAbi } from "~/contracts/abi";
 import type { TransactionIntention, Withdrawal } from "~/types";
-import { satoshisToWei } from "~/utils";
+import { getCreate2RuneAddress, satoshisToWei } from "~/utils";
 
 export const COMPLETE_TX_GAS = 200_000n;
 

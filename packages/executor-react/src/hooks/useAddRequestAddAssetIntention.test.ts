@@ -32,7 +32,7 @@ describe("useAddRequestAddAssetIntention", () => {
 	});
 
 	it("should add intention to the store", async () => {
-		const { result, rerender } = renderHook(
+		const { result } = renderHook(
 			() => useAddRequestAddAssetsIntention({ store }),
 			{
 				wrapper,
@@ -42,6 +42,7 @@ describe("useAddRequestAddAssetIntention", () => {
 		result.current.addRequestAddAssetIntention({
 			runeId: "TESTRUNE",
 			address: zeroAddress,
+			amount: 1n,
 		});
 
 		await waitFor(() => expect(result.current.isSuccess).toBe(true));
