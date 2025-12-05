@@ -1,5 +1,13 @@
 # @midl/executor
 
+## 3.0.0-next.9
+
+### Patch Changes
+
+- fix(executor): bigint reminder round up
+  - @midl/core@3.0.0-next.9
+  - @midl/logger@3.0.0-next.9
+
 ## 3.0.0-next.8
 
 ### Patch Changes

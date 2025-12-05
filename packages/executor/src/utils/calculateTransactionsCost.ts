@@ -89,8 +89,11 @@ export const calculateTransactionsCost = (
 		) as bigint;
 	}
 
+	const reminder = (GAS_PRICE * totalGas) % ONE_SATOSHI ? 1n : 0n;
+
 	const fees =
-		BigInt(Math.ceil(Number((GAS_PRICE * totalGas) / ONE_SATOSHI))) + // Fee for gas
+		(GAS_PRICE * totalGas) / ONE_SATOSHI + // Fee for gas
+		reminder + // Rounding up to the nearest satoshi
 		(scriptSize +
 			KEYGEN_TX_SIZE +
 			(hasRunesDeposit ? BTC_TX_INPUT_VBYTES : 0n) +

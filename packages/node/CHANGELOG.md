@@ -1,5 +1,11 @@
 # @midl/node
 
+## 3.0.0-next.9
+
+### Patch Changes
+
+- @midl/core@3.0.0-next.9
+
 ## 3.0.0-next.8
 
 ### Patch Changes

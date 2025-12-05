@@ -9,6 +9,10 @@ describe("calculateTransactionCost", () => {
 	});
 
 	it("withdraw", async () => {
+		expect(calculateTransactionsCost(736676n, { feeRate: 2 })).toBe(822);
+	});
+
+	it("withdraw", async () => {
 		expect(
 			calculateTransactionsCost(0n, { feeRate: 2, hasWithdraw: true }),
 		).toBe(788);
