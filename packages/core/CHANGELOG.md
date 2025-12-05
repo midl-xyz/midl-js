@@ -1,5 +1,12 @@
 # @midl/core
 
+## 3.0.0-next.6
+
+### Patch Changes
+
+- 995dd66: feat(executor): add request add asset function and hook
+  - @midl/logger@3.0.0-next.6
+
 ## 3.0.0-next.5
 
 ### Patch Changes
