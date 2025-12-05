@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getCreate2RuneAddress } from "~/actions/getCreate2RuneAddress";
+import { getCreate2RuneAddress } from "./getCreate2RuneAddress";
 
 describe("getCreate2RuneAddress", () => {
 	it("computes the correct address", async () => {

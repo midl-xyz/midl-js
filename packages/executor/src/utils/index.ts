@@ -9,3 +9,4 @@ export * from "./getEVMFromBitcoinNetwork";
 export * from "./runeIdToBytes32";
 export * from "./satoshisToWei";
 export * from "./weiToSatoshis";
+export * from "./getCreate2RuneAddress";

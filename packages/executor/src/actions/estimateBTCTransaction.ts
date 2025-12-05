@@ -5,6 +5,7 @@ import {
 	type StateOverride,
 	encodeFunctionData,
 	toHex,
+	zeroAddress,
 } from "viem";
 import { estimateGasMulti, getBalance, readContract } from "viem/actions";
 import { getBTCFeeRate } from "~/actions/getBTCFeeRate";
@@ -196,6 +197,19 @@ export const estimateBTCTransaction = async (
 									toHex(crypto.getRandomValues(new Uint8Array(32))),
 								),
 								btcTx: toHex(crypto.getRandomValues(new Uint8Array(32))),
+								synthAssets: runesToDeposit.map((rune) => {
+									if (rune.isRequestAddAsset) {
+										if (!rune.address) {
+											throw new Error(
+												"Rune address is required for requestAddAsset runes",
+											);
+										}
+
+										return rune.address;
+									}
+
+									return zeroAddress;
+								}),
 							},
 						],
 					}),

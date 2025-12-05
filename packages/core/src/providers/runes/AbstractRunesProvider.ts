@@ -36,14 +36,14 @@ export type RuneResponse = {
 		offset_end: number | null;
 	};
 	supply?: {
-		current: string;
-		minted?: string;
-		total_mints: string;
+		current?: bigint;
+		minted?: bigint;
+		total_mints?: string;
 		mint_percentage?: string;
 		mintable?: boolean;
 		burned?: string;
 		total_burns?: string;
-		premine: string;
+		premine: bigint;
 	};
 	location?: {
 		block_hash?: string;
