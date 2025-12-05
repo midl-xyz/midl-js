@@ -40,7 +40,6 @@
 		"zustand": "^5.0.1"
 	},
 	"dependencies": {
-		"@midl/contracts": "^0.1.1",
 		"@midl/core": "workspace:^",
 		"@midl/executor": "workspace:^"
 	},

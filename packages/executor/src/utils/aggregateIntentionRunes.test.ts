@@ -1,6 +1,10 @@
+import { encodeFunctionData } from "viem";
 import { describe, expect, it } from "vitest";
+import { SystemContracts } from "~/config";
+import { executorAbi } from "~/contracts";
 import type { TransactionIntention } from "~/types";
 import { aggregateIntentionRunes } from "~/utils/aggregateIntentionRunes";
+import { runeIdToBytes32 } from "~/utils/runeIdToBytes32";
 
 const mockData: TransactionIntention[] = [
 	// Standard deposit and withdraw for the same rune
@@ -63,17 +67,17 @@ describe("executor | utils | aggregateIntentionRunes", () => {
 	it("aggregates withdrawals", () => {
 		const runes = aggregateIntentionRunes(mockData, "withdraw");
 		expect(runes).toEqual([
-			{ id: "1:0", value: 150n },
-			{ id: "2:0", value: 10n },
+			{ id: "1:0", value: 150n, address: "0x123", isRequestAddAsset: false },
+			{ id: "2:0", value: 10n, address: "0x789", isRequestAddAsset: false },
 		]);
 	});
 
 	it("aggregates deposits", () => {
 		const runes = aggregateIntentionRunes(mockData, "deposit");
 		expect(runes).toEqual([
-			{ id: "1:0", value: 105n },
-			{ id: "2:0", value: 200n },
-			{ id: "3:0", value: 50n },
+			{ id: "1:0", value: 105n, address: "0xabc", isRequestAddAsset: false },
+			{ id: "2:0", value: 200n, address: "0x789", isRequestAddAsset: false },
+			{ id: "3:0", value: 50n, address: "0xdef", isRequestAddAsset: false },
 		]);
 	});
 
@@ -98,9 +102,9 @@ describe("executor | utils | aggregateIntentionRunes", () => {
 		];
 		const runes = aggregateIntentionRunes(intentions, "deposit");
 		expect(runes).toEqual([
-			{ id: "1:0", value: 15n },
-			{ id: "2:0", value: 20n },
-			{ id: "3:0", value: 30n },
+			{ id: "1:0", value: 15n, address: "0x1", isRequestAddAsset: false },
+			{ id: "2:0", value: 20n, address: "0x2", isRequestAddAsset: false },
+			{ id: "3:0", value: 30n, address: "0x3", isRequestAddAsset: false },
 		]);
 	});
 
@@ -121,7 +125,37 @@ describe("executor | utils | aggregateIntentionRunes", () => {
 			{ withdraw: { runes: [{ id: "1:0", amount: 1n, address: "0x1" }] } },
 		];
 		expect(aggregateIntentionRunes(intentions, "withdraw")).toEqual([
-			{ id: "1:0", value: 1n },
+			{ id: "1:0", value: 1n, address: "0x1", isRequestAddAsset: false },
+		]);
+	});
+
+	it("handles requestAddAsset intentions", () => {
+		const randomAddress = "0xabcdefabcdefabcdefabcdefabcdefabcdefabcd";
+
+		const intentions: TransactionIntention[] = [
+			{
+				evmTransaction: {
+					chainId: 1,
+					to: SystemContracts.Executor,
+					data: encodeFunctionData({
+						abi: executorAbi,
+						functionName: "requestAddAsset",
+						args: [randomAddress, runeIdToBytes32("1:0")],
+					}),
+				},
+				deposit: {
+					runes: [{ id: "1:0", amount: 15n, address: randomAddress }],
+				},
+			},
+		];
+		const runes = aggregateIntentionRunes(intentions, "deposit");
+		expect(runes).toEqual([
+			{
+				id: "1:0",
+				value: 15n,
+				address: randomAddress,
+				isRequestAddAsset: true,
+			},
 		]);
 	});
 });

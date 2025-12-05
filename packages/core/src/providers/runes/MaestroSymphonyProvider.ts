@@ -52,6 +52,9 @@ export class MaestroSymphonyProvider implements AbstractRunesProvider {
 			spaced_name: runeData.spaced_name,
 			symbol: runeData.symbol ?? "¤",
 			divisibility: runeData.divisibility,
+			supply: {
+				premine: BigInt(runeData.premine),
+			},
 		};
 	}
 
