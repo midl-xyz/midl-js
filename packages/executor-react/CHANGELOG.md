@@ -1,5 +1,15 @@
 # @midl/executor-react
 
+## 3.0.0-next.6
+
+### Patch Changes
+
+- 995dd66: feat(executor): add request add asset function and hook
+- Updated dependencies [995dd66]
+  - @midl/executor@3.0.0-next.6
+  - @midl/core@3.0.0-next.6
+  - @midl/react@3.0.0-next.6
+
 ## 3.0.0-next.5
 
 ### Patch Changes

@@ -1,5 +1,12 @@
 # @midl/node
 
+## 3.0.0-next.6
+
+### Patch Changes
+
+- Updated dependencies [995dd66]
+  - @midl/core@3.0.0-next.6
+
 ## 3.0.0-next.5
 
 ### Patch Changes
