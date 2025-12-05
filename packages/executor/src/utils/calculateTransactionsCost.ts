@@ -90,7 +90,7 @@ export const calculateTransactionsCost = (
 	}
 
 	const fees =
-		(GAS_PRICE * totalGas) / ONE_SATOSHI + // Fee for gas
+		BigInt(Math.ceil(Number((GAS_PRICE * totalGas) / ONE_SATOSHI))) + // Fee for gas
 		(scriptSize +
 			KEYGEN_TX_SIZE +
 			(hasRunesDeposit ? BTC_TX_INPUT_VBYTES : 0n) +
