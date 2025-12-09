@@ -47,7 +47,7 @@ describe("executor | actions | addCompleteTxIntention", () => {
 			data: intention.evmTransaction?.data!,
 		});
 
-		expect(txData.args[3]).toStrictEqual([0n]);
+		expect(txData.args[3]).toStrictEqual([maxUint256]);
 	});
 
 	it("sets BTC receiver p2wpkh", async () => {
