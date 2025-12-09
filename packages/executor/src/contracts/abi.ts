@@ -6,8 +6,17 @@ export const executorAbi = [
 	{ type: "error", inputs: [], name: "AlreadyAcknowledged" },
 	{ type: "error", inputs: [], name: "AlreadyMapped" },
 	{ type: "error", inputs: [], name: "ExceedsMaxAssets" },
+	{ type: "error", inputs: [], name: "FailedDeployment" },
 	{ type: "error", inputs: [], name: "FailedTransfer" },
 	{ type: "error", inputs: [], name: "IncorrectFeeAmount" },
+	{
+		type: "error",
+		inputs: [
+			{ name: "balance", internalType: "uint256", type: "uint256" },
+			{ name: "needed", internalType: "uint256", type: "uint256" },
+		],
+		name: "InsufficientBalance",
+	},
 	{ type: "error", inputs: [], name: "NotActiveValidator" },
 	{
 		type: "error",
@@ -91,12 +100,6 @@ export const executorAbi = [
 		type: "event",
 		anonymous: false,
 		inputs: [
-			{
-				name: "sender",
-				internalType: "address",
-				type: "address",
-				indexed: true,
-			},
 			{
 				name: "receiver",
 				internalType: "bytes32",
@@ -237,6 +240,13 @@ export const executorAbi = [
 	{
 		type: "function",
 		inputs: [],
+		name: "FEE_RATE_SCALE",
+		outputs: [{ name: "", internalType: "uint256", type: "uint256" }],
+		stateMutability: "view",
+	},
+	{
+		type: "function",
+		inputs: [],
 		name: "GAS_PRICE",
 		outputs: [{ name: "", internalType: "uint256", type: "uint256" }],
 		stateMutability: "view",
@@ -267,6 +277,13 @@ export const executorAbi = [
 		inputs: [],
 		name: "RUNES_MAGIC_VALUE",
 		outputs: [{ name: "", internalType: "uint256", type: "uint256" }],
+		stateMutability: "view",
+	},
+	{
+		type: "function",
+		inputs: [],
+		name: "RUNE_IMPLEMENTATION",
+		outputs: [{ name: "", internalType: "address", type: "address" }],
 		stateMutability: "view",
 	},
 	{
@@ -324,7 +341,7 @@ export const executorAbi = [
 			},
 		],
 		name: "acknowledgeTx",
-		outputs: [],
+		outputs: [{ name: "", internalType: "uint256", type: "uint256" }],
 		stateMutability: "nonpayable",
 	},
 	{
@@ -373,10 +390,11 @@ export const executorAbi = [
 			{ name: "_receiverBTC", internalType: "bytes32", type: "bytes32" },
 			{ name: "_assets", internalType: "address[]", type: "address[]" },
 			{ name: "_amounts", internalType: "uint256[]", type: "uint256[]" },
+			{ name: "_btcToWithdraw", internalType: "uint256", type: "uint256" },
 		],
 		name: "completeTx",
 		outputs: [{ name: "", internalType: "uint256", type: "uint256" }],
-		stateMutability: "payable",
+		stateMutability: "nonpayable",
 	},
 	{
 		type: "function",
