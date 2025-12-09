@@ -32,7 +32,9 @@ export const addCompleteTxIntention = async (
 
 	const assetsToWithdraw = typeof withdraw === "object" ? withdraw?.runes : [];
 	const satoshisToWithdraw =
-		typeof withdraw === "object" ? (withdraw?.satoshis ?? 0) : 0;
+		typeof withdraw === "object"
+			? (withdraw?.satoshis ?? Number.MAX_SAFE_INTEGER)
+			: Number.MAX_SAFE_INTEGER;
 
 	const runesReceiver = accounts?.find(
 		(it) => it.purpose === AddressPurpose.Ordinals,
@@ -101,10 +103,11 @@ export const addCompleteTxIntention = async (
 			to: SystemContracts.Executor,
 			// We set the gas limit to a high value to ensure the transaction goes through
 			gas: COMPLETE_TX_GAS,
-			value: satoshisToWei(satoshisToWithdraw),
+
 			data: encodeFunctionData({
 				abi: executorAbi,
 				functionName: "completeTx",
+
 				args: [
 					receiver,
 					receiverBTC,
@@ -112,6 +115,9 @@ export const addCompleteTxIntention = async (
 						(rune) => rune.address ?? getCreate2RuneAddress(rune.id),
 					) ?? [],
 					assetsToWithdraw?.map((rune) => rune.amount) ?? [],
+					satoshisToWithdraw === Number.MAX_SAFE_INTEGER
+						? maxUint256
+						: satoshisToWei(satoshisToWithdraw),
 				],
 			}),
 		},
