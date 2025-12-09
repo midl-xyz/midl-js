@@ -111,10 +111,7 @@ export const addCompleteTxIntention = async (
 					assetsToWithdraw?.map(
 						(rune) => rune.address ?? getCreate2RuneAddress(rune.id),
 					) ?? [],
-					assetsToWithdraw?.map((rune) =>
-						// TODO: When new contracts are deployed, we should use the actual rune amount. For we indicate 0n as maxUint256 to withdraw all available runes.
-						rune.amount === maxUint256 ? 0n : rune.amount,
-					) ?? [],
+					assetsToWithdraw?.map((rune) => rune.amount) ?? [],
 				],
 			}),
 		},

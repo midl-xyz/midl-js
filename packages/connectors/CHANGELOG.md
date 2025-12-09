@@ -1,5 +1,11 @@
 # @midl/connectors
 
+## 3.0.0-next.10
+
+### Patch Changes
+
+- @midl/core@3.0.0-next.10
+
 ## 3.0.0-next.9
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 {
 	"name": "@midl/executor",
-	"version": "3.0.0-next.9",
+	"version": "3.0.0-next.10",
 	"license": "MIT",
 	"scripts": {
 		"build": "pnpm run clean && tspc --project tsconfig.esm.json && tspc --project tsconfig.cjs.json",
