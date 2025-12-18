@@ -1,10 +1,11 @@
 import { randomBytes } from "node:crypto";
-import { http, HttpResponse, type RequestHandler } from "msw";
+import { http, HttpResponse, ws } from "msw";
 import { setupServer } from "msw/node";
-import type { RuneUTXO, UTXO } from "~/providers";
-import { operations } from "~/providers/runes/scheme/runehook";
+import type { UTXO } from "~/providers";
 
-const handlers: RequestHandler[] = [
+const wsApi = ws.link("wss://mempool.regtest.midl.xyz/api/v1/ws");
+
+const handlers = [
 	http.get("https://mempool.regtest.midl.xyz/api/v1/fees/recommended", () => {
 		return HttpResponse.json({
 			fastestFee: 1,
@@ -86,7 +87,29 @@ const handlers: RequestHandler[] = [
 	}),
 
 	http.get("https://mempool.regtest.midl.xyz/api/blocks/tip/height", () => {
-		return HttpResponse.text("0");
+		return HttpResponse.text("101");
+	}),
+	wsApi.addEventListener("connection", ({ server, client }) => {
+		server.connect();
+
+		client.addEventListener("message", (event) => {
+			event.preventDefault();
+			const data = JSON.parse(event.data.toString());
+
+			client.send(
+				JSON.stringify({
+					txPosition: {
+						txid: Array.isArray(data["track-tx"])
+							? data["track-tx"]
+							: [data["track-tx"]],
+						position: {
+							block: 100,
+							vsize: 250,
+						},
+					},
+				}),
+			);
+		});
 	}),
 ];
 

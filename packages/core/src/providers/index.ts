@@ -1,3 +1,3 @@
 export * from "./AbstractProvider";
-export * from "./MempoolSpaceProvider";
+export * from "./mempool";
 export * from "./runes";
