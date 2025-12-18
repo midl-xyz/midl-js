@@ -1,5 +1,12 @@
 # @midl/react
 
+## 3.0.0-next.13
+
+### Patch Changes
+
+- Updated dependencies [8593c2e]
+  - @midl/core@3.0.0-next.13
+
 ## 3.0.0-next.12
 
 ### Patch Changes

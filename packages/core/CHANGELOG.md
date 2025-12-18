@@ -1,5 +1,12 @@
 # @midl/core
 
+## 3.0.0-next.13
+
+### Patch Changes
+
+- 8593c2e: feat(core): add ws support for mempool.space provider
+  - @midl/logger@3.0.0-next.13
+
 ## 3.0.0-next.12
 
 ### Patch Changes
