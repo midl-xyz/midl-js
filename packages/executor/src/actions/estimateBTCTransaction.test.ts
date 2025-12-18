@@ -35,7 +35,7 @@ vi.mock("viem/actions", async (importActual) => {
 
 vi.mock("~/actions/getBTCFeeRate", async (importOriginal) => ({
 	...(await importOriginal<typeof import("~/actions/getBTCFeeRate")>()),
-	getBTCFeeRate: vi.fn().mockResolvedValue(2n),
+	getBTCFeeRate: vi.fn().mockResolvedValue(2000n),
 }));
 
 describe("executor | actions | estimateTransaction", () => {
@@ -309,5 +309,33 @@ describe("executor | actions | estimateTransaction", () => {
 
 		expect(viemActions.estimateGasMulti).not.toHaveBeenCalled();
 		expect(intentions[0].evmTransaction?.gas).toBeUndefined();
+	});
+
+	it("returns correct fee estimation", async () => {
+		(viemActions.estimateGasMulti as Mock).mockResolvedValueOnce([0n, 21000n]);
+
+		const originalIntentions: TransactionIntention[] = [
+			{
+				deposit: {
+					satoshis: 1000,
+				},
+				evmTransaction: {
+					to: "0x0000000000000000000000000000000000000001",
+					value: 0n,
+					chainId: chain.id,
+				},
+			},
+		];
+
+		const { fee } = await estimateBTCTransaction(
+			midlConfig,
+			originalIntentions,
+			walletClient,
+			{
+				feeRate: 2.59,
+			},
+		);
+
+		expect(fee).toBe(1125);
 	});
 });

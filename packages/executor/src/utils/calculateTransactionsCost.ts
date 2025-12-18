@@ -99,7 +99,7 @@ export const calculateTransactionsCost = (
 			(hasRunesDeposit ? BTC_TX_INPUT_VBYTES : 0n) +
 			BigInt(assetsToWithdrawSize) * BTC_EDICT_SIZE +
 			(assetsToWithdrawSize > 0 ? RUNES_MAGIC_VALUE : 0n)) *
-			BigInt(feeRate);
+			BigInt(Math.ceil(feeRate));
 
 	return Number(fees);
 };

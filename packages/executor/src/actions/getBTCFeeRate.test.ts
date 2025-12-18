@@ -7,7 +7,7 @@ vi.mock("viem/actions", async (importActual) => {
 	const actual = await importActual<typeof import("viem/actions")>();
 	return {
 		...actual,
-		readContract: vi.fn().mockImplementation(async () => 123n),
+		readContract: vi.fn().mockImplementation(async () => 21200n),
 	};
 });
 
@@ -20,6 +20,6 @@ describe("executor | actions | getBTCFeeRate", () => {
 
 		const result = await getBTCFeeRate(client);
 
-		expect(result).toBe(123n);
+		expect(result).toBe(22n);
 	});
 });
