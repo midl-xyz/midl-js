@@ -1,5 +1,11 @@
 # @midl/react
 
+## 3.0.0-next.12
+
+### Patch Changes
+
+- @midl/core@3.0.0-next.12
+
 ## 3.0.0-next.11
 
 ### Patch Changes

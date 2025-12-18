@@ -2,6 +2,7 @@ import type { Client } from "viem";
 import { readContract } from "viem/actions";
 import { SystemContracts } from "~/config";
 import { globalParamsAbi } from "~/contracts/abi";
+import { ceilDiv } from "~/utils";
 
 export type GetBTCFeeRateResponse = bigint;
 
@@ -16,9 +17,11 @@ export type GetBTCFeeRateResponse = bigint;
  * const feeRate = await getBTCFeeRate(config, client);
  */
 export const getBTCFeeRate = async (client: Client) => {
-	return readContract(client, {
+	const feeRate = await readContract(client, {
 		address: SystemContracts.GlobalParams,
 		abi: globalParamsAbi,
 		functionName: "btcFeeRate",
 	});
+
+	return ceilDiv(feeRate as bigint, 1000n);
 };
