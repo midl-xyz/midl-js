@@ -5,8 +5,9 @@ import type {
 	TransactionStatusResponse,
 	UTXO,
 } from "~/providers/AbstractProvider";
+import { MempoolSpaceWSProvider } from "~/providers/mempool/MempoolSpaceWSProvider";
 
-export const mempoolSpaceRPC: Record<BitcoinNetwork["id"], string> = {
+export const mempoolSpaceRPC: Record<Partial<BitcoinNetwork["id"]>, string> = {
 	mainnet: "https://mempool.space",
 	testnet: "https://mempool.space/testnet",
 	testnet4: "https://mempool.space/testnet4",
@@ -14,13 +15,29 @@ export const mempoolSpaceRPC: Record<BitcoinNetwork["id"], string> = {
 	signet: "https://mempool.space/signet",
 };
 
+export const mempoolSpaceWS: Record<Partial<BitcoinNetwork["id"]>, string> = {
+	mainnet: "wss://mempool.space/api/v1/ws",
+	testnet: "wss://mempool.space/testnet/api/v1/ws",
+	testnet4: "wss://mempool.space/testnet4/api/v1/ws",
+	regtest: "wss://mempool.regtest.midl.xyz/api/v1/ws",
+	signet: "wss://mempool.space/signet/api/v1/ws",
+};
+
 export class MempoolSpaceProvider implements AbstractProvider {
+	private readonly wsProvider: MempoolSpaceWSProvider;
+
 	constructor(
 		private readonly rpcUrlMap: Record<
-			BitcoinNetwork["id"],
+			Partial<BitcoinNetwork["id"]>,
 			string
 		> = mempoolSpaceRPC,
-	) {}
+		private readonly wsUrlMap: Record<
+			Partial<BitcoinNetwork["id"]>,
+			string
+		> = mempoolSpaceWS,
+	) {
+		this.wsProvider = new MempoolSpaceWSProvider(this.wsUrlMap);
+	}
 
 	async broadcastTransaction(
 		network: BitcoinNetwork,
@@ -109,6 +126,7 @@ export class MempoolSpaceProvider implements AbstractProvider {
 		const data: string = await response.text();
 		return data;
 	}
+
 	async getUTXOs(network: BitcoinNetwork, address: string): Promise<UTXO[]> {
 		const url = `${this.getApURL(network)}/api/address/${address}/utxo`;
 
@@ -123,7 +141,29 @@ export class MempoolSpaceProvider implements AbstractProvider {
 		return utxos;
 	}
 
+	async waitForTransaction(
+		network: BitcoinNetwork,
+		txid: string,
+		options?: { timeoutMs?: number },
+	): Promise<number> {
+		const txPosition = await this.wsProvider.waitForTransaction(
+			network,
+			txid,
+			options,
+		);
+
+		if (!txPosition.position?.block) {
+			throw new Error(`Transaction ${txid} was not confirmed in a block.`);
+		}
+
+		return txPosition.position.block;
+	}
+
 	private getApURL(network: BitcoinNetwork) {
-		return this.rpcUrlMap[network.id] || this.rpcUrlMap.mainnet;
+		if (!this.rpcUrlMap[network.id]) {
+			throw new Error(`Unsupported network: ${network.id}`);
+		}
+
+		return this.rpcUrlMap[network.id];
 	}
 }

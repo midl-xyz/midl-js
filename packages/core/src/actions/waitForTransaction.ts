@@ -46,16 +46,32 @@ export const waitForTransaction = (
 			}
 
 			try {
-				const data = await provider.getTransactionStatus(network, txId);
+				if ("waitForTransaction" in provider && provider.waitForTransaction) {
+					const blockHeight = await provider.waitForTransaction(network, txId);
 
-				if (data.confirmed) {
 					const currentBlockHeight = await getBlockNumber(config);
-					const currentConfirmations =
-						currentBlockHeight - data.block_height + 1;
+					const currentConfirmations = currentBlockHeight - blockHeight + 1;
 
 					if (currentConfirmations >= confirmations) {
 						confirmed = currentConfirmations;
 						break;
+					}
+				} else {
+					console.warn(
+						"Provider does not support waitForTransaction, falling back to polling getTransactionStatus",
+					);
+
+					const data = await provider.getTransactionStatus(network, txId);
+
+					if (data.confirmed) {
+						const currentBlockHeight = await getBlockNumber(config);
+						const currentConfirmations =
+							currentBlockHeight - data.block_height + 1;
+
+						if (currentConfirmations >= confirmations) {
+							confirmed = currentConfirmations;
+							break;
+						}
 					}
 				}
 			} catch (error) {

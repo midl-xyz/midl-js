@@ -71,4 +71,10 @@ export interface AbstractProvider {
 	): Promise<TransactionStatusResponse>;
 
 	getTransactionHex(network: BitcoinNetwork, txid: string): Promise<string>;
+
+	waitForTransaction?(
+		network: BitcoinNetwork,
+		txid: string,
+		options?: { timeoutMs?: number },
+	): Promise<number>;
 }
