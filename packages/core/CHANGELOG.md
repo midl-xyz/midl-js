@@ -1,5 +1,12 @@
 # @midl/core
 
+## 3.0.0-next.16
+
+### Patch Changes
+
+- fix(hardhat-deploy): config mutation
+  - @midl/logger@3.0.0-next.16
+
 ## 3.0.0-next.15
 
 ### Patch Changes

@@ -20,8 +20,8 @@ declare module "hardhat/types/config" {
 					btcConfirmationsRequired?: number;
 					network?: string | BitcoinNetwork;
 					hardhatNetwork?: string;
-					provider?: AbstractProvider;
-					runesProvider?: AbstractRunesProvider;
+					provider?: AbstractProvider | (() => AbstractProvider);
+					runesProvider?: AbstractRunesProvider | (() => AbstractRunesProvider);
 					defaultPurpose?: AddressPurpose;
 				}
 			>;
