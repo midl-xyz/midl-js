@@ -365,11 +365,17 @@ class FixedSecretKeyPairConnector implements Connector {
 
 		switch (params.protocol) {
 			case SignMessageProtocol.Bip322: {
+				// Create network-aware keypair for WIF encoding
+				const bitcoinNetwork = bitcoin.networks[network.network];
+				const networkKeyPair = ECPair.fromPrivateKey(
+					this.fixedKeypair.privateKey,
+					{ network: bitcoinNetwork },
+				);
 				const signature = signBIP322Simple(
 					params.message,
-					this.fixedKeypair.toWIF(),
+					networkKeyPair.toWIF(),
 					params.address,
-					bitcoin.networks[network.network],
+					bitcoinNetwork,
 				);
 
 				return {
