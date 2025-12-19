@@ -1,5 +1,12 @@
 # @midl/connectors
 
+## 3.0.0-next.14
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl/core@3.0.0-next.14
+
 ## 3.0.0-next.13
 
 ### Patch Changes

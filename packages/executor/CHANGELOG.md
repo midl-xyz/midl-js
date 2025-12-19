@@ -1,5 +1,14 @@
 # @midl/executor
 
+## 3.0.0-next.14
+
+### Patch Changes
+
+- fix(core): ws mempool
+- Updated dependencies
+  - @midl/core@3.0.0-next.14
+  - @midl/logger@3.0.0-next.14
+
 ## 3.0.0-next.13
 
 ### Patch Changes
