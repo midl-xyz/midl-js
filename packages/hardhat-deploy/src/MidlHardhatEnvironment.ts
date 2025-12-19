@@ -147,11 +147,7 @@ export class MidlHardhatEnvironment {
 		let connector: ReturnType<typeof keyPairConnector>;
 
 		if (this.userConfig.customConnector) {
-			// Clone the connector to avoid mutating frozen Hardhat config
-			connector = Object.create(
-				Object.getPrototypeOf(this.userConfig.customConnector),
-				Object.getOwnPropertyDescriptors(this.userConfig.customConnector),
-			);
+			connector = this.userConfig.customConnector(accountIndex);
 		} else if (this.userConfig.mnemonic) {
 			connector = keyPairConnector({
 				mnemonic: this.userConfig.mnemonic,

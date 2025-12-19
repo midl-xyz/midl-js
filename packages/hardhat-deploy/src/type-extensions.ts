@@ -17,7 +17,7 @@ declare module "hardhat/types/config" {
 				string | "default",
 				{
 					mnemonic?: string;
-					customConnector?: ConnectorWithMetadata;
+					customConnector?: (accountIndex: number) => ConnectorWithMetadata;
 					confirmationsRequired?: number;
 					btcConfirmationsRequired?: number;
 					network?: string | BitcoinNetwork;
