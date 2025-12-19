@@ -269,3 +269,205 @@ export const keyPairConnector: CreateConnectorFn<{
 		},
 		metadata,
 	);
+
+/**
+ * FixedSecretKeyPairConnector - uses a raw private key instead of BIP32 derivation.
+ *
+ * NOTE: This should only be used by developers with existing deployments on other
+ * EVM networks who wish to have consistent CREATE2 behavior to recreate the same
+ * EVM addresses as on other EVM networks.
+ */
+class FixedSecretKeyPairConnector implements Connector {
+	public readonly id = "fixedSecretKeyPair";
+	private readonly fixedKeypair: ReturnType<typeof ECPair.fromPrivateKey>;
+	private readonly publicKey: string;
+	private network: BitcoinNetwork | null = null;
+
+	constructor(
+		privateKey: string,
+		private readonly paymentAddressType: AddressType,
+	) {
+		this.fixedKeypair = ECPair.fromPrivateKey(Buffer.from(privateKey, "hex"));
+		this.publicKey = this.fixedKeypair.publicKey.toString("hex");
+	}
+
+	async connect({
+		purposes,
+		network,
+	}: ConnectorConnectParams): Promise<Account[]> {
+		this.network = network;
+
+		const bitcoinNetwork = bitcoin.networks[network.network];
+		const accounts: Account[] = [];
+
+		if (purposes.includes(AddressPurpose.Ordinals)) {
+			const p2tr = bitcoin.payments.p2tr({
+				internalPubkey: Buffer.from(extractXCoordinate(this.publicKey), "hex"),
+				network: bitcoinNetwork,
+			});
+
+			accounts.push({
+				// biome-ignore lint/style/noNonNullAssertion: <explanation>
+				address: p2tr.address!,
+				purpose: AddressPurpose.Ordinals,
+				publicKey: this.publicKey,
+				addressType: AddressType.P2TR,
+			});
+		}
+
+		if (purposes.includes(AddressPurpose.Payment)) {
+			if (this.paymentAddressType === AddressType.P2SH_P2WPKH) {
+				const p2sh = bitcoin.payments.p2sh({
+					redeem: bitcoin.payments.p2wpkh({
+						pubkey: this.fixedKeypair.publicKey,
+						network: bitcoinNetwork,
+					}),
+					network: bitcoinNetwork,
+				});
+
+				accounts.push({
+					// biome-ignore lint/style/noNonNullAssertion: <explanation>
+					address: p2sh.address!,
+					purpose: AddressPurpose.Payment,
+					publicKey: this.publicKey,
+					addressType: AddressType.P2SH_P2WPKH,
+				});
+			}
+
+			if (this.paymentAddressType === AddressType.P2WPKH) {
+				const p2wpkh = bitcoin.payments.p2wpkh({
+					pubkey: this.fixedKeypair.publicKey,
+					network: bitcoinNetwork,
+				});
+
+				accounts.push({
+					// biome-ignore lint/style/noNonNullAssertion: <explanation>
+					address: p2wpkh.address!,
+					purpose: AddressPurpose.Payment,
+					publicKey: this.publicKey,
+					addressType: AddressType.P2WPKH,
+				});
+			}
+		}
+
+		return accounts;
+	}
+
+	async signMessage(
+		params: SignMessageParams,
+		network: BitcoinNetwork,
+	): Promise<SignMessageResponse> {
+		const addressType = getAddressType(params.address);
+
+		if (!this.fixedKeypair.privateKey) {
+			throw new Error("No private key found in the key pair.");
+		}
+
+		switch (params.protocol) {
+			case SignMessageProtocol.Bip322: {
+				const signature = signBIP322Simple(
+					params.message,
+					this.fixedKeypair.toWIF(),
+					params.address,
+					bitcoin.networks[network.network],
+				);
+
+				return {
+					signature: signature as string,
+					address: params.address,
+					protocol: SignMessageProtocol.Bip322,
+				};
+			}
+
+			case SignMessageProtocol.Ecdsa: {
+				const signature = bitcoinMessage.sign(
+					params.message,
+					this.fixedKeypair.privateKey,
+					this.fixedKeypair.compressed,
+					{
+						segwitType:
+							addressType === AddressType.P2SH_P2WPKH
+								? "p2sh(p2wpkh)"
+								: "p2wpkh",
+					},
+				);
+
+				return {
+					signature: signature.toString("base64"),
+					address: params.address,
+					protocol: SignMessageProtocol.Ecdsa,
+				};
+			}
+
+			default:
+				throw new Error("Unsupported protocol");
+		}
+	}
+
+	async signPSBT(
+		{
+			psbt: psbtData,
+			signInputs,
+			disableTweakSigner,
+		}: Omit<SignPSBTParams, "publish">,
+		network: BitcoinNetwork,
+	) {
+		const bitcoinNetwork = bitcoin.networks[network.network];
+
+		const psbt = Psbt.fromBase64(psbtData, {
+			network: bitcoinNetwork,
+		});
+
+		for (const [address, inputs] of Object.entries(signInputs)) {
+			const type = getAddressType(address);
+
+			switch (type) {
+				case AddressType.P2WPKH:
+				case AddressType.P2SH_P2WPKH: {
+					for (const input of inputs) {
+						psbt.signInput(input, this.fixedKeypair);
+					}
+					break;
+				}
+
+				case AddressType.P2TR: {
+					for (const input of inputs) {
+						const signer = this.fixedKeypair.tweak(
+							Buffer.from(
+								bitcoin.crypto.taggedHash(
+									"TapTweak",
+									Buffer.from(extractXCoordinate(this.publicKey), "hex"),
+								),
+							),
+						);
+
+						psbt.signInput(
+							input,
+							disableTweakSigner ? this.fixedKeypair : signer,
+						);
+					}
+					break;
+				}
+			}
+		}
+
+		return {
+			psbt: psbt.toBase64(),
+		};
+	}
+}
+
+export const fixedSecretKeyPairConnector: CreateConnectorFn<{
+	privateKey: string;
+	paymentAddressType?: AddressType;
+}> = ({ metadata, privateKey, paymentAddressType = AddressType.P2WPKH }) =>
+	createConnector(
+		{
+			metadata: {
+				name: "FixedSecretKeyPair",
+			},
+			create: () =>
+				new FixedSecretKeyPairConnector(privateKey, paymentAddressType),
+		},
+		metadata,
+	);
