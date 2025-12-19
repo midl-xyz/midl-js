@@ -29,6 +29,6 @@ describe("core | actions | waitForTransaction", async () => {
 	});
 
 	it("should wait for a transaction", async () => {
-		expect(await waitForTransaction(config, txId)).toBeGreaterThanOrEqual(1);
+		expect(await waitForTransaction(config, txId, 1)).toBeGreaterThanOrEqual(1);
 	});
 });

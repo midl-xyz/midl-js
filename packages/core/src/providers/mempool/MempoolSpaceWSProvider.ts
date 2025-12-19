@@ -1,263 +1,185 @@
 import type { BitcoinNetwork } from "~/createConfig";
 
-export type MempoolSpaceTxPosition = {
-	txid?: string[];
-	position?: {
-		block: number;
-		vsize: number;
-	};
-	[key: string]: unknown;
+type Action = "track-tx" | "blocks";
+
+type ActionDataMap = {
+	"track-tx": string;
+	blocks: undefined;
 };
 
-type MempoolSpaceWSIncoming = Record<string, unknown>;
-type TrackTxHandler = (update: MempoolSpaceTxPosition) => void;
+type Block = {
+	height: number;
+};
 
-type ReconnectOptions = {
-	baseDelayMs?: number;
-	maxDelayMs?: number;
-	maxJitterMs?: number;
+type ActionResponseMap = {
+	"track-tx": {
+		txConfirmed: string;
+	};
+	blocks:
+		| {
+				block: Block;
+		  }
+		| { blocks: Block[] };
+};
+
+const messageToActionMap: Record<string, Action> = {
+	txConfirmed: "track-tx",
+	block: "blocks",
+	blocks: "blocks",
 };
 
 export class MempoolSpaceWSProvider {
-	private readonly trackedTxHandlers: Map<string, Set<TrackTxHandler>> =
-		new Map();
-	private ws: WebSocket | null = null;
-	private connectedNetworkId: BitcoinNetwork["id"] | null = null;
-	private reconnectTimer: ReturnType<typeof setTimeout> | null = null;
-	private reconnectAttempt = 0;
-	private manuallyClosed = false;
-	private readonly reconnectOptions: Required<ReconnectOptions>;
+	private readonly ws: Partial<Record<BitcoinNetwork["id"], WebSocket>> = {};
+	private readonly connectionPromises: Partial<
+		Record<BitcoinNetwork["id"], Promise<WebSocket>>
+	> = {};
+	private readonly listeners: Partial<
+		Record<
+			BitcoinNetwork["id"],
+			// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+			Partial<Record<Action, Array<(data: any) => void>>>
+		>
+	> = {};
+	private readonly messageHandlers: Partial<
+		Record<BitcoinNetwork["id"], (event: MessageEvent) => void>
+	> = {};
 
 	constructor(
-		private readonly wsUrlMap: Record<BitcoinNetwork["id"], string>,
-		options: ReconnectOptions = {},
-	) {
-		this.reconnectOptions = {
-			baseDelayMs: 500,
-			maxDelayMs: 15_000,
-			maxJitterMs: 250,
-			...options,
-		};
-	}
+		private readonly wsUrlMap: Partial<Record<BitcoinNetwork["id"], string>>,
+	) {}
 
-	waitForTransaction = async (
+	async subscribe<T extends Action>(
 		network: BitcoinNetwork,
-		txid: string,
-		{ timeoutMs = 15 * 60 * 1000 }: { timeoutMs?: number } = {},
-	): Promise<MempoolSpaceTxPosition> => {
-		return new Promise((resolve, reject) => {
-			let timeout: ReturnType<typeof setTimeout> | null = null;
-			const unsubscribe = this.trackTx(network, txid, (update) => {
-				if (timeout) clearTimeout(timeout);
-				unsubscribe();
-				resolve(update);
-			});
+		action: T,
+		data: ActionDataMap[T],
+		callback: (data: ActionResponseMap[T]) => void,
+	): Promise<() => void> {
+		const ws = await this.connect(network);
 
-			if (timeoutMs > 0) {
-				timeout = setTimeout(() => {
-					unsubscribe();
-					reject(
-						new Error(`Timed out waiting for track-tx update for ${txid}`),
-					);
-				}, timeoutMs);
-			}
-		});
-	};
+		this.listeners[network.id] = this.listeners[network.id] || {};
+		// biome-ignore lint/style/noNonNullAssertion: <explanation>
+		this.listeners[network.id]![action] =
+			// biome-ignore lint/style/noNonNullAssertion: <explanation>
+			this.listeners[network.id]![action] || [];
 
-	private trackTx(
-		network: BitcoinNetwork,
-		txid: string,
-		handler: TrackTxHandler,
-	): () => void {
-		const handlers = this.trackedTxHandlers.get(txid) ?? new Set();
-		handlers.add(handler);
-		this.trackedTxHandlers.set(txid, handlers);
+		// biome-ignore lint/style/noNonNullAssertion: <explanation>
+		this.listeners[network.id]![action]!.push(callback);
 
-		this.ensureConnected(network);
-		this.sendTrackTx(txid);
+		if (!this.messageHandlers[network.id]) {
+			const handler = (event: MessageEvent) => {
+				const messageData = JSON.parse(event.data.toString());
+
+				const messageDataKeys = Object.keys(messageData);
+				if (messageDataKeys.length === 0) {
+					return;
+				}
+
+				const act = messageToActionMap[messageDataKeys[0]];
+
+				const listeners = this.listeners[network.id]?.[act as Action] || [];
+				for (const listener of listeners) {
+					listener(messageData);
+				}
+			};
+
+			this.messageHandlers[network.id] = handler;
+			ws.addEventListener("message", handler);
+		}
+
+		if (action === "blocks") {
+			ws.send(JSON.stringify({ action: "want", data: ["blocks"] }));
+		} else {
+			ws.send(
+				JSON.stringify({
+					[action]: data,
+				}),
+			);
+		}
 
 		return () => {
-			const currentHandlers = this.trackedTxHandlers.get(txid);
-			if (!currentHandlers) return;
-			currentHandlers.delete(handler);
-			if (currentHandlers.size === 0) {
-				this.trackedTxHandlers.delete(txid);
+			const listeners = this.listeners[network.id]?.[action];
+			if (listeners) {
+				// biome-ignore lint/style/noNonNullAssertion: <explanation>
+				this.listeners[network.id]![action] = listeners.filter(
+					(listener) => listener !== callback,
+				);
+
+				// Check if there are any remaining listeners for this network
+				let hasListeners = false;
+				// biome-ignore lint/style/noNonNullAssertion: <explanation>
+				for (const act in this.listeners[network.id]!) {
+					if (
+						// biome-ignore lint/style/noNonNullAssertion: <explanation>
+						this.listeners[network.id]![act as Action]!.length > 0
+					) {
+						hasListeners = true;
+						break;
+					}
+				}
+
+				if (!hasListeners) {
+					this.disconnect(network);
+				}
 			}
-			this.disconnectIfIdle();
 		};
 	}
 
-	disconnect = (): void => {
-		this.manuallyClosed = true;
-		this.clearReconnectTimer();
-		this.reconnectAttempt = 0;
-
-		if (this.ws) {
-			try {
-				this.ws.close();
-			} catch {
-				// ignore
-			}
-		}
-		this.ws = null;
-		this.connectedNetworkId = null;
-	};
-
-	private ensureConnected(network: BitcoinNetwork): void {
-		if (!this.wsUrlMap[network.id]) {
-			throw new Error(`Unsupported network: ${network.id}`);
+	private async connect(network: BitcoinNetwork): Promise<WebSocket> {
+		// If already connected, return existing connection
+		if (this.ws[network.id]) {
+			return this.ws[network.id] as WebSocket;
 		}
 
-		this.manuallyClosed = false;
-
-		if (this.ws && this.connectedNetworkId === network.id) {
-			if (this.ws.readyState === WebSocket.OPEN) return;
-			if (this.ws.readyState === WebSocket.CONNECTING) return;
+		// If connection is in progress, wait for it
+		if (this.connectionPromises[network.id]) {
+			return this.connectionPromises[network.id] as Promise<WebSocket>;
 		}
 
-		this.internalClose(false);
-		this.openSocket(network);
-	}
-
-	private openSocket(network: BitcoinNetwork): void {
 		const wsUrl = this.wsUrlMap[network.id];
-		this.connectedNetworkId = network.id;
-		this.ws = new WebSocket(wsUrl);
 
-		this.ws.onopen = () => {
-			this.reconnectAttempt = 0;
-			this.clearReconnectTimer();
-			this.resubscribeAllTrackedTxs();
-		};
-
-		this.ws.onmessage = (event) => {
-			this.handleMessage(event.data);
-		};
-
-		this.ws.onerror = () => {};
-
-		this.ws.onclose = () => {
-			this.ws = null;
-			if (this.manuallyClosed) return;
-			if (this.totalSubscriptionCount() === 0) return;
-			this.scheduleReconnect(network);
-		};
-	}
-
-	private handleMessage(raw: unknown): void {
-		if (typeof raw !== "string") return;
-		let msg: MempoolSpaceWSIncoming;
-		try {
-			msg = JSON.parse(raw);
-		} catch {
-			return;
+		if (!wsUrl) {
+			throw new Error(`WebSocket URL not defined for network ${network.id}`);
 		}
 
-		if (
-			"txPosition" in msg &&
-			msg.txPosition &&
-			typeof msg.txPosition === "object"
-		) {
-			const update = msg.txPosition as MempoolSpaceTxPosition;
-			const txids = Array.isArray(update.txid) ? update.txid : [];
-			for (const txid of txids) {
-				this.emitTrackedTx(txid, update);
+		// Create connection promise
+		const connectionPromise = new Promise<WebSocket>((resolve, reject) => {
+			const ws = new WebSocket(wsUrl);
+
+			ws.addEventListener("open", () => {
+				this.ws[network.id] = ws;
+				delete this.connectionPromises[network.id];
+				resolve(ws);
+			});
+
+			ws.addEventListener("error", (event) => {
+				delete this.connectionPromises[network.id];
+				reject(new Error("WebSocket connection failed"));
+			});
+
+			ws.addEventListener("close", () => {
+				delete this.ws[network.id];
+				delete this.connectionPromises[network.id];
+				delete this.messageHandlers[network.id];
+			});
+		});
+
+		this.connectionPromises[network.id] = connectionPromise;
+		return connectionPromise;
+	}
+
+	private disconnect(network: BitcoinNetwork): void {
+		const ws = this.ws[network.id];
+		if (ws) {
+			// Remove message handler before closing
+			const handler = this.messageHandlers[network.id];
+			if (handler) {
+				ws.removeEventListener("message", handler);
+				delete this.messageHandlers[network.id];
 			}
-			return;
+
+			ws.close();
+			delete this.ws[network.id];
+			delete this.connectionPromises[network.id];
 		}
-
-		if (
-			"tracked-txs" in msg &&
-			msg["tracked-txs"] &&
-			typeof msg["tracked-txs"] === "object"
-		) {
-			const tracked = msg["tracked-txs"] as Record<string, unknown>;
-			for (const [txid, entry] of Object.entries(tracked)) {
-				if (!entry || typeof entry !== "object") continue;
-				this.emitTrackedTx(txid, entry as MempoolSpaceTxPosition);
-			}
-		}
-	}
-
-	private emitTrackedTx(txid: string, update: MempoolSpaceTxPosition): void {
-		const handlers = this.trackedTxHandlers.get(txid);
-		if (!handlers) return;
-		for (const handler of handlers) {
-			try {
-				handler(update);
-			} catch {}
-		}
-	}
-
-	private send(payload: unknown): void {
-		if (!this.ws || this.ws.readyState !== WebSocket.OPEN) return;
-		try {
-			this.ws.send(JSON.stringify(payload));
-		} catch {}
-	}
-
-	private sendTrackTx(txid: string): void {
-		this.send({ "track-tx": txid });
-	}
-
-	private resubscribeAllTrackedTxs(): void {
-		const txIds = [...this.trackedTxHandlers.keys()];
-		if (txIds.length === 0) {
-			this.disconnectIfIdle();
-			return;
-		}
-		if (txIds.length === 1) {
-			this.send({ "track-tx": txIds[0] });
-			return;
-		}
-		this.send({ "track-txs": txIds });
-	}
-
-	private totalSubscriptionCount(): number {
-		let total = 0;
-		for (const handlers of this.trackedTxHandlers.values())
-			total += handlers.size;
-		return total;
-	}
-
-	private disconnectIfIdle(): void {
-		if (this.totalSubscriptionCount() > 0) return;
-		this.internalClose(true);
-	}
-
-	private internalClose(manual: boolean): void {
-		this.clearReconnectTimer();
-		this.reconnectAttempt = 0;
-		this.manuallyClosed = manual;
-		if (this.ws) {
-			try {
-				this.ws.close();
-			} catch {
-				// ignore
-			}
-		}
-		this.ws = null;
-		this.connectedNetworkId = null;
-	}
-
-	private scheduleReconnect(network: BitcoinNetwork): void {
-		this.clearReconnectTimer();
-		const { baseDelayMs, maxDelayMs, maxJitterMs } = this.reconnectOptions;
-		const attempt = this.reconnectAttempt++;
-		const exponential = Math.min(maxDelayMs, baseDelayMs * 2 ** attempt);
-		const jitter = Math.floor(Math.random() * maxJitterMs);
-		const delay = exponential + jitter;
-
-		this.reconnectTimer = setTimeout(() => {
-			if (this.manuallyClosed) return;
-			if (this.totalSubscriptionCount() === 0) return;
-			this.openSocket(network);
-		}, delay);
-	}
-
-	private clearReconnectTimer(): void {
-		if (!this.reconnectTimer) return;
-		clearTimeout(this.reconnectTimer);
-		this.reconnectTimer = null;
 	}
 }
