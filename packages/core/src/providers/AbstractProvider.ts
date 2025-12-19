@@ -75,6 +75,7 @@ export interface AbstractProvider {
 	waitForTransaction?(
 		network: BitcoinNetwork,
 		txid: string,
+		requiredConfirmations?: number,
 		options?: { timeoutMs?: number },
 	): Promise<number>;
 }

@@ -1,5 +1,12 @@
 # @midl/core
 
+## 3.0.0-next.15
+
+### Patch Changes
+
+- fix: rewrite ws mempool
+  - @midl/logger@3.0.0-next.15
+
 ## 3.0.0-next.14
 
 ### Patch Changes

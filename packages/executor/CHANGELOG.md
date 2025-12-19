@@ -1,5 +1,13 @@
 # @midl/executor
 
+## 3.0.0-next.15
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl/core@3.0.0-next.15
+  - @midl/logger@3.0.0-next.15
+
 ## 3.0.0-next.14
 
 ### Patch Changes

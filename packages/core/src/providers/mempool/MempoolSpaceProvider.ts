@@ -7,7 +7,7 @@ import type {
 } from "~/providers/AbstractProvider";
 import { MempoolSpaceWSProvider } from "~/providers/mempool/MempoolSpaceWSProvider";
 
-export const mempoolSpaceRPC: Record<Partial<BitcoinNetwork["id"]>, string> = {
+export const mempoolSpaceRPC: Record<BitcoinNetwork["id"], string> = {
 	mainnet: "https://mempool.space",
 	testnet: "https://mempool.space/testnet",
 	testnet4: "https://mempool.space/testnet4",
@@ -15,7 +15,7 @@ export const mempoolSpaceRPC: Record<Partial<BitcoinNetwork["id"]>, string> = {
 	signet: "https://mempool.space/signet",
 };
 
-export const mempoolSpaceWS: Record<Partial<BitcoinNetwork["id"]>, string> = {
+export const mempoolSpaceWS: Record<BitcoinNetwork["id"], string> = {
 	mainnet: "wss://mempool.space/api/v1/ws",
 	testnet: "wss://mempool.space/testnet/api/v1/ws",
 	testnet4: "wss://mempool.space/testnet4/api/v1/ws",
@@ -27,13 +27,11 @@ export class MempoolSpaceProvider implements AbstractProvider {
 	private readonly wsProvider: MempoolSpaceWSProvider;
 
 	constructor(
-		private readonly rpcUrlMap: Record<
-			Partial<BitcoinNetwork["id"]>,
-			string
+		private readonly rpcUrlMap: Partial<
+			Record<BitcoinNetwork["id"], string>
 		> = mempoolSpaceRPC,
-		private readonly wsUrlMap: Record<
-			Partial<BitcoinNetwork["id"]>,
-			string
+		private readonly wsUrlMap: Partial<
+			Record<BitcoinNetwork["id"], string>
 		> = mempoolSpaceWS,
 	) {
 		this.wsProvider = new MempoolSpaceWSProvider(this.wsUrlMap);
@@ -144,19 +142,77 @@ export class MempoolSpaceProvider implements AbstractProvider {
 	async waitForTransaction(
 		network: BitcoinNetwork,
 		txid: string,
+		requiredConfirmations = 1,
 		options?: { timeoutMs?: number },
 	): Promise<number> {
-		const txPosition = await this.wsProvider.waitForTransaction(
-			network,
-			txid,
-			options,
-		);
+		return new Promise<number>((resolve, reject) => {
+			let timeout: NodeJS.Timeout | null = null;
+			let txUnsubscribe: (() => void) | null = null;
+			let blockUnsubscribe: (() => void) | null = null;
 
-		if (!txPosition.position?.block) {
-			throw new Error(`Transaction ${txid} was not confirmed in a block.`);
-		}
+			const cleanup = () => {
+				if (timeout) {
+					clearTimeout(timeout);
+				}
+				txUnsubscribe?.();
+				blockUnsubscribe?.();
+			};
 
-		return txPosition.position.block;
+			timeout = options?.timeoutMs
+				? setTimeout(() => {
+						cleanup();
+						reject(new Error("Timeout waiting for transaction confirmation"));
+					}, options.timeoutMs)
+				: null;
+
+			this.wsProvider
+				.subscribe(network, "track-tx", txid, async (data) => {
+					try {
+						if (data.txConfirmed) {
+							const currentHeight = await this.getLatestBlockHeight(network);
+							const txStatus = await this.getTransactionStatus(network, txid);
+
+							const confirmations =
+								txStatus.block_height !== null
+									? currentHeight - txStatus.block_height + 1
+									: 0;
+
+							if (confirmations < requiredConfirmations) {
+								blockUnsubscribe = await this.wsProvider.subscribe(
+									network,
+									"blocks",
+									undefined,
+									async (data) => {
+										if (!("block" in data)) {
+											return;
+										}
+
+										const confirmations =
+											data.block.height - (txStatus.block_height || 0) + 1;
+										if (confirmations >= requiredConfirmations) {
+											cleanup();
+											resolve(confirmations);
+										}
+									},
+								);
+							} else {
+								cleanup();
+								resolve(confirmations);
+							}
+						}
+					} catch (error) {
+						cleanup();
+						reject(error);
+					}
+				})
+				.then((unsubscribe) => {
+					txUnsubscribe = unsubscribe;
+				})
+				.catch((error) => {
+					cleanup();
+					reject(error);
+				});
+		});
 	}
 
 	private getApURL(network: BitcoinNetwork) {
