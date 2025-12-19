@@ -19,7 +19,8 @@ type ReconnectOptions = {
 };
 
 export class MempoolSpaceWSProvider {
-	private readonly trackedTxHandlers: Map<string, Set<TrackTxHandler>>;
+	private readonly trackedTxHandlers: Map<string, Set<TrackTxHandler>> =
+		new Map();
 	private ws: WebSocket | null = null;
 	private connectedNetworkId: BitcoinNetwork["id"] | null = null;
 	private reconnectTimer: ReturnType<typeof setTimeout> | null = null;
@@ -31,19 +32,19 @@ export class MempoolSpaceWSProvider {
 		private readonly wsUrlMap: Record<BitcoinNetwork["id"], string>,
 		options: ReconnectOptions = {},
 	) {
-		this.trackedTxHandlers = new Map();
 		this.reconnectOptions = {
-			baseDelayMs: options.baseDelayMs ?? 500,
-			maxDelayMs: options.maxDelayMs ?? 15_000,
-			maxJitterMs: options.maxJitterMs ?? 250,
+			baseDelayMs: 500,
+			maxDelayMs: 15_000,
+			maxJitterMs: 250,
+			...options,
 		};
 	}
 
-	async waitForTransaction(
+	waitForTransaction = async (
 		network: BitcoinNetwork,
 		txid: string,
 		{ timeoutMs = 15 * 60 * 1000 }: { timeoutMs?: number } = {},
-	): Promise<MempoolSpaceTxPosition> {
+	): Promise<MempoolSpaceTxPosition> => {
 		return new Promise((resolve, reject) => {
 			let timeout: ReturnType<typeof setTimeout> | null = null;
 			const unsubscribe = this.trackTx(network, txid, (update) => {
@@ -61,7 +62,7 @@ export class MempoolSpaceWSProvider {
 				}, timeoutMs);
 			}
 		});
-	}
+	};
 
 	private trackTx(
 		network: BitcoinNetwork,
@@ -86,7 +87,7 @@ export class MempoolSpaceWSProvider {
 		};
 	}
 
-	disconnect(): void {
+	disconnect = (): void => {
 		this.manuallyClosed = true;
 		this.clearReconnectTimer();
 		this.reconnectAttempt = 0;
@@ -100,7 +101,7 @@ export class MempoolSpaceWSProvider {
 		}
 		this.ws = null;
 		this.connectedNetworkId = null;
-	}
+	};
 
 	private ensureConnected(network: BitcoinNetwork): void {
 		if (!this.wsUrlMap[network.id]) {

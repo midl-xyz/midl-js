@@ -36,4 +36,8 @@ describe("calculateTransactionCost", () => {
 			}),
 		).toBe(1990);
 	});
+
+	it("deposit", async () => {
+		expect(calculateTransactionsCost(0n, { feeRate: 2 })).toBe(748);
+	});
 });
