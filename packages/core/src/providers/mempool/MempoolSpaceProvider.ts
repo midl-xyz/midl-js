@@ -7,7 +7,9 @@ import type {
 } from "~/providers/AbstractProvider";
 import { MempoolSpaceWSProvider } from "~/providers/mempool/MempoolSpaceWSProvider";
 
-export const mempoolSpaceRPC: Record<BitcoinNetwork["id"], string> = {
+type RPCUrlMap = Partial<Record<BitcoinNetwork["id"], string>>;
+
+export const mempoolSpaceRPC: RPCUrlMap = {
 	mainnet: "https://mempool.space",
 	testnet: "https://mempool.space/testnet",
 	testnet4: "https://mempool.space/testnet4",
@@ -15,7 +17,7 @@ export const mempoolSpaceRPC: Record<BitcoinNetwork["id"], string> = {
 	signet: "https://mempool.space/signet",
 };
 
-export const mempoolSpaceWS: Record<BitcoinNetwork["id"], string> = {
+export const mempoolSpaceWS: RPCUrlMap = {
 	mainnet: "wss://mempool.space/api/v1/ws",
 	testnet: "wss://mempool.space/testnet/api/v1/ws",
 	testnet4: "wss://mempool.space/testnet4/api/v1/ws",
@@ -27,12 +29,8 @@ export class MempoolSpaceProvider implements AbstractProvider {
 	private readonly wsProvider: MempoolSpaceWSProvider;
 
 	constructor(
-		private readonly rpcUrlMap: Partial<
-			Record<BitcoinNetwork["id"], string>
-		> = mempoolSpaceRPC,
-		private readonly wsUrlMap: Partial<
-			Record<BitcoinNetwork["id"], string>
-		> = mempoolSpaceWS,
+		private readonly rpcUrlMap: RPCUrlMap = mempoolSpaceRPC,
+		private readonly wsUrlMap: RPCUrlMap = mempoolSpaceWS,
 	) {
 		this.wsProvider = new MempoolSpaceWSProvider(this.wsUrlMap);
 	}
