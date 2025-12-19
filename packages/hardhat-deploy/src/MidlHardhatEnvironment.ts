@@ -48,7 +48,11 @@ import {
 	getContractAddress,
 	keccak256,
 } from "viem";
-import { sendBTCTransactions, waitForTransactionReceipt } from "viem/actions";
+import {
+	getCode,
+	sendBTCTransactions,
+	waitForTransactionReceipt,
+} from "viem/actions";
 import { type StoreApi, createStore } from "zustand/vanilla";
 import "~/types/context";
 
@@ -156,8 +160,14 @@ export class MidlHardhatEnvironment {
 				}),
 			],
 			defaultPurpose: this.userConfig.defaultPurpose,
-			runesProvider: this.userConfig.runesProvider,
-			provider: this.userConfig.provider,
+			runesProvider:
+				typeof this.userConfig.runesProvider === "function"
+					? this.userConfig.runesProvider()
+					: this.userConfig.runesProvider,
+			provider:
+				typeof this.userConfig.provider === "function"
+					? this.userConfig.provider()
+					: this.userConfig.provider,
 		});
 
 		await connect(this.config, {
