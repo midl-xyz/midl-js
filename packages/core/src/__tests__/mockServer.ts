@@ -87,7 +87,7 @@ const handlers = [
 	}),
 
 	http.get("https://mempool.regtest.midl.xyz/api/blocks/tip/height", () => {
-		return HttpResponse.text("101");
+		return HttpResponse.text("100");
 	}),
 	wsApi.addEventListener("connection", ({ server, client }) => {
 		server.connect();
@@ -96,19 +96,22 @@ const handlers = [
 			event.preventDefault();
 			const data = JSON.parse(event.data.toString());
 
-			client.send(
-				JSON.stringify({
-					txPosition: {
-						txid: Array.isArray(data["track-tx"])
-							? data["track-tx"]
-							: [data["track-tx"]],
-						position: {
-							block: 100,
-							vsize: 250,
+			// Handle track-tx subscription
+			if (data["track-tx"]) {
+				client.send(JSON.stringify({ txConfirmed: data["track-tx"] }));
+				return;
+			}
+
+			// Handle blocks subscription
+			if (data.action !== undefined && data.data.includes("blocks")) {
+				client.send(
+					JSON.stringify({
+						block: {
+							height: 120,
 						},
-					},
-				}),
-			);
+					}),
+				);
+			}
 		});
 	}),
 ];

@@ -1,6 +1,6 @@
 {
 	"name": "@midl/hardhat-deploy",
-	"version": "3.0.0-next.14",
+	"version": "3.0.0-next.15",
 	"license": "MIT",
 	"scripts": {
 		"build": "pnpm run clean && tspc --project tsconfig.esm.json && tspc --project tsconfig.cjs.json",

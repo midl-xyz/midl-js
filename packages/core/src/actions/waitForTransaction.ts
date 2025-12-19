@@ -16,7 +16,7 @@ import type { Config } from "~/createConfig";
  * @param params The parameters for the request
  * @returns The number of confirmations
  */
-export const waitForTransaction = (
+export const waitForTransaction = async (
 	config: Config,
 	txId: string,
 	confirmations = 1,
@@ -36,6 +36,12 @@ export const waitForTransaction = (
 ) => {
 	const { network, provider } = config.getState();
 
+	if ("waitForTransaction" in provider && provider.waitForTransaction) {
+		return await provider.waitForTransaction(network, txId, confirmations, {
+			timeoutMs: intervalMs * maxAttempts,
+		});
+	}
+
 	const check = async () => {
 		let confirmed = -1;
 		let attempt = 0;
@@ -46,32 +52,16 @@ export const waitForTransaction = (
 			}
 
 			try {
-				if ("waitForTransaction" in provider && provider.waitForTransaction) {
-					const blockHeight = await provider.waitForTransaction(network, txId);
+				const data = await provider.getTransactionStatus(network, txId);
 
+				if (data.confirmed) {
 					const currentBlockHeight = await getBlockNumber(config);
-					const currentConfirmations = currentBlockHeight - blockHeight + 1;
+					const currentConfirmations =
+						currentBlockHeight - data.block_height + 1;
 
 					if (currentConfirmations >= confirmations) {
 						confirmed = currentConfirmations;
 						break;
-					}
-				} else {
-					console.warn(
-						"Provider does not support waitForTransaction, falling back to polling getTransactionStatus",
-					);
-
-					const data = await provider.getTransactionStatus(network, txId);
-
-					if (data.confirmed) {
-						const currentBlockHeight = await getBlockNumber(config);
-						const currentConfirmations =
-							currentBlockHeight - data.block_height + 1;
-
-						if (currentConfirmations >= confirmations) {
-							confirmed = currentConfirmations;
-							break;
-						}
 					}
 				}
 			} catch (error) {
