@@ -3,6 +3,7 @@ import type {
 	AbstractRunesProvider,
 	AddressPurpose,
 	BitcoinNetwork,
+	ConnectorWithMetadata,
 } from "@midl/core";
 import "hardhat/types/config";
 import "hardhat/types/runtime";
@@ -15,7 +16,8 @@ declare module "hardhat/types/config" {
 			networks: Record<
 				string | "default",
 				{
-					mnemonic: string;
+					mnemonic?: string;
+					customConnector?: ConnectorWithMetadata;
 					confirmationsRequired?: number;
 					btcConfirmationsRequired?: number;
 					network?: string | BitcoinNetwork;

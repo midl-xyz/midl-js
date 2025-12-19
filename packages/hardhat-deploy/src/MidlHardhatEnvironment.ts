@@ -144,15 +144,23 @@ export class MidlHardhatEnvironment {
 	}
 
 	public async initialize(accountIndex = 0) {
+		let connector: ReturnType<typeof keyPairConnector>;
+
+		if (this.userConfig.customConnector) {
+			connector = this.userConfig.customConnector;
+		} else if (this.userConfig.mnemonic) {
+			connector = keyPairConnector({
+				mnemonic: this.userConfig.mnemonic,
+				paymentAddressType: AddressType.P2WPKH,
+				accountIndex,
+			});
+		} else {
+			throw new Error("Must provide either 'mnemonic' or 'customConnector'");
+		}
+
 		this.config = createConfig({
 			networks: [this.bitcoinNetwork],
-			connectors: [
-				keyPairConnector({
-					mnemonic: this.userConfig.mnemonic,
-					paymentAddressType: AddressType.P2WPKH,
-					accountIndex,
-				}),
-			],
+			connectors: [connector],
 			defaultPurpose: this.userConfig.defaultPurpose,
 			runesProvider: this.userConfig.runesProvider,
 			provider: this.userConfig.provider,
