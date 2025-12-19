@@ -5,6 +5,7 @@ import {
 	createConfig,
 	disconnect,
 	extractXCoordinate,
+	getDefaultAccount,
 	regtest,
 } from "@midl/core";
 import { Verifier } from "bip322-js";
@@ -15,11 +16,17 @@ import { afterEach, describe, expect, it } from "vitest";
 import { __TEST__PRIVATE_KEY__ } from "~/__tests__/keyPair";
 import { fixedSecretKeyPairConnector } from "~/connectors/keyPair";
 
+const SECOND_TEST_KEY =
+	"0000000000000000000000000000000000000000000000000000000000000002";
+
 describe("core | connectors | fixedSecretKeyPair", () => {
 	const midlConfig = createConfig({
 		networks: [regtest],
 		connectors: [
-			fixedSecretKeyPairConnector({ privateKey: __TEST__PRIVATE_KEY__ }),
+			fixedSecretKeyPairConnector({
+				privateKeys: [__TEST__PRIVATE_KEY__],
+				accountIndex: 0,
+			}),
 		],
 	});
 
@@ -232,5 +239,123 @@ describe("core | connectors | fixedSecretKeyPair", () => {
 		expect(
 			Psbt.fromBase64(signedPsbt.psbt).data.inputs[0].finalScriptWitness,
 		).toBeDefined();
+	});
+});
+
+describe("fixedSecretKeyPairConnector | multiple keys and derivation", () => {
+	it("should use different keys for different indices", async () => {
+		const config1 = createConfig({
+			networks: [regtest],
+			connectors: [
+				fixedSecretKeyPairConnector({
+					privateKeys: [__TEST__PRIVATE_KEY__, SECOND_TEST_KEY],
+					accountIndex: 0,
+				}),
+			],
+		});
+
+		const config2 = createConfig({
+			networks: [regtest],
+			connectors: [
+				fixedSecretKeyPairConnector({
+					privateKeys: [__TEST__PRIVATE_KEY__, SECOND_TEST_KEY],
+					accountIndex: 1,
+				}),
+			],
+		});
+
+		await connect(config1, {
+			purposes: [AddressPurpose.Payment],
+		});
+
+		await connect(config2, {
+			purposes: [AddressPurpose.Payment],
+		});
+
+		const account1 = getDefaultAccount(config1);
+		const account2 = getDefaultAccount(config2);
+
+		expect(account1.address).not.toBe(account2.address);
+
+		await disconnect(config1);
+		await disconnect(config2);
+	});
+
+	it("should derive keys deterministically when index exceeds array length", async () => {
+		const config1 = createConfig({
+			networks: [regtest],
+			connectors: [
+				fixedSecretKeyPairConnector({
+					privateKeys: [__TEST__PRIVATE_KEY__],
+					accountIndex: 5,
+				}),
+			],
+		});
+
+		const config2 = createConfig({
+			networks: [regtest],
+			connectors: [
+				fixedSecretKeyPairConnector({
+					privateKeys: [__TEST__PRIVATE_KEY__],
+					accountIndex: 5,
+				}),
+			],
+		});
+
+		await connect(config1, {
+			purposes: [AddressPurpose.Payment],
+		});
+
+		await connect(config2, {
+			purposes: [AddressPurpose.Payment],
+		});
+
+		const account1 = getDefaultAccount(config1);
+		const account2 = getDefaultAccount(config2);
+
+		// Same index should produce same derived key
+		expect(account1.address).toBe(account2.address);
+
+		await disconnect(config1);
+		await disconnect(config2);
+	});
+
+	it("should derive different keys for different indices beyond array", async () => {
+		const config1 = createConfig({
+			networks: [regtest],
+			connectors: [
+				fixedSecretKeyPairConnector({
+					privateKeys: [__TEST__PRIVATE_KEY__],
+					accountIndex: 5,
+				}),
+			],
+		});
+
+		const config2 = createConfig({
+			networks: [regtest],
+			connectors: [
+				fixedSecretKeyPairConnector({
+					privateKeys: [__TEST__PRIVATE_KEY__],
+					accountIndex: 6,
+				}),
+			],
+		});
+
+		await connect(config1, {
+			purposes: [AddressPurpose.Payment],
+		});
+
+		await connect(config2, {
+			purposes: [AddressPurpose.Payment],
+		});
+
+		const account1 = getDefaultAccount(config1);
+		const account2 = getDefaultAccount(config2);
+
+		// Different indices should produce different derived keys
+		expect(account1.address).not.toBe(account2.address);
+
+		await disconnect(config1);
+		await disconnect(config2);
 	});
 });

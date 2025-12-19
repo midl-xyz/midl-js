@@ -284,11 +284,37 @@ class FixedSecretKeyPairConnector implements Connector {
 	private network: BitcoinNetwork | null = null;
 
 	constructor(
-		privateKey: string,
+		private readonly privateKeys: string[],
 		private readonly paymentAddressType: AddressType,
+		private readonly accountIndex: number = 0,
 	) {
+		const privateKey = this.derivePrivateKey();
 		this.fixedKeypair = ECPair.fromPrivateKey(Buffer.from(privateKey, "hex"));
 		this.publicKey = this.fixedKeypair.publicKey.toString("hex");
+	}
+
+	/**
+	 * Derives a private key for the current accountIndex from the array of private keys.
+	 * If accountIndex < array length, returns the key at that index.
+	 * Otherwise, derives a new key by hashing the last key with the index.
+	 */
+	private derivePrivateKey(): string {
+		if (this.accountIndex < this.privateKeys.length) {
+			return this.privateKeys[this.accountIndex];
+		}
+
+		const lastKey = Buffer.from(
+			this.privateKeys[this.privateKeys.length - 1],
+			"hex",
+		);
+		const indexBuffer = Buffer.alloc(4);
+		indexBuffer.writeUInt32BE(this.accountIndex);
+
+		// Use double SHA256 (hash256) for key derivation
+		const derived = bitcoin.crypto.hash256(
+			Buffer.concat([lastKey, indexBuffer]),
+		);
+		return Buffer.from(derived).toString("hex");
 	}
 
 	async connect({
@@ -464,16 +490,26 @@ class FixedSecretKeyPairConnector implements Connector {
 }
 
 export const fixedSecretKeyPairConnector: CreateConnectorFn<{
-	privateKey: string;
+	privateKeys: string[];
 	paymentAddressType?: AddressType;
-}> = ({ metadata, privateKey, paymentAddressType = AddressType.P2WPKH }) =>
+	accountIndex?: number;
+}> = ({
+	metadata,
+	privateKeys,
+	paymentAddressType = AddressType.P2WPKH,
+	accountIndex = 0,
+}) =>
 	createConnector(
 		{
 			metadata: {
 				name: "FixedSecretKeyPair",
 			},
 			create: () =>
-				new FixedSecretKeyPairConnector(privateKey, paymentAddressType),
+				new FixedSecretKeyPairConnector(
+					privateKeys,
+					paymentAddressType,
+					accountIndex,
+				),
 		},
 		metadata,
 	);
