@@ -3,7 +3,7 @@ import {
 	type SignMessageProtocol,
 	getDefaultAccount,
 } from "@midl/core";
-import { type Client, isHex } from "viem";
+import { type PublicClient, type WalletClient, isHex } from "viem";
 import { getTransactionCount } from "viem/actions";
 import { getPublicKey } from "~/actions/getPublicKey";
 import { signTransaction } from "~/actions/signTransaction";
@@ -50,7 +50,7 @@ type SignIntentionOptions = {
  */
 export const signIntention = async (
 	config: Config,
-	client: Client,
+	client: PublicClient | WalletClient,
 	intention: TransactionIntention,
 	intentions: TransactionIntention[],
 	options: SignIntentionOptions,
