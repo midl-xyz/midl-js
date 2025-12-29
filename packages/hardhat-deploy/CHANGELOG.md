@@ -1,5 +1,15 @@
 # @midl/hardhat-deploy
 
+## 3.0.0-next.17
+
+### Patch Changes
+
+- fix(hardhat-deploy): chain initialization
+  - @midl/core@3.0.0-next.17
+  - @midl/executor@3.0.0-next.17
+  - @midl/logger@3.0.0-next.17
+  - @midl/node@3.0.0-next.17
+
 ## 3.0.0-next.16
 
 ### Patch Changes
