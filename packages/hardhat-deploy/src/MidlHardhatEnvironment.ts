@@ -113,8 +113,6 @@ export class MidlHardhatEnvironment {
 			this.bitcoinNetwork = network || regtest;
 		}
 
-		this.chain = getEVMFromBitcoinNetwork(this.bitcoinNetwork);
-
 		if (hardhatNetwork) {
 			const { chainId, url } = this.hre.config.networks[
 				hardhatNetwork
@@ -146,6 +144,8 @@ export class MidlHardhatEnvironment {
 					},
 				},
 			};
+		} else {
+			this.chain = getEVMFromBitcoinNetwork(this.bitcoinNetwork);
 		}
 	}
 
