@@ -2,7 +2,9 @@ import { type Config, getDefaultAccount } from "@midl/core";
 import { getLogger } from "@midl/logger";
 import {
 	type Client,
+	type PublicClient,
 	type StateOverride,
+	type WalletClient,
 	encodeFunctionData,
 	toHex,
 	zeroAddress,
@@ -76,7 +78,7 @@ const ONE_BITCOIN = 10 ** 8;
 export const estimateBTCTransaction = async (
 	config: Config,
 	intentions: TransactionIntention[],
-	client: Client,
+	client: PublicClient | WalletClient,
 	{
 		feeRate: customFeeRate,
 		gasMultiplier = 1.2,

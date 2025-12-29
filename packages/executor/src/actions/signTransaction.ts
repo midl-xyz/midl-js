@@ -5,8 +5,9 @@ import {
 	signMessage,
 } from "@midl/core";
 import {
-	type Client,
+	type PublicClient,
 	type TransactionSerializableBTC,
+	type WalletClient,
 	keccak256,
 	serializeTransaction,
 } from "viem";
@@ -47,7 +48,7 @@ type SignTransactionOptions = {
 export const signTransaction = async (
 	config: Config,
 	{ chainId, ...tx }: TransactionSerializableBTC,
-	client: Client,
+	client: PublicClient | WalletClient,
 	{ from, protocol, nonce }: SignTransactionOptions = {},
 ) => {
 	const { network } = config.getState();

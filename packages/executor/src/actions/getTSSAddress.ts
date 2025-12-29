@@ -1,11 +1,14 @@
 import type { Config } from "@midl/core";
 import * as bitcoin from "bitcoinjs-lib";
-import type { Client } from "viem";
+import type { PublicClient, WalletClient } from "viem";
 import { readContract } from "viem/actions";
 import { SystemContracts } from "~/config";
 import { globalParamsAbi } from "~/contracts";
 
-export const getTSSAddress = async (config: Config, client: Client) => {
+export const getTSSAddress = async (
+	config: Config,
+	client: PublicClient | WalletClient,
+) => {
 	const { network } = config.getState();
 
 	if (!network) {
