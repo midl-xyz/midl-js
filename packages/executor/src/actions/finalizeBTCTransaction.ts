@@ -9,7 +9,7 @@ import {
 	getDefaultAccount,
 	transferBTC,
 } from "@midl/core";
-import type { PublicClient, StateOverride } from "viem";
+import type { PublicClient, StateOverride, WalletClient } from "viem";
 import { estimateBTCTransaction } from "~/actions/estimateBTCTransaction";
 import { getBTCFeeRate } from "~/actions/getBTCFeeRate";
 import { getTSSAddress } from "~/actions/getTSSAddress";
@@ -72,7 +72,7 @@ type FinalizeBTCTransactionOptions = {
 export const finalizeBTCTransaction = async (
 	config: Config,
 	intentions: TransactionIntention[],
-	client: PublicClient,
+	client: PublicClient | WalletClient,
 	{
 		feeRate: customFeeRate,
 		gasMultiplier,

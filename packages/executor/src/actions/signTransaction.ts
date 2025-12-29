@@ -7,6 +7,7 @@ import {
 import {
 	type PublicClient,
 	type TransactionSerializableBTC,
+	type WalletClient,
 	keccak256,
 	serializeTransaction,
 } from "viem";
@@ -47,7 +48,7 @@ type SignTransactionOptions = {
 export const signTransaction = async (
 	config: Config,
 	{ chainId, ...tx }: TransactionSerializableBTC,
-	client: PublicClient,
+	client: PublicClient | WalletClient,
 	{ from, protocol, nonce }: SignTransactionOptions = {},
 ) => {
 	const { network } = config.getState();
