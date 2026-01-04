@@ -4,6 +4,10 @@ on:
   workflow_dispatch:
   release:
     types: [published]
+
+permissions:
+  id-token: write
+  contents: read
     
 jobs:
   build-and-publish:
@@ -43,5 +47,3 @@ jobs:
             TAG="--tag next --publish-branch next"
           fi
           pnpm publish -r --filter="./packages/*" --no-git-checks --access public $TAG
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
