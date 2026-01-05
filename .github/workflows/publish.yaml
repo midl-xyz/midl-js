@@ -12,11 +12,6 @@ permissions:
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [22]
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
@@ -27,7 +22,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: '24.x'
           registry-url: https://registry.npmjs.org
           cache: 'pnpm'
 
@@ -44,6 +39,7 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ""
           NPM_TOKEN: ""
+          NPM_CONFIG_PROVENANCE: "true"
         run: |
           TAG=""
           if [[ "${GITHUB_REF##*/}" == "next" ]]; then
