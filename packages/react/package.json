@@ -45,5 +45,10 @@
 		"@types/react": "^18.3.11",
 		"react": "^18.3.1",
 		"react-dom": "^18.3.1"
+	},
+	"repository": {
+		"url": "git+https://github.com/midl-xyz/midl-js.git",
+		"directory": "packages/react",
+		"type": "git"
 	}
 }

@@ -42,5 +42,10 @@
 		"@nomicfoundation/hardhat-viem": "^2.0.6",
 		"viem": "npm:@midl/viem",
 		"zustand": "^5.0.1"
+	},
+	"repository": {
+		"url": "git+https://github.com/midl-xyz/midl-js.git",
+		"directory": "packages/hardhat-deploy",
+		"type": "git"
 	}
 }

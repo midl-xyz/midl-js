@@ -37,5 +37,10 @@
 	},
 	"peerDependencies": {
 		"@midl/core": "workspace:^"
+	},
+	"repository": {
+		"url": "git+https://github.com/midl-xyz/midl-js.git",
+		"directory": "packages/connectors",
+		"type": "git"
 	}
 }

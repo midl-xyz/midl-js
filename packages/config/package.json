@@ -3,5 +3,10 @@
 	"version": "3.0.0-next.19",
 	"license": "MIT",
 	"private": true,
-	"files": ["tsconfig.base.json"]
+	"files": ["tsconfig.base.json"],
+	"repository": {
+		"url": "git+https://github.com/midl-xyz/midl-js.git",
+		"directory": "packages/config",
+		"type": "git"
+	}
 }
