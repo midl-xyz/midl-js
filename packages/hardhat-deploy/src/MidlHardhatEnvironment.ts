@@ -38,21 +38,17 @@ import {
 	http,
 	type Abi,
 	type Address,
+	type PublicClient,
 	type StateOverride,
 	type TransactionSerializableBTC,
 	type Chain as ViemChain,
-	type WalletClient,
-	createWalletClient,
+	createPublicClient,
 	encodeDeployData,
 	encodeFunctionData,
 	getContractAddress,
 	keccak256,
 } from "viem";
-import {
-	getCode,
-	sendBTCTransactions,
-	waitForTransactionReceipt,
-} from "viem/actions";
+import { sendBTCTransactions, waitForTransactionReceipt } from "viem/actions";
 import { type StoreApi, createStore } from "zustand/vanilla";
 import "~/types/context";
 
@@ -69,7 +65,7 @@ export class MidlHardhatEnvironment {
 	private readonly confirmationsRequired;
 	private readonly btcConfirmationsRequired;
 
-	private walletClient: WalletClient | undefined;
+	private publicClient: PublicClient | undefined;
 
 	private bitcoinNetwork!: BitcoinNetwork;
 	private chain!: Chain;
@@ -215,7 +211,7 @@ export class MidlHardhatEnvironment {
 		const intention = await addTxIntention(this.config, {
 			evmTransaction: {
 				type: "btc",
-				chainId: this.walletClient?.chain?.id,
+				chainId: this.publicClient?.chain?.id,
 				data: deployData,
 				gas: options?.gas,
 				to: options?.to,
@@ -231,6 +227,16 @@ export class MidlHardhatEnvironment {
 		this.store.setState((state) => ({
 			intentions: [...state.intentions, intention],
 		}));
+
+		const totalIntentions = this.store.getState().intentions.length;
+
+		return {
+			address: getContractAddress({
+				from: this.getEVMAddress(),
+				nonce: BigInt(intention.evmTransaction?.nonce ?? totalIntentions - 1),
+			}),
+			abi: artifact.abi,
+		};
 	}
 
 	public async getDeployment(name: string) {
@@ -292,7 +298,7 @@ export class MidlHardhatEnvironment {
 		const intention = await addTxIntention(this.config, {
 			evmTransaction: {
 				type: "btc",
-				chainId: this.walletClient?.chain?.id,
+				chainId: this.publicClient?.chain?.id,
 				data,
 				to: options.to ?? (address as Address),
 				value: options.value,
@@ -330,7 +336,7 @@ export class MidlHardhatEnvironment {
 			return;
 		}
 
-		const walletClient = await this.getWalletClient();
+		const publicClient = await this.getPublicClient();
 
 		if (typeof withdraw !== "undefined") {
 			const intention = await addCompleteTxIntention(this.config, withdraw);
@@ -343,7 +349,7 @@ export class MidlHardhatEnvironment {
 		const tx = await finalizeBTCTransaction(
 			this.config,
 			this.store.getState().intentions ?? [],
-			walletClient,
+			publicClient,
 			{
 				stateOverride,
 				feeRate,
@@ -361,7 +367,7 @@ export class MidlHardhatEnvironment {
 		for (const intention of intentions) {
 			const signed = await signIntention(
 				this.config,
-				walletClient,
+				publicClient,
 				intention,
 				this.store.getState().intentions ?? [],
 				{
@@ -396,7 +402,7 @@ export class MidlHardhatEnvironment {
 			console.log("Transaction sent", txId);
 		}
 
-		await sendBTCTransactions(walletClient, {
+		await sendBTCTransactions(publicClient, {
 			serializedTransactions: txs,
 			btcTransaction: tx.tx.hex,
 		});
@@ -411,7 +417,7 @@ export class MidlHardhatEnvironment {
 
 		await Promise.all(
 			evmTXHashes.map((hash) =>
-				waitForTransactionReceipt(walletClient, {
+				waitForTransactionReceipt(publicClient, {
 					hash,
 					confirmations: this.confirmationsRequired,
 				}),
@@ -426,15 +432,15 @@ export class MidlHardhatEnvironment {
 		}));
 	}
 
-	public async getWalletClient(): Promise<WalletClient> {
-		if (!this.walletClient) {
-			this.walletClient = createWalletClient({
+	public async getPublicClient(): Promise<PublicClient> {
+		if (!this.publicClient) {
+			this.publicClient = createPublicClient({
 				chain: this.chain as ViemChain,
 				transport: http(this.chain.rpcUrls.default.http[0]),
-			});
+			}) as PublicClient;
 		}
 
-		return this.walletClient;
+		return this.publicClient as PublicClient;
 	}
 
 	public async save(
