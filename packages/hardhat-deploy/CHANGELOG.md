@@ -1,5 +1,15 @@
 # @midl/hardhat-deploy
 
+## 3.0.0-next.19
+
+### Patch Changes
+
+- c5059ca: feat(hardhat-deploy): future contract address
+  - @midl/core@3.0.0-next.19
+  - @midl/executor@3.0.0-next.19
+  - @midl/logger@3.0.0-next.19
+  - @midl/node@3.0.0-next.19
+
 ## 3.0.0-next.18
 
 ### Patch Changes
