@@ -63,5 +63,10 @@
 		"@ark-ui/react": "^5.0.1",
 		"boring-avatars": "^2.0.1",
 		"lucide-react": "^0.453.0"
+	},
+	"repository": {
+		"url": "git+https://github.com/midl-xyz/midl-js.git",
+		"directory": "packages/satoshi-kit",
+		"type": "git"
 	}
 }

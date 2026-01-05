@@ -27,5 +27,10 @@
 	"dependencies": {
 		"@midl/core": "workspace:^",
 		"rxjs": "^7.8.2"
+	},
+	"repository": {
+		"url": "git+https://github.com/midl-xyz/midl-js.git",
+		"directory": "packages/playwright",
+		"type": "git"
 	}
 }
