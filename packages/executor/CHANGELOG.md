@@ -1,5 +1,13 @@
 # @midl/executor
 
+## 3.0.0-next.20
+
+### Patch Changes
+
+- feat(executor): update midl chain id
+  - @midl/core@3.0.0-next.20
+  - @midl/logger@3.0.0-next.20
+
 ## 3.0.0-next.19
 
 ### Patch Changes

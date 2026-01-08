@@ -1,14 +1,14 @@
 import { SystemContracts } from "~/config/addresses";
 import type { Chain } from "~/config/chains/chain";
 
-export const midlSignet: Chain = {
-	id: 0x3a99,
+export const midl: Chain = {
+	id: 0x5dc,
 	rpcUrls: {
 		default: {
-			http: ["https://rpc.signet.midl.xyz"],
+			http: ["https://rpc.midl.xyz"],
 		},
 	},
-	name: "midl-signet",
+	name: "MIDL",
 	nativeCurrency: {
 		name: "MIDL",
 		symbol: "MIDL",
