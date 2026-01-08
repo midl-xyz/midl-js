@@ -1,11 +1,13 @@
 import {
 	type BitcoinNetwork,
+	mainnet,
 	regtest,
 	signet,
 	testnet,
 	testnet4,
 } from "@midl/core";
 import {
+	midl,
 	midlRegtest,
 	midlSignet,
 	midlTestnet3,
@@ -28,6 +30,10 @@ export const getEVMFromBitcoinNetwork = (network: BitcoinNetwork) => {
 
 		case signet.id: {
 			return midlSignet;
+		}
+
+		case mainnet.id: {
+			return midl;
 		}
 
 		default: {
