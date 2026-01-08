@@ -2,7 +2,7 @@ import { SystemContracts } from "~/config/addresses";
 import type { Chain } from "~/config/chains/chain";
 
 export const midlRegtest: Chain = {
-	id: 0x309,
+	id: 0x3a99,
 	rpcUrls: {
 		default: {
 			http: ["https://rpc.regtest.midl.xyz"],
