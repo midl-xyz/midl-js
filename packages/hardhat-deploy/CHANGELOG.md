@@ -1,5 +1,15 @@
 # @midl/hardhat-deploy
 
+## 3.0.0-next.21
+
+### Patch Changes
+
+- fix(hardhat-deploy): nonce for pre-deployment
+  - @midl/core@3.0.0-next.21
+  - @midl/executor@3.0.0-next.21
+  - @midl/logger@3.0.0-next.21
+  - @midl/node@3.0.0-next.21
+
 ## 3.0.0-next.20
 
 ### Patch Changes
