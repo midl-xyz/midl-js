@@ -1,5 +1,11 @@
 # @midl/playwright
 
+## 3.0.0-next.21
+
+### Patch Changes
+
+- @midl/core@3.0.0-next.21
+
 ## 3.0.0-next.20
 
 ### Patch Changes

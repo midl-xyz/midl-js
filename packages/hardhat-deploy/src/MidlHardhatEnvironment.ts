@@ -48,17 +48,19 @@ import {
 	getContractAddress,
 	keccak256,
 } from "viem";
-import { sendBTCTransactions, waitForTransactionReceipt } from "viem/actions";
 import { type StoreApi, createStore } from "zustand/vanilla";
 import "~/types/context";
 
 export class MidlHardhatEnvironment {
 	private readonly store: StoreApi<{
 		intentions: TransactionIntention[];
+		nonce: number;
 	}> = createStore<{
 		intentions: TransactionIntention[];
+		nonce: number;
 	}>()(() => ({
 		intentions: [],
+		nonce: 0,
 	}));
 
 	private readonly deploymentsPath: string;
@@ -170,8 +172,14 @@ export class MidlHardhatEnvironment {
 			purposes: [AddressPurpose.Payment, AddressPurpose.Ordinals],
 		});
 
+		const nonce =
+			(await this.publicClient?.getTransactionCount({
+				address: this.getEVMAddress(),
+			})) ?? 0;
+
 		this.store.setState({
 			intentions: [],
+			nonce,
 		});
 	}
 
@@ -233,7 +241,10 @@ export class MidlHardhatEnvironment {
 		return {
 			address: getContractAddress({
 				from: this.getEVMAddress(),
-				nonce: BigInt(intention.evmTransaction?.nonce ?? totalIntentions - 1),
+				nonce: BigInt(
+					intention.evmTransaction?.nonce ??
+						this.store.getState().nonce + totalIntentions - 1,
+				),
 			}),
 			abi: artifact.abi,
 		};
@@ -402,7 +413,7 @@ export class MidlHardhatEnvironment {
 			console.log("Transaction sent", txId);
 		}
 
-		await sendBTCTransactions(publicClient, {
+		await this.publicClient?.sendBTCTransactions({
 			serializedTransactions: txs,
 			btcTransaction: tx.tx.hex,
 		});
@@ -417,7 +428,7 @@ export class MidlHardhatEnvironment {
 
 		await Promise.all(
 			evmTXHashes.map((hash) =>
-				waitForTransactionReceipt(publicClient, {
+				this.publicClient?.waitForTransactionReceipt({
 					hash,
 					confirmations: this.confirmationsRequired,
 				}),
@@ -426,9 +437,14 @@ export class MidlHardhatEnvironment {
 
 		console.log("Transaction confirmed", tx.tx.id);
 
+		const nonce = (await this.publicClient?.getTransactionCount({
+			address: this.getEVMAddress(),
+		})) as number;
+
 		this.store.setState((state) => ({
 			...state,
 			intentions: [],
+			nonce,
 		}));
 	}
 
