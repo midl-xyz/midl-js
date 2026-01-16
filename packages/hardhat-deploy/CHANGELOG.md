@@ -1,5 +1,16 @@
 # @midl/hardhat-deploy
 
+## 3.0.0-next.22
+
+### Patch Changes
+
+- 0f4ed9c: feat(hardhat-deploy): refactor
+- Updated dependencies [0f4ed9c]
+  - @midl/executor@3.0.0-next.22
+  - @midl/core@3.0.0-next.22
+  - @midl/logger@3.0.0-next.22
+  - @midl/node@3.0.0-next.22
+
 ## 3.0.0-next.21
 
 ### Patch Changes

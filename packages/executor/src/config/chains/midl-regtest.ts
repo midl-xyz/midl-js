@@ -10,8 +10,8 @@ export const midlRegtest: Chain = {
 	},
 	name: "midl-regtest",
 	nativeCurrency: {
-		name: "MIDL",
-		symbol: "MIDL",
+		name: "Bitcoin",
+		symbol: "BTC",
 		decimals: 18,
 	},
 	contracts: {
