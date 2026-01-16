@@ -6,7 +6,7 @@ import {
 } from "@midl/executor";
 import type { HardhatRuntimeEnvironment } from "hardhat/types";
 import { type PublicClient, encodeFunctionData } from "viem";
-import type { StoreApi } from "zustand";
+import type { StoreApi } from "zustand/vanilla";
 import type { MidlHardhatStore } from "~/actions/createStore";
 import { getDeployment } from "~/actions/getDeployment";
 

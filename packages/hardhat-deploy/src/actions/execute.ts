@@ -14,7 +14,7 @@ import {
 } from "@midl/executor";
 import type { HardhatRuntimeEnvironment } from "hardhat/types";
 import { type PublicClient, getContractAddress, keccak256 } from "viem";
-import type { StoreApi } from "zustand";
+import type { StoreApi } from "zustand/vanilla";
 import type { MidlHardhatStore } from "~/actions/createStore";
 import { saveDeployment } from "~/actions/saveDeployment";
 import type { MidlNetworkConfig } from "~/type-extensions";
