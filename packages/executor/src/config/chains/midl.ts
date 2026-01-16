@@ -10,8 +10,8 @@ export const midl: Chain = {
 	},
 	name: "MIDL",
 	nativeCurrency: {
-		name: "MIDL",
-		symbol: "MIDL",
+		name: "Bitcoin",
+		symbol: "BTC",
 		decimals: 18,
 	},
 	contracts: {
