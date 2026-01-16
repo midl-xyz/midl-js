@@ -67,7 +67,7 @@ export const createMidlHardhatEnvironment = (
 				options,
 			);
 		},
-		execute: async (options: ExecuteOptions) => {
+		execute: async (options?: ExecuteOptions) => {
 			if (!config) {
 				throw new Error("Midl not initialized. Call initialize() first.");
 			}
