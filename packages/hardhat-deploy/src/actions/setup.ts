@@ -31,8 +31,12 @@ export const setup = async (
 			}),
 		],
 		defaultPurpose: userConfig.defaultPurpose,
-		runesProvider: userConfig.runesProvider,
-		provider: userConfig.provider,
+		runesProvider: userConfig.runesProviderFactory
+			? userConfig.runesProviderFactory()
+			: undefined,
+		provider: userConfig.providerFactory
+			? userConfig.providerFactory()
+			: undefined,
 	});
 
 	await connect(midlConfig, {
