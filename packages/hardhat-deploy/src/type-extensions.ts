@@ -1,36 +1,37 @@
 import type {
 	AbstractProvider,
 	AbstractRunesProvider,
+	Account,
 	AddressPurpose,
 	BitcoinNetwork,
+	Config,
 } from "@midl/core";
 import "hardhat/types/config";
 import "hardhat/types/runtime";
-import type { MidlHardhatEnvironment } from "~/MidlHardhatEnvironment";
+import type { createMidlHardhatEnvironment } from "~/createMidlHarhdatEnvironment";
+
+export type MidlNetworkConfig = {
+	mnemonic: string;
+	confirmationsRequired?: number;
+	btcConfirmationsRequired?: number;
+	network?: string | BitcoinNetwork;
+	hardhatNetwork?: string;
+	provider?: AbstractProvider;
+	runesProvider?: AbstractRunesProvider;
+	defaultPurpose?: AddressPurpose;
+};
 
 declare module "hardhat/types/config" {
 	export interface HardhatUserConfig {
 		midl: {
 			path?: string;
-			networks: Record<
-				string | "default",
-				{
-					mnemonic: string;
-					confirmationsRequired?: number;
-					btcConfirmationsRequired?: number;
-					network?: string | BitcoinNetwork;
-					hardhatNetwork?: string;
-					provider?: AbstractProvider | (() => AbstractProvider);
-					runesProvider?: AbstractRunesProvider | (() => AbstractRunesProvider);
-					defaultPurpose?: AddressPurpose;
-				}
-			>;
+			networks: Record<string | "default", MidlNetworkConfig>;
 		};
 	}
 }
 
 declare module "hardhat/types/runtime" {
 	export interface HardhatRuntimeEnvironment {
-		midl: MidlHardhatEnvironment;
+		midl: ReturnType<typeof createMidlHardhatEnvironment>;
 	}
 }

@@ -1,15 +1,17 @@
+import { getDefaultAccount } from "@midl/core";
+import { getEVMAddress } from "@midl/executor";
 import { task, types } from "hardhat/config";
 
 task<{ index: number }>(
 	"midl:address",
 	"Get the Bitcoin and EVM address for a given account index",
 	async (args, hre) => {
-		await hre.midl.initialize(args.index);
-		const { address, addressType } = hre.midl.getAccount();
-		const evmAddress = hre.midl.getEVMAddress();
+		const config = await hre.midl.initialize(args.index);
+		const account = getDefaultAccount(config);
+		const evmAddress = getEVMAddress(account, config.getState().network);
 
 		console.log(
-			`Bitcoin Address: ${address} (${addressType})\nEVM Address: ${evmAddress}`,
+			`Bitcoin Address: ${account.address} (${account.addressType})\nEVM Address: ${evmAddress}`,
 		);
 	},
 ).addPositionalParam(
