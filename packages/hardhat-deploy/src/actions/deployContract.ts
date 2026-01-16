@@ -15,7 +15,7 @@ import {
 	encodeDeployData,
 	getContractAddress,
 } from "viem";
-import type { StoreApi } from "zustand";
+import type { StoreApi } from "zustand/vanilla";
 import type { MidlHardhatStore } from "~/actions/createStore";
 import { getDeployment } from "~/actions/getDeployment";
 
