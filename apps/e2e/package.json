@@ -26,6 +26,6 @@
 		"@midl/core": "workspace:^",
 		"@midl/executor": "workspace:^",
 		"@midl/playwright": "workspace:^",
-		"viem": "npm:@midl/viem@2.21.38"
+		"viem": "npm:@midl/viem@2.21.39"
 	}
 }

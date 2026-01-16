@@ -16,9 +16,9 @@ export type MidlNetworkConfig = {
 	btcConfirmationsRequired?: number;
 	network?: string | BitcoinNetwork;
 	hardhatNetwork?: string;
-	provider?: AbstractProvider;
-	runesProvider?: AbstractRunesProvider;
 	defaultPurpose?: AddressPurpose;
+	runesProviderFactory?: () => AbstractRunesProvider;
+	providerFactory?: () => AbstractProvider;
 };
 
 declare module "hardhat/types/config" {

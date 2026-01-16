@@ -1,4 +1,6 @@
 import {
+	type AbstractProvider,
+	type AbstractRunesProvider,
 	AddressPurpose,
 	AddressType,
 	connect,
@@ -105,12 +107,10 @@ describe("setup", () => {
 
 	it("passes through runesProvider from userConfig", async () => {
 		const store = createStore();
-		const mockRunesProvider = {
-			getBalance: vi.fn(),
-		} as unknown as MidlNetworkConfig["runesProvider"];
+		const mockRunesProvider = {} as AbstractRunesProvider;
 		const userConfig = {
 			mnemonic: "test test test test test test test test test test test junk",
-			runesProvider: mockRunesProvider,
+			runesProviderFactory: () => mockRunesProvider,
 		} satisfies MidlNetworkConfig;
 
 		await setup(userConfig, store, {
@@ -126,12 +126,10 @@ describe("setup", () => {
 
 	it("passes through provider from userConfig", async () => {
 		const store = createStore();
-		const mockProvider = {
-			request: vi.fn(),
-		} as unknown as MidlNetworkConfig["provider"];
+		const mockProvider = {} as AbstractProvider;
 		const userConfig = {
 			mnemonic: "test test test test test test test test test test test junk",
-			provider: mockProvider,
+			providerFactory: () => mockProvider,
 		} satisfies MidlNetworkConfig;
 
 		await setup(userConfig, store, {
