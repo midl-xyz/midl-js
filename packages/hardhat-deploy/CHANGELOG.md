@@ -1,5 +1,15 @@
 # @midl/hardhat-deploy
 
+## 3.0.0-next.24
+
+### Patch Changes
+
+- fix(hardhat-deploy): disable proxy on env
+  - @midl/core@3.0.0-next.24
+  - @midl/executor@3.0.0-next.24
+  - @midl/logger@3.0.0-next.24
+  - @midl/node@3.0.0-next.24
+
 ## 3.0.0-next.23
 
 ### Patch Changes
