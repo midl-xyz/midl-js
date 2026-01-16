@@ -52,7 +52,7 @@ export const deployContract = async (
 
 	const deployData = encodeDeployData({
 		abi: artifact.abi,
-		args: args,
+		args,
 		bytecode: bytecode as `0x${string}`,
 	});
 

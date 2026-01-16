@@ -8,7 +8,7 @@ import type {
 } from "@midl/core";
 import "hardhat/types/config";
 import "hardhat/types/runtime";
-import type { createMidlHardhatEnvironment } from "~/createMidlHarhdatEnvironment";
+import type { createMidlHardhatEnvironment } from "~/createMidlHardhatEnvironment";
 
 export type MidlNetworkConfig = {
 	mnemonic: string;

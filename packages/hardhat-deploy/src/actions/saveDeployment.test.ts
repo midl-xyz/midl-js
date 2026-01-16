@@ -288,10 +288,6 @@ describe("saveDeployment", () => {
 
 		expect(mockReadArtifact).toHaveBeenCalledWith("FallbackContract");
 
-		const expectedPath = path.join(
-			mockDeploymentsPath,
-			"FallbackContract.json",
-		);
 		const writeCall = vi.mocked(fs.writeFile).mock.calls[0];
 		const savedData = JSON.parse(writeCall[1] as string);
 

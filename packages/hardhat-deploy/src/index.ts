@@ -1,5 +1,5 @@
 import { extendEnvironment } from "hardhat/config";
-import { createMidlHardhatEnvironment } from "~/createMidlHarhdatEnvironment";
+import { createMidlHardhatEnvironment } from "~/createMidlHardhatEnvironment";
 import "./tasks/address";
 import "./type-extensions";
 

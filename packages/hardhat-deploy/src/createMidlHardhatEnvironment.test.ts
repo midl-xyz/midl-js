@@ -17,7 +17,7 @@ import {
 	writeContract,
 } from "~/actions";
 import type { MidlNetworkConfig } from "~/type-extensions";
-import { createMidlHardhatEnvironment } from "./createMidlHarhdatEnvironment";
+import { createMidlHardhatEnvironment } from "./createMidlHardhatEnvironment";
 
 vi.mock("@midl/core");
 vi.mock("@midl/executor");
