@@ -42,8 +42,8 @@ describe("getChain", () => {
 		expect(chain.id).toBe(1337);
 		expect(chain.name).toBe("MIDL");
 		expect(chain.nativeCurrency).toEqual({
-			name: "MIDL",
-			symbol: "MIDL",
+			name: "Bitcoin",
+			symbol: "BTC",
 			decimals: 18,
 		});
 		expect(chain.rpcUrls.default.http).toEqual(["http://127.0.0.1:8545"]);

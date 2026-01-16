@@ -38,8 +38,8 @@ export const getChain = (
 			id: chainId,
 			name: "MIDL",
 			nativeCurrency: {
-				name: "MIDL",
-				symbol: "MIDL",
+				name: "Bitcoin",
+				symbol: "BTC",
 				decimals: 18,
 			},
 			rpcUrls: {
