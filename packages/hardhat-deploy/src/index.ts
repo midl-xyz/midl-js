@@ -1,9 +1,8 @@
 import { extendEnvironment } from "hardhat/config";
-import { lazyObject } from "hardhat/plugins";
-import { MidlHardhatEnvironment } from "~/MidlHardhatEnvironment";
-import "./type-extensions";
+import { createMidlHardhatEnvironment } from "~/createMidlHardhatEnvironment";
 import "./tasks/address";
+import "./type-extensions";
 
 extendEnvironment((hre) => {
-	hre.midl = lazyObject(() => new MidlHardhatEnvironment(hre));
+	hre.midl = createMidlHardhatEnvironment(hre);
 });

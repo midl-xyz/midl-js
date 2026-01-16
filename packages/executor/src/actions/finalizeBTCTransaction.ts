@@ -19,7 +19,7 @@ import { aggregateIntentionRunes } from "~/utils";
 
 const logger = getLogger([LoggerNamespace.Actions, "finalizeBTCTransaction"]);
 
-type FinalizeBTCTransactionOptions = {
+export type FinalizeBTCTransactionOptions = {
 	/**
 	 * State override for EVM transactions
 	 */
