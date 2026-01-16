@@ -1,5 +1,11 @@
 # @midl/core
 
+## 3.0.0-next.23
+
+### Patch Changes
+
+- @midl/logger@3.0.0-next.23
+
 ## 3.0.0-next.22
 
 ### Patch Changes
