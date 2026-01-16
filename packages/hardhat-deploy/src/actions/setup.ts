@@ -6,7 +6,7 @@ import {
 	createConfig,
 } from "@midl/core";
 import { keyPairConnector } from "@midl/node";
-import type { StoreApi } from "zustand";
+import type { StoreApi } from "zustand/vanilla";
 import type { MidlHardhatStore } from "~/actions/createStore";
 import type { MidlNetworkConfig } from "~/type-extensions";
 
