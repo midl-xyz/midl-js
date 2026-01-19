@@ -1,7 +1,7 @@
 import {
 	bitgetConnector,
 	leatherConnector,
-	magicEdenConnector,
+	okxConnector,
 	phantomConnector,
 	unisatConnector,
 	xverseConnector,
@@ -15,21 +15,18 @@ type ConfigParams = Omit<Parameters<typeof createConfig>[0], "connectors"> & {
 export const createMidlConfig = (params: ConfigParams) => {
 	return createConfig({
 		connectors: [
-			leatherConnector({
-				metadata: {
-					group: "popular",
-				},
-			}),
 			xverseConnector({
 				metadata: {
 					isPartner: true,
 					group: "popular",
 				},
 			}),
+			phantomConnector({}),
+			leatherConnector({}),
 			bitgetConnector(),
 			unisatConnector(),
-			phantomConnector(),
-			magicEdenConnector(),
+			okxConnector(),
+			//magicEdenConnector(),
 		],
 		...params,
 	});

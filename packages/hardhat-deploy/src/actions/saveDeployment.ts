@@ -7,6 +7,7 @@ import { getDeploymentsPath } from "~/actions/getDeploymentsPath";
 export type DeploymentData = {
 	address: Address;
 	txId?: string;
+	btcTxId?: string;
 	abi?: unknown[];
 };
 
@@ -32,6 +33,7 @@ export const saveDeployment = async (
 			{
 				address: fileData.address,
 				txId: fileData.txId,
+				btcTxId: fileData.btcTxId,
 				abi: fileData.abi,
 			},
 			null,

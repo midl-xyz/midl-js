@@ -1,5 +1,6 @@
 import {
 	type Account,
+	type BitcoinNetwork,
 	type Connector,
 	type ConnectorConnectParams,
 	type SignMessageParams,
@@ -23,6 +24,24 @@ export class UnisatConnector implements Connector {
 
 		if (!publicKey) {
 			throw new Error("Public key not found");
+		}
+
+		// Treat single account request as a request for all purposes
+		if (requestedAccounts.length === 1) {
+			const accounts: Account[] = [];
+
+			const [account] = requestedAccounts;
+
+			for (const purpose of params.purposes) {
+				accounts.push({
+					address: account,
+					publicKey: publicKey,
+					purpose: purpose,
+					addressType: getAddressType(account),
+				});
+			}
+
+			return accounts;
 		}
 
 		const accounts = requestedAccounts.map((it) => {
@@ -90,7 +109,7 @@ export class UnisatConnector implements Connector {
 		};
 	}
 
-	private getProvider() {
+	private getProvider(): Unisat {
 		const provider = get(window, this.id);
 
 		if (typeof provider === "undefined") {
