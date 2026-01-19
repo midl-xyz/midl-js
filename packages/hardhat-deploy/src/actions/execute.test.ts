@@ -266,6 +266,7 @@ describe("execute", () => {
 		expect(mockReadArtifact).toHaveBeenCalledWith("MyContract");
 		expect(saveDeployment).toHaveBeenCalledWith(mockHre, "MyContract", {
 			txId: mockTxId,
+			btcTxId: mockBtcTxId,
 			address: mockContractAddress,
 			abi: mockArtifact.abi,
 		});
