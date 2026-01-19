@@ -75,7 +75,7 @@ describe("core | providers | MaestroProvider", () => {
 			}),
 		]);
 		expect(req.url).toBe(
-			"https://xbt-mainnet.gomaestro-api.org/v0/addresses/some-address/utxos",
+			"https://xbt-mainnet.gomaestro-api.org/v0/addresses/some-address/utxos?exclude_metaprotocols=true",
 		);
 		expect(req.headers.get("api-key")).toBe(apiKey);
 	});
@@ -95,7 +95,7 @@ describe("core | providers | MaestroProvider", () => {
 		await provider.getUTXOs(testnet, "some-address");
 		const [req] = (mockFetch.mock.lastCall ?? []) as [Request];
 		expect(req.url).toBe(
-			"https://xbt-testnet.gomaestro-api.org/v0/addresses/some-address/utxos",
+			"https://xbt-testnet.gomaestro-api.org/v0/addresses/some-address/utxos?exclude_metaprotocols=true",
 		);
 	});
 
@@ -117,7 +117,7 @@ describe("core | providers | MaestroProvider", () => {
 		await provider.getUTXOs(mainnet, "some-address");
 		const [req] = (mockFetch.mock.lastCall ?? []) as [Request];
 		expect(req.url).toBe(
-			"https://custom-mainnet.gomaestro-api.org/v0/addresses/some-address/utxos",
+			"https://custom-mainnet.gomaestro-api.org/v0/addresses/some-address/utxos?exclude_metaprotocols=true",
 		);
 	});
 });

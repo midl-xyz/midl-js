@@ -50,7 +50,7 @@ export const execute = async (
 		intentions.push(completeTx);
 	}
 
-	const { tx } = await finalizeBTCTransaction(
+	const btcTx = await finalizeBTCTransaction(
 		config,
 		intentions,
 		publicClient,
@@ -67,7 +67,7 @@ export const execute = async (
 			intention,
 			intentions,
 			{
-				txId: tx.id,
+				txId: btcTx.tx.id,
 				protocol: SignMessageProtocol.Bip322,
 			},
 		);
@@ -100,6 +100,7 @@ export const execute = async (
 
 			await saveDeployment(hre, intention.meta.contractName, {
 				txId,
+				btcTxId: btcTx.tx.id,
 				address: contractAddress,
 				abi: artifact.abi,
 			});
@@ -107,11 +108,15 @@ export const execute = async (
 	}
 
 	await publicClient.sendBTCTransactions({
-		btcTransaction: tx.hex,
+		btcTransaction: btcTx.tx.hex,
 		serializedTransactions: signedTransactions,
 	});
 
-	await waitForTransaction(config, tx.id, userConfig.btcConfirmationsRequired);
+	await waitForTransaction(
+		config,
+		btcTx.tx.id,
+		userConfig.btcConfirmationsRequired,
+	);
 
 	await Promise.all(
 		evmTransactionsHashes.map((hash) =>
@@ -126,5 +131,5 @@ export const execute = async (
 		intentions: [],
 	}));
 
-	return [tx.id, evmTransactionsHashes];
+	return [btcTx.tx.id, evmTransactionsHashes];
 };

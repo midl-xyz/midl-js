@@ -1,5 +1,12 @@
 # @midl/core
 
+## 3.0.0-next.25
+
+### Patch Changes
+
+- 7e55753: feat(core): MaestroProvider exclude meta protocols
+  - @midl/logger@3.0.0-next.25
+
 ## 3.0.0-next.24
 
 ### Patch Changes

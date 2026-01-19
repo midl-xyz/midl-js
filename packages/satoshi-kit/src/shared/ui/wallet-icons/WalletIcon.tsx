@@ -2,6 +2,7 @@ import { css, cx } from "styled-system/css";
 import BitgetIcon from "./BitgetIcon";
 import LeatherIcon from "./LeatherIcon";
 import MagicEdenIcon from "./MagicEden";
+import OkxIcon from "./OkxIcon";
 import PhantomIcon from "./PhantomIcon";
 import UnisatIcon from "./UnisatIcon";
 import XverseIcon from "./XverseIcon";
@@ -43,6 +44,10 @@ export const WalletIcon = ({
 
 		case "sats-connect-magicEden.bitcoin":
 			Icon = MagicEdenIcon;
+			break;
+
+		case "okxwallet.bitcoin":
+			Icon = OkxIcon;
 			break;
 
 		default:

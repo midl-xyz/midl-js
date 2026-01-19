@@ -248,6 +248,9 @@ export class MaestroProvider
 				path: {
 					address,
 				},
+				query: {
+					exclude_metaprotocols: true,
+				},
 			},
 		});
 
