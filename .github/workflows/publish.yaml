@@ -51,6 +51,7 @@ jobs:
           publish: pnpm changeset publish
           commit: "chore: release new version ${{ github.ref_name}}"
           title: "chore: release new version ${{ github.ref_name}}"
+          commitMode: "github-api"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
