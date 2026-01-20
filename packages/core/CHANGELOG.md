@@ -1,5 +1,12 @@
 # @midl/core
 
+## 3.0.0-next.27
+
+### Patch Changes
+
+- f0d3649: fix(core): allow edict from any account
+  - @midl/logger@3.0.0-next.27
+
 ## 3.0.0-next.26
 
 ### Patch Changes
