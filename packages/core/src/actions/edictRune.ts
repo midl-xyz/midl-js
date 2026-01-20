@@ -109,7 +109,7 @@ export const edictRune = async (
 	config: Config,
 	{ transfers, feeRate: customFeeRate, publish, from }: EdictRuneParams,
 ): Promise<EdictRuneResponse> => {
-	const { connection, network: currentNetwork } = config.getState();
+	const { connection, network: currentNetwork, accounts } = config.getState();
 
 	if (!connection) {
 		throw new Error("No connection");
@@ -119,8 +119,8 @@ export const edictRune = async (
 		throw new Error("No network");
 	}
 
-	const ordinalsAccount =
-		getDefaultAccount(config, (account) => {
+	const runesAccount =
+		accounts?.find((account) => {
 			if (from) {
 				return account.address === from;
 			}
@@ -128,23 +128,15 @@ export const edictRune = async (
 			return account.purpose === AddressPurpose.Ordinals;
 		}) ?? getDefaultAccount(config);
 
-	if (!ordinalsAccount) {
-		throw new Error("No ordinals account");
-	}
-
-	const account = getDefaultAccount(
+	const paymentAccount = getDefaultAccount(
 		config,
 		from ? (account) => account.address === from : undefined,
 	);
 
-	if (!account) {
-		throw new Error("No transfer account");
-	}
-
 	const network = networks[currentNetwork.network];
 	const feeRate = customFeeRate || (await getFeeRate(config)).hourFee;
 
-	const utxos = await getUTXOs(config, account.address);
+	const utxos = await getUTXOs(config, paymentAccount.address);
 	const runeUTXOs: RuneUTXO[] = [];
 	const outputs: TransferOutput[] = [];
 
@@ -152,7 +144,7 @@ export const edictRune = async (
 		if ("runeId" in transfer) {
 			const utxos = await getRuneUTXO(
 				config,
-				ordinalsAccount.address,
+				runesAccount.address,
 				transfer.runeId,
 			);
 
@@ -191,7 +183,7 @@ export const edictRune = async (
 	}
 
 	outputs.push({
-		address: ordinalsAccount.address,
+		address: runesAccount.address,
 		value: RUNE_MAGIC_VALUE,
 	});
 
@@ -207,33 +199,29 @@ export const edictRune = async (
 
 	const psbt = new Psbt({ network });
 
-	const inputs = await makePSBTInputs(config, account, selectedUTXOs.inputs);
+	const inputs = await makePSBTInputs(
+		config,
+		paymentAccount,
+		selectedUTXOs.inputs,
+	);
 
 	psbt.addInputs(inputs);
 
-	const xOnly = extractXCoordinate(ordinalsAccount.publicKey);
+	const runeInputs = await makePSBTInputs(
+		config,
+		runesAccount,
+		runeUTXOs.map((utxo) => ({
+			txid: utxo.txid,
+			vout: utxo.vout,
+			value: utxo.satoshis,
+		})),
+	);
 
-	const ordinalsP2TR = payments.p2tr({
-		internalPubkey: Buffer.from(xOnly, "hex"),
-		network,
-	});
-
-	for (const utxo of runeUTXOs) {
-		psbt.addInput({
-			hash: utxo.txid,
-			index: utxo.vout,
-			witnessUtxo: {
-				value: BigInt(utxo.satoshis),
-				// biome-ignore lint/style/noNonNullAssertion: <explanation>
-				script: ordinalsP2TR.output!,
-			},
-			tapInternalKey: Buffer.from(xOnly, "hex"),
-		});
-	}
+	psbt.addInputs(runeInputs);
 
 	for (const output of selectedUTXOs.outputs) {
 		if (!output.address) {
-			output.address = account.address;
+			output.address = paymentAccount.address;
 		}
 
 		psbt.addOutput({
@@ -265,7 +253,7 @@ export const edictRune = async (
 
 	const changeIndex = psbt.txOutputs.findIndex(
 		(it) =>
-			it.address === ordinalsAccount.address &&
+			it.address === runesAccount.address &&
 			it.value === BigInt(RUNE_MAGIC_VALUE),
 	);
 
@@ -279,18 +267,19 @@ export const edictRune = async (
 	const psbtData = psbt.toBase64();
 	const signInputs = {} as Record<string, number[]>;
 
-	if (account.address !== ordinalsAccount.address) {
-		signInputs[account.address] = selectedUTXOs.inputs.map(
+	if (paymentAccount.address !== runesAccount.address) {
+		signInputs[paymentAccount.address] = selectedUTXOs.inputs.map(
 			(_input, index) => index,
 		);
-		signInputs[ordinalsAccount.address] = runeUTXOs.map(
+		signInputs[runesAccount.address] = runeUTXOs.map(
 			// biome-ignore lint/style/noNonNullAssertion: <explanation>
 			(_input, index) => (selectedUTXOs.inputs!.length ?? 0) + index,
 		);
 	} else {
-		signInputs[account.address] = [...selectedUTXOs.inputs, ...runeUTXOs].map(
-			(_input, index) => index,
-		);
+		signInputs[paymentAccount.address] = [
+			...selectedUTXOs.inputs,
+			...runeUTXOs,
+		].map((_input, index) => index);
 	}
 
 	const data = await connection.signPSBT(
