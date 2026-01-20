@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - next
+      - ci/publish-test-oidc-changeset
 
 permissions:
   id-token: write
@@ -55,5 +56,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
-          NODE_AUTH_TOKEN: ""
-          NPM_TOKEN: ""
