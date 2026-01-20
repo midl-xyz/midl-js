@@ -119,11 +119,14 @@ export const edictRune = async (
 		throw new Error("No network");
 	}
 
-	const { accounts } = config.getState();
+	const ordinalsAccount =
+		getDefaultAccount(config, (account) => {
+			if (from) {
+				return account.address === from;
+			}
 
-	const ordinalsAccount = accounts?.find(
-		(account) => account.purpose === AddressPurpose.Ordinals,
-	);
+			return account.purpose === AddressPurpose.Ordinals;
+		}) ?? getDefaultAccount(config);
 
 	if (!ordinalsAccount) {
 		throw new Error("No ordinals account");
