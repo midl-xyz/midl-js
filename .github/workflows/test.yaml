@@ -8,6 +8,8 @@ on:
     paths:
       - 'packages/**'
       - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
+      - 'turbo.json'
       - 'vitest.config.ts'
       - 'biome.json'
       - '.github/workflows/test.yaml'
@@ -17,20 +19,15 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [22]
-
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8
       - name: Install pnpm
-        uses: pnpm/action-setup@v4     
+        uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061  
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238
         with:
-          node-version: ${{ matrix.node-version }}
-          registry-url: https://registry.npmjs.org
+          node-version: '24.x'
           cache: 'pnpm'
 
       - name: Install dependencies

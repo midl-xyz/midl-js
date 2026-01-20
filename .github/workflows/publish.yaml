@@ -5,7 +5,12 @@ on:
     branches:
       - main
       - next
-      - ci/publish-test-oidc-changeset
+    paths:
+      - 'packages/**'
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
+      - '.changeset/**'
+      - '.github/workflows/publish.yaml'
 
 permissions:
   id-token: write
@@ -17,23 +22,18 @@ concurrency: ${{ github.workflow }}-${{ github.ref }}
 jobs:
   publish:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
-      id-token: write
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8
         with:
           fetch-depth: 0
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v4     
+        uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061     
 
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238
         with:
           node-version: '24.x'
           cache: 'pnpm'
-          registry-url: 'https://registry.npmjs.org'
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -46,13 +46,13 @@ jobs:
 
       - name: Changesets Version/Publish
         id: changesets
-        uses: changesets/action@v1
-        with:
-          version: pnpm changeset version
-          publish: pnpm changeset publish
-          commit: "chore: release new version ${{ github.ref_name}}"
-          title: "chore: release new version ${{ github.ref_name}}"
-          commitMode: "github-api"
+        uses: changesets/action@e0145edc7d9d8679003495b11f87bd8ef63c0cba
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
+        with:
+          version: pnpm changeset version
+          publish: pnpm changeset publish
+          commit: "chore: release new version (${{ github.ref_name }})"
+          title: "chore: release new version (${{ github.ref_name }})"
+          commitMode: "github-api"
