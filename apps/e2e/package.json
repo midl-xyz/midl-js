@@ -3,6 +3,7 @@
 	"version": "1.0.44",
 	"main": "index.js",
 	"type": "module",
+	"private": true,
 	"scripts": {
 		"dev": "vite ./app",
 		"build": "vite build ./app",
