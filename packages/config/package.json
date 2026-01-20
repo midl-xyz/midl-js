@@ -1,9 +1,11 @@
 {
 	"name": "@midl/midl-js-config",
-	"version": "3.0.0-next.25",
+	"version": "3.0.0-next.26",
 	"license": "MIT",
 	"private": true,
-	"files": ["tsconfig.base.json"],
+	"files": [
+		"tsconfig.base.json"
+	],
 	"repository": {
 		"url": "git+https://github.com/midl-xyz/midl-js.git",
 		"directory": "packages/config",
