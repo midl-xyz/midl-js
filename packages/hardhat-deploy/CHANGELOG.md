@@ -1,5 +1,15 @@
 # @midl/hardhat-deploy
 
+## 3.0.0-next.28
+
+### Patch Changes
+
+- Updated dependencies [5f94244]
+  - @midl/core@3.0.0-next.28
+  - @midl/executor@3.0.0-next.28
+  - @midl/node@3.0.0-next.28
+  - @midl/logger@3.0.0-next.28
+
 ## 3.0.0-next.27
 
 ### Patch Changes
