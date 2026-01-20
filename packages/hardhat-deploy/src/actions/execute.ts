@@ -24,6 +24,13 @@ export type ExecuteOptions = {
 	withdraw?: Withdrawal | boolean;
 };
 
+export class EmptyIntentionsError extends Error {
+	constructor() {
+		super("No intentions to execute");
+		this.name = "EmptyIntentionsError";
+	}
+}
+
 export const execute = async (
 	userConfig: MidlNetworkConfig,
 	hre: HardhatRuntimeEnvironment,

@@ -4,6 +4,7 @@ import type { HardhatRuntimeEnvironment } from "hardhat/types";
 import { http, type PublicClient, createPublicClient } from "viem";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
+	EmptyIntentionsError,
 	createStore,
 	deleteDeployment,
 	deployContract,
@@ -448,5 +449,14 @@ describe("createMidlHardhatEnvironment", () => {
 			undefined,
 			undefined,
 		);
+	});
+
+	it("doesn't throw if no intentions to execute", async () => {
+		const env = createMidlHardhatEnvironment(mockHre);
+		await env.initialize();
+
+		vi.mocked(execute).mockRejectedValueOnce(new EmptyIntentionsError());
+
+		await expect(env.execute()).resolves.toBeNull();
 	});
 });
