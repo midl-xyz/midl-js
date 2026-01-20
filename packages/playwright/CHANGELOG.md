@@ -1,5 +1,12 @@
 # @midl/playwright
 
+## 3.0.0-next.26
+
+### Patch Changes
+
+- e481bd0: feat(playwright): refactor postinstall scripts
+  - @midl/core@3.0.0-next.26
+
 ## 3.0.0-next.25
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 {
 	"name": "@midl/logger",
-	"version": "3.0.0-next.25",
+	"version": "3.0.0-next.26",
 	"license": "MIT",
 	"type": "module",
 	"dependencies": {
@@ -14,7 +14,11 @@
 		}
 	},
 	"types": "./index.d.ts",
-	"files": ["index.js", "index.cjs", "index.d.ts"],
+	"files": [
+		"index.js",
+		"index.cjs",
+		"index.d.ts"
+	],
 	"repository": {
 		"url": "git+https://github.com/midl-xyz/midl-js.git",
 		"directory": "packages/logger",
