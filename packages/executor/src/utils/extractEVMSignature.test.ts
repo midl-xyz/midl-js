@@ -10,13 +10,7 @@ import { schnorr } from "@noble/secp256k1";
 import { Verifier } from "bip322-js";
 import { magicHash } from "bitcoinjs-message";
 import { publicKeyConvert } from "secp256k1";
-import {
-	getAddress,
-	hexToBigInt,
-	keccak256,
-	recoverAddress,
-	recoverPublicKey,
-} from "viem";
+import { hexToBigInt, keccak256, recoverAddress, recoverPublicKey } from "viem";
 import { afterEach, describe, expect, it } from "vitest";
 import { midlConfig, midlConfigP2SH } from "~/__tests__/midlConfig";
 import { getPublicKey } from "~/actions";
@@ -35,7 +29,7 @@ describe("extractEVMSignature", () => {
 			purposes: [AddressPurpose.Payment],
 		});
 
-		const account = await getDefaultAccount(midlConfigP2SH);
+		const account = getDefaultAccount(midlConfigP2SH);
 
 		const message = keccak256(new TextEncoder().encode("test"));
 
