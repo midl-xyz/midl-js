@@ -17,6 +17,7 @@ const Configuration: UserConfig = {
 				"satoshi-kit",
 				"rune-etcher",
 				"node",
+				"playwright",
 			],
 		],
 	},
