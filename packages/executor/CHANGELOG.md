@@ -1,5 +1,13 @@
 # @midl/executor
 
+## 3.0.0-next.26
+
+### Patch Changes
+
+- 3191d23: feat(executor): p2wpkh receiver runes
+  - @midl/core@3.0.0-next.26
+  - @midl/logger@3.0.0-next.26
+
 ## 3.0.0-next.25
 
 ### Patch Changes
