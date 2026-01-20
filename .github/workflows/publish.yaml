@@ -1,33 +1,42 @@
-name: Publish to NPM
+name: Publish
 
 on:
-  workflow_dispatch:
-  release:
-    types: [published]
+  push:
+    branches:
+      - main
+      - next
 
 permissions:
   id-token: write
-  contents: read
-    
+  contents: write
+  pull-requests: write
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
 jobs:
-  build-and-publish:
+  publish:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      id-token: write
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v6
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4      
-      - name: Set up Node.js
-        uses: actions/setup-node@v6
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - uses: actions/setup-node@v4
         with:
           node-version: '24.x'
-          registry-url: https://registry.npmjs.org
           cache: 'pnpm'
+          registry-url: 'https://registry.npmjs.org'
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
       - name: Build packages
         run: pnpm build:packages
@@ -35,14 +44,14 @@ jobs:
       - name: Run tests
         run: pnpm test:packages
 
-      - name: Publish packages 
+      - name: Changesets Version/Publish
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          version: pnpm changeset version
+          publish: pnpm changeset publish
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true
           NODE_AUTH_TOKEN: ""
           NPM_TOKEN: ""
-          NPM_CONFIG_PROVENANCE: "true"
-        run: |
-          TAG=""
-          if [[ "${GITHUB_REF##*/}" == "next" ]]; then
-            TAG="--tag next --publish-branch next"
-          fi
-          pnpm publish -r --filter="./packages/*" --no-git-checks --access public $TAG
