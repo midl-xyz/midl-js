@@ -24,13 +24,6 @@ export type ExecuteOptions = {
 	withdraw?: Withdrawal | boolean;
 };
 
-export class EmptyIntentionsError extends Error {
-	constructor() {
-		super("No intentions to execute");
-		this.name = "EmptyIntentionsError";
-	}
-}
-
 export const execute = async (
 	userConfig: MidlNetworkConfig,
 	hre: HardhatRuntimeEnvironment,
@@ -45,7 +38,7 @@ export const execute = async (
 	const intentions = structuredClone(store.getState().intentions);
 
 	if (intentions.length === 0) {
-		throw new Error("No intentions to execute");
+		return null;
 	}
 
 	if (options.withdraw) {

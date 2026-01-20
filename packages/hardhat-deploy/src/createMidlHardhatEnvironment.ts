@@ -5,7 +5,6 @@ import { http, type PublicClient, createPublicClient } from "viem";
 import {
 	type DeployContractOptions,
 	type DeploymentData,
-	EmptyIntentionsError,
 	type ExecuteOptions,
 	type ReadContractOptions,
 	type WriteContractOptions,
@@ -72,22 +71,15 @@ export const createMidlHardhatEnvironment = (
 			if (!config) {
 				throw new Error("Midl not initialized. Call initialize() first.");
 			}
-			try {
-				return await execute(
-					userConfig,
-					hre,
-					config,
-					store,
-					publicClient,
-					options,
-				);
-			} catch (error) {
-				if (error instanceof EmptyIntentionsError) {
-					return null;
-				}
 
-				throw error;
-			}
+			return await execute(
+				userConfig,
+				hre,
+				config,
+				store,
+				publicClient,
+				options,
+			);
 		},
 		read: async (
 			name: string,
