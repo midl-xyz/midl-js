@@ -2,7 +2,7 @@ import * as ecc from "@bitcoinerlab/secp256k1";
 import { AddressType, extractXCoordinate, getAddressType } from "@midl/core";
 import { sha256 } from "@noble/hashes/sha256";
 import * as bitcoin from "bitcoinjs-lib";
-import ECPairFactory from "ecpair";
+import { ECPairFactory } from "ecpair";
 import { encode } from "varuint-bitcoin";
 
 function bip0322_hash(message: string) {
