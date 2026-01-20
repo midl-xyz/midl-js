@@ -9,6 +9,10 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 async function main() {
+	if (process.env.MIDL_PLAYWRIGHT_INSTALL_EXTENSIONS !== "true") {
+		return;
+	}
+
 	console.log("\n🚀 Setting up browser extensions\n");
 
 	const extensions = Object.values(EXTENSIONS);
