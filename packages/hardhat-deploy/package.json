@@ -6,8 +6,7 @@
 		"build": "pnpm run clean && tspc --project tsconfig.esm.json && tspc --project tsconfig.cjs.json",
 		"dev": "concurrently \"tspc --watch --preserveWatchOutput --project tsconfig.esm.json\" \"tspc --watch --preserveWatchOutput --project tsconfig.cjs.json\"",
 		"clean": "rm -rf dist",
-		"test": "vitest",
-		"test:compile": "./tests/fixtures/hardhat-project/compile.sh"
+		"test": "vitest"
 	},
 	"main": "./dist/cjs/index.js",
 	"module": "./dist/esm/index.js",

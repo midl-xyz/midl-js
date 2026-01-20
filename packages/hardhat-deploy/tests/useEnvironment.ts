@@ -22,5 +22,6 @@ export const useEnvironment = (useDotEnv = false) => {
 			require("dotenv").config({ path: path.join(rootDir, ".env") });
 		}
 		globalThis.hre = require("hardhat");
+		globalThis.hre.run("compile");
 	});
 };

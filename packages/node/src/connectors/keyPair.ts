@@ -20,7 +20,7 @@ import * as bip39 from "bip39";
 import * as bitcoin from "bitcoinjs-lib";
 import { Psbt } from "bitcoinjs-lib";
 import bitcoinMessage from "bitcoinjs-message";
-import ECPairFactory from "ecpair";
+import { ECPairFactory } from "ecpair";
 import { derivationPathMap } from "~/config";
 import { signBIP322Simple } from "~/utils";
 

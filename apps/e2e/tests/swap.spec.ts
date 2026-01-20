@@ -3,11 +3,9 @@ import { type Wallet, createTest } from "@midl/playwright";
 import type { Page } from "@playwright/test";
 import { midlConfig } from "../config";
 
-const mnemonic = process.env.MNEMONIC;
-
-if (!mnemonic) {
-	throw new Error("MNEMONIC is not set");
-}
+const mnemonic =
+	process.env.MNEMONIC ??
+	"test test test test test test test test test test test junk";
 
 const { test } = createTest({
 	mnemonic,
@@ -67,6 +65,10 @@ test.describe("Add Liquidity Flow", () => {
 
 		if (!rune) {
 			throw new Error("Rune was not created");
+		}
+
+		if (!rune.location?.tx_id) {
+			throw new Error("Rune transaction ID is missing");
 		}
 
 		await waitForTransaction(midlConfig, rune.location.tx_id, 6);
