@@ -60,6 +60,8 @@ describe("executor | actions | addCompleteTxIntention", () => {
 			data: intention.evmTransaction?.data!,
 		});
 
+		expect(txData.args[0]).not.toBe(txData.args[1]);
+
 		expect(txData.args[1]).toBe(
 			"0x00000000000000000000001407185fa28850eb2b0dfdbf26f6b528a1a6b34b3f",
 		);
@@ -77,6 +79,8 @@ describe("executor | actions | addCompleteTxIntention", () => {
 			// biome-ignore lint/style/noNonNullAssertion: Data is guaranteed to be present
 			data: intention.evmTransaction?.data!,
 		});
+
+		expect(txData.args[0]).not.toBe(txData.args[1]);
 
 		expect(txData.args[1]).toBe(
 			"0x000000000000000000a9146699cd1847db9a8f6e1120bad6fae4d5ee13334f87",
@@ -100,6 +104,10 @@ describe("executor | actions | addCompleteTxIntention", () => {
 		expect(txData.args[0]).toBe(
 			"0x00000000000000000000001407185fa28850eb2b0dfdbf26f6b528a1a6b34b3f",
 		);
+
+		expect(txData.args[0]).toBe(
+			"0x00000000000000000000001407185fa28850eb2b0dfdbf26f6b528a1a6b34b3f",
+		);
 	});
 
 	it("sets receiver p2sh-p2wpkh", async () => {
@@ -118,6 +126,8 @@ describe("executor | actions | addCompleteTxIntention", () => {
 		expect(txData.args[0]).toBe(
 			"0x000000000000000000a9146699cd1847db9a8f6e1120bad6fae4d5ee13334f87",
 		);
+
+		expect(txData.args[1]).toBe(txData.args[0]);
 
 		await disconnect(midlConfigP2SH);
 	});
