@@ -1,5 +1,7 @@
 # @midl/logger
 
+## 3.0.0-next.29
+
 ## 3.0.0-next.28
 
 ## 3.0.0-next.27
