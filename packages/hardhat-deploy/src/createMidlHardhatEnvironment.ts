@@ -72,7 +72,14 @@ export const createMidlHardhatEnvironment = (
 				throw new Error("Midl not initialized. Call initialize() first.");
 			}
 
-			return execute(userConfig, hre, config, store, publicClient, options);
+			return await execute(
+				userConfig,
+				hre,
+				config,
+				store,
+				publicClient,
+				options,
+			);
 		},
 		read: async (
 			name: string,
