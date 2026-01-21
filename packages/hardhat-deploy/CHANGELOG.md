@@ -1,5 +1,15 @@
 # @midl/hardhat-deploy
 
+## 3.0.0-next.29
+
+### Patch Changes
+
+- 561aea1: fix(hardhat-deploy): allow execute without intentions
+  - @midl/core@3.0.0-next.29
+  - @midl/executor@3.0.0-next.29
+  - @midl/logger@3.0.0-next.29
+  - @midl/node@3.0.0-next.29
+
 ## 3.0.0-next.28
 
 ### Patch Changes
