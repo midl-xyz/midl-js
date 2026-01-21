@@ -98,12 +98,18 @@ describe("execute", () => {
 		vi.mocked(saveDeployment).mockResolvedValue(undefined);
 	});
 
-	it("throws error when no intentions to execute", async () => {
+	it("returns null when no intentions to execute", async () => {
 		const store = createStore();
 
-		await expect(
-			execute(mockUserConfig, mockHre, mockConfig, store, mockPublicClient),
-		).rejects.toThrow("No intentions to execute");
+		const result = await execute(
+			mockUserConfig,
+			mockHre,
+			mockConfig,
+			store,
+			mockPublicClient,
+		);
+
+		expect(result).toBeNull();
 	});
 
 	it("finalizes BTC transaction with intentions", async () => {
@@ -319,7 +325,7 @@ describe("execute", () => {
 		);
 
 		expect(signIntention).toHaveBeenCalledTimes(3);
-		expect(result[1]).toEqual(mockTxIds);
+		expect(result?.[1]).toEqual(mockTxIds);
 	});
 
 	it("adds complete transaction when withdraw is true", async () => {

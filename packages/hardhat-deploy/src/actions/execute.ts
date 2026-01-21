@@ -38,7 +38,7 @@ export const execute = async (
 	const intentions = structuredClone(store.getState().intentions);
 
 	if (intentions.length === 0) {
-		throw new Error("No intentions to execute");
+		return null;
 	}
 
 	if (options.withdraw) {
