@@ -93,7 +93,7 @@ import "@midl/hardhat-deploy";
 import "hardhat-deploy";
 import "@nomicfoundation/hardhat-verify";
 import { vars, type HardhatUserConfig } from "hardhat/config";
-import { midlRegtest } from "@midl/executor";
+import { midl } from "@midl/executor";
 
 const config: HardhatUserConfig = {
   solidity: "0.8.28",
@@ -108,21 +108,21 @@ const config: HardhatUserConfig = {
   },
   networks: {
     default: {
-      url: midlRegtest.rpcUrls.default.http[0],
-      chainId: midlRegtest.id,
+      url: midl.rpcUrls.default.http[0],
+      chainId: midl.id,
     },
   },
   etherscan: {
     apiKey: {
-      "midl-regtest": "empty",
+      "midl": "empty",
     },
     customChains: [
       {
-        network: "midl-regtest",
-        chainId: 777,
+        network: "midl",
+        chainId: midl.id,
         urls: {
-          apiURL: "https://blockscout.regtest.midl.xyz/api",
-          browserURL: "https://blockscout.regtest.midl.xyz",
+          apiURL: "https://blockscout.midl.xyz/api",
+          browserURL: "https://blockscout.midl.xyz",
         },
       },
     ],
