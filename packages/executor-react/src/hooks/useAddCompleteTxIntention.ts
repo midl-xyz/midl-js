@@ -45,7 +45,7 @@ type AddCompleteTxIntentionVariables =
  *
  * @example
  * const { addCompleteTxIntention } = useAddCompleteTxIntention();
- * addCompleteTxIntention({ assetsToWithdraw: [address1, address2] });
+ * addCompleteTxIntention({ satoshis: 5000, runes: [{ id: "840000:1", amount: 1n }] });
  */
 export const useAddCompleteTxIntention = ({
 	store: customStore,

@@ -13,11 +13,7 @@ import { useAddRuneERC20Intention } from "@midl/executor-react";
 ```ts
 const { addRuneERC20 } = useAddRuneERC20Intention();
 
-// using a rune name (min length 12)
-addRuneERC20({ runeId: "RUNEWITHVALIDNAME" });
-
-// or with rune ID "blockHeight:txIndex"
-addRuneERC20({ runeId: "123456:0", reset: true });
+addRuneERC20({ runeId: "840000:1", reset: true });
 ```
 
 ## Parameters
@@ -38,7 +34,7 @@ addRuneERC20({ runeId: "123456:0", reset: true });
 
 ### AddRuneERC20IntentionVariables
 
-| Name     | Type                 | Description                                                                                          |
-| -------- | -------------------- | ---------------------------------------------------------------------------------------------------- |
-| `runeId` | `string`             | The rune name or ID to add. Must satisfy the same rules as the action (name length & confirmations). |
-| `reset`  | `boolean` (optional) | If true the current intentions array is replaced instead of appended to.                             |
+| Name     | Type                 | Description                                                     |
+| -------- | -------------------- | --------------------------------------------------------------- |
+| `runeId` | `string`             | The rune name or ID to add.                                     |
+| `reset`  | `boolean` (optional) | If true the current intentions array is replaced instead of appended to. |

@@ -12,7 +12,7 @@ import { useAddCompleteTxIntention } from "@midl/executor-react";
 
 ```ts
 const { addCompleteTxIntention } = useAddCompleteTxIntention();
-addCompleteTxIntention({ assetsToWithdraw: [address1, address2] });
+addCompleteTxIntention({ satoshis: 5000, runes: [{ id: "840000:1", amount: 1n }] });
 ```
 
 ## Parameters
@@ -37,4 +37,3 @@ addCompleteTxIntention({ assetsToWithdraw: [address1, address2] });
 The `AddCompleteTxIntentionVariables` type uses the same structure as the `Withdrawal` type.
 
 See the [Withdrawal documentation](../actions/addTxIntention.md#withdrawal) for a detailed description of its fields and usage.
-

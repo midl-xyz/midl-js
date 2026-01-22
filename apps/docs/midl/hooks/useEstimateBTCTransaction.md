@@ -38,6 +38,7 @@ Extends [`EstimateBTCTransactionOptions`](../actions/estimateBTCTransaction.md#e
 | `feeRate`         | `number` (optional)          | Custom fee rate (sats/vB).                                                           |
 | `multisigAddress` | `string` (optional)          | Multisig address to use for the transaction.                                         |
 | `gasMultiplier`   | `number` (optional)          | Multiplier to apply to estimated gas (default: 1.2). Used to avoid gas fluctuations. |
+| `skipEstimateGas` | `boolean` (optional)         | If true, skips gas estimation for EVM transactions.                                  |
 | `query`           | `UseQueryOptions` (optional) | Query options for React Query.                                                       |
 | `config`          | `Config` (optional)          | Custom configuration to override the default.                                        |
 
@@ -59,7 +60,7 @@ Returns a React Query result object with the following properties:
 
 | Name         | Type                     | Description                                                         |
 | ------------ | ------------------------ | ------------------------------------------------------------------- |
-| `fee`        | `bigint`                 | The estimated total cost in satoshis.                               |
+| `fee`        | `number`                 | The estimated total cost in satoshis.                               |
 | `intentions` | `TransactionIntention[]` | The cloned intentions with updated gas limits for EVM transactions. |
 
 ## Query Behavior
