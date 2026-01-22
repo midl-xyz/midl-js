@@ -12,7 +12,11 @@ import * as bitcoin from "bitcoinjs-lib";
 import { Psbt } from "bitcoinjs-lib";
 import bitcoinMessage from "bitcoinjs-message";
 import { afterEach, describe, expect, it } from "vitest";
-import { __TEST__MNEMONIC__ } from "~/__tests__/keyPair";
+import {
+	__TEST__MNEMONIC__,
+	__TEST__PRIVATE_KEY_HEX__,
+	__TEST__PRIVATE_KEY_WIF__,
+} from "~/__tests__/keyPair";
 import { keyPairConnector } from "~/connectors/keyPair";
 
 describe("core | connectors | keyPair", () => {
@@ -230,5 +234,103 @@ describe("core | connectors | keyPair", () => {
 		expect(
 			Psbt.fromBase64(signedPsbt.psbt).data.inputs[0].finalScriptWitness,
 		).toBeDefined();
+	});
+
+	describe("with hex private key", () => {
+		const hexConfig = createConfig({
+			networks: [regtest],
+			connectors: [
+				keyPairConnector({ privateKeys: [__TEST__PRIVATE_KEY_HEX__] }),
+			],
+		});
+
+		afterEach(async () => {
+			await disconnect(hexConfig);
+		});
+
+		it("should connect with hex private key", async () => {
+			const accounts = await connect(hexConfig, {
+				purposes: [AddressPurpose.Payment],
+			});
+
+			expect(accounts.length).toBe(1);
+			expect(accounts[0].address).toBeDefined();
+			expect(accounts[0].publicKey).toBeDefined();
+		});
+
+		it("should sign message with hex private key", async () => {
+			const [account] = await connect(hexConfig, {
+				purposes: [AddressPurpose.Payment],
+			});
+
+			const { connection, network } = hexConfig.getState();
+
+			const signature = await connection?.signMessage(
+				{
+					message: "test message",
+					address: account.address,
+					protocol: SignMessageProtocol.Ecdsa,
+				},
+				network,
+			);
+
+			const valid = bitcoinMessage.verify(
+				"test message",
+				account.address,
+				// biome-ignore lint/style/noNonNullAssertion: signature is defined
+				Buffer.from(signature!.signature, "base64"),
+			);
+
+			expect(valid).toBeTruthy();
+		});
+	});
+
+	describe("with WIF private key", () => {
+		const wifConfig = createConfig({
+			networks: [regtest],
+			connectors: [
+				keyPairConnector({ privateKeys: [__TEST__PRIVATE_KEY_WIF__] }),
+			],
+		});
+
+		afterEach(async () => {
+			await disconnect(wifConfig);
+		});
+
+		it("should connect with WIF private key", async () => {
+			const accounts = await connect(wifConfig, {
+				purposes: [AddressPurpose.Payment],
+			});
+
+			expect(accounts.length).toBe(1);
+			expect(accounts[0].address).toBeDefined();
+			expect(accounts[0].publicKey).toBeDefined();
+		});
+
+		it("should sign message with WIF private key", async () => {
+			const [account] = await connect(wifConfig, {
+				purposes: [AddressPurpose.Payment],
+			});
+
+			const { connection, network } = wifConfig.getState();
+
+			const signature = await connection?.signMessage(
+				{
+					message: "test message",
+					address: account.address,
+					protocol: SignMessageProtocol.Ecdsa,
+				},
+				network,
+			);
+
+			const valid = bitcoinMessage.verify(
+				"test message",
+				account.address,
+				// biome-ignore lint/style/noNonNullAssertion: signature is defined
+				Buffer.from(signature!.signature, "base64"),
+			);
+
+			expect(valid).toBeTruthy();
+		});
 	});
 });

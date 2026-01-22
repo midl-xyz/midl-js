@@ -31,19 +31,26 @@ bitcoin.initEccLib(ecc);
 
 class KeyPairConnector implements Connector {
 	public readonly id = "keyPair";
-	private readonly seed: Buffer;
+	private readonly seed: Buffer | null = null;
 	private network: BitcoinNetwork | null = null;
 
 	constructor(
-		readonly mnemonic: string,
+		readonly mnemonic: string | null,
+		private readonly privateKeys: string[] | null,
 		private readonly paymentAddressType: AddressType,
 		private readonly accountIndex: number = 0,
 	) {
-		if (!bip39.validateMnemonic(mnemonic)) {
+		if (mnemonic && !bip39.validateMnemonic(mnemonic)) {
 			throw new Error("Invalid mnemonic");
 		}
 
-		this.seed = bip39.mnemonicToSeedSync(mnemonic);
+		if (mnemonic) {
+			this.seed = bip39.mnemonicToSeedSync(mnemonic);
+		}
+
+		if (!this.seed && !this.privateKeys) {
+			throw new Error("Either mnemonic or private keys must be provided.");
+		}
 	}
 
 	async connect({
@@ -238,34 +245,93 @@ class KeyPairConnector implements Connector {
 		}
 
 		const network = bitcoin.networks[this.network.network];
-		const derivationPath = derivationPathMap[this.network.network][addressType];
 
-		const root = bip32.fromSeed(this.seed, network);
-		const child = root.derivePath(
-			derivationPath.replace("ACCOUNT", this.accountIndex.toString()),
-		);
+		if (this.privateKeys) {
+			const privateKey = this.privateKeys[this.accountIndex];
 
-		return ECPair.fromWIF(child.toWIF(), network);
+			try {
+				const hexKey = privateKey.startsWith("0x")
+					? privateKey.slice(2)
+					: privateKey;
+				const keyBuffer = Buffer.from(hexKey, "hex");
+
+				// Valid private key must be exactly 32 bytes and hex string must be valid
+				if (keyBuffer.length === 32 && /^[0-9a-fA-F]+$/.test(hexKey)) {
+					return ECPair.fromPrivateKey(keyBuffer, { network });
+				}
+			} catch {}
+
+			return ECPair.fromWIF(privateKey, network);
+		}
+
+		if (this.seed) {
+			const derivationPath =
+				derivationPathMap[this.network.network][addressType];
+
+			const root = bip32.fromSeed(this.seed, network);
+			const child = root.derivePath(
+				derivationPath.replace("ACCOUNT", this.accountIndex.toString()),
+			);
+
+			return ECPair.fromWIF(child.toWIF(), network);
+		}
+
+		throw new Error("Unable to derive key pair.");
 	}
 }
 
-export const keyPairConnector: CreateConnectorFn<{
+type KeyPairMnemonicParams = {
 	mnemonic: string;
+};
+
+type KeyPairPrivateKeyParams = {
+	privateKeys: string[];
+};
+
+export type KeyPairConnectorParams = (
+	| KeyPairMnemonicParams
+	| KeyPairPrivateKeyParams
+) & {
 	paymentAddressType?: AddressType;
 	accountIndex?: number;
-}> = ({
-	metadata,
-	mnemonic,
+};
+
+export const keyPairConnector: CreateConnectorFn<KeyPairConnectorParams> = ({
 	paymentAddressType = AddressType.P2WPKH,
 	accountIndex = 0,
-}) =>
-	createConnector(
+	metadata,
+	...params
+}) => {
+	return createConnector(
 		{
 			metadata: {
 				name: "KeyPair",
 			},
-			create: () =>
-				new KeyPairConnector(mnemonic, paymentAddressType, accountIndex),
+			create: () => {
+				if ("mnemonic" in params) {
+					const { mnemonic } = params;
+					return new KeyPairConnector(
+						mnemonic,
+						null,
+						paymentAddressType,
+						accountIndex,
+					);
+				}
+
+				if ("privateKeys" in params) {
+					const { privateKeys } = params;
+
+					return new KeyPairConnector(
+						null,
+						privateKeys,
+						paymentAddressType,
+						accountIndex,
+					);
+				}
+
+				throw new Error("Invalid parameters for KeyPairConnector");
+			},
 		},
 		metadata,
 	);
+};
