@@ -322,13 +322,6 @@ describe("writeContract", () => {
 			abi: mockArtifact.abi,
 		});
 
-		const overrides = {
-			evmTransaction: {
-				value: 1000n,
-				gasLimit: 50000n,
-			},
-		};
-
 		const store = createStore();
 		await writeContract(
 			mockHre,
@@ -338,7 +331,7 @@ describe("writeContract", () => {
 			"NFT",
 			"mint",
 			[],
-			{ overrides },
+			{ value: 1000n, gas: 50000n },
 		);
 
 		expect(addTxIntention).toHaveBeenCalledWith(mockConfig, {
@@ -347,7 +340,7 @@ describe("writeContract", () => {
 				data: "0xcalldata",
 				nonce: 5,
 				value: 1000n,
-				gasLimit: 50000n,
+				gas: 50000n,
 			},
 		});
 	});
@@ -374,11 +367,7 @@ describe("writeContract", () => {
 			"withdraw",
 			[],
 			{
-				overrides: {
-					evmTransaction: {
-						nonce: customNonce,
-					},
-				},
+				nonce: customNonce,
 			},
 		);
 
@@ -414,11 +403,7 @@ describe("writeContract", () => {
 			"delegate",
 			[],
 			{
-				overrides: {
-					evmTransaction: {
-						from: customFrom,
-					},
-				},
+				from: customFrom,
 			},
 		);
 

@@ -3,10 +3,12 @@ import { getEVMAddress } from "@midl/executor";
 import type { HardhatRuntimeEnvironment } from "hardhat/types";
 import { http, type PublicClient, createPublicClient } from "viem";
 import {
+	type DeployContractIntentionOverrides,
 	type DeployContractOptions,
 	type DeploymentData,
 	type ExecuteOptions,
 	type ReadContractOptions,
+	type WriteContractEvmTransactionOverrides,
 	type WriteContractOptions,
 	createStore,
 	deleteDeployment,
@@ -51,7 +53,8 @@ export const createMidlHardhatEnvironment = (
 		deploy: async (
 			name: string,
 			args?: unknown[],
-			options?: DeployContractOptions,
+			options: DeployContractOptions = {},
+			overrides: DeployContractIntentionOverrides = {},
 		) => {
 			if (!config) {
 				throw new Error("Midl not initialized. Call initialize() first.");
@@ -65,6 +68,7 @@ export const createMidlHardhatEnvironment = (
 				name,
 				args,
 				options,
+				overrides,
 			);
 		},
 		execute: async (options?: ExecuteOptions) => {
@@ -97,7 +101,8 @@ export const createMidlHardhatEnvironment = (
 			name: string,
 			functionName: string,
 			args?: unknown[],
-			options?: WriteContractOptions,
+			evmTransactionOverrides: WriteContractEvmTransactionOverrides = {},
+			options: WriteContractOptions = {},
 		) => {
 			if (!config) {
 				throw new Error("Midl not initialized. Call initialize() first.");
@@ -110,6 +115,7 @@ export const createMidlHardhatEnvironment = (
 				name,
 				functionName,
 				args,
+				evmTransactionOverrides,
 				options,
 			);
 		},

@@ -220,7 +220,7 @@ describe("readContract", () => {
 			"Token",
 			"balanceOf",
 			["0x1111111111111111111111111111111111111111"],
-			{ overrides },
+			overrides,
 		);
 
 		expect(mockReadContractFn).toHaveBeenCalledWith({

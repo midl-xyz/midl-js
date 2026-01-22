@@ -283,13 +283,6 @@ describe("deployContract", () => {
 		};
 		mockReadArtifact.mockResolvedValue(mockArtifact);
 
-		const overrides = {
-			evmTransaction: {
-				value: 1000n,
-				gasLimit: 21000n,
-			},
-		};
-
 		const store = createStore();
 		await deployContract(
 			mockHre,
@@ -298,14 +291,17 @@ describe("deployContract", () => {
 			mockPublicClient,
 			"OverridesContract",
 			[],
-			{ overrides },
+			{
+				value: 1000n,
+				gas: 21000n,
+			},
 		);
 
 		expect(addTxIntention).toHaveBeenCalledWith(mockConfig, {
 			evmTransaction: {
 				data: "0xdeploydata",
 				value: 1000n,
-				gasLimit: 21000n,
+				gas: 21000n,
 				nonce: 5,
 				from: mockEvmAddress,
 			},
@@ -333,11 +329,7 @@ describe("deployContract", () => {
 			"CustomNonceContract",
 			[],
 			{
-				overrides: {
-					evmTransaction: {
-						nonce: customNonce,
-					},
-				},
+				nonce: customNonce,
 			},
 		);
 
@@ -365,11 +357,7 @@ describe("deployContract", () => {
 			"CustomFromContract",
 			[],
 			{
-				overrides: {
-					evmTransaction: {
-						from: customFrom,
-					},
-				},
+				from: customFrom,
 			},
 		);
 
@@ -414,6 +402,11 @@ describe("deployContract", () => {
 			store,
 			mockPublicClient,
 			"Contract2",
+			[],
+			{
+				value: 500n,
+			},
+			{},
 		);
 
 		expect(getContractAddress).toHaveBeenCalledWith({

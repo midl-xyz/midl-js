@@ -360,7 +360,7 @@ describe("execute", () => {
 			mockConfig,
 			[mockIntention, mockCompleteTx],
 			mockPublicClient,
-			undefined,
+			{},
 		);
 	});
 
@@ -418,7 +418,7 @@ describe("execute", () => {
 			mockConfig,
 			store,
 			mockPublicClient,
-			{ overrides },
+			overrides,
 		);
 
 		expect(finalizeBTCTransaction).toHaveBeenCalledWith(
