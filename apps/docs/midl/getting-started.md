@@ -32,7 +32,8 @@ yarn add @midl/executor @midl/executor-react @midl/connectors @midl/core @midl/r
 
 ### Override `viem` versions
 
-::: warning This step is required to ensure compatibility with MIDL.js executor. If you skip this step, some features required by MIDL.js may not work as expected.
+::: warning
+This step is required to ensure compatibility with MIDL.js executor. If you skip this step, some features required by MIDL.js may not work as expected.
 :::
 
 To ensure compatibility with MIDL.js executor, you need to override the version of
@@ -81,7 +82,7 @@ import { MidlProvider } from '@midl/react';
 import { WagmiMidlProvider } from "@midl/executor-react";
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-import {midlConfig} from './midlConfig';
+import { midlConfig } from "./midlConfig";
 
 const queryClient = new QueryClient();
 
@@ -117,4 +118,3 @@ export const midlConfig = createConfig({
 
 - [Guide: Deploying Your First Contract](./guides/deploy-contract.md)
 - [Guide: Interacting with Contracts](./guides/interact-contract.md)
-

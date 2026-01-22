@@ -25,7 +25,7 @@ yarn add @midl/core @midl/react @midl/connectors
 
 ## Integration
 
-Create and export a new MIDL.js config file in your project. And wrap your app with the Midl.js context provider.
+Create and export a new MIDL.js config file in your project, then wrap your app with the Midl.js context provider.
 
 ::: code-group
 

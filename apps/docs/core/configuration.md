@@ -64,6 +64,7 @@ MIDL.js supports the following connectors:
 - [`Unisat`](https://unisat.io)
 - [`Phantom`](https://phantom.app)
 - [`Bitget`](https://web3.bitget.com/en)
+- [`OKX`](https://www.okx.com/web3)
 - [`MagicEden`](https://wallet.magiceden.io/)
 - `keyPair` - ECPair key pair connector
 
@@ -78,6 +79,7 @@ import {
   unisatConnector,
   phantomConnector,
   bitgetConnector,
+  okxConnector,
   magicEdenConnector,
  } from "@midl/connectors";
 

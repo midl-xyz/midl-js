@@ -2,7 +2,7 @@
 
 Writing to a contract is a common operation in a dApp. This guide demonstrates how to write to a contract using MIDL protocol with a web application. 
 
-Writing a contract in MIDL requires a BTC transaction to cover the fees, transfer assets required for transaction execution and to form EVM transaction to interact with the contract. You can read more about it [here](../how-it-works.md).
+Writing to a contract in MIDL requires a BTC transaction to cover fees, transfer assets required for execution, and to form the EVM transaction that interacts with the contract. You can read more about it [here](../how-it-works.md).
 
 ## 1. Install dependencies
 
@@ -27,7 +27,7 @@ yarn add viem wagmi
 :::
 
 
-## 2. Setup the project
+## 2. Set up the project
 
 Follow the [Connect Wallet guide](../core/guides/connect-wallet.md) to setup the project.
 

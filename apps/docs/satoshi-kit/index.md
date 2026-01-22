@@ -5,7 +5,7 @@ order: 0
 
 # SatoshiKit
 
-SatosiKit is a modern toolkit designed to help developers easily integrate Bitcoin wallets into their applications. It provides a set of components and utilities that simplify the process of connecting your favorite Bitcoin wallets and authenticating users.
+SatoshiKit is a modern toolkit designed to help developers easily integrate Bitcoin wallets into their applications. It provides a set of components and utilities that simplify the process of connecting your favorite Bitcoin wallets and authenticating users.
 
 
 Just click the button below to see an example of how to use SatoshiKit in your application.

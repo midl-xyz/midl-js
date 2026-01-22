@@ -54,10 +54,10 @@ export default (<HardhatUserConfig>{
 	solidity: "0.8.28",
 	defaultNetwork: "regtest",
 	midl: {
+		path: "deployments",
 		networks: {
 			regtest: {
 				mnemonic: vars.get("MNEMONIC"),
-				path: "deployments",
 				confirmationsRequired: 1,
 				btcConfirmationsRequired: 1,
 				hardhatNetwork: "regtest",
@@ -105,10 +105,10 @@ export default async function deploy(hre: HardhatRuntimeEnvironment) {
   await hre.midl.initialize();
 
   // Deploy a contract
-  await hre.midl.deploy('MyContract', { args: ["Hello, MIDL!"] });
+  await hre.midl.deploy('MyContract', ["Hello, MIDL!"]);
 
   // Call a contract method
-  await hre.midl.callContract('MyContract', 'setGreeting', { args: ["Hi!"] });
+  await hre.midl.write('MyContract', 'setGreeting', ["Hi!"]);
 
   // Execute all intentions (send transactions)
   await hre.midl.execute();
@@ -116,4 +116,3 @@ export default async function deploy(hre: HardhatRuntimeEnvironment) {
 ```
 
 See the [Advanced Usage](./advanced-usage.md) for more examples on commonly used functionality.
-

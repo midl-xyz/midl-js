@@ -20,7 +20,7 @@ The EVM address is generated from the default BTC account derived from the mnemo
 
 In a `hardhat-deploy` function, you can retrieve it as follows:
 ```ts
-const evmAddress = hre.midl.getEVMAddress();
+const evmAddress = hre.midl.evm.address;
 ```
 
 
@@ -30,7 +30,7 @@ The Bitcoin address is derived from the mnemonic in [hardhat-config](./config.md
 In a `hardhat-deploy` function, you can retrieve it as follows:
 ```ts
 await hre.midl.initialize(); // retrieves account with index #0
-const { address } = hre.midl.getAccount();
+const { address } = hre.midl.account;
 ```
 
 
@@ -39,15 +39,11 @@ Accounts are derived from the mnemonic in [hardhat-config](./config.md). You can
 
 ```ts
 await hre.midl.initialize();
-await hre.midl.deploy("MyContract", {
-  args: ["Hello World!"]
-});
+await hre.midl.deploy("MyContract", ["Hello World!"]);
 await hre.midl.execute(); // Deployed by account with index #0
 
-hre.midl.initialize(1);
-await hre.midl.deploy("MyContract", {
-  args: ["Hello world"]
-});
+await hre.midl.initialize(1);
+await hre.midl.deploy("MyContract", ["Hello world"]);
 await hre.midl.execute(); // Deployed by account with index #1
 ```
 
@@ -57,7 +53,7 @@ Deployed contract addresses and ABIs are stored by default in the `deployments` 
 
 In a `hardhat-deploy` function, you can retrieve them as follows:
 ```ts
-const { address, abi } = await hre.midl.getDeployment("MyContract");
+const { address, abi } = await hre.midl.get("MyContract");
 ```
 
 
@@ -68,22 +64,34 @@ In a `hardhat-deploy` function, this can be done as follows:
 ```ts
 const value = 1000; // Amount in satoshis
 
-await hre.midl.deploy("MyContract", {
-  args: ["Hello World!"],
-  value: satoshisToWei(value) // attaching 1000 satoshis and multiplying by 10 * 10 ** 10 in msg.value
-}, { 
+await hre.midl.deploy(
+  "MyContract",
+  ["Hello World!"],
+  {
+    value: satoshisToWei(value), // attaching 1000 sats as msg.value (10^10 wei per sat)
+  },
+  {
     deposit: {
-      satoshis: value
-    }
-});
+      satoshis: value,
+    },
+  },
+);
 
-await hre.midl.callContract("MyContract", "somePayableFunction", {
-  value: satoshisToWei(value) // attaching 1000 satoshis and multiplying by 10 ** 10 in msg.value
-}, {   
-  deposit: {
-      satoshis: value
-    }
-});
+await hre.midl.write(
+  "MyContract",
+  "somePayableFunction",
+  [],
+  {
+    value: satoshisToWei(value),
+  },
+  {
+    overrides: {
+      deposit: {
+        satoshis: value,
+      },
+    },
+  },
+);
 ```
 
 
@@ -95,7 +103,7 @@ Calling `execute({ withdraw: true })` will automatically call `completeTx` and w
 :::
 
 ::: warning
-Only add `withdraw` to the `callContract` or `deploy` transaction intentions if you the contract you are calling calls the `Executor` contract's `completeTx` function. Otherwise, if you want to withdraw assets, you must call `completeTx` directly.
+Only add `withdraw` to the `write` or `deploy` transaction intentions if the contract you are calling calls the `Executor` contract's `completeTx` function. Otherwise, if you want to withdraw assets, you must call `completeTx` directly.
 :::
 
 In a `hardhat-deploy` function, you can invoke this as follows:
@@ -112,31 +120,30 @@ You can use Runes in Midl functions and seamlessly utilize them with `hardhat-de
 
 In a `hardhat-deploy` function, this can be done as follows:
 ```ts
-const assetAddress = await getDeployment("ERC20Asset").address;
-const myContractAddress = await getDeployment("MyContract").address;
+const assetAddress = (await hre.midl.get("ERC20Asset"))?.address;
+const myContractAddress = (await hre.midl.get("MyContract"))?.address;
 const amount = 1n; // Amount in Rune units according to the Rune's decimals
 
-await hre.midl.callContract("ERC20Asset", "approve", {
-  args: [myContractAddress, amount]
-});
+await hre.midl.write("ERC20Asset", "approve", [myContractAddress, amount]);
 
-await hre.midl.callContract(
+await hre.midl.write(
   "MyContract",
   "functionWithRuneTransfer",
+  [amount],
+  {},
   {
-    args: [amount]
+    overrides: {
+      deposit: {
+        runes: [
+          {
+            id: "1:1", // Rune ID may be attached manually or found by token address using midl-js-executor util
+            amount,
+            address: assetAddress, // Mirrored ERC20 asset
+          },
+        ],
+      },
+    },
   },
-  {
-    deposit: {
-      runes: [
-        {
-          id: "1:1", // Rune ID may be attached manually or found by token address using midl-js-executor util
-          value: amount,
-          address: assetAddress // Mirrored ERC20 asset
-        }
-      ]
-    }
-  }
 );
 ```
 

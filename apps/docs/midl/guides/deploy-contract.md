@@ -189,9 +189,7 @@ const deploy: DeployFunction = async (hre) => {
   /**
    * Add the deploy contract transaction intention
    */
-  await hre.midl.deploy("SimpleStorage", {
-    args: ["Hello from MIDL!"],
-  });
+  await hre.midl.deploy("SimpleStorage", ["Hello from MIDL!"]);
 
   /**
    * Sends the BTC transaction and EVM transaction to the network
@@ -245,6 +243,5 @@ Successful verification will return the link to the contract on the block explor
 
 ## Advanced Usage
 Midl's hardhat-deploy offers more functionality than just deploying or writing to contracts. You can find commonly used functions [here](../tools/contracts/advanced-usage.md) and examples in [this repo](https://github.com/midl-xyz/smart-contract-deploy-starter).
-
 
 

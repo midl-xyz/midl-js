@@ -5,7 +5,7 @@ order: 2
 # Customization
 
 ::: warning
-This feature is currently in development, at the moment you can only customize the `ConnectButton` component.
+This feature is currently in development. Components and props may change.
 :::
 
 
@@ -51,4 +51,45 @@ export const CustomConnectButton = () => {
         </ConnectButton>
     );
 };
+```
+
+## AccountButton
+
+`AccountButton` shows the current account, balance, and avatar. You can hide pieces of the UI or render your own content.
+
+### Props
+
+| Name          | Type       | Description                                                              |
+| ------------- | ---------- | ------------------------------------------------------------------------ |
+| `hideBalance` | `boolean`  | If true, hides the balance.                                              |
+| `hideAvatar`  | `boolean`  | If true, hides the avatar.                                               |
+| `hideAddress` | `boolean`  | If true, hides the address.                                              |
+| `onClick`     | `function` | Click handler for the button.                                            |
+| `children`    | `function` | Render prop receiving `{ balance, address }` and returning a React node. |
+
+```tsx
+import { AccountButton } from "@midl/satoshi-kit";
+
+export const CustomAccountButton = () => (
+  <AccountButton hideBalance>
+    {({ address }) => <button>{address}</button>}
+  </AccountButton>
+);
+```
+
+## AccountDialog
+
+`AccountDialog` shows connected accounts and provides a disconnect action.
+
+### Props
+
+| Name     | Type       | Description                       |
+| -------- | ---------- | --------------------------------- |
+| `open`   | `boolean`  | Whether the dialog is open.       |
+| `onClose` | `function` | Called when the dialog closes.    |
+
+```tsx
+import { AccountDialog } from "@midl/satoshi-kit";
+
+<AccountDialog open={isOpen} onClose={() => setIsOpen(false)} />;
 ```
