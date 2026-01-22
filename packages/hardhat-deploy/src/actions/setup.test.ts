@@ -3,6 +3,8 @@ import {
 	type AbstractRunesProvider,
 	AddressPurpose,
 	AddressType,
+	type Connector,
+	type ConnectorWithMetadata,
 	connect,
 	createConfig,
 	regtest,
@@ -189,5 +191,169 @@ describe("setup", () => {
 
 		expect(config).toBeDefined();
 		expect(config.getState().networks).toContain(regtest);
+	});
+
+	describe("payment address type", () => {
+		it("uses custom paymentAddressType when provided", async () => {
+			const store = createStore();
+			const userConfig = {
+				mnemonic: "test test test test test test test test test test test junk",
+				paymentAddressType: AddressType.P2SH_P2WPKH,
+			} satisfies MidlNetworkConfig;
+
+			await setup(userConfig, store, {
+				bitcoinNetwork: regtest,
+				accountIndex: 0,
+			});
+
+			expect(keyPairConnector).toHaveBeenCalledWith({
+				mnemonic: "test test test test test test test test test test test junk",
+				paymentAddressType: AddressType.P2SH_P2WPKH,
+				accountIndex: 0,
+			});
+		});
+
+		it("defaults to P2WPKH when paymentAddressType is not provided", async () => {
+			const store = createStore();
+			const userConfig = {
+				mnemonic: "test test test test test test test test test test test junk",
+			} satisfies MidlNetworkConfig;
+
+			await setup(userConfig, store, {
+				bitcoinNetwork: regtest,
+			});
+
+			expect(keyPairConnector).toHaveBeenCalledWith({
+				mnemonic: "test test test test test test test test test test test junk",
+				paymentAddressType: AddressType.P2WPKH,
+				accountIndex: 0,
+			});
+		});
+	});
+
+	describe("private keys support", () => {
+		it("creates connector with private keys instead of mnemonic", async () => {
+			const store = createStore();
+			const userConfig = {
+				privateKeys: [
+					"cVpF924EspNh8KjYsfhgY96mmxvT6DgdWiTYMtMjuM74hJaU5psW",
+					"cNhK3qQwMbSbMGKEPzLjkWJp3TJXGsmWRf8p5TZDJcYk7dPV3qP2",
+				],
+			} satisfies MidlNetworkConfig;
+
+			await setup(userConfig, store, {
+				bitcoinNetwork: regtest,
+				accountIndex: 0,
+			});
+
+			expect(keyPairConnector).toHaveBeenCalledWith({
+				privateKeys: [
+					"cVpF924EspNh8KjYsfhgY96mmxvT6DgdWiTYMtMjuM74hJaU5psW",
+					"cNhK3qQwMbSbMGKEPzLjkWJp3TJXGsmWRf8p5TZDJcYk7dPV3qP2",
+				],
+				paymentAddressType: AddressType.P2WPKH,
+				accountIndex: 0,
+			});
+		});
+
+		it("works with custom paymentAddressType and private keys", async () => {
+			const store = createStore();
+			const userConfig = {
+				privateKeys: ["cVpF924EspNh8KjYsfhgY96mmxvT6DgdWiTYMtMjuM74hJaU5psW"],
+				paymentAddressType: AddressType.P2SH_P2WPKH,
+			} satisfies MidlNetworkConfig;
+
+			await setup(userConfig, store, {
+				bitcoinNetwork: regtest,
+				accountIndex: 1,
+			});
+
+			expect(keyPairConnector).toHaveBeenCalledWith({
+				privateKeys: ["cVpF924EspNh8KjYsfhgY96mmxvT6DgdWiTYMtMjuM74hJaU5psW"],
+				paymentAddressType: AddressType.P2SH_P2WPKH,
+				accountIndex: 1,
+			});
+		});
+	});
+
+	describe("custom connector factory", () => {
+		it("uses custom connectorFactory when provided", async () => {
+			const store = createStore();
+			const mockConnector = {
+				id: "custom-connector",
+				connect: vi.fn(),
+				signMessage: vi.fn(),
+				signPSBT: vi.fn(),
+			} as unknown as ConnectorWithMetadata<Connector>;
+			const connectorFactory = vi.fn(() => mockConnector);
+
+			const userConfig = {
+				connectorFactory,
+			} satisfies MidlNetworkConfig;
+
+			await setup(userConfig, store, {
+				bitcoinNetwork: regtest,
+				accountIndex: 2,
+			});
+
+			expect(connectorFactory).toHaveBeenCalledWith({
+				accountIndex: 2,
+				paymentAddressType: AddressType.P2WPKH,
+			});
+
+			expect(createConfig).toHaveBeenCalledWith(
+				expect.objectContaining({
+					connectors: [mockConnector],
+				}),
+			);
+		});
+
+		it("passes custom paymentAddressType to connectorFactory", async () => {
+			const store = createStore();
+			const mockConnector = {
+				id: "custom-connector",
+				connect: vi.fn(),
+				signMessage: vi.fn(),
+				signPSBT: vi.fn(),
+			} as unknown as ConnectorWithMetadata<Connector>;
+			const connectorFactory = vi.fn(() => mockConnector);
+
+			const userConfig = {
+				connectorFactory,
+				paymentAddressType: AddressType.P2SH_P2WPKH,
+			} satisfies MidlNetworkConfig;
+
+			await setup(userConfig, store, {
+				bitcoinNetwork: regtest,
+				accountIndex: 3,
+			});
+
+			expect(connectorFactory).toHaveBeenCalledWith({
+				accountIndex: 3,
+				paymentAddressType: AddressType.P2SH_P2WPKH,
+			});
+		});
+
+		it("does not call keyPairConnector when connectorFactory is provided", async () => {
+			const store = createStore();
+			const mockConnector = {
+				id: "custom-connector",
+				connect: vi.fn(),
+				signMessage: vi.fn(),
+				signPSBT: vi.fn(),
+			} as unknown as ConnectorWithMetadata<Connector>;
+			const connectorFactory = vi.fn(() => mockConnector);
+
+			const userConfig = {
+				connectorFactory,
+			} satisfies MidlNetworkConfig;
+
+			await setup(userConfig, store, {
+				bitcoinNetwork: regtest,
+			});
+
+			expect(keyPairConnector).not.toHaveBeenCalled();
+			expect(connectorFactory).toHaveBeenCalled();
+		});
 	});
 });

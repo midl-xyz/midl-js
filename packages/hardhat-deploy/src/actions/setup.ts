@@ -21,15 +21,26 @@ export const setup = async (
 		accountIndex?: number;
 	},
 ) => {
+	const paymentAddressType =
+		userConfig.paymentAddressType ?? AddressType.P2WPKH;
+
+	const connector =
+		"connectorFactory" in userConfig
+			? userConfig.connectorFactory({
+					accountIndex,
+					paymentAddressType,
+				})
+			: keyPairConnector({
+					paymentAddressType,
+					accountIndex,
+					...("mnemonic" in userConfig
+						? { mnemonic: userConfig.mnemonic }
+						: { privateKeys: userConfig.privateKeys }),
+				});
+
 	const midlConfig = createConfig({
 		networks: [bitcoinNetwork],
-		connectors: [
-			keyPairConnector({
-				mnemonic: userConfig.mnemonic,
-				paymentAddressType: AddressType.P2WPKH,
-				accountIndex,
-			}),
-		],
+		connectors: [connector],
 		defaultPurpose: userConfig.defaultPurpose,
 		runesProvider: userConfig.runesProviderFactory
 			? userConfig.runesProviderFactory()
