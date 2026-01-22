@@ -1,5 +1,6 @@
 import { parseUnits } from "viem";
 import { GAS_PRICE } from "~/config";
+import { ceilDiv } from "~/utils/ceilDiv";
 
 export const ONE_SATOSHI = parseUnits("1", 10);
 export const KEYGEN_TX_SIZE = 11n;
@@ -89,11 +90,8 @@ export const calculateTransactionsCost = (
 		) as bigint;
 	}
 
-	const reminder = (GAS_PRICE * totalGas) % ONE_SATOSHI ? 1n : 0n;
-
 	const fees =
-		(GAS_PRICE * totalGas) / ONE_SATOSHI + // Fee for gas
-		reminder + // Rounding up to the nearest satoshi
+		ceilDiv(GAS_PRICE * totalGas, ONE_SATOSHI) + // Fee for gas
 		(scriptSize +
 			KEYGEN_TX_SIZE +
 			(hasRunesDeposit ? BTC_TX_INPUT_VBYTES : 0n) +

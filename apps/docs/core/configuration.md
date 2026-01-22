@@ -26,13 +26,18 @@ export const config = createConfig({
 
 ## Configuration Options
 
-| Name           | Type                          | Description                                               |
-| -------------- | ----------------------------- | --------------------------------------------------------- |
-| networks       | `BitcoinNetwork[]`            | The bitcoin networks to use                               |
-| connectors     | `ConnectorWithMetadata[]`     | The connectors to use                                     |
-| persist        | `boolean` (optional)          | If true, the config will persist in local storage         |
-| provider       | `AbstractProvider` (optional) | The provider to use for the network                       |
-| defaultPurpose | `AddressPurpose` (optional)   | The default address to use for signing transactions, etc. |
+| Name           | Type                                                               | Description                                               |
+| -------------- | ------------------------------------------------------------------ | --------------------------------------------------------- |
+| networks       | `BitcoinNetwork[]`                                                 | The bitcoin networks to use                               |
+| connectors     | `ConnectorWithMetadata[]`                                          | The connectors to use                                     |
+| persist        | `boolean \| { enabled: boolean; storageKey?: string }` (optional)  | If true, the config will persist in local storage         |
+| provider       | `AbstractProvider` (optional)                                      | The provider to use for the network                       |
+| runesProvider  | `AbstractRunesProvider` (optional)                                 | The runes data provider to use                            |
+| defaultPurpose | `AddressPurpose` (optional)                                        | The default address to use for signing transactions, etc. |
+
+> [!NOTE]
+> `runesProvider` defaults to `MaestroSymphonyProvider`.
+> When using the object form for `persist`, `storageKey` controls the local storage key (defaults to `midl-js`).
 
 ### Available Networks
 

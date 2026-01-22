@@ -10,15 +10,15 @@ Install MIDL.js via your package manager of choice.
 ::: code-group
 
 ```bash [pnpm]
-pnpm add @midl/core @midl/react @mild-xyz/midl-js-connectors
+pnpm add @midl/core @midl/react @midl/connectors
 ```
 
 ```bash [npm]
-npm install @midl/core @midl/react @mild-xyz/midl-js-connectors
+npm install @midl/core @midl/react @midl/connectors
 ```
 
 ```bash [yarn]
-yarn add @midl/core @midl/react @mild-xyz/midl-js-connectors
+yarn add @midl/core @midl/react @midl/connectors
 ```
 
 :::
@@ -33,7 +33,7 @@ Create and export a new MIDL.js config file in your project. And wrap your app w
 import { createConfig, regtest } from "@midl/core";
 import { xverseConnector } from "@midl/connectors";
 
-export const config = createConfig({
+export const midlConfig = createConfig({
   networks: [regtest],
   connectors: [xverseConnector()],
   persist: true,
@@ -44,7 +44,7 @@ export const config = createConfig({
 import { MidlProvider } from "@midl/react";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./query-client";
-import { config } from "./midl.config";
+import { midlConfig } from "./midl.config";
 
 function App() {
   return (
