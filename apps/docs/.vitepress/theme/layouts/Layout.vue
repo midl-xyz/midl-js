@@ -1,11 +1,23 @@
 <script setup>
+import { useData } from "vitepress";
 import DefaultTheme, { useSidebar } from "vitepress/theme";
+import { computed } from "vue";
 const { Layout } = DefaultTheme;
 const { hasSidebar } = useSidebar();
+const { frontmatter } = useData();
+const isHome = computed(() => frontmatter.value.layout === "home");
 </script>
 
 <template>
   <Layout>
+    <template #home-hero-before>
+      <div v-if="isHome" class="version-banner">
+        <span>
+          For 2.x docs, visit
+          <a href="https://v2.js.midl.xyz">v2.js.midl.xyz</a>
+        </span>
+      </div>
+    </template>
     <template #layout-bottom>
       <div class="footer-legal" :class="{ 'has-sidebar': hasSidebar }">
         <a href="/terms-of-use">Terms of Use</a>

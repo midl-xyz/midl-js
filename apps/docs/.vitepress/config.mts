@@ -19,7 +19,7 @@ export default withSidebar(
 			],
 		],
 		themeConfig: {
-			siteTitle: "",
+			siteTitle: "JS SDK",
 			logo: {
 				light: "/logo.svg",
 				dark: "/logo-dark.svg",
