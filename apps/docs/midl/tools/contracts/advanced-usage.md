@@ -85,10 +85,8 @@ await hre.midl.write(
     value: satoshisToWei(value),
   },
   {
-    overrides: {
-      deposit: {
-        satoshis: value,
-      },
+    deposit: {
+      satoshis: value,
     },
   },
 );
@@ -132,16 +130,14 @@ await hre.midl.write(
   [amount],
   {},
   {
-    overrides: {
-      deposit: {
-        runes: [
-          {
-            id: "1:1", // Rune ID may be attached manually or found by token address using midl-js-executor util
-            amount,
-            address: assetAddress, // Mirrored ERC20 asset
-          },
-        ],
-      },
+    deposit: {
+      runes: [
+        {
+          id: "1:1", // Rune ID may be attached manually or found by token address using midl-js-executor util
+          amount,
+          address: assetAddress, // Mirrored ERC20 asset
+        },
+      ],
     },
   },
 );

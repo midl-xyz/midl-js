@@ -55,6 +55,7 @@ write(
 ): Promise<TransactionIntention>
 ```
 Adds a contract write intention (EVM call).
+`options` maps to the intention overrides (for example, `deposit`).
 
 ---
 

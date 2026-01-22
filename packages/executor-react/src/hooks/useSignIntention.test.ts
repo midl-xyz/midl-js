@@ -1,5 +1,5 @@
 import { AddressPurpose, connect, disconnect } from "@midl/core";
-import type { TransactionIntention } from "@midl/executor";
+import { type TransactionIntention, midlRegtest } from "@midl/executor";
 import { createStore } from "@midl/react";
 import { renderHook } from "@testing-library/react";
 import { zeroAddress } from "viem";
@@ -24,7 +24,7 @@ describe("executor-react | hooks | useSignIntention", () => {
 			evmTransaction: {
 				to: zeroAddress,
 				value: 0n,
-				chainId: 777,
+				chainId: midlRegtest.id,
 			},
 		};
 

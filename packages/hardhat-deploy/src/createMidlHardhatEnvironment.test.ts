@@ -259,9 +259,20 @@ describe("createMidlHardhatEnvironment", () => {
 		await env.initialize();
 
 		const args = ["0x1234", 100];
-		const options = {};
 
-		await env.write("Token", "transfer", args, options);
+		await env.write(
+			"Token",
+			"transfer",
+			args,
+			{
+				value: 10n,
+			},
+			{
+				deposit: {
+					satoshis: 100,
+				},
+			},
+		);
 
 		expect(writeContract).toHaveBeenCalledWith(
 			mockHre,
@@ -271,8 +282,14 @@ describe("createMidlHardhatEnvironment", () => {
 			"Token",
 			"transfer",
 			args,
-			options,
-			{},
+			{
+				value: 10n,
+			},
+			{
+				deposit: {
+					satoshis: 100,
+				},
+			},
 		);
 	});
 
