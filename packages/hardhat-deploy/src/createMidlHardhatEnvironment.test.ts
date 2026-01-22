@@ -210,6 +210,7 @@ describe("createMidlHardhatEnvironment", () => {
 			"MyContract",
 			args,
 			options,
+			{},
 		);
 	});
 
@@ -236,9 +237,10 @@ describe("createMidlHardhatEnvironment", () => {
 		await env.initialize();
 
 		const args = ["0x1234"];
-		const options = { overrides: { blockNumber: 123n } };
 
-		await env.read("Token", "balanceOf", args, options);
+		await env.read("Token", "balanceOf", args, {
+			blockNumber: 10n,
+		});
 
 		expect(readContract).toHaveBeenCalledWith(
 			mockHre,
@@ -246,7 +248,9 @@ describe("createMidlHardhatEnvironment", () => {
 			"Token",
 			"balanceOf",
 			args,
-			options,
+			{
+				blockNumber: 10n,
+			},
 		);
 	});
 
@@ -255,7 +259,7 @@ describe("createMidlHardhatEnvironment", () => {
 		await env.initialize();
 
 		const args = ["0x1234", 100];
-		const options = { overrides: {} };
+		const options = {};
 
 		await env.write("Token", "transfer", args, options);
 
@@ -268,6 +272,7 @@ describe("createMidlHardhatEnvironment", () => {
 			"transfer",
 			args,
 			options,
+			{},
 		);
 	});
 
@@ -412,7 +417,8 @@ describe("createMidlHardhatEnvironment", () => {
 			mockPublicClient,
 			"SimpleContract",
 			undefined,
-			undefined,
+			{},
+			{},
 		);
 	});
 
@@ -446,7 +452,8 @@ describe("createMidlHardhatEnvironment", () => {
 			"Token",
 			"pause",
 			undefined,
-			undefined,
+			{},
+			{},
 		);
 	});
 });

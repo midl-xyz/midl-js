@@ -21,13 +21,12 @@ import { getDeployment } from "~/actions/getDeployment";
 
 export type DeployContractOptions = {
 	libraries?: Libraries<Address>;
-	overrides?: Omit<PartialIntention, "meta" | "evmTransaction" | "withdraw"> & {
-		evmTransaction?: Omit<
-			NonNullable<PartialIntention["evmTransaction"]>,
-			"data"
-		>;
-	};
-};
+} & Omit<NonNullable<PartialIntention["evmTransaction"]>, "data">;
+
+export type DeployContractIntentionOverrides = Omit<
+	PartialIntention,
+	"meta" | "evmTransaction" | "withdraw"
+>;
 
 export const deployContract = async (
 	hre: HardhatRuntimeEnvironment,
@@ -36,7 +35,8 @@ export const deployContract = async (
 	publicClient: PublicClient,
 	name: string,
 	args: unknown[] = [],
-	options: DeployContractOptions = {},
+	{ libraries, ...options }: DeployContractOptions = {},
+	overrides: DeployContractIntentionOverrides = {},
 ) => {
 	const deployment = await getDeployment(hre, name);
 
@@ -47,7 +47,7 @@ export const deployContract = async (
 	const artifact = await hre.artifacts.readArtifact(name);
 	const bytecode = await resolveBytecodeWithLinkedLibraries(
 		artifact,
-		options?.libraries ?? {},
+		libraries ?? {},
 	);
 
 	const deployData = encodeDeployData({
@@ -57,7 +57,7 @@ export const deployContract = async (
 	});
 
 	const evmAddress =
-		options.overrides?.evmTransaction?.from ??
+		options.from ??
 		getEVMAddress(getDefaultAccount(config), config.getState().network);
 
 	const currentNonce = await publicClient.getTransactionCount({
@@ -66,16 +66,15 @@ export const deployContract = async (
 
 	const totalIntentions = store.getState().intentions.length;
 
-	const nonce =
-		options.overrides?.evmTransaction?.nonce ?? currentNonce + totalIntentions;
+	const nonce = options?.nonce ?? currentNonce + totalIntentions;
 
 	const intention = await addTxIntention(config, {
-		...options.overrides,
+		...overrides,
 		evmTransaction: {
+			...options,
 			data: deployData,
 			nonce,
 			from: evmAddress,
-			...options.overrides?.evmTransaction,
 		},
 		meta: {
 			contractName: name,
