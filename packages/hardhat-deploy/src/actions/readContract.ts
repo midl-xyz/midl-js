@@ -2,12 +2,10 @@ import type { HardhatRuntimeEnvironment } from "hardhat/types";
 import type { PublicClient, ReadContractParameters } from "viem";
 import { getDeployment } from "~/actions/getDeployment";
 
-export type ReadContractOptions = {
-	overrides?: Omit<
-		ReadContractParameters,
-		"address" | "functionName" | "abi" | "args"
-	>;
-};
+export type ReadContractOptions = Omit<
+	ReadContractParameters,
+	"address" | "functionName" | "abi" | "args"
+>;
 
 export const readContract = async (
 	hre: HardhatRuntimeEnvironment,
@@ -30,6 +28,6 @@ export const readContract = async (
 		functionName,
 		abi: artifact.abi,
 		args: args,
-		...options.overrides,
+		...options,
 	});
 };

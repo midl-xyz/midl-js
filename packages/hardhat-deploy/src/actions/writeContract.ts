@@ -10,13 +10,18 @@ import type { StoreApi } from "zustand/vanilla";
 import type { MidlHardhatStore } from "~/actions/createStore";
 import { getDeployment } from "~/actions/getDeployment";
 
+export type WriteContractEvmTransactionOverrides = Omit<
+	NonNullable<PartialIntention["evmTransaction"]>,
+	"data"
+>;
+
+export type WriteContractIntentionOverrides = Omit<
+	PartialIntention,
+	"meta" | "evmTransaction" | "withdraw"
+>;
+
 export type WriteContractOptions = {
-	overrides?: Omit<PartialIntention, "meta" | "evmTransaction" | "withdraw"> & {
-		evmTransaction?: Omit<
-			NonNullable<PartialIntention["evmTransaction"]>,
-			"data"
-		>;
-	};
+	overrides?: WriteContractIntentionOverrides;
 };
 
 export const writeContract = async (
@@ -27,6 +32,7 @@ export const writeContract = async (
 	name: string,
 	functionName: string,
 	args: unknown[] = [],
+	evmTransactionOverrides: WriteContractEvmTransactionOverrides = {},
 	options: WriteContractOptions = {},
 ) => {
 	const deployment = await getDeployment(hre, name);
@@ -43,7 +49,7 @@ export const writeContract = async (
 	});
 
 	const evmAddress =
-		options.overrides?.evmTransaction?.from ??
+		evmTransactionOverrides?.from ??
 		getEVMAddress(getDefaultAccount(config), config.getState().network);
 
 	const currentNonce = await publicClient.getTransactionCount({
@@ -53,15 +59,15 @@ export const writeContract = async (
 	const totalIntentions = store.getState().intentions.length;
 
 	const nonce =
-		options.overrides?.evmTransaction?.nonce ?? currentNonce + totalIntentions;
+		evmTransactionOverrides?.nonce ?? currentNonce + totalIntentions;
 
 	const intention = await addTxIntention(config, {
 		...options.overrides,
 		evmTransaction: {
+			...evmTransactionOverrides,
 			to: deployment.address,
 			data: callData,
 			nonce,
-			...options.overrides?.evmTransaction,
 		},
 	});
 

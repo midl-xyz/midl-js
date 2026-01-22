@@ -19,8 +19,7 @@ import type { MidlHardhatStore } from "~/actions/createStore";
 import { saveDeployment } from "~/actions/saveDeployment";
 import type { MidlNetworkConfig } from "~/type-extensions";
 
-export type ExecuteOptions = {
-	overrides?: FinalizeBTCTransactionOptions;
+export type ExecuteOptions = FinalizeBTCTransactionOptions & {
 	withdraw?: Withdrawal | boolean;
 };
 
@@ -30,8 +29,7 @@ export const execute = async (
 	config: Config,
 	store: StoreApi<MidlHardhatStore>,
 	publicClient: PublicClient,
-	options: ExecuteOptions = {
-		overrides: {},
+	{ withdraw, ...options }: ExecuteOptions = {
 		withdraw: false,
 	},
 ) => {
@@ -41,10 +39,10 @@ export const execute = async (
 		return null;
 	}
 
-	if (options.withdraw) {
+	if (withdraw) {
 		const completeTx = await addCompleteTxIntention(
 			config,
-			options.withdraw === true ? undefined : options.withdraw,
+			withdraw === true ? undefined : withdraw,
 		);
 
 		intentions.push(completeTx);
@@ -54,7 +52,7 @@ export const execute = async (
 		config,
 		intentions,
 		publicClient,
-		options.overrides,
+		options,
 	);
 
 	const signedTransactions: `0x07${string}`[] = [];
