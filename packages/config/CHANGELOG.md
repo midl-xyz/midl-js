@@ -1,5 +1,7 @@
 # @midl/midl-js-config
 
+## 3.0.0-next.30
+
 ## 3.0.0-next.29
 
 ## 3.0.0-next.28

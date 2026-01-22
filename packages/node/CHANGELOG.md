@@ -1,5 +1,14 @@
 # @midl/node
 
+## 3.0.0-next.30
+
+### Patch Changes
+
+- b7a6a4f: feat(node): support WIF and hex private keys in keyPair connector
+- Updated dependencies [da89ba8]
+- Updated dependencies [b7a6a4f]
+  - @midl/core@3.0.0-next.30
+
 ## 3.0.0-next.29
 
 ### Patch Changes

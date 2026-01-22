@@ -1,5 +1,13 @@
 # @midl/core
 
+## 3.0.0-next.30
+
+### Patch Changes
+
+- da89ba8: fix(core): re-export MaestroProvider
+- b7a6a4f: feat(node): support WIF and hex private keys in keyPair connector
+  - @midl/logger@3.0.0-next.30
+
 ## 3.0.0-next.29
 
 ### Patch Changes
