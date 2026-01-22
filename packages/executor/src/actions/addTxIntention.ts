@@ -20,7 +20,6 @@ export type PartialIntention = Omit<
  *
  * @param config The configuration object
  * @param intention The intention to add
- * @param reset If true, the intentions array will be reset
  * @param from The BTC address to use for the intention
  * @returns The added intention
  */

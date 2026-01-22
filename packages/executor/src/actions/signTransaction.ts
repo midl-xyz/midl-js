@@ -28,7 +28,7 @@ type SignTransactionOptions = {
 	 */
 	nonce?: number;
 	/**
-	 * Transaction hash of the BTC transaction.
+	 * Protocol for signing the message.
 	 */
 	protocol?: SignMessageProtocol;
 };
@@ -43,7 +43,7 @@ type SignTransactionOptions = {
  * @returns The signed and serialized transaction as a hex string.
  *
  * @example
- * const signedTx = await signTransaction(config, tx, client, { publicKey, protocol });
+ * const signedTx = await signTransaction(config, tx, client, { from, protocol });
  */
 export const signTransaction = async (
 	config: Config,

@@ -39,12 +39,12 @@ type SignIntentionOptions = {
  * @param intention - The intention to sign.
  * @param intentions - The list of intentions to sign (used for nonce calculation).
  * @param options - The options for signing:
- *   - publicKey: Public key of the account to use for signing.
+ *   - from: BTC address used to sign the transactions (optional).
  *   - nonce: Next nonce registered in EVM network (optional).
  *   - txId: Transaction hash of the BTC transaction.
  *   - protocol: Protocol for signing the message (optional).
  * @returns The signed EVM transaction object.
- 
+ *
  * @example
  * const signed = await signIntention(config, client, intention, intentions, { txId });
  */
