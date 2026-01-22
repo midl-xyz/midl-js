@@ -1,5 +1,5 @@
-import path from "node:path";
 import { defineConfig } from "vitepress";
+import llmstxt from "vitepress-plugin-llms";
 import { withSidebar } from "vitepress-sidebar";
 
 // https://vitepress.dev/reference/site-config
@@ -62,6 +62,7 @@ export default withSidebar(
 			esbuild: {
 				target: "esnext",
 			},
+			plugins: [llmstxt()],
 		},
 	}),
 	[
