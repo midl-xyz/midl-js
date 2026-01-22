@@ -73,6 +73,10 @@ fees, adding `estimateGasMulti` method and more.
 
 ## Example
 
+::: warning
+We support wagmi up to version `2.14.16`.
+:::
+
 Add `WagmiMidlProvider` to provide the necessary context for the executor to work.
 
 ::: code-group

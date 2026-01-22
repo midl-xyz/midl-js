@@ -9,7 +9,13 @@ Writing to a contract in MIDL requires a BTC transaction to cover fees, transfer
 Follow the [Installation guide](../getting-started.md#installation) to install the required dependencies.
 
 
-Also in this example we will use `viem` and `wagmi` packages to interact with EVM contracts. You can install them via your package manager of choice.
+Also in this example we will use `viem` and `wagmi` packages to interact with EVM contracts.
+
+::: warning
+We support wagmi up to version `2.14.16`.
+:::
+
+You can install them via your package manager of choice.
 
 ::: code-group
 

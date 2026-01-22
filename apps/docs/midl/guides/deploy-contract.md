@@ -31,6 +31,10 @@ pnpm init
 pnpm add -D hardhat @midl/hardhat-deploy hardhat-deploy @midl/executor
 ```
 
+::: warning
+We support Hardhat up to version `2.28.3` (latest 2.x).
+:::
+
 ## Initialize Hardhat
 
 Run the following command to initialize Hardhat:
@@ -243,5 +247,3 @@ Successful verification will return the link to the contract on the block explor
 
 ## Advanced Usage
 Midl's hardhat-deploy offers more functionality than just deploying or writing to contracts. You can find commonly used functions [here](../tools/contracts/advanced-usage.md) and examples in [this repo](https://github.com/midl-xyz/smart-contract-deploy-starter).
-
-
