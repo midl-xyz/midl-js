@@ -9,6 +9,15 @@ export default withSidebar(
 		lastUpdated: true,
 		description:
 			"A JavaScript library that makes it easy to interact with the Bitcoin and MIDL Protocol",
+		head: [
+			[
+				"link",
+				{
+					rel: "icon",
+					href: "/favicon.png",
+				},
+			],
+		],
 		themeConfig: {
 			siteTitle: "",
 			logo: {
