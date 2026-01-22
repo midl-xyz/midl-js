@@ -71,8 +71,15 @@ export const createConnector = <T extends Connector>(
 	return connector;
 };
 
-export type CreateConnectorFn<Params = void> = Params extends void
-	? (params?: { metadata?: UserMetadata }) => ConnectorWithMetadata<Connector>
-	: (
-			params: Params & { metadata?: UserMetadata },
-		) => ConnectorWithMetadata<Connector>;
+type WithMetadata = { metadata?: UserMetadata };
+
+type CreateConnectorFnNoParams = (
+	params?: WithMetadata,
+) => ConnectorWithMetadata<Connector>;
+type CreateConnectorFnWithParams<P> = (
+	params: P & WithMetadata,
+) => ConnectorWithMetadata<Connector>;
+
+export type CreateConnectorFn<Params = object> = [keyof Params] extends [never]
+	? CreateConnectorFnNoParams
+	: CreateConnectorFnWithParams<Params>;
