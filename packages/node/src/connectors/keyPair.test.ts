@@ -366,7 +366,7 @@ describe("core | connectors | keyPair", () => {
 					keyPairConnector({
 						privateKeys: [
 							__TEST__PRIVATE_KEY_WIF__,
-							"cNhK3qQwMbSbMGKEPzLjkWJp3TJXGsmWRf8p5TZDJcYk7dPV3qP2",
+							"cSBTc78h1Ab9MNcQcFD8w3kNTW8xWM4EjTQgKLDq9gUG9GrRZD3f",
 						],
 						accountIndex: 0,
 					}),
@@ -379,7 +379,7 @@ describe("core | connectors | keyPair", () => {
 					keyPairConnector({
 						privateKeys: [
 							__TEST__PRIVATE_KEY_WIF__,
-							"cNhK3qQwMbSbMGKEPzLjkWJp3TJXGsmWRf8p5TZDJcYk7dPV3qP2",
+							"cSBTc78h1Ab9MNcQcFD8w3kNTW8xWM4EjTQgKLDq9gUG9GrRZD3f",
 						],
 						accountIndex: 1,
 					}),

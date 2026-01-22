@@ -235,10 +235,7 @@ describe("setup", () => {
 		it("creates connector with private keys instead of mnemonic", async () => {
 			const store = createStore();
 			const userConfig = {
-				privateKeys: [
-					"cVpF924EspNh8KjYsfhgY96mmxvT6DgdWiTYMtMjuM74hJaU5psW",
-					"cNhK3qQwMbSbMGKEPzLjkWJp3TJXGsmWRf8p5TZDJcYk7dPV3qP2",
-				],
+				privateKeys: ["cSBTc78h1Ab9MNcQcFD8w3kNTW8xWM4EjTQgKLDq9gUG9GrRZD3f"],
 			} satisfies MidlNetworkConfig;
 
 			await setup(userConfig, store, {
@@ -247,10 +244,7 @@ describe("setup", () => {
 			});
 
 			expect(keyPairConnector).toHaveBeenCalledWith({
-				privateKeys: [
-					"cVpF924EspNh8KjYsfhgY96mmxvT6DgdWiTYMtMjuM74hJaU5psW",
-					"cNhK3qQwMbSbMGKEPzLjkWJp3TJXGsmWRf8p5TZDJcYk7dPV3qP2",
-				],
+				privateKeys: ["cSBTc78h1Ab9MNcQcFD8w3kNTW8xWM4EjTQgKLDq9gUG9GrRZD3f"],
 				paymentAddressType: AddressType.P2WPKH,
 				accountIndex: 0,
 			});
@@ -259,7 +253,7 @@ describe("setup", () => {
 		it("works with custom paymentAddressType and private keys", async () => {
 			const store = createStore();
 			const userConfig = {
-				privateKeys: ["cVpF924EspNh8KjYsfhgY96mmxvT6DgdWiTYMtMjuM74hJaU5psW"],
+				privateKeys: ["cSBTc78h1Ab9MNcQcFD8w3kNTW8xWM4EjTQgKLDq9gUG9GrRZD3f"],
 				paymentAddressType: AddressType.P2SH_P2WPKH,
 			} satisfies MidlNetworkConfig;
 
@@ -269,7 +263,7 @@ describe("setup", () => {
 			});
 
 			expect(keyPairConnector).toHaveBeenCalledWith({
-				privateKeys: ["cVpF924EspNh8KjYsfhgY96mmxvT6DgdWiTYMtMjuM74hJaU5psW"],
+				privateKeys: ["cSBTc78h1Ab9MNcQcFD8w3kNTW8xWM4EjTQgKLDq9gUG9GrRZD3f"],
 				paymentAddressType: AddressType.P2SH_P2WPKH,
 				accountIndex: 1,
 			});

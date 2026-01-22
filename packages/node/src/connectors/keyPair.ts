@@ -319,7 +319,11 @@ export const keyPairConnector: CreateConnectorFn<KeyPairConnectorParams> = ({
 					);
 				}
 
-				if ("privateKeys" in params && params.privateKeys) {
+				if (
+					"privateKeys" in params &&
+					params.privateKeys &&
+					params.privateKeys[accountIndex]
+				) {
 					return new KeyPairConnector(
 						null,
 						params.privateKeys,
