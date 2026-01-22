@@ -1,5 +1,18 @@
 # @midl/hardhat-deploy
 
+## 3.0.0-next.30
+
+### Patch Changes
+
+- ccabb41: feat(hardhat-deploy): improve overrides & options arguments for better DX
+- 55716f0: feat(hardhat-deploy): add custom connector support, extend config with private keys
+- Updated dependencies [da89ba8]
+- Updated dependencies [b7a6a4f]
+  - @midl/core@3.0.0-next.30
+  - @midl/node@3.0.0-next.30
+  - @midl/executor@3.0.0-next.30
+  - @midl/logger@3.0.0-next.30
+
 ## 3.0.0-next.29
 
 ### Patch Changes
