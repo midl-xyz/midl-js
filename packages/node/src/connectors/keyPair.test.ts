@@ -333,4 +333,72 @@ describe("core | connectors | keyPair", () => {
 			expect(valid).toBeTruthy();
 		});
 	});
+
+	describe("parameter validation", () => {
+		it("should throw error when neither mnemonic nor privateKeys is provided", () => {
+			expect(() => {
+				// @ts-expect-error - Testing invalid parameters
+				keyPairConnector({});
+			}).toThrow("Invalid parameters for KeyPairConnector");
+		});
+
+		it("should handle hex private key with 0x prefix", async () => {
+			const hexWithPrefix = `0x${__TEST__PRIVATE_KEY_HEX__}`;
+			const config = createConfig({
+				networks: [regtest],
+				connectors: [keyPairConnector({ privateKeys: [hexWithPrefix] })],
+			});
+
+			const accounts = await connect(config, {
+				purposes: [AddressPurpose.Payment],
+			});
+
+			expect(accounts.length).toBe(1);
+			expect(accounts[0].address).toBeDefined();
+
+			await disconnect(config);
+		});
+
+		it("should handle multiple private keys with different account indices", async () => {
+			const config1 = createConfig({
+				networks: [regtest],
+				connectors: [
+					keyPairConnector({
+						privateKeys: [
+							__TEST__PRIVATE_KEY_WIF__,
+							"cSBTc78h1Ab9MNcQcFD8w3kNTW8xWM4EjTQgKLDq9gUG9GrRZD3f",
+						],
+						accountIndex: 0,
+					}),
+				],
+			});
+
+			const config2 = createConfig({
+				networks: [regtest],
+				connectors: [
+					keyPairConnector({
+						privateKeys: [
+							__TEST__PRIVATE_KEY_WIF__,
+							"cSBTc78h1Ab9MNcQcFD8w3kNTW8xWM4EjTQgKLDq9gUG9GrRZD3f",
+						],
+						accountIndex: 1,
+					}),
+				],
+			});
+
+			const accounts1 = await connect(config1, {
+				purposes: [AddressPurpose.Payment],
+			});
+
+			const accounts2 = await connect(config2, {
+				purposes: [AddressPurpose.Payment],
+			});
+
+			// Addresses should be different for different account indices
+			expect(accounts1[0].address).not.toBe(accounts2[0].address);
+
+			await disconnect(config1);
+			await disconnect(config2);
+		});
+	});
 });

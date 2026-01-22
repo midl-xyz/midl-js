@@ -282,10 +282,12 @@ class KeyPairConnector implements Connector {
 
 type KeyPairMnemonicParams = {
 	mnemonic: string;
+	privateKeys?: never;
 };
 
 type KeyPairPrivateKeyParams = {
 	privateKeys: string[];
+	mnemonic?: never;
 };
 
 export type KeyPairConnectorParams = (
@@ -308,22 +310,23 @@ export const keyPairConnector: CreateConnectorFn<KeyPairConnectorParams> = ({
 				name: "KeyPair",
 			},
 			create: () => {
-				if ("mnemonic" in params) {
-					const { mnemonic } = params;
+				if ("mnemonic" in params && params.mnemonic) {
 					return new KeyPairConnector(
-						mnemonic,
+						params.mnemonic,
 						null,
 						paymentAddressType,
 						accountIndex,
 					);
 				}
 
-				if ("privateKeys" in params) {
-					const { privateKeys } = params;
-
+				if (
+					"privateKeys" in params &&
+					params.privateKeys &&
+					params.privateKeys[accountIndex]
+				) {
 					return new KeyPairConnector(
 						null,
-						privateKeys,
+						params.privateKeys,
 						paymentAddressType,
 						accountIndex,
 					);
