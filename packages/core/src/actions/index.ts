@@ -14,6 +14,7 @@ export * from "./getRuneUTXO";
 export * from "./getRunes";
 export * from "./getUTXOs";
 export * from "./signMessage";
+export * from "./signMessages";
 export * from "./signPSBT";
 export * from "./switchNetwork";
 export * from "./transferBTC";
