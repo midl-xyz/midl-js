@@ -30,6 +30,12 @@ export interface Connector {
 		params: SignMessageParams,
 		network: BitcoinNetwork,
 	): Promise<SignMessageResponse>;
+
+	signMessages?(
+		params: SignMessageParams[],
+		network: BitcoinNetwork,
+	): Promise<SignMessageResponse[]>;
+
 	signPSBT(
 		params: Omit<SignPSBTParams, "publish">,
 		network: BitcoinNetwork,

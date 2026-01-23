@@ -15,6 +15,7 @@ export * from "./useRune";
 export * from "./useRuneBalance";
 export * from "./useRunes";
 export * from "./useSignMessage";
+export * from "./useSignMessages";
 export * from "./useSignPSBT";
 export * from "./useStore";
 export * from "./useStoreInternal";
