@@ -46,11 +46,11 @@ type AddRuneERC20IntentionVariables = {
  *
  * @param params - Optional parameters to override the default config or store.
  *
- * @returns The transaction details including PSBT and transaction hex.
+ * @returns The created transaction intention.
  *
  * @example
- * const { addRuneERC20 } = useAddRuneERC20();
- * addRuneERC20({ runeId: "RUNE1234567890", publish: true });
+ * const { addRuneERC20 } = useAddRuneERC20Intention();
+ * addRuneERC20({ runeId: "840000:1", reset: true });
  */
 export const useAddRuneERC20Intention = ({
 	config: customConfig,

@@ -30,15 +30,19 @@ order: 6
 
 ## Config
 
-| Name              | Type                                                                     | Description                          |
-| ----------------- | ------------------------------------------------------------------------ | ------------------------------------ |
-| networks          | `BitcoinNetwork[]`                                                       | The available Bitcoin networks       |
-| connectors        | `Connector[]`                                                            | The available connectors             |
-| currentConnection | `Connector \| undefined`                                                 | The current connection               |
-| network           | `BitcoinNetwork`                                                         | The current Bitcoin network          |
-| setState          | `(state: Partial<ConfigState>) => void`                                  | Sets the configuration state         |
-| getState          | `() => ConfigState`                                                      | Gets the current configuration state |
-| subscribe         | `(callback: (newState: ConfigState \| undefined) => void) => () => void` | Subscribes to configuration changes  |
+| Name           | Type                                                                     | Description                          |
+| -------------- | ------------------------------------------------------------------------ | ------------------------------------ |
+| networks       | `BitcoinNetwork[]`                                                       | The available Bitcoin networks       |
+| connectors     | `ConnectorWithMetadata[]`                                                | The available connectors             |
+| connection     | `Connector \| undefined`                                                 | The active connection (if any)       |
+| accounts       | `Account[] \| undefined`                                                 | The connected accounts (if any)      |
+| network        | `BitcoinNetwork`                                                         | The current Bitcoin network          |
+| provider       | `AbstractProvider`                                                       | The BTC data provider                |
+| runesProvider  | `AbstractRunesProvider`                                                  | The runes data provider              |
+| defaultPurpose | `AddressPurpose \| undefined`                                            | Default purpose for account selection|
+| setState       | `(state: Partial<ConfigState>) => void`                                  | Sets the configuration state         |
+| getState       | `() => ConfigState`                                                      | Gets the current configuration state |
+| subscribe      | `(callback: (newState: ConfigState \| undefined) => void) => () => void` | Subscribes to configuration changes  |
 
 ## NetworkConfig
 

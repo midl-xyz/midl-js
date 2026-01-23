@@ -18,7 +18,17 @@ export const midlConfig = createMidlConfig({
 }) as Config;
 ```
 
-If you want to use SatoshiKit with a specific wallets, you can pass the `connectors` option to `createMidlConfig`. This will allow you to specify which wallets you want to use with SatoshiKit.
+By default, `createMidlConfig` sets up the following connectors:
+- `xverseConnector` (marked as partner)
+- `phantomConnector`
+- `leatherConnector`
+- `bitgetConnector`
+- `unisatConnector`
+- `okxConnector`
+
+You can add other connectors (like `magicEdenConnector`) by passing a custom `connectors` array.
+
+If you want to use SatoshiKit with a specific wallet, you can pass the `connectors` option to `createMidlConfig`. This will allow you to specify which wallets you want to use with SatoshiKit.
 
 ```ts
 import { createMidlConfig } from "@midl/satoshi-kit";
@@ -66,7 +76,7 @@ You can specify the `purposes`, `authenticationAdapter`, and `config` props to c
 | Name                    | Type                               | Description                                                                                                                                                                        |
 | ----------------------- | ---------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `purposes`              | `AddressPurpose[]`  (optional)     | The purposes for which addresses will be generated. This is an array of `AddressPurpose` values. If not provided, defaults to `[AddressPurpose.Payment, AddressPurpose.Ordinals]`. |
-| `authenticationAdapter` | `AuthenticationAdapter` (optional) | An optional authentication adapter to handle user authentication. If not provided, SatoshiKit will use a default authentication flow.                                              |
+| `authenticationAdapter` | `AuthenticationAdapter` (optional) | An optional authentication adapter to handle user authentication. If not provided, no authentication flow is used.                                                                |
 | `config`                | `Config` (optional)                | The midl config object. If not provided, SatoshiKit will use the default config.                                                                                                   |
 
 For details on implementing the `authenticationAdapter`, see the [Authentication documentation](./authentication.md).
@@ -84,4 +94,14 @@ export const App = () => {
         </SatoshiKitProvider>
     );
 };
+```
+
+## useSatoshiKit
+
+`useSatoshiKit` lets you access the current SatoshiKit context values (config, purposes, authentication adapter).
+
+```tsx
+import { useSatoshiKit } from "@midl/satoshi-kit";
+
+const { config, purposes, authenticationAdapter } = useSatoshiKit();
 ```

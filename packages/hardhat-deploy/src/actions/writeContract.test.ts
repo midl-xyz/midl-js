@@ -332,6 +332,7 @@ describe("writeContract", () => {
 			"mint",
 			[],
 			{ value: 1000n, gas: 50000n },
+			{ deposit: { satoshis: 200 } },
 		);
 
 		expect(addTxIntention).toHaveBeenCalledWith(mockConfig, {
@@ -342,6 +343,7 @@ describe("writeContract", () => {
 				value: 1000n,
 				gas: 50000n,
 			},
+			deposit: { satoshis: 200 },
 		});
 	});
 

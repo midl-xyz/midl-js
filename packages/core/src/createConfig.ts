@@ -34,7 +34,8 @@ type ConfigParams = {
 	 */
 	connectors: [ConnectorWithMetadata, ...ConnectorWithMetadata[]];
 	/**
-	 * If true, the config will persist in local storage
+	 * If true, the config will persist in local storage.
+	 * Use the object form to customize the storage key.
 	 */
 	persist?:
 		| boolean
@@ -51,7 +52,7 @@ type ConfigParams = {
 
 	/**
 	 * The runes data provider to use
-	 * @default RunehookProvider
+	 * @default MaestroSymphonyProvider
 	 */
 	runesProvider?: AbstractRunesProvider;
 

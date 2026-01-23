@@ -23,3 +23,4 @@ console.log(erc20Address);
 | runeId        | `string`                    | The rune ID to get the ERC20 address of      |
 | options       | `object`                    | The options for the request                  |
 | options.query | `UseReadContractParameters` | The parameters for the read contract request |
+| options.config | `Config` (optional)        | Custom configuration to override the default |

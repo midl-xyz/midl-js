@@ -36,7 +36,7 @@ console.log(signedPSBT);
 | Name                | Type                       | Description                                                                       |
 | ------------------- | -------------------------- | --------------------------------------------------------------------------------- |
 | psbt                | `string`                   | Base64 encoded PSBT to sign                                                       |
-| signInputs          | `Record<string, number[]>` | The inputs to sign, in the format `{ pubkey: [inputIndex] }`                      |
+| signInputs          | `Record<string, number[]>` | The inputs to sign, in the format `{ address: [inputIndex] }`                     |
 | publish?            | `boolean`                  | If true, the transaction will be broadcasted (optional)                           |
 | disableTweakSigner? | `boolean`                  | If true, tweaking the signer will be disabled for supported connectors (optional) |
 

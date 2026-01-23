@@ -10,6 +10,34 @@
 	--vp-c-brand-1: #fff;
 }
 
+.version-banner {
+	display: flex;
+	gap: 12px;
+	align-items: center;
+	justify-content: center;
+	width: 100vw;
+	padding: 6px 16px;
+	margin: 8px 0 0;
+	border-radius: 0;
+	background: var(--vp-c-bg-soft);
+	border-bottom: 1px solid var(--vp-c-divider);
+	color: var(--vp-c-text-2);
+	font-size: 13px;
+	position: relative;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+.version-banner strong {
+	font-weight: 600;
+}
+
+.version-banner a {
+	color: var(--vp-c-text-1);
+	text-decoration: underline;
+	text-underline-offset: 2px;
+}
+
 #app {
 	footer.VPFooter.has-sidebar {
 		display: block;
