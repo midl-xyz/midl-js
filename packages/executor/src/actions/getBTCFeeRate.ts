@@ -9,12 +9,11 @@ export type GetBTCFeeRateResponse = bigint;
 /**
  * Gets the BTC fee rate defined in the Executor contract.
  *
- * @param config - The configuration object.
  * @param client - EVM client or provider.
  * @returns The BTC fee rate.
  *
  * @example
- * const feeRate = await getBTCFeeRate(config, client);
+ * const feeRate = await getBTCFeeRate(client);
  */
 export const getBTCFeeRate = async (client: Client) => {
 	const feeRate = await readContract(client, {

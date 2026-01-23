@@ -22,8 +22,6 @@ features:
     details: Seamlessly integrate with React applications using custom hooks.
 ---
 
-
-
 ### Quick Example
 
 ```tsx

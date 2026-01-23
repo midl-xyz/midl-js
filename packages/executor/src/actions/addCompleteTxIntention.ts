@@ -18,11 +18,14 @@ export const COMPLETE_TX_GAS = 200_000n;
  * Creates a CompleteTx Intention. This prepares an EVM transaction that calls the `completeTx` function on the Executor contract. The `completeTx` is used to create a transaction to withdraw assets from the MIDL Layer and reflect the execution result to the Bitcoin network.
  *
  * @param config - The configuration object.
- * @param assetsToWithdraw - ERC20 addresses corresponding to Runes to withdraw. If omitted, no assets will be withdrawn.
+ * @param withdraw - Withdrawal details for BTC and/or runes. If omitted, no assets will be withdrawn.
  * @returns {TransactionIntention}
  *
  * @example
- * const intention = await addCompleteTxIntention(config, [btcAddress, runeAddress]);
+ * const intention = await addCompleteTxIntention(config, {
+ *   satoshis: 5000,
+ *   runes: [{ id: "840000:1", amount: 1n }],
+ * });
  */
 export const addCompleteTxIntention = async (
 	config: Config,

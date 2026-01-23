@@ -38,6 +38,7 @@ console.log(`Updated intentions:`, intentions);
 | `feeRate`         | `number` (optional)        | Custom fee rate (sats/vB).                                                           |
 | `multisigAddress` | `string` (optional)        | Multisig address to use for the transaction.                                         |
 | `gasMultiplier`   | `number` (optional)        | Multiplier to apply to estimated gas (default: 1.2). Used to avoid gas fluctuations. |
+| `skipEstimateGas` | `boolean` (optional)       | If true, skips gas estimation for EVM transactions.                                  |
 
 ## Returns
 
@@ -47,5 +48,5 @@ console.log(`Updated intentions:`, intentions);
 
 | Name         | Type                     | Description                                                         |
 | ------------ | ------------------------ | ------------------------------------------------------------------- |
-| `fee`        | `bigint`                 | The estimated total cost in satoshis.                               |
+| `fee`        | `number`                 | The estimated total cost in satoshis.                               |
 | `intentions` | `TransactionIntention[]` | The cloned intentions with updated gas limits for EVM transactions. |

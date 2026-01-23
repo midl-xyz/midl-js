@@ -18,7 +18,7 @@ export type AddRequestAddAssetIntentionParams = {
 	runeId: string;
 
 	/**
-	 *
+	 * Amount of the rune to deposit
 	 */
 	amount: bigint;
 };
@@ -30,6 +30,23 @@ type AddRequestAddAssetIntentionOptions = {
 	from?: string;
 };
 
+/**
+ * Creates an intention to request adding a new ERC20 asset backed by a Rune.
+ * Prepares an EVM transaction that calls `requestAddAsset` on the Executor
+ * and adds a matching Rune deposit for the mapping fee.
+ *
+ * @param config - The configuration object.
+ * @param params - The request parameters (ERC20 address, rune ID, and amount).
+ * @param options - Optional BTC address to use for the intention.
+ * @returns The created transaction intention.
+ *
+ * @example
+ * const intention = await addRequestAddAssetIntention(config, {
+ *   address: "0x0000000000000000000000000000000000000000",
+ *   runeId: "840000:1",
+ *   amount: 1000000n,
+ * });
+ */
 export const addRequestAddAssetIntention = async (
 	config: Config,
 	{ address, runeId, amount }: AddRequestAddAssetIntentionParams,

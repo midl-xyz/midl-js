@@ -56,5 +56,5 @@ The signature response
 | ------------ | -------- | ------------------------------------- |
 | signature    | `string` | Base64 encoded signature              |
 | address      | `string` | The address that signed the message   |
-| protocol?    | `string` | The protocol used to sign the message |
+| protocol     | `string` | The protocol used to sign the message |
 | messageHash? | `string` | The message hash                      |

@@ -3,23 +3,15 @@ order: 2
 title: API Reference
 ---
 
-# MidlHardhatEnvironment API Reference
+# Hardhat Plugin API Reference
 
-The `MidlHardhatEnvironment` class provides a programmatic interface for deploying and interacting with contracts in a Bitcoin-EVM hybrid environment using Hardhat and MIDL tools.
-
-## Constructor
-
-```ts
-new MidlHardhatEnvironment(hre: HardhatRuntimeEnvironment)
-```
-
----
+The Hardhat plugin injects `hre.midl`, which provides a programmatic interface for deploying and interacting with contracts in a Bitcoin-EVM hybrid environment using Hardhat and MIDL tools.
 
 ## Methods
 
 ### initialize
 ```ts
-initialize(accountIndex?: number): Promise<void>
+initialize(accountIndex?: number): Promise<Config>
 ```
 Initializes the environment and sets up the wallet and config.
 
@@ -27,41 +19,51 @@ Initializes the environment and sets up the wallet and config.
 
 ### deploy
 ```ts
-deploy(name: string, options?, intentionOptions?): Promise<void>
+deploy(
+  name: string,
+  args?: unknown[],
+  options?: DeployContractOptions,
+  overrides?: DeployContractIntentionOverrides
+): Promise<{ address: Address; abi: any[] } | DeploymentData>
 ```
-Deploys a contract by name with optional transaction and intention options.
+Adds a deployment intention. If the contract is already deployed, returns the stored deployment data.
 
 ---
 
-### getDeployment
+### get
 ```ts
-getDeployment(name: string): Promise<{ txId: string; address: Address; abi: any[] } | null>
+get(name: string): Promise<DeploymentData | null>
 ```
 Retrieves deployment information for a contract by name.
 
 ---
 
-### callContract
+### read
 ```ts
-callContract(name: string, methodName: string, options, intentionOptions?): Promise<void>
+read(name: string, functionName: string, args?, options?): Promise<unknown>
 ```
-Calls a contract method by name with arguments and options.
+Reads a contract method using the current deployment address.
+
+### write
+```ts
+write(
+  name: string,
+  functionName: string,
+  args?,
+  evmTransactionOverrides?,
+  options?
+): Promise<TransactionIntention>
+```
+Adds a contract write intention (EVM call).
+`options` maps to the intention overrides (for example, `deposit`).
 
 ---
 
 ### execute
 ```ts
-execute(options?): Promise<void>
+execute(options?): Promise<[string, `0x${string}`[]] | null>
 ```
-Executes all stored intentions as a batch transaction.
-
----
-
-### getWalletClient
-```ts
-getWalletClient(): Promise<WalletClient>
-```
-Returns the wallet client instance.
+Finalizes and broadcasts the BTC and EVM transactions. Returns BTC tx id and EVM tx hashes (or `null` if there are no intentions).
 
 ---
 
@@ -73,40 +75,15 @@ Saves deployment information to disk.
 
 ---
 
-### deleteDeployment
+### delete
 ```ts
-deleteDeployment(name: string): Promise<void>
+delete(name: string): Promise<void>
 ```
 Deletes deployment information for a contract by name.
 
 ---
 
-### getConfig
-```ts
-getConfig(): Config | null
-```
-Returns the current MIDL config object.
-
----
-
-### getEVMAddress
-```ts
-getEVMAddress(): string
-```
-Returns the EVM address for the default account.
-
-
-### getAccount
-```ts
-getAccount(): Account
-```
-
-Return `Account` object for the current wallet.
-
----
-
 ## Properties
 
-- **wallet**: `Wallet` — The wallet instance used for signing and account management.
-- **bitcoinNetwork**: `BitcoinNetwork` — The current Bitcoin network.
-- **chain**: `Chain` — The current EVM chain configuration.
+- **account**: `Account` — The default account (requires `initialize()`).
+- **evm.address**: `string` — The EVM address for the default account (requires `initialize()`).

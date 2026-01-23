@@ -29,8 +29,13 @@ type AddRequestAddAssetIntentionVariables = {
  * This utility wraps `addRequestAddAssetIntention` and stores the resulting intention in the context store.
  *
  * @param params - Optional parameters to override the default config or store.
+ * @returns An object with `addRequestAddAssetIntention`, `addRequestAddAssetIntentionAsync`, and mutation state from React Query.
+ *
+ * @example
+ * const { addRequestAddAssetIntention } = useAddRequestAddAssetIntention();
+ * addRequestAddAssetIntention({ address, runeId, amount });
  */
-export const useAddRequestAddAssetsIntention = ({
+export const useAddRequestAddAssetIntention = ({
 	store: customStore,
 	config: customConfig,
 }: UseAddRequestAddAssetIntentionParams = {}) => {
@@ -73,3 +78,5 @@ export const useAddRequestAddAssetsIntention = ({
 		...rest,
 	};
 };
+
+export const useAddRequestAddAssetsIntention = useAddRequestAddAssetIntention;

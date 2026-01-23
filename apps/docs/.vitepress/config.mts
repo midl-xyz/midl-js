@@ -1,5 +1,5 @@
-import path from "node:path";
 import { defineConfig } from "vitepress";
+import llmstxt from "vitepress-plugin-llms";
 import { withSidebar } from "vitepress-sidebar";
 
 // https://vitepress.dev/reference/site-config
@@ -9,8 +9,17 @@ export default withSidebar(
 		lastUpdated: true,
 		description:
 			"A JavaScript library that makes it easy to interact with the Bitcoin and MIDL Protocol",
+		head: [
+			[
+				"link",
+				{
+					rel: "icon",
+					href: "/favicon.png",
+				},
+			],
+		],
 		themeConfig: {
-			siteTitle: "",
+			siteTitle: "JS SDK",
 			logo: {
 				light: "/logo.svg",
 				dark: "/logo-dark.svg",
@@ -53,6 +62,7 @@ export default withSidebar(
 			esbuild: {
 				target: "esnext",
 			},
+			plugins: [llmstxt()],
 		},
 	}),
 	[

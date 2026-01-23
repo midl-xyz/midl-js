@@ -1,4 +1,5 @@
 const { MaestroSymphonyProvider, MempoolSpaceProvider } = require("@midl/core");
+const { midlRegtest } = require("@midl/executor");
 
 require("../../../dist/cjs/index");
 require("hardhat-deploy");
@@ -40,7 +41,7 @@ module.exports = {
 	networks: {
 		default: {
 			url: "https://rpc.staging.midl.xyz",
-			chainId: 777,
+			chainId: midlRegtest.id,
 		},
 	},
 };

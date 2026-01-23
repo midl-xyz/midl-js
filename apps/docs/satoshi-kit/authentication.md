@@ -4,7 +4,7 @@ order: 3
 
 # Authentication
 
-In the modern web, beside the ability to connect wallets, it's also crucial to authenticate users. SatoshiKit provides a simple way to authenticate users using their Bitcoin wallets by signing an authentication message.
+In the modern web, besides the ability to connect wallets, it's also crucial to authenticate users. SatoshiKit provides a simple way to authenticate users using their Bitcoin wallets by signing an authentication message.
 
 
 To authenticate users on wallet connect, you can use the `authenticationAdapter` prop of the `SatoshiKitProvider`. This prop allows you to specify your own authentication adapter that will be used to authenticate users when they connect their wallets. 
@@ -18,6 +18,7 @@ export type AuthenticationAdapter = {
 	verify({
 		message,
 		signature,
+		network,
 		account,
 	}: {
 		message: string;

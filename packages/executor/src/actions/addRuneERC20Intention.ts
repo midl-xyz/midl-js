@@ -15,7 +15,7 @@ import { getEVMAddress } from "~/utils";
  *
  * @returns The transaction intention
  *
- * @throws Will throw an error if the rune name is less than 12 characters or if it has less than 6 confirmations.
+ * @throws Will throw an error if the rune has less than 6 confirmations.
  */
 export const addRuneERC20Intention = async (config: Config, runeId: string) => {
 	const rune = await getRune(config, runeId);

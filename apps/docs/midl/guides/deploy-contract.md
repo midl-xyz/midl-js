@@ -31,6 +31,10 @@ pnpm init
 pnpm add -D hardhat @midl/hardhat-deploy hardhat-deploy @midl/executor
 ```
 
+::: warning
+We support Hardhat up to version `2.28.3` (latest 2.x).
+:::
+
 ## Initialize Hardhat
 
 Run the following command to initialize Hardhat:
@@ -89,7 +93,7 @@ import "@midl/hardhat-deploy";
 import "hardhat-deploy";
 import "@nomicfoundation/hardhat-verify";
 import { vars, type HardhatUserConfig } from "hardhat/config";
-import { midlRegtest } from "@midl/executor";
+import { midl } from "@midl/executor";
 
 const config: HardhatUserConfig = {
   solidity: "0.8.28",
@@ -104,21 +108,21 @@ const config: HardhatUserConfig = {
   },
   networks: {
     default: {
-      url: midlRegtest.rpcUrls.default.http[0],
-      chainId: midlRegtest.id,
+      url: midl.rpcUrls.default.http[0],
+      chainId: midl.id,
     },
   },
   etherscan: {
     apiKey: {
-      "midl-regtest": "empty",
+      "midl": "empty",
     },
     customChains: [
       {
-        network: "midl-regtest",
-        chainId: 777,
+        network: "midl",
+        chainId: midl.id,
         urls: {
-          apiURL: "https://blockscout.regtest.midl.xyz/api",
-          browserURL: "https://blockscout.regtest.midl.xyz",
+          apiURL: "https://blockscout.midl.xyz/api",
+          browserURL: "https://blockscout.midl.xyz",
         },
       },
     ],
@@ -189,9 +193,7 @@ const deploy: DeployFunction = async (hre) => {
   /**
    * Add the deploy contract transaction intention
    */
-  await hre.midl.deploy("SimpleStorage", {
-    args: ["Hello from MIDL!"],
-  });
+  await hre.midl.deploy("SimpleStorage", ["Hello from MIDL!"]);
 
   /**
    * Sends the BTC transaction and EVM transaction to the network
@@ -245,6 +247,3 @@ Successful verification will return the link to the contract on the block explor
 
 ## Advanced Usage
 Midl's hardhat-deploy offers more functionality than just deploying or writing to contracts. You can find commonly used functions [here](../tools/contracts/advanced-usage.md) and examples in [this repo](https://github.com/midl-xyz/smart-contract-deploy-starter).
-
-
-

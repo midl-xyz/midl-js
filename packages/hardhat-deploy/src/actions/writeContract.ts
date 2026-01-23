@@ -20,9 +20,7 @@ export type WriteContractIntentionOverrides = Omit<
 	"meta" | "evmTransaction" | "withdraw"
 >;
 
-export type WriteContractOptions = {
-	overrides?: WriteContractIntentionOverrides;
-};
+export type WriteContractOptions = WriteContractIntentionOverrides;
 
 export const writeContract = async (
 	hre: HardhatRuntimeEnvironment,
@@ -62,7 +60,7 @@ export const writeContract = async (
 		evmTransactionOverrides?.nonce ?? currentNonce + totalIntentions;
 
 	const intention = await addTxIntention(config, {
-		...options.overrides,
+		...options,
 		evmTransaction: {
 			...evmTransactionOverrides,
 			to: deployment.address,
