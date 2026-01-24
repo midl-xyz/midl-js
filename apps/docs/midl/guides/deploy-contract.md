@@ -209,7 +209,7 @@ export default deploy;
 ## Deploy the Contract
 
 ::: warning
-Make sure you have Bitcoin on Regtest. You can claim some at the [faucet](https://faucet.midl.xyz) or by contacting us directly on [Discord](https://discord.com/invite/midl). To get your Bitcoin account address, you can run the following command:
+Make sure you have Bitcoin on Regtest. You can claim some at the [faucet](https://faucet.regtest.midl.xyz/) or by contacting us directly on [Discord](https://discord.com/invite/midl) and [telagram](t.me/midl_xyz) . To get your Bitcoin account address, you can run the following command:
 
 ```bash
 pnpm hardhat midl:address
