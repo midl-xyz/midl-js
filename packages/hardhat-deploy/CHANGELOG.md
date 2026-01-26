@@ -1,5 +1,14 @@
 # @midl/hardhat-deploy
 
+## 3.0.0-next.32
+
+### Patch Changes
+
+- @midl/core@3.0.0-next.32
+- @midl/executor@3.0.0-next.32
+- @midl/logger@3.0.0-next.32
+- @midl/node@3.0.0-next.32
+
 ## 3.0.0-next.31
 
 ### Patch Changes
