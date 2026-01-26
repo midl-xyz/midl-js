@@ -62,7 +62,7 @@ export default (<HardhatUserConfig>{
 				btcConfirmationsRequired: 1,
 				hardhatNetwork: "regtest",
 				network: {
-					explorerUrl: "https://mempool.regtest.midl.xyz",
+					explorerUrl: "https://mempool.staging.midl.xyz",
 					id: "regtest",
 					network: "regtest",
 				},

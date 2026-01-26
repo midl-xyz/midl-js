@@ -3,10 +3,10 @@ import { http, HttpResponse, ws } from "msw";
 import { setupServer } from "msw/node";
 import type { UTXO } from "~/providers";
 
-const wsApi = ws.link("wss://mempool.regtest.midl.xyz/api/v1/ws");
+const wsApi = ws.link("wss://mempool.staging.midl.xyz/api/v1/ws");
 
 const handlers = [
-	http.get("https://mempool.regtest.midl.xyz/api/v1/fees/recommended", () => {
+	http.get("https://mempool.staging.midl.xyz/api/v1/fees/recommended", () => {
 		return HttpResponse.json({
 			fastestFee: 1,
 			halfHourFee: 1,
@@ -16,11 +16,11 @@ const handlers = [
 		});
 	}),
 
-	http.post("https://mempool.regtest.midl.xyz/api/tx", () => {
+	http.post("https://mempool.staging.midl.xyz/api/tx", () => {
 		return HttpResponse.text(randomBytes(32).toString("hex"));
 	}),
 
-	http.get("https://mempool.regtest.midl.xyz/api/address/:address/utxo", () => {
+	http.get("https://mempool.staging.midl.xyz/api/address/:address/utxo", () => {
 		const utxos: UTXO[] = [
 			{
 				txid: Buffer.alloc(32).toString("hex"),
@@ -35,7 +35,7 @@ const handlers = [
 
 		return HttpResponse.json(utxos);
 	}),
-	http.get("https://mempool.regtest.midl.xyz/utxos/:address", ({ request }) => {
+	http.get("https://mempool.staging.midl.xyz/utxos/:address", ({ request }) => {
 		const url = new URL(request.url);
 
 		// biome-ignore lint/suspicious/noExplicitAny: TODO: specify type
@@ -62,7 +62,7 @@ const handlers = [
 
 		return HttpResponse.json(runeUTXOS);
 	}),
-	http.get("https://mempool.regtest.midl.xyz/api/tx/:txid/hex", () => {
+	http.get("https://mempool.staging.midl.xyz/api/tx/:txid/hex", () => {
 		return HttpResponse.text(
 			Buffer.concat([
 				Buffer.from("01000000", "hex"), // version
@@ -79,14 +79,14 @@ const handlers = [
 		);
 	}),
 
-	http.get("https://mempool.regtest.midl.xyz/api/tx/:txid/status", () => {
+	http.get("https://mempool.staging.midl.xyz/api/tx/:txid/status", () => {
 		return HttpResponse.json({
 			confirmed: true,
 			block_height: 0,
 		});
 	}),
 
-	http.get("https://mempool.regtest.midl.xyz/api/blocks/tip/height", () => {
+	http.get("https://mempool.staging.midl.xyz/api/blocks/tip/height", () => {
 		return HttpResponse.text("100");
 	}),
 	wsApi.addEventListener("connection", ({ server, client }) => {

@@ -19,7 +19,7 @@ export abstract class Wallet {
 		protected readonly password: string,
 		protected readonly rpcUrls: Record<NetworkName, string> = {
 			mainnet: "https://mempool.midl.xyz/api",
-			regtest: "https://mempool.regtest.midl.xyz/api",
+			regtest: "https://mempool.staging.midl.xyz/api",
 			testnet: "https://mempool.testnet.midl.xyz/api",
 			testnet4: "https://mempool.testnet4.midl.xyz/api",
 			signet: "https://mempool.space/signet/api",
