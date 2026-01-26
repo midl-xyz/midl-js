@@ -1,5 +1,51 @@
 # @midl/executor-react
 
+## 3.0.0
+
+### Minor Changes
+
+- b45fb9b: feat: consensus update
+
+### Patch Changes
+
+- 06de551: feat(executor): add request add asset function and hook
+- 9f7609d: feat(executor): add rune erc20 intention
+- 3eedefa: feat(executor): add signIntentions actions & hook
+- 0f7e805: fix(executor-react): re-export add request add asset
+- Updated dependencies [baf9d75]
+- Updated dependencies [27d5a7e]
+- Updated dependencies [8f83334]
+- Updated dependencies [06de551]
+- Updated dependencies [a46b403]
+- Updated dependencies [9c4454e]
+- Updated dependencies [df317a3]
+- Updated dependencies [718a0ab]
+- Updated dependencies [e16f466]
+- Updated dependencies [917d76d]
+- Updated dependencies [d2934b3]
+- Updated dependencies [79db867]
+- Updated dependencies [9f7609d]
+- Updated dependencies [0830824]
+- Updated dependencies [fd30227]
+- Updated dependencies [e9b5287]
+- Updated dependencies [b7970c4]
+- Updated dependencies [3eedefa]
+- Updated dependencies [8a4aaa7]
+- Updated dependencies [2e2501f]
+- Updated dependencies [b45fb9b]
+- Updated dependencies [b2a3421]
+- Updated dependencies [3eedefa]
+- Updated dependencies [7fcc48e]
+- Updated dependencies [25ce69a]
+- Updated dependencies [54f2091]
+- Updated dependencies [8daa15a]
+- Updated dependencies [a39850e]
+- Updated dependencies [d47a86f]
+- Updated dependencies [12707c5]
+  - @midl/executor@3.0.0
+  - @midl/core@3.0.0
+  - @midl/react@3.0.0
+
 ## 3.0.0-next.33
 
 ### Patch Changes

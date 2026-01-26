@@ -1,5 +1,62 @@
 # @midl/hardhat-deploy
 
+## 3.0.0
+
+### Minor Changes
+
+- b45fb9b: feat: consensus update
+
+### Patch Changes
+
+- 0b48381: fix(hardhat-deploy): nonce for pre-deployment
+- 5ad1ec3: fix(hardhat-deploy): optional param execute
+- c3e3142: fix(hardhat-deploy): allow execute without intentions
+- 9c4454e: fix(executor): skip stateOverride if no estimateGas
+- d2934b3: feat: update tx cost calculation
+- 18c59b6: fix(hardhat-deploy): disable proxy on env
+- 31be9fa: feat(hardhat-deploy): future contract address
+- 8a427a3: fix(hardhat-deploy): write contract overrides
+- fd30227: feat(hardhat-deploy): refactor
+- b2a3421: fix(hardhat-deploy): config mutation
+- 5deb1ae: feat(hardhat-deploy): improve overrides & options arguments for better DX
+- ae6a8a4: feat(hardhat-deploy): add custom connector support, extend config with private keys
+- c47070e: fix(hardhat-deploy): chain initialization
+- Updated dependencies [baf9d75]
+- Updated dependencies [27d5a7e]
+- Updated dependencies [8f83334]
+- Updated dependencies [06de551]
+- Updated dependencies [a46b403]
+- Updated dependencies [9c4454e]
+- Updated dependencies [df317a3]
+- Updated dependencies [718a0ab]
+- Updated dependencies [e16f466]
+- Updated dependencies [917d76d]
+- Updated dependencies [3eedefa]
+- Updated dependencies [d2934b3]
+- Updated dependencies [79db867]
+- Updated dependencies [9f7609d]
+- Updated dependencies [0830824]
+- Updated dependencies [fd30227]
+- Updated dependencies [e9b5287]
+- Updated dependencies [b7970c4]
+- Updated dependencies [3eedefa]
+- Updated dependencies [8a4aaa7]
+- Updated dependencies [2e2501f]
+- Updated dependencies [b45fb9b]
+- Updated dependencies [b2a3421]
+- Updated dependencies [3eedefa]
+- Updated dependencies [7fcc48e]
+- Updated dependencies [25ce69a]
+- Updated dependencies [54f2091]
+- Updated dependencies [8daa15a]
+- Updated dependencies [a39850e]
+- Updated dependencies [d47a86f]
+- Updated dependencies [12707c5]
+  - @midl/executor@3.0.0
+  - @midl/core@3.0.0
+  - @midl/node@3.0.0
+  - @midl/logger@3.0.0
+
 ## 3.0.0-next.33
 
 ### Patch Changes
