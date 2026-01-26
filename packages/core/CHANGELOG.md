@@ -1,5 +1,14 @@
 # @midl/core
 
+## 3.0.0-next.31
+
+### Patch Changes
+
+- 61b7241: fix(core): signMessages sets BIP322 protocol by default
+- 187d321: feat(core): add signMessages action
+  feat(react): add useSignMessages hook
+  - @midl/logger@3.0.0-next.31
+
 ## 3.0.0-next.30
 
 ### Patch Changes

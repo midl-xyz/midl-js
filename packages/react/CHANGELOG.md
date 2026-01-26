@@ -1,5 +1,15 @@
 # @midl/react
 
+## 3.0.0-next.31
+
+### Patch Changes
+
+- 187d321: feat(core): add signMessages action
+  feat(react): add useSignMessages hook
+- Updated dependencies [61b7241]
+- Updated dependencies [187d321]
+  - @midl/core@3.0.0-next.31
+
 ## 3.0.0-next.30
 
 ### Patch Changes

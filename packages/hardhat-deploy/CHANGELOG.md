@@ -1,5 +1,19 @@
 # @midl/hardhat-deploy
 
+## 3.0.0-next.31
+
+### Patch Changes
+
+- bf80b87: fix(hardhat-deploy): write contract overrides
+- Updated dependencies [61b7241]
+- Updated dependencies [61b7241]
+- Updated dependencies [187d321]
+- Updated dependencies [61b7241]
+  - @midl/node@3.0.0-next.31
+  - @midl/core@3.0.0-next.31
+  - @midl/executor@3.0.0-next.31
+  - @midl/logger@3.0.0-next.31
+
 ## 3.0.0-next.30
 
 ### Patch Changes
