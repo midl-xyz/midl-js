@@ -1,5 +1,25 @@
 # @midl/core
 
+## 3.0.0
+
+### Patch Changes
+
+- 8f83334: fix(core): ws mempool
+- 06de551: feat(executor): add request add asset function and hook
+- df317a3: feat(core): MaestroProvider exclude meta protocols
+- e9b5287: fix(core): re-export MaestroProvider
+- b7970c4: chore: point regtest to staging
+- 3eedefa: fix(core): signMessages sets BIP322 protocol by default
+- 8a4aaa7: fix(core): edict rune psbt inputs for non p2tr addresses
+- 2e2501f: feat(core): add signMessages action
+  feat(react): add useSignMessages hook
+- b2a3421: fix(hardhat-deploy): config mutation
+- 25ce69a: fix: rewrite ws mempool
+- 8daa15a: fix(core): allow edict from any account
+- a39850e: feat(core): add ws support for mempool.space provider
+- 12707c5: feat(node): support WIF and hex private keys in keyPair connector
+  - @midl/logger@3.0.0
+
 ## 3.0.0-next.33
 
 ### Patch Changes

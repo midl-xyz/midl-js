@@ -1,5 +1,28 @@
 # @midl/satoshi-kit
 
+## 3.0.0
+
+### Patch Changes
+
+- Updated dependencies [8f83334]
+- Updated dependencies [06de551]
+- Updated dependencies [df317a3]
+- Updated dependencies [5a930ce]
+- Updated dependencies [e9b5287]
+- Updated dependencies [b7970c4]
+- Updated dependencies [3eedefa]
+- Updated dependencies [8a4aaa7]
+- Updated dependencies [b7970c4]
+- Updated dependencies [2e2501f]
+- Updated dependencies [b2a3421]
+- Updated dependencies [25ce69a]
+- Updated dependencies [8daa15a]
+- Updated dependencies [a39850e]
+- Updated dependencies [12707c5]
+  - @midl/core@3.0.0
+  - @midl/connectors@3.0.0
+  - @midl/react@3.0.0
+
 ## 3.0.0-next.33
 
 ### Patch Changes

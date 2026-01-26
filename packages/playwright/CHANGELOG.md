@@ -1,5 +1,26 @@
 # @midl/playwright
 
+## 3.0.0
+
+### Patch Changes
+
+- 6ab33a8: feat(playwright): refactor postinstall scripts
+- b7970c4: chore: point regtest to staging
+- Updated dependencies [8f83334]
+- Updated dependencies [06de551]
+- Updated dependencies [df317a3]
+- Updated dependencies [e9b5287]
+- Updated dependencies [b7970c4]
+- Updated dependencies [3eedefa]
+- Updated dependencies [8a4aaa7]
+- Updated dependencies [2e2501f]
+- Updated dependencies [b2a3421]
+- Updated dependencies [25ce69a]
+- Updated dependencies [8daa15a]
+- Updated dependencies [a39850e]
+- Updated dependencies [12707c5]
+  - @midl/core@3.0.0
+
 ## 3.0.0-next.33
 
 ### Patch Changes
