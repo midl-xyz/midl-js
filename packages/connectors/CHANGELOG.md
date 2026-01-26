@@ -1,5 +1,12 @@
 # @midl/connectors
 
+## 3.0.0-next.32
+
+### Patch Changes
+
+- 6271249: fix(connectors): xverse wallet signMessage api params
+  - @midl/core@3.0.0-next.32
+
 ## 3.0.0-next.31
 
 ### Patch Changes
