@@ -1,5 +1,6 @@
 import {
 	type SignMessageParams,
+	SignMessageProtocol,
 	type SignMessageResponse,
 	signMessage,
 } from "~/actions/signMessage";
@@ -47,5 +48,11 @@ export const signMessages = async (
 		return signatures;
 	}
 
-	return connection.signMessages(messages, network);
+	return connection.signMessages(
+		messages.map((it) => ({
+			...it,
+			protocol: it.protocol ?? SignMessageProtocol.Bip322,
+		})),
+		network,
+	);
 };
