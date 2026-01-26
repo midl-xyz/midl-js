@@ -1,5 +1,14 @@
 # @midl/executor
 
+## 3.0.0-next.33
+
+### Patch Changes
+
+- c0fcffd: chore: point regtest to staging
+- Updated dependencies [c0fcffd]
+  - @midl/core@3.0.0-next.33
+  - @midl/logger@3.0.0-next.33
+
 ## 3.0.0-next.32
 
 ### Patch Changes
