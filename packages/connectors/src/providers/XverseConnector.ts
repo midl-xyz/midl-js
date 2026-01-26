@@ -80,7 +80,7 @@ export class XverseConnector extends SatsConnectConnector {
 		);
 
 		if (response.status === "success") {
-			const signatures = response.result.signatures as SignMessageResult[];
+			const signatures = response.result as SignMessageResult[];
 
 			return signatures.map((it) => ({
 				address: it.address,

@@ -13,7 +13,7 @@ export const mempoolSpaceRPC: RPCUrlMap = {
 	mainnet: "https://mempool.space",
 	testnet: "https://mempool.space/testnet",
 	testnet4: "https://mempool.space/testnet4",
-	regtest: "https://mempool.regtest.midl.xyz",
+	regtest: "https://mempool.staging.midl.xyz",
 	signet: "https://mempool.space/signet",
 };
 
@@ -21,7 +21,7 @@ export const mempoolSpaceWS: RPCUrlMap = {
 	mainnet: "wss://mempool.space/api/v1/ws",
 	testnet: "wss://mempool.space/testnet/api/v1/ws",
 	testnet4: "wss://mempool.space/testnet4/api/v1/ws",
-	regtest: "wss://mempool.regtest.midl.xyz/api/v1/ws",
+	regtest: "wss://mempool.staging.midl.xyz/api/v1/ws",
 	signet: "wss://mempool.space/signet/api/v1/ws",
 };
 

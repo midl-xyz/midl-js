@@ -1,4 +1,5 @@
 import { randomBytes } from "node:crypto";
+import { keyPairConnector } from "@midl/node";
 import { http, HttpResponse } from "msw";
 import { setupServer } from "msw/node";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
@@ -12,13 +13,17 @@ import type { UTXO } from "~/providers";
 describe("core | actions | getBalance", () => {
 	const config = createConfig({
 		networks: [regtest],
-		connectors: [],
+		connectors: [
+			keyPairConnector({
+				mnemonic: "test test test test test test test test test test test junk",
+			}),
+		],
 	});
 
 	const mockServer = setupServer(
 		...[
 			http.get(
-				"https://mempool.regtest.midl.xyz/api/address/:address/utxo",
+				"https://mempool.staging.midl.xyz/api/address/:address/utxo",
 				() => {
 					const utxos: UTXO[] = [
 						{

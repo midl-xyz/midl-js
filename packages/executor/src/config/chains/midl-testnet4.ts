@@ -4,10 +4,10 @@ export const midlTestnet4: Chain = {
 	id: 0x3a99,
 	rpcUrls: {
 		default: {
-			http: ["http://54.75.35.100:8545"],
+			http: [""],
 		},
 	},
-	name: "midl-regtest",
+	name: "midl-testnet4",
 	nativeCurrency: {
 		name: "Bitcoin",
 		symbol: "BTC",

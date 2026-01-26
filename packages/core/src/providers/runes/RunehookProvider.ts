@@ -14,7 +14,7 @@ export const runehookRPC: Record<BitcoinNetwork["id"], string> = {
 	mainnet: "https://mempool.space",
 	testnet: "https://mempool.space/testnet",
 	testnet4: "https://mempool.space/testnet4",
-	regtest: "https://mempool.regtest.midl.xyz",
+	regtest: "https://mempool.staging.midl.xyz",
 	signet: "https://mempool.space/signet",
 };
 
