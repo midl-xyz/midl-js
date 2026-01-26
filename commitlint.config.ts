@@ -18,6 +18,7 @@ const Configuration: UserConfig = {
 				"rune-etcher",
 				"node",
 				"playwright",
+				"connectors",
 			],
 		],
 	},
