@@ -2,14 +2,17 @@ import {
 	type Config,
 	type SignMessageProtocol,
 	getDefaultAccount,
+	signMessage,
 } from "@midl/core";
-import { type PublicClient, type WalletClient, isHex } from "viem";
-import { getTransactionCount } from "viem/actions";
-import { getPublicKey } from "~/actions/getPublicKey";
-import { signTransaction } from "~/actions/signTransaction";
-import { GAS_PRICE } from "~/config";
+import {
+	type PublicClient,
+	type WalletClient,
+	keccak256,
+	serializeTransaction,
+} from "viem";
+import { serializeIntention } from "~/actions/serializeIntention";
 import type { TransactionIntention } from "~/types/intention";
-import { getBTCAddressByte, getEVMAddress } from "~/utils";
+import { extractEVMSignature } from "~/utils";
 
 type SignIntentionOptions = {
 	/**
@@ -55,10 +58,20 @@ export const signIntention = async (
 	intentions: TransactionIntention[],
 	options: SignIntentionOptions,
 ) => {
-	const { network } = config.getState();
+	const { serialized, intention: clonedIntention } = await serializeIntention(
+		config,
+		client,
+		intention,
+		intentions,
+		{
+			from: options.from,
+			nonce: options.nonce,
+			txId: options.txId,
+		},
+	);
 
-	if (!network) {
-		throw new Error("No network set");
+	if (!clonedIntention.evmTransaction) {
+		throw new Error("No EVM transaction set");
 	}
 
 	const account = getDefaultAccount(
@@ -66,59 +79,32 @@ export const signIntention = async (
 		options.from ? (it) => it.address === options.from : undefined,
 	);
 
-	const publicKey = getPublicKey(account, network);
+	const message = keccak256(serialized);
 
-	if (!account || !publicKey) {
-		throw new Error("No public key set");
-	}
+	const data = await signMessage(config, {
+		message,
+		address: account.address,
+		protocol: options.protocol,
+	});
 
-	const evmAddress = getEVMAddress(account, network);
-
-	const nonce =
-		options.nonce ??
-		(await getTransactionCount(client, {
-			address: evmAddress,
-		}));
-
-	if (!intentions) {
-		throw new Error("No intentions found");
-	}
-
-	if (!intention.evmTransaction) {
-		throw new Error("No EVM transaction set");
-	}
-
-	if (!client.chain) {
-		throw new Error("No EVM chain set");
-	}
-
-	intention.evmTransaction = {
-		...intention.evmTransaction,
-		chainId: client.chain.id,
-		from: intention.evmTransaction.from ?? evmAddress,
-		nonce:
-			nonce +
-			intentions
-				.filter((it) => Boolean(it.evmTransaction))
-				.findIndex((it) => it === intention),
-		gasPrice: GAS_PRICE,
-		publicKey,
-		btcAddressByte: getBTCAddressByte(account),
-		btcTxHash: isHex(options.txId, { strict: false })
-			? options.txId
-			: `0x${options.txId}`,
-	};
-
-	const signed = await signTransaction(
-		config,
-		intention.evmTransaction,
-		client,
+	const { r, s, v } = await extractEVMSignature(
+		message,
+		data.signature,
+		data.protocol,
 		{
-			nonce,
-			protocol: options.protocol,
-			from: options.from,
+			addressType: account.addressType,
+			publicKey: account.publicKey,
 		},
 	);
 
-	return signed;
+	const signedSerializedTransaction = serializeTransaction(
+		clonedIntention.evmTransaction,
+		{
+			r,
+			s,
+			v,
+		},
+	);
+
+	return signedSerializedTransaction;
 };

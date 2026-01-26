@@ -124,6 +124,20 @@ class KeyPairConnector implements Connector {
 		return accounts;
 	}
 
+	async signMessages(
+		params: SignMessageParams[],
+		network: BitcoinNetwork,
+	): Promise<SignMessageResponse[]> {
+		const signatures: SignMessageResponse[] = [];
+
+		for (const param of params) {
+			const signature = await this.signMessage(param, network);
+			signatures.push(signature);
+		}
+
+		return signatures;
+	}
+
 	async signMessage(
 		params: SignMessageParams,
 		network: BitcoinNetwork,
