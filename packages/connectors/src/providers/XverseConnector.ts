@@ -67,16 +67,15 @@ export class XverseConnector extends SatsConnectConnector {
 		const response = await request(
 			// biome-ignore lint/suspicious/noExplicitAny: This is experimental api
 			"signMultipleMessages" as any,
-			{
-				messages: messages.map((it) => ({
-					address: it.address,
-					message: it.message,
-					protocol:
-						it.protocol === SignMessageProtocol.Ecdsa
-							? MessageSigningProtocols.ECDSA
-							: MessageSigningProtocols.BIP322,
-				})),
-			},
+			messages.map((it) => ({
+				address: it.address,
+				message: it.message,
+				protocol:
+					it.protocol === SignMessageProtocol.Ecdsa
+						? MessageSigningProtocols.ECDSA
+						: MessageSigningProtocols.BIP322,
+			})),
+
 			this.providerId,
 		);
 
