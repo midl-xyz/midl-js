@@ -1,5 +1,13 @@
 # @midl/connectors
 
+## 3.0.0-next.33
+
+### Patch Changes
+
+- c0fcffd: fix(connectors): xverse signMessages response
+- Updated dependencies [c0fcffd]
+  - @midl/core@3.0.0-next.33
+
 ## 3.0.0-next.32
 
 ### Patch Changes
