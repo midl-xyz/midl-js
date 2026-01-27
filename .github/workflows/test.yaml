@@ -1,6 +1,18 @@
 name: Build & Test
 
 on:
+  push:
+    branches:
+      - main
+      - next
+    paths:
+      - 'packages/**'
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
+      - 'turbo.json'
+      - 'vitest.config.ts'
+      - 'biome.json'
+      - '.github/workflows/test.yaml'
   pull_request:
     branches:
       - main

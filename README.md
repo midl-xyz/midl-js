@@ -4,7 +4,6 @@
 [![license](https://img.shields.io/github/license/midl-xyz/midl-js)](LICENSE)
 [![issues](https://img.shields.io/github/issues/midl-xyz/midl-js)](https://github.com/midl-xyz/midl-js/issues)
 [![prs](https://img.shields.io/github/issues-pr/midl-xyz/midl-js)](https://github.com/midl-xyz/midl-js/pulls)
-[![prs](https://img.shields.io/github/issues-pr/midl-xyz/midl-js)](https://github.com/midl-xyz/midl-js/pulls)
 
 
 <br/>
