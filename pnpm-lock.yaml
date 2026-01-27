@@ -160,8 +160,8 @@ importers:
         specifier: ^3.1.0
         version: 3.1.0
       bitcoinjs-lib:
-        specifier: 7.0.0-rc.0
-        version: 7.0.0-rc.0(typescript@5.6.3)
+        specifier: 7.0.1
+        version: 7.0.1(typescript@5.6.3)
       dotenv:
         specifier: ^16.4.5
         version: 16.4.7
@@ -283,8 +283,8 @@ importers:
   packages/connectors:
     dependencies:
       bitcoinjs-lib:
-        specifier: 7.0.0-rc.0
-        version: 7.0.0-rc.0(typescript@5.7.2)
+        specifier: 7.0.1
+        version: 7.0.1(typescript@5.7.2)
       sats-connect:
         specifier: ^4.2.1
         version: 4.2.1(typescript@5.7.2)
@@ -311,8 +311,8 @@ importers:
         specifier: workspace:*
         version: link:../logger
       bitcoinjs-lib:
-        specifier: 7.0.0-rc.0
-        version: 7.0.0-rc.0(typescript@5.7.2)
+        specifier: 7.0.1
+        version: 7.0.1(typescript@5.7.2)
       bitcoinselect:
         specifier: ^1.0.0
         version: 1.0.0
@@ -391,8 +391,8 @@ importers:
         specifier: ^2.1.15
         version: 2.2.0(bufferutil@4.0.9)(typescript@5.7.2)(utf-8-validate@5.0.10)
       bitcoinjs-lib:
-        specifier: 7.0.0-rc.0
-        version: 7.0.0-rc.0(typescript@5.7.2)
+        specifier: 7.0.1
+        version: 7.0.1(typescript@5.7.2)
       bitcoinjs-message:
         specifier: ^2.2.0
         version: 2.2.0
@@ -437,8 +437,8 @@ importers:
         specifier: ^19
         version: 19.2.9
       bitcoinjs-lib:
-        specifier: 7.0.0-rc.0
-        version: 7.0.0-rc.0(typescript@5.7.2)
+        specifier: 7.0.1
+        version: 7.0.1(typescript@5.7.2)
       happy-dom:
         specifier: ^15.11.7
         version: 15.11.7
@@ -510,8 +510,8 @@ importers:
         specifier: ^3.1.0
         version: 3.1.0
       bitcoinjs-lib:
-        specifier: 7.0.0-rc.0
-        version: 7.0.0-rc.0(typescript@5.7.2)
+        specifier: 7.0.1
+        version: 7.0.1(typescript@5.7.2)
       bitcoinjs-message:
         specifier: ^2.2.0
         version: 2.2.0
@@ -4720,8 +4720,8 @@ packages:
     resolution: {integrity: sha512-mdFV5+/v0XyNYXjBS6CQPLo9ekCx4gtKZFnJm5PMto7Fs9hTTDpkkzOB7/FtluRI6JbUUAu+snTYfJRgHLZbZQ==}
     engines: {node: '>=8.0.0'}
 
-  bip174@3.0.0-rc.1:
-    resolution: {integrity: sha512-+8P3BpSairVNF2Nee6Ksdc1etIjWjBOi/MH0MwKtq9YaYp+S2Hk2uvup0e8hCT4IKlS58nXJyyQVmW92zPoD4Q==}
+  bip174@3.0.0:
+    resolution: {integrity: sha512-N3vz3rqikLEu0d6yQL8GTrSkpYb35NQKWMR7Hlza0lOj6ZOlvQ3Xr7N9Y+JPebaCVoEUHdBeBSuLxcHr71r+Lw==}
     engines: {node: '>=18.0.0'}
 
   bip322-js@2.0.0:
@@ -4747,8 +4747,8 @@ packages:
     resolution: {integrity: sha512-tlf/r2DGMbF7ky1MgUqXHzypYHakkEnm0SZP23CJKIqNY/5uNAnMbFhMJdhjrL/7anfb/U8+AlpdjPWjPnAalg==}
     engines: {node: '>=8.0.0'}
 
-  bitcoinjs-lib@7.0.0-rc.0:
-    resolution: {integrity: sha512-7CQgOIbREemKR/NT2uc3uO/fkEy+6CM0sLxboVVY6bv6DbZmPt3gg5Y/hhWgQFeZu5lfTbtVAv32MIxf7lMh4g==}
+  bitcoinjs-lib@7.0.1:
+    resolution: {integrity: sha512-vwEmpL5Tpj0I0RBdNkcDMXePoaYSTeKY6mL6/l5esbnTs+jGdPDuLp4NY1hSh6Zk5wSgePygZ4Wx5JJao30Pww==}
     engines: {node: '>=18.0.0'}
 
   bitcoinjs-message@2.2.0:
@@ -9294,16 +9294,16 @@ packages:
       typescript:
         optional: true
 
-  valibot@0.38.0:
-    resolution: {integrity: sha512-RCJa0fetnzp+h+KN9BdgYOgtsMAG9bfoJ9JSjIhFHobKWVWyzM3jjaeNTdpFK9tQtf3q1sguXeERJ/LcmdFE7w==}
+  valibot@1.1.0:
+    resolution: {integrity: sha512-Nk8lX30Qhu+9txPYTwM0cFlWLdPFsFr6LblzqIySfbZph9+BFsAHsNvHOymEviUepeIW6KFHzpX8TKhbptBXXw==}
     peerDependencies:
       typescript: '>=5'
     peerDependenciesMeta:
       typescript:
         optional: true
 
-  valibot@1.1.0:
-    resolution: {integrity: sha512-Nk8lX30Qhu+9txPYTwM0cFlWLdPFsFr6LblzqIySfbZph9+BFsAHsNvHOymEviUepeIW6KFHzpX8TKhbptBXXw==}
+  valibot@1.2.0:
+    resolution: {integrity: sha512-mm1rxUsmOxzrwnX5arGS+U4T25RdvpPjPN4yR0u9pUBov9+zGVtO84tif1eY4r6zWxVxu3KzIyknJy3rxfRZZg==}
     peerDependencies:
       typescript: '>=5'
     peerDependenciesMeta:
@@ -15243,7 +15243,7 @@ snapshots:
 
   bip174@2.1.1: {}
 
-  bip174@3.0.0-rc.1:
+  bip174@3.0.0:
     dependencies:
       uint8array-tools: 0.0.9
       varuint-bitcoin: 2.0.0
@@ -15303,26 +15303,26 @@ snapshots:
       typeforce: 1.18.0
       varuint-bitcoin: 1.1.2
 
-  bitcoinjs-lib@7.0.0-rc.0(typescript@5.6.3):
+  bitcoinjs-lib@7.0.1(typescript@5.6.3):
     dependencies:
-      '@noble/hashes': 1.7.1
+      '@noble/hashes': 1.8.0
       bech32: 2.0.0
-      bip174: 3.0.0-rc.1
+      bip174: 3.0.0
       bs58check: 4.0.0
       uint8array-tools: 0.0.9
-      valibot: 0.38.0(typescript@5.6.3)
+      valibot: 1.2.0(typescript@5.6.3)
       varuint-bitcoin: 2.0.0
     transitivePeerDependencies:
       - typescript
 
-  bitcoinjs-lib@7.0.0-rc.0(typescript@5.7.2):
+  bitcoinjs-lib@7.0.1(typescript@5.7.2):
     dependencies:
-      '@noble/hashes': 1.7.1
+      '@noble/hashes': 1.8.0
       bech32: 2.0.0
-      bip174: 3.0.0-rc.1
+      bip174: 3.0.0
       bs58check: 4.0.0
       uint8array-tools: 0.0.9
-      valibot: 0.38.0(typescript@5.7.2)
+      valibot: 1.2.0(typescript@5.7.2)
       varuint-bitcoin: 2.0.0
     transitivePeerDependencies:
       - typescript
@@ -20660,15 +20660,15 @@ snapshots:
     optionalDependencies:
       typescript: 5.7.2
 
-  valibot@0.38.0(typescript@5.6.3):
-    optionalDependencies:
-      typescript: 5.6.3
-
-  valibot@0.38.0(typescript@5.7.2):
+  valibot@1.1.0(typescript@5.7.2):
     optionalDependencies:
       typescript: 5.7.2
 
-  valibot@1.1.0(typescript@5.7.2):
+  valibot@1.2.0(typescript@5.6.3):
+    optionalDependencies:
+      typescript: 5.6.3
+
+  valibot@1.2.0(typescript@5.7.2):
     optionalDependencies:
       typescript: 5.7.2
 

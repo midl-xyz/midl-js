@@ -31,7 +31,7 @@
 		"@midl/node": "workspace:^",
 		"@types/node": "^22.8.7",
 		"@wagmi/cli": "^2.1.15",
-		"bitcoinjs-lib": "7.0.0-rc.0",
+		"bitcoinjs-lib": "7.0.1",
 		"bitcoinjs-message": "^2.2.0",
 		"msw": "^2.7.0",
 		"viem": "npm:@midl/viem"
@@ -48,7 +48,7 @@
 	},
 	"peerDependencies": {
 		"@midl/viem": "*",
-		"bitcoinjs-lib": "7.0.0-rc.0"
+		"bitcoinjs-lib": ">=7 <8"
 	},
 	"repository": {
 		"url": "git+https://github.com/midl-xyz/midl-js.git",
