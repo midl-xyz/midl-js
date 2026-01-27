@@ -1,4 +1,8 @@
 coverage:
+  ignore:
+    - apps/**
+    - packages/playwright/**
+    - commitlint.config.ts
   status:
     project:
       default:

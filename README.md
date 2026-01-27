@@ -1,3 +1,12 @@
+[![npm](https://img.shields.io/npm/v/@midl/core)](https://www.npmjs.com/package/@midl/core)
+[![npm downloads](https://img.shields.io/npm/dm/@midl/core)](https://www.npmjs.com/package/@midl/core)
+[![codecov](https://codecov.io/gh/midl-xyz/midl-js/graph/badge.svg?token=TVJ2PAA1ZA)](https://codecov.io/gh/midl-xyz/midl-js)
+[![license](https://img.shields.io/github/license/midl-xyz/midl-js)](LICENSE)
+[![issues](https://img.shields.io/github/issues/midl-xyz/midl-js)](https://github.com/midl-xyz/midl-js/issues)
+[![prs](https://img.shields.io/github/issues-pr/midl-xyz/midl-js)](https://github.com/midl-xyz/midl-js/pulls)
+[![prs](https://img.shields.io/github/issues-pr/midl-xyz/midl-js)](https://github.com/midl-xyz/midl-js/pulls)
+
+
 <br/>
 <div align="center">
   <a href="https://js.midl.xyz">
