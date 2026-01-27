@@ -1,6 +1,6 @@
 {
 	"extends": "@midl/midl-js-config/tsconfig.base.json",
-	"include": ["src/**/*.ts", "src/**/*.tsx"],
+	"include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.d.ts"],
 	"compilerOptions": {
 		"baseUrl": ".",
 		"jsx": "react-jsx",

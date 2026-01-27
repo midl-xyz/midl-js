@@ -143,6 +143,35 @@ await hre.midl.write(
 );
 ```
 
+## Adding a Raw Intention
+If you need full control over the intention payload, you can add it directly.
+
+```ts
+await hre.midl.initialize();
+
+await hre.midl.addTxIntention({
+  evmTransaction: {
+    to: "0x0000000000000000000000000000000000000001",
+    data: "0x",
+  },
+  deposit: {
+    satoshis: 1_000,
+  },
+});
+
+await hre.midl.execute();
+```
+
+## Adding a Rune ERC20 Intention
+You can enqueue a Rune ERC20 intention without writing a custom contract call.
+
+```ts
+await hre.midl.initialize();
+
+await hre.midl.addRuneERC20Intention("840000:1");
+await hre.midl.execute();
+```
+
 
 ## Skip Estimate Gas
 ::: warning

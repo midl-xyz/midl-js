@@ -1,5 +1,9 @@
 import { type Config, getDefaultAccount } from "@midl/core";
-import { getEVMAddress } from "@midl/executor";
+import {
+	type PartialIntention,
+	addRuneERC20Intention,
+	getEVMAddress,
+} from "@midl/executor";
 import type { HardhatRuntimeEnvironment } from "hardhat/types";
 import { http, type PublicClient, createPublicClient } from "viem";
 import {
@@ -10,6 +14,7 @@ import {
 	type ReadContractOptions,
 	type WriteContractEvmTransactionOverrides,
 	type WriteContractOptions,
+	addTxIntentionToStore,
 	createStore,
 	deleteDeployment,
 	deployContract,
@@ -37,7 +42,7 @@ export const createMidlHardhatEnvironment = (
 	const publicClient = createPublicClient({
 		chain,
 		transport: http(chain.rpcUrls.default.http[0]),
-	}) as PublicClient;
+	});
 
 	let config: Config | null = null;
 
@@ -128,12 +133,38 @@ export const createMidlHardhatEnvironment = (
 		get(name: string) {
 			return getDeployment(hre, name);
 		},
+		addTxIntention: async (data: PartialIntention) => {
+			if (!config) {
+				throw new Error("Midl not initialized. Call initialize() first.");
+			}
+
+			return addTxIntentionToStore(config, store, publicClient, data);
+		},
+		addRuneERC20Intention: async (runeId: string) => {
+			if (!config) {
+				throw new Error("Midl not initialized. Call initialize() first.");
+			}
+
+			const intention = await addRuneERC20Intention(config, runeId);
+
+			return addTxIntentionToStore(config, store, publicClient, intention);
+		},
 		get account() {
 			if (!config) {
 				throw new Error("Midl not initialized. Call initialize() first.");
 			}
 
 			return getDefaultAccount(config);
+		},
+		get config() {
+			if (!config) {
+				throw new Error("Midl not initialized. Call initialize() first.");
+			}
+
+			return config;
+		},
+		get publicClient() {
+			return publicClient as PublicClient;
 		},
 		evm: {
 			get address() {

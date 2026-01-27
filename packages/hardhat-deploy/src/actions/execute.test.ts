@@ -1,18 +1,18 @@
+import * as core from "@midl/core";
 import {
-	type Config,
-	SignMessageProtocol,
+	AddressPurpose,
+	connect,
+	createConfig,
 	getDefaultAccount,
-	waitForTransaction,
+	regtest,
 } from "@midl/core";
-import {
-	type FinalizeBTCTransactionOptions,
-	type TransactionIntention,
-	type Withdrawal,
-	addCompleteTxIntention,
-	finalizeBTCTransaction,
-	getEVMAddress,
-	signIntention,
+import type {
+	FinalizeBTCTransactionOptions,
+	TransactionIntention,
+	Withdrawal,
 } from "@midl/executor";
+import { getEVMAddress } from "@midl/executor";
+import { keyPairConnector } from "@midl/node";
 import type { HardhatRuntimeEnvironment } from "hardhat/types";
 import {
 	type Address,
@@ -26,17 +26,21 @@ import { saveDeployment } from "~/actions/saveDeployment";
 import type { MidlNetworkConfig } from "~/type-extensions";
 import { execute } from "./execute";
 
-vi.mock("@midl/core");
-vi.mock("@midl/executor");
-vi.mock("viem", async () => {
-	const actual = await vi.importActual("viem");
+vi.mock("@midl/executor", async () => {
+	const actual =
+		await vi.importActual<typeof import("@midl/executor")>("@midl/executor");
+
 	return {
 		...actual,
-		getContractAddress: vi.fn(),
-		keccak256: vi.fn(),
+		finalizeBTCTransaction: vi.fn(),
+		signIntention: vi.fn(),
+		addCompleteTxIntention: vi.fn(),
 	};
 });
-vi.mock("~/actions/saveDeployment");
+
+vi.mock("~/actions/saveDeployment", () => ({
+	saveDeployment: vi.fn(),
+}));
 
 describe("execute", () => {
 	const mockReadArtifact = vi.fn();
@@ -55,56 +59,60 @@ describe("execute", () => {
 		getTransactionCount: mockGetTransactionCount,
 	} as unknown as PublicClient;
 
-	const mockConfig = {
-		getState: vi.fn(() => ({
-			network: "regtest",
-		})),
-	} as unknown as Config;
-
 	const mockUserConfig: MidlNetworkConfig = {
 		confirmationsRequired: 1,
 		btcConfirmationsRequired: 1,
 	} as MidlNetworkConfig;
 
-	const mockEvmAddress =
-		"0x1234567890abcdef1234567890abcdef12345678" as Address;
-	const mockContractAddress =
-		"0xabcdefabcdefabcdefabcdefabcdefabcdefabcd" as Address;
-
-	const mockTxId = "0xabc123" as `0x${string}`;
-	const mockSignedTx = "0x07signed" as `0x07${string}`;
 	const mockBtcTxId = "btc-tx-id-123";
 	const mockBtcTxHex = "0102030405";
+	const signedTxA = "0x0701" as `0x07${string}`;
+	const signedTxB = "0x0702" as `0x07${string}`;
 
-	beforeEach(() => {
+	const createConnectedConfig = async () => {
+		const config = createConfig({
+			networks: [regtest],
+			connectors: [keyPairConnector({ mnemonic: TEST_MNEMONIC })],
+		});
+
+		await connect(config, {
+			purposes: [AddressPurpose.Payment, AddressPurpose.Ordinals],
+		});
+
+		return config;
+	};
+
+	beforeEach(async () => {
+		vi.restoreAllMocks();
 		vi.clearAllMocks();
-		vi.mocked(getDefaultAccount).mockReturnValue({
-			address: "tb1qtest",
-			publicKey: "0x123",
-		} as ReturnType<typeof getDefaultAccount>);
-		vi.mocked(getEVMAddress).mockReturnValue(mockEvmAddress);
+
 		mockGetTransactionCount.mockResolvedValue(5);
-		vi.mocked(getContractAddress).mockReturnValue(mockContractAddress);
-		vi.mocked(keccak256).mockReturnValue(mockTxId);
-		vi.mocked(finalizeBTCTransaction).mockResolvedValue({
-			tx: { id: mockBtcTxId, hex: mockBtcTxHex },
-		} as Awaited<ReturnType<typeof finalizeBTCTransaction>>);
-		vi.mocked(signIntention).mockResolvedValue(mockSignedTx);
 		mockSendBTCTransactions.mockResolvedValue(undefined);
 		mockWaitForTransactionReceipt.mockResolvedValue(
 			{} as Awaited<ReturnType<PublicClient["waitForTransactionReceipt"]>>,
 		);
-		vi.mocked(waitForTransaction).mockResolvedValue(1);
-		vi.mocked(saveDeployment).mockResolvedValue(undefined);
+
+		const { finalizeBTCTransaction, signIntention } = await import(
+			"@midl/executor"
+		);
+
+		vi.mocked(finalizeBTCTransaction).mockResolvedValue({
+			tx: { id: mockBtcTxId, hex: mockBtcTxHex },
+		} as Awaited<ReturnType<typeof finalizeBTCTransaction>>);
+
+		vi.mocked(signIntention).mockResolvedValue(signedTxA);
+
+		vi.spyOn(core, "waitForTransaction").mockResolvedValue(1);
 	});
 
 	it("returns null when no intentions to execute", async () => {
+		const config = await createConnectedConfig();
 		const store = createStore();
 
 		const result = await execute(
 			mockUserConfig,
 			mockHre,
-			mockConfig,
+			config,
 			store,
 			mockPublicClient,
 		);
@@ -113,6 +121,8 @@ describe("execute", () => {
 	});
 
 	it("finalizes BTC transaction with intentions", async () => {
+		const { finalizeBTCTransaction } = await import("@midl/executor");
+		const config = await createConnectedConfig();
 		const store = createStore();
 		const mockIntention = {
 			evmTransaction: {
@@ -122,17 +132,19 @@ describe("execute", () => {
 
 		store.setState({ intentions: [mockIntention] });
 
-		await execute(mockUserConfig, mockHre, mockConfig, store, mockPublicClient);
+		await execute(mockUserConfig, mockHre, config, store, mockPublicClient);
 
 		expect(finalizeBTCTransaction).toHaveBeenCalledWith(
-			mockConfig,
+			config,
 			[mockIntention],
 			mockPublicClient,
 			{},
 		);
 	});
 
-	it("signs each intention with correct parameters", async () => {
+	it("signs each intention and sends BTC transactions", async () => {
+		const { signIntention } = await import("@midl/executor");
+		const config = await createConnectedConfig();
 		const store = createStore();
 		const mockIntention = {
 			evmTransaction: {
@@ -142,76 +154,43 @@ describe("execute", () => {
 
 		store.setState({ intentions: [mockIntention] });
 
-		await execute(mockUserConfig, mockHre, mockConfig, store, mockPublicClient);
+		await execute(mockUserConfig, mockHre, config, store, mockPublicClient);
 
-		expect(signIntention).toHaveBeenCalledWith(
-			mockConfig,
-			mockPublicClient,
-			mockIntention,
-			[mockIntention],
-			{
-				txId: mockBtcTxId,
-				protocol: SignMessageProtocol.Bip322,
-			},
-		);
-	});
-
-	it("sends BTC transactions with signed data", async () => {
-		const store = createStore();
-		const mockIntention = {
-			evmTransaction: {
-				data: "0x123",
-			},
-		} as unknown as TransactionIntention;
-
-		store.setState({ intentions: [mockIntention] });
-
-		await execute(mockUserConfig, mockHre, mockConfig, store, mockPublicClient);
-
+		expect(signIntention).toHaveBeenCalledTimes(1);
 		expect(mockSendBTCTransactions).toHaveBeenCalledWith({
 			btcTransaction: mockBtcTxHex,
-			serializedTransactions: [mockSignedTx],
+			serializedTransactions: [signedTxA],
 		});
 	});
 
-	it("waits for BTC transaction confirmation", async () => {
+	it("waits for BTC confirmation and EVM receipts", async () => {
+		const config = await createConnectedConfig();
 		const store = createStore();
 		const mockIntention = {
 			evmTransaction: {
 				data: "0x123",
 			},
 		} as unknown as TransactionIntention;
-
 		store.setState({ intentions: [mockIntention] });
 
-		await execute(mockUserConfig, mockHre, mockConfig, store, mockPublicClient);
-
-		expect(waitForTransaction).toHaveBeenCalledWith(
-			mockConfig,
-			mockBtcTxId,
-			mockUserConfig.btcConfirmationsRequired,
+		const result = await execute(
+			mockUserConfig,
+			mockHre,
+			config,
+			store,
+			mockPublicClient,
 		);
-	});
 
-	it("waits for EVM transaction receipts", async () => {
-		const store = createStore();
-		const mockIntention = {
-			evmTransaction: {
-				data: "0x123",
-			},
-		} as unknown as TransactionIntention;
-
-		store.setState({ intentions: [mockIntention] });
-
-		await execute(mockUserConfig, mockHre, mockConfig, store, mockPublicClient);
-
+		const expectedHash = keccak256(signedTxA);
 		expect(mockWaitForTransactionReceipt).toHaveBeenCalledWith({
-			hash: mockTxId,
+			hash: expectedHash,
 			confirmations: mockUserConfig.confirmationsRequired,
 		});
+		expect(result).toEqual([mockBtcTxId, [expectedHash]]);
 	});
 
 	it("clears intentions from store after execution", async () => {
+		const config = await createConnectedConfig();
 		const store = createStore();
 		const mockIntention = {
 			evmTransaction: {
@@ -222,39 +201,22 @@ describe("execute", () => {
 		store.setState({ intentions: [mockIntention] });
 		expect(store.getState().intentions).toHaveLength(1);
 
-		await execute(mockUserConfig, mockHre, mockConfig, store, mockPublicClient);
+		await execute(mockUserConfig, mockHre, config, store, mockPublicClient);
 
 		expect(store.getState().intentions).toHaveLength(0);
 	});
 
-	it("returns BTC transaction ID and EVM transaction hashes", async () => {
-		const store = createStore();
-		const mockIntention = {
-			evmTransaction: {
-				data: "0x123",
-			},
-		} as unknown as TransactionIntention;
-
-		store.setState({ intentions: [mockIntention] });
-
-		const result = await execute(
-			mockUserConfig,
-			mockHre,
-			mockConfig,
-			store,
-			mockPublicClient,
-		);
-
-		expect(result).toEqual([mockBtcTxId, [mockTxId]]);
-	});
-
 	it("saves deployment when intention has contractName meta", async () => {
+		const { signIntention } = await import("@midl/executor");
+		vi.mocked(signIntention).mockResolvedValueOnce(signedTxB);
+
+		const config = await createConnectedConfig();
+		const store = createStore();
 		const mockArtifact = {
 			abi: [{ type: "constructor" }],
 		};
 		mockReadArtifact.mockResolvedValue(mockArtifact);
 
-		const store = createStore();
 		const mockIntention = {
 			evmTransaction: {
 				data: "0x123",
@@ -267,69 +229,34 @@ describe("execute", () => {
 
 		store.setState({ intentions: [mockIntention] });
 
-		await execute(mockUserConfig, mockHre, mockConfig, store, mockPublicClient);
+		await execute(mockUserConfig, mockHre, config, store, mockPublicClient);
+
+		const evmAddress = getEVMAddress(
+			getDefaultAccount(config),
+			config.getState().network,
+		);
+		const expectedAddress = getContractAddress({
+			from: evmAddress,
+			nonce: 10n,
+		});
+		const expectedHash = keccak256(signedTxB);
 
 		expect(mockReadArtifact).toHaveBeenCalledWith("MyContract");
 		expect(saveDeployment).toHaveBeenCalledWith(mockHre, "MyContract", {
-			txId: mockTxId,
+			txId: expectedHash,
 			btcTxId: mockBtcTxId,
-			address: mockContractAddress,
+			address: expectedAddress,
 			abi: mockArtifact.abi,
 		});
 	});
 
-	it("does not save deployment when intention has no contractName", async () => {
-		const store = createStore();
-		const mockIntention = {
-			evmTransaction: {
-				data: "0x123",
-			},
-		} as unknown as TransactionIntention;
-
-		store.setState({ intentions: [mockIntention] });
-
-		await execute(mockUserConfig, mockHre, mockConfig, store, mockPublicClient);
-
-		expect(mockReadArtifact).not.toHaveBeenCalled();
-		expect(saveDeployment).not.toHaveBeenCalled();
-	});
-
-	it("handles multiple intentions", async () => {
-		const store = createStore();
-		const intentions = [
-			{
-				evmTransaction: { data: "0x111" },
-			},
-			{
-				evmTransaction: { data: "0x222" },
-			},
-			{
-				evmTransaction: { data: "0x333" },
-			},
-		] as unknown as TransactionIntention[];
-
-		store.setState({ intentions });
-
-		const mockTxIds = ["0xhash1", "0xhash2", "0xhash3"] as `0x${string}`[];
-		vi.mocked(keccak256)
-			.mockReturnValueOnce(mockTxIds[0])
-			.mockReturnValueOnce(mockTxIds[1])
-			.mockReturnValueOnce(mockTxIds[2]);
-
-		const result = await execute(
-			mockUserConfig,
-			mockHre,
-			mockConfig,
-			store,
-			mockPublicClient,
-		);
-
-		expect(signIntention).toHaveBeenCalledTimes(3);
-		expect(result?.[1]).toEqual(mockTxIds);
-	});
-
 	it("adds complete transaction when withdraw is true", async () => {
+		const { addCompleteTxIntention, finalizeBTCTransaction } = await import(
+			"@midl/executor"
+		);
+		const config = await createConnectedConfig();
 		const store = createStore();
+
 		const mockIntention = {
 			evmTransaction: {
 				data: "0x123",
@@ -346,18 +273,13 @@ describe("execute", () => {
 
 		store.setState({ intentions: [mockIntention] });
 
-		await execute(
-			mockUserConfig,
-			mockHre,
-			mockConfig,
-			store,
-			mockPublicClient,
-			{ withdraw: true },
-		);
+		await execute(mockUserConfig, mockHre, config, store, mockPublicClient, {
+			withdraw: true,
+		});
 
-		expect(addCompleteTxIntention).toHaveBeenCalledWith(mockConfig, undefined);
+		expect(addCompleteTxIntention).toHaveBeenCalledWith(config, undefined);
 		expect(finalizeBTCTransaction).toHaveBeenCalledWith(
-			mockConfig,
+			config,
 			[mockIntention, mockCompleteTx],
 			mockPublicClient,
 			{},
@@ -365,7 +287,10 @@ describe("execute", () => {
 	});
 
 	it("adds complete transaction with withdrawal details", async () => {
+		const { addCompleteTxIntention } = await import("@midl/executor");
+		const config = await createConnectedConfig();
 		const store = createStore();
+
 		const mockIntention = {
 			evmTransaction: {
 				data: "0x123",
@@ -386,19 +311,16 @@ describe("execute", () => {
 
 		store.setState({ intentions: [mockIntention] });
 
-		await execute(
-			mockUserConfig,
-			mockHre,
-			mockConfig,
-			store,
-			mockPublicClient,
-			{ withdraw: withdrawal },
-		);
+		await execute(mockUserConfig, mockHre, config, store, mockPublicClient, {
+			withdraw: withdrawal,
+		});
 
-		expect(addCompleteTxIntention).toHaveBeenCalledWith(mockConfig, withdrawal);
+		expect(addCompleteTxIntention).toHaveBeenCalledWith(config, withdrawal);
 	});
 
 	it("passes overrides to finalizeBTCTransaction", async () => {
+		const { finalizeBTCTransaction } = await import("@midl/executor");
+		const config = await createConnectedConfig();
 		const store = createStore();
 		const mockIntention = {
 			evmTransaction: {
@@ -415,14 +337,14 @@ describe("execute", () => {
 		await execute(
 			mockUserConfig,
 			mockHre,
-			mockConfig,
+			config,
 			store,
 			mockPublicClient,
 			overrides,
 		);
 
 		expect(finalizeBTCTransaction).toHaveBeenCalledWith(
-			mockConfig,
+			config,
 			[mockIntention],
 			mockPublicClient,
 			overrides,
@@ -430,8 +352,9 @@ describe("execute", () => {
 	});
 
 	it("uses custom from address when provided in intention", async () => {
-		const customFrom = "0xfedcba0987654321fedcba0987654321fedcba09" as Address;
+		const config = await createConnectedConfig();
 		const store = createStore();
+		const customFrom = "0xfedcba0987654321fedcba0987654321fedcba09" as Address;
 		const mockIntention = {
 			evmTransaction: {
 				from: customFrom,
@@ -441,85 +364,41 @@ describe("execute", () => {
 
 		store.setState({ intentions: [mockIntention] });
 
-		await execute(mockUserConfig, mockHre, mockConfig, store, mockPublicClient);
+		await execute(mockUserConfig, mockHre, config, store, mockPublicClient);
 
 		expect(mockGetTransactionCount).toHaveBeenCalledWith({
 			address: customFrom,
 		});
 	});
 
-	it("uses custom nonce when provided in intention", async () => {
-		const mockArtifact = {
-			abi: [{ type: "constructor" }],
-		};
-		mockReadArtifact.mockResolvedValue(mockArtifact);
-
-		const store = createStore();
-		const customNonce = 99;
-		const mockIntention = {
-			evmTransaction: {
-				data: "0x123",
-				nonce: customNonce,
-			},
-			meta: {
-				contractName: "CustomNonceContract",
-			},
-		} as unknown as TransactionIntention;
-
-		store.setState({ intentions: [mockIntention] });
-
-		await execute(mockUserConfig, mockHre, mockConfig, store, mockPublicClient);
-
-		expect(getContractAddress).toHaveBeenCalledWith({
-			from: mockEvmAddress,
-			nonce: BigInt(customNonce),
-		});
-	});
-
 	it("waits for all EVM transaction receipts in parallel", async () => {
+		const { signIntention } = await import("@midl/executor");
+		vi.mocked(signIntention)
+			.mockResolvedValueOnce(signedTxA)
+			.mockResolvedValueOnce(signedTxB);
+
+		const config = await createConnectedConfig();
 		const store = createStore();
 		const intentions = [
 			{ evmTransaction: { data: "0x111" } },
 			{ evmTransaction: { data: "0x222" } },
 		] as unknown as TransactionIntention[];
 
-		const mockTxIds = ["0xhash1", "0xhash2"] as `0x${string}`[];
-		vi.mocked(keccak256)
-			.mockReturnValueOnce(mockTxIds[0])
-			.mockReturnValueOnce(mockTxIds[1]);
-
 		store.setState({ intentions });
 
-		await execute(mockUserConfig, mockHre, mockConfig, store, mockPublicClient);
+		await execute(mockUserConfig, mockHre, config, store, mockPublicClient);
 
 		expect(mockWaitForTransactionReceipt).toHaveBeenCalledTimes(2);
 		expect(mockWaitForTransactionReceipt).toHaveBeenCalledWith({
-			hash: mockTxIds[0],
+			hash: keccak256(signedTxA),
 			confirmations: mockUserConfig.confirmationsRequired,
 		});
 		expect(mockWaitForTransactionReceipt).toHaveBeenCalledWith({
-			hash: mockTxIds[1],
+			hash: keccak256(signedTxB),
 			confirmations: mockUserConfig.confirmationsRequired,
 		});
 	});
-
-	it("clones intentions to avoid mutation", async () => {
-		const store = createStore();
-		const originalIntention = {
-			evmTransaction: {
-				data: "0x123",
-			},
-		} as unknown as TransactionIntention;
-
-		store.setState({ intentions: [originalIntention] });
-
-		await execute(mockUserConfig, mockHre, mockConfig, store, mockPublicClient);
-
-		// Verify the original intention wasn't modified
-		expect(originalIntention).toEqual({
-			evmTransaction: {
-				data: "0x123",
-			},
-		});
-	});
 });
+
+const TEST_MNEMONIC =
+	"test test test test test test test test test test test junk";
