@@ -5,13 +5,13 @@ order: 1
 
 # Getting Started
 
-MIDL.js is a framework for building decentralized applications on Bitcoin, powered by the MIDL Protocol. The MIDL Protocol extends Bitcoin's capabilities, enabling smart contracts and advanced application logic on the Bitcoin network.
+MIDL JS SDK is a framework for building decentralized applications on Bitcoin, powered by the MIDL Protocol. The MIDL Protocol extends Bitcoin's capabilities, enabling smart contracts and advanced application logic on the Bitcoin network.
 
 It provides a set of tools and libraries to help developers build, test, and deploy smart contracts and Bitcoin-native apps.
 
 ## Installation
 
-The executor packages allow you to interact with and deploy contracts on the MIDL Protocol from your JavaScript or React application. Install MIDL.js executor packages via your package manager of choice.
+The executor packages allow you to interact with and deploy contracts on the MIDL Protocol from your JavaScript or React application. Install MIDL JS SDK executor packages via your package manager of choice.
 
 ::: code-group
 
@@ -33,12 +33,12 @@ yarn add @midl/executor @midl/executor-react @midl/connectors @midl/core @midl/r
 ### Override `viem` versions
 
 ::: warning
-This step is required to ensure compatibility with MIDL.js executor. If you skip this step, some features required by MIDL.js may not work as expected.
+This step is required to ensure compatibility with MIDL JS SDK executor. If you skip this step, some features required by MIDL JS SDK may not work as expected.
 :::
 
-To ensure compatibility with MIDL.js executor, you need to override the version of
+To ensure compatibility with MIDL JS SDK executor, you need to override the version of
 `viem` in your `package.json`. The patched version of `viem` provides additional
-functionality required by MIDL.js executor, such as setting the transaction type,
+functionality required by MIDL JS SDK executor, such as setting the transaction type,
 fees, adding `estimateGasMulti` method and more.
 
 ::: code-group

@@ -5,10 +5,10 @@ import { withSidebar } from "vitepress-sidebar";
 // https://vitepress.dev/reference/site-config
 export default withSidebar(
 	defineConfig({
-		title: "MIDL.js",
+		title: "MIDL JS SDK",
 		lastUpdated: true,
 		description:
-			"A JavaScript library that makes it easy to interact with the Bitcoin and MIDL Protocol",
+			"MIDL Javascript SDK. Build Web3 apps on Bitcoin and MIDL with ease",
 		head: [
 			[
 				"link",

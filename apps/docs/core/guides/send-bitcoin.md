@@ -1,6 +1,6 @@
 # Send Bitcoin
 
-Midl.js provides a simple way to send Bitcoin and Runes.
+MIDL JS SDK provides a simple way to send Bitcoin and Runes.
 
 ## Usage
 

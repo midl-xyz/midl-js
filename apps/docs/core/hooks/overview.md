@@ -5,7 +5,7 @@ order: -1
 
 # Overview
 
-MIDL.js provides React hooks for easy integration of your React applications with the blockchain.
+MIDL JS SDK provides React hooks for easy integration of your React applications with the blockchain.
 The hooks are designed to be simple to use and provide a seamless experience for developers.
 
 Under the hood the hooks use the `@midl/core` for blockchain interactions

@@ -21,4 +21,4 @@ pnpm add @midl/core
 
 ### Documentation
 
-For detailed documentation, please visit midl-js-lib.midl.xyz.
+For detailed documentation, please visit js.midl.xyz.

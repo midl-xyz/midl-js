@@ -1,6 +1,6 @@
 # Sign PSBT
 
-Signing a PSBT is a common operation when working with Bitcoin transactions. This guide will show you how to sign a PSBT using MIDL.js.
+Signing a PSBT is a common operation when working with Bitcoin transactions. This guide will show you how to sign a PSBT using MIDL JS SDK.
 
 ## Usage
 

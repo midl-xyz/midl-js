@@ -113,13 +113,35 @@ export const ConnectDialog = ({
 			<Portal>
 				<Dialog.Backdrop />
 				<Dialog.Positioner>
-					<Dialog.Content maxW="600px" display="flex" overflow="hidden">
+					<Dialog.Content
+						display="flex"
+						overflow="hidden"
+						w="full"
+						maxW={{
+							base: "full",
+							sm: "400px",
+							md: "600px",
+						}}
+						h={{
+							base: "100dvh",
+							sm: "min(62dvh, 560px)",
+						}}
+						borderRadius={{
+							base: 0,
+							sm: "2xl",
+						}}
+					>
 						<Grid
-							gridTemplateColumns="1fr 1fr"
+							gridTemplateColumns={{
+								base: "1fr",
+								md: "1fr 1fr",
+							}}
 							gap={0}
 							w="full"
-							height="100vh"
-							maxH="460px"
+							h={{
+								base: "100dvh",
+								sm: "min(62dvh, 560px)",
+							}}
 						>
 							<Stack h="full" overflow="hidden">
 								<Flex
@@ -288,7 +310,11 @@ export const ConnectDialog = ({
 										)}
 								</Flex>
 							</Stack>
-							<Flex width="full">
+							<Flex
+								width="full"
+								display={{ base: "none", md: "flex" }}
+								overflow="hidden"
+							>
 								<About />
 							</Flex>
 						</Grid>

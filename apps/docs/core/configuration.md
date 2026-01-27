@@ -4,7 +4,7 @@ order: 3
 
 # Configuration
 
-MIDL.js shares a common configuration object across all actions and hooks. This configuration object is used to specify the network, connectors, and other settings.
+MIDL JS SDK shares a common configuration object across all actions and hooks. This configuration object is used to specify the network, connectors, and other settings.
 
 ## Creating a Configuration Object
 
@@ -26,14 +26,14 @@ export const config = createConfig({
 
 ## Configuration Options
 
-| Name           | Type                                                               | Description                                               |
-| -------------- | ------------------------------------------------------------------ | --------------------------------------------------------- |
-| networks       | `BitcoinNetwork[]`                                                 | The bitcoin networks to use                               |
-| connectors     | `ConnectorWithMetadata[]`                                          | The connectors to use                                     |
-| persist        | `boolean \| { enabled: boolean; storageKey?: string }` (optional)  | If true, the config will persist in local storage         |
-| provider       | `AbstractProvider` (optional)                                      | The provider to use for the network                       |
-| runesProvider  | `AbstractRunesProvider` (optional)                                 | The runes data provider to use                            |
-| defaultPurpose | `AddressPurpose` (optional)                                        | The default address to use for signing transactions, etc. |
+| Name           | Type                                                              | Description                                               |
+| -------------- | ----------------------------------------------------------------- | --------------------------------------------------------- |
+| networks       | `BitcoinNetwork[]`                                                | The bitcoin networks to use                               |
+| connectors     | `ConnectorWithMetadata[]`                                         | The connectors to use                                     |
+| persist        | `boolean \| { enabled: boolean; storageKey?: string }` (optional) | If true, the config will persist in local storage         |
+| provider       | `AbstractProvider` (optional)                                     | The provider to use for the network                       |
+| runesProvider  | `AbstractRunesProvider` (optional)                                | The runes data provider to use                            |
+| defaultPurpose | `AddressPurpose` (optional)                                       | The default address to use for signing transactions, etc. |
 
 > [!NOTE]
 > `runesProvider` defaults to `MaestroSymphonyProvider`.
@@ -41,7 +41,7 @@ export const config = createConfig({
 
 ### Available Networks
 
-MIDL.js supports the following networks:
+MIDL JS SDK supports the following networks:
 
 - `mainnet`
 - `testnet`
@@ -57,7 +57,7 @@ import { mainnet, testnet, regtest, testnet4, signet } from "@midl/core";
 
 ### Supported Connectors (Wallets)
 
-MIDL.js supports the following connectors:
+MIDL JS SDK supports the following connectors:
 
 - [`XVerse`](https://xverse.app)
 - [`Leather`](https://leather.io)
