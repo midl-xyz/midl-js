@@ -31,10 +31,7 @@
 		"./styles.css": "./dist/styles.css",
 		"./styled-system/*": "./styled-system/*"
 	},
-	"files": [
-		"dist",
-		"styled-system"
-	],
+	"files": ["dist", "styled-system"],
 	"devDependencies": {
 		"@midl/midl-js-config": "workspace:^",
 		"@midl/connectors": "workspace:^",
@@ -43,7 +40,7 @@
 		"@midl/react": "workspace:^",
 		"@pandacss/dev": "^0.53.1",
 		"@park-ui/panda-preset": "^0.43.1",
-		"@tanstack/react-query": "^5.69.0",
+		"@tanstack/react-query": "5.69.0",
 		"@types/react": "^18.3.11",
 		"@vitejs/plugin-react": "^4.6.0",
 		"chokidar-cli": "^3.0.0",

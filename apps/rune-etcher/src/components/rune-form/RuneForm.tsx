@@ -24,7 +24,6 @@ import { useToast } from "@/hooks/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMaskito } from "@maskito/react";
 import {
-	useAccounts,
 	useBroadcastTransaction,
 	useConfig,
 	useEtchRune,
@@ -83,8 +82,6 @@ export const RuneForm = () => {
 	]);
 
 	const { rune, isFetching } = useRune({ runeId: name });
-
-	const { ordinalsAccount } = useAccounts();
 
 	const { etchRune } = useEtchRune({
 		mutation: {
