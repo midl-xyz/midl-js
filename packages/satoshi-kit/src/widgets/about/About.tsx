@@ -6,7 +6,7 @@ import Graphics2 from "./assets/Graphics2";
 
 export const About = () => {
 	return (
-		<Stack background="bg.emphasized" p={6}>
+		<Stack background="bg.emphasized" p={6} overflow="auto">
 			<Text
 				textStyle="md"
 				as="h3"
@@ -61,7 +61,7 @@ export const About = () => {
 					asChild
 				>
 					<a
-						href="https://midl-js-lib.midl.xyz/satoshi-kit"
+						href="https://js.midl.xyz/satoshi-kit/"
 						target="_blank"
 						rel="noreferrer"
 					>

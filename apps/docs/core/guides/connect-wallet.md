@@ -5,7 +5,7 @@ We recommend to start with [SatoshiKit](../../satoshi-kit/index.md) to make it e
 :::
 
 
-The ability to connect a wallet is a crucial part of interacting with the blockchain. MIDL.js provides a simple way to connect to a wallet.
+The ability to connect a wallet is a crucial part of interacting with the blockchain. MIDL JS SDK provides a simple way to connect to a wallet.
 
 
 ## Usage

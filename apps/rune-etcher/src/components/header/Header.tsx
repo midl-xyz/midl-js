@@ -12,16 +12,11 @@ import { ConnectButton } from "@midl/satoshi-kit";
 import { useEffect } from "react";
 import { useController, useForm } from "react-hook-form";
 
-const shorten = (address: string) =>
-	`${address.slice(0, 6)}...${address.slice(-4)}`;
-
 export const Header = () => {
-	const hydrated = useHydrated();
-
 	return (
 		<>
 			<div className="flex justify-end p-4 px-8 gap-4">
-				{hydrated && <HeaderNetworkSwitch />}
+				<HeaderNetworkSwitch />
 
 				<ConnectButton hideBalance />
 			</div>

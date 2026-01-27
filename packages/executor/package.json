@@ -25,9 +25,7 @@
 			"types": "./dist/types/*.d.ts"
 		}
 	},
-	"files": [
-		"dist"
-	],
+	"files": ["dist"],
 	"devDependencies": {
 		"@midl/midl-js-config": "workspace:^",
 		"@midl/node": "workspace:^",

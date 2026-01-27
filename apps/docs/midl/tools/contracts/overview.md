@@ -5,7 +5,7 @@ title: "Overview"
 
 # Overview
 
-`@midl/hardhat-deploy` provides tools and utilities for deploying and interacting with smart contracts in a hybrid environment using Hardhat and MIDL.js. 
+`@midl/hardhat-deploy` provides tools and utilities for deploying and interacting with smart contracts in a hybrid environment using Hardhat and MIDL JS SDK. 
 
 In general the process of writing and deploying contracts is similar to the standard Hardhat workflow, but with some MIDL-specific features and configurations.
 

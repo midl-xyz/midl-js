@@ -59,6 +59,24 @@ Adds a contract write intention (EVM call).
 
 ---
 
+### addTxIntention
+```ts
+addTxIntention(data: PartialIntention): Promise<TransactionIntention>
+```
+Adds a raw transaction intention directly to the internal store. This is useful when you need full control over the intention data beyond `deploy` and `write`.
+Requires `initialize()`.
+
+---
+
+### addRuneERC20Intention
+```ts
+addRuneERC20Intention(runeId: string): Promise<TransactionIntention>
+```
+Creates a Rune ERC20 intention and adds it to the internal store.
+Requires `initialize()`.
+
+---
+
 ### execute
 ```ts
 execute(options?): Promise<[string, `0x${string}`[]] | null>
@@ -87,3 +105,5 @@ Deletes deployment information for a contract by name.
 
 - **account**: `Account` — The default account (requires `initialize()`).
 - **evm.address**: `string` — The EVM address for the default account (requires `initialize()`).
+- **config**: `Config` — The initialized MIDL config (requires `initialize()`).
+- **publicClient**: `PublicClient` — The viem public client used by the plugin.

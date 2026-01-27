@@ -1,9 +1,5 @@
-import { type Config, getDefaultAccount } from "@midl/core";
-import {
-	type PartialIntention,
-	addTxIntention,
-	getEVMAddress,
-} from "@midl/executor";
+import type { Config } from "@midl/core";
+import type { PartialIntention } from "@midl/executor";
 import {
 	type Libraries,
 	resolveBytecodeWithLinkedLibraries,
@@ -16,6 +12,7 @@ import {
 	getContractAddress,
 } from "viem";
 import type { StoreApi } from "zustand/vanilla";
+import { addTxIntentionToStore } from "~/actions/addTxIntentionToStore";
 import type { MidlHardhatStore } from "~/actions/createStore";
 import { getDeployment } from "~/actions/getDeployment";
 
@@ -56,39 +53,28 @@ export const deployContract = async (
 		bytecode: bytecode as `0x${string}`,
 	});
 
-	const evmAddress =
-		options.from ??
-		getEVMAddress(getDefaultAccount(config), config.getState().network);
-
-	const currentNonce = await publicClient.getTransactionCount({
-		address: evmAddress,
-	});
-
-	const totalIntentions = store.getState().intentions.length;
-
-	const nonce = options?.nonce ?? currentNonce + totalIntentions;
-
-	const intention = await addTxIntention(config, {
+	const intention = await addTxIntentionToStore(config, store, publicClient, {
 		...overrides,
 		evmTransaction: {
 			...options,
 			data: deployData,
-			nonce,
-			from: evmAddress,
 		},
 		meta: {
 			contractName: name,
 		},
 	});
 
-	store.setState((state) => ({
-		intentions: [...state.intentions, intention],
-	}));
+	if (
+		!intention.evmTransaction?.from ||
+		intention.evmTransaction.nonce === undefined
+	) {
+		throw new Error("Intention is missing from address or nonce");
+	}
 
 	return {
 		address: getContractAddress({
-			from: evmAddress,
-			nonce: BigInt(nonce),
+			from: intention.evmTransaction.from,
+			nonce: BigInt(intention.evmTransaction.nonce),
 		}),
 		abi: artifact.abi,
 	};

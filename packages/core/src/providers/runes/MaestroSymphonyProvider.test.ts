@@ -33,7 +33,7 @@ describe("MaestroSymphonyProvider", () => {
 		await ms.getRunes(regtest, "address");
 
 		const req = new Request(
-			"https://runes.regtest.midl.xyz/addresses/address/runes/balances?include_info=true",
+			"https://runes.staging.midl.xyz/addresses/address/runes/balances?include_info=true",
 		);
 
 		expect(fetchMock).toHaveBeenCalledWith(

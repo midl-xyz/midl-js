@@ -31,10 +31,7 @@
 		"./styles.css": "./dist/styles.css",
 		"./styled-system/*": "./styled-system/*"
 	},
-	"files": [
-		"dist",
-		"styled-system"
-	],
+	"files": ["dist", "styled-system"],
 	"devDependencies": {
 		"@midl/midl-js-config": "workspace:^",
 		"@midl/connectors": "workspace:^",
@@ -43,21 +40,21 @@
 		"@midl/react": "workspace:^",
 		"@pandacss/dev": "^0.53.1",
 		"@park-ui/panda-preset": "^0.43.1",
-		"@tanstack/react-query": "^5.69.0",
-		"@types/react": "^18.3.11",
+		"@tanstack/react-query": "5.69.0",
+		"@types/react": "^19",
 		"@vitejs/plugin-react": "^4.6.0",
 		"chokidar-cli": "^3.0.0",
 		"postcss": "8.4.3",
 		"postcss-cli": "^11.0.1",
-		"react": "^18.3.1",
-		"react-dom": "^18.3.1",
+		"react": "^19.2.4",
+		"react-dom": "^19.2.4",
 		"vite": "^5.4.10"
 	},
 	"peerDependencies": {
 		"@midl/connectors": "workspace:^",
 		"@midl/core": "workspace:^",
 		"@midl/react": "workspace:^",
-		"@tanstack/react-query": "^5",
+		"@tanstack/react-query": ">=5 <6",
 		"@types/react": "*",
 		"react": "*",
 		"react-dom": "*"

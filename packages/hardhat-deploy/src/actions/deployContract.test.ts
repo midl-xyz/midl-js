@@ -1,10 +1,12 @@
-import { type Account, type Config, getDefaultAccount } from "@midl/core";
 import {
-	type TransactionIntention,
-	addTxIntention,
-	getEVMAddress,
-} from "@midl/executor";
-import { resolveBytecodeWithLinkedLibraries } from "@nomicfoundation/hardhat-viem/internal/bytecode";
+	AddressPurpose,
+	connect,
+	createConfig,
+	getDefaultAccount,
+	regtest,
+} from "@midl/core";
+import { getEVMAddress } from "@midl/executor";
+import { keyPairConnector } from "@midl/node";
 import type { HardhatRuntimeEnvironment } from "hardhat/types";
 import {
 	type Address,
@@ -17,18 +19,18 @@ import { createStore } from "~/actions/createStore";
 import { getDeployment } from "~/actions/getDeployment";
 import { deployContract } from "./deployContract";
 
-vi.mock("@midl/core");
-vi.mock("@midl/executor");
-vi.mock("@nomicfoundation/hardhat-viem/internal/bytecode");
-vi.mock("viem", async () => {
-	const actual = await vi.importActual("viem");
-	return {
-		...actual,
-		encodeDeployData: vi.fn(),
-		getContractAddress: vi.fn(),
-	};
-});
-vi.mock("~/actions/getDeployment");
+vi.mock("~/actions/getDeployment", () => ({
+	getDeployment: vi.fn(),
+}));
+
+vi.mock("@nomicfoundation/hardhat-viem/internal/bytecode", () => ({
+	resolveBytecodeWithLinkedLibraries: vi.fn(
+		async (artifact: { bytecode: string }) => artifact.bytecode,
+	),
+}));
+
+const TEST_MNEMONIC =
+	"test test test test test test test test test test test junk";
 
 describe("deployContract", () => {
 	const mockReadArtifact = vi.fn();
@@ -43,53 +45,38 @@ describe("deployContract", () => {
 		getTransactionCount: mockGetTransactionCount,
 	} as unknown as PublicClient;
 
-	const mockConfig = {
-		getState: vi.fn(() => ({
-			network: "regtest",
-		})),
-	} as unknown as Config;
-
-	const mockEvmAddress =
-		"0x1234567890abcdef1234567890abcdef12345678" as Address;
-	const mockContractAddress =
-		"0xabcdefabcdefabcdefabcdefabcdefabcdefabcd" as Address;
-
 	beforeEach(() => {
 		vi.clearAllMocks();
 		vi.mocked(getDeployment).mockResolvedValue(null);
-		vi.mocked(getDefaultAccount).mockReturnValue({
-			address: "tb1qtest",
-			publicKey: "0x123",
-		} as unknown as Account);
-		vi.mocked(getEVMAddress).mockReturnValue(mockEvmAddress);
 		mockGetTransactionCount.mockResolvedValue(5);
-		vi.mocked(getContractAddress).mockReturnValue(mockContractAddress);
-		vi.mocked(encodeDeployData).mockReturnValue(
-			"0xdeploydata" as `0x${string}`,
-		);
-		vi.mocked(resolveBytecodeWithLinkedLibraries).mockResolvedValue(
-			"0xbytecode",
-		);
-		vi.mocked(addTxIntention).mockResolvedValue({
-			evmTransaction: {
-				from: mockEvmAddress,
-				data: "0xdeploydata",
-			},
-		} as unknown as TransactionIntention);
 	});
+
+	const createConnectedConfig = async () => {
+		const config = createConfig({
+			networks: [regtest],
+			connectors: [keyPairConnector({ mnemonic: TEST_MNEMONIC })],
+		});
+
+		await connect(config, {
+			purposes: [AddressPurpose.Payment, AddressPurpose.Ordinals],
+		});
+
+		return config;
+	};
 
 	it("returns existing deployment if already deployed", async () => {
 		const existingDeployment = {
-			address: "0xexisting" as Address,
+			address: "0x0000000000000000000000000000000000000001" as Address,
 			abi: [{ type: "function", name: "test" }],
 		};
 
 		vi.mocked(getDeployment).mockResolvedValue(existingDeployment);
 
+		const config = await createConnectedConfig();
 		const store = createStore();
 		const result = await deployContract(
 			mockHre,
-			mockConfig,
+			config,
 			store,
 			mockPublicClient,
 			"ExistingContract",
@@ -97,344 +84,136 @@ describe("deployContract", () => {
 
 		expect(result).toEqual(existingDeployment);
 		expect(mockReadArtifact).not.toHaveBeenCalled();
-		expect(addTxIntention).not.toHaveBeenCalled();
 	});
 
-	it("reads artifact and deploys when no existing deployment", async () => {
+	it("adds a deployment intention and stores it with a derived address", async () => {
 		const mockArtifact = {
-			abi: [{ type: "constructor" }],
-			bytecode: "0x123456",
+			abi: [{ type: "constructor", inputs: [] }],
+			bytecode: "0x60006000",
 		};
 		mockReadArtifact.mockResolvedValue(mockArtifact);
 
+		const config = await createConnectedConfig();
 		const store = createStore();
-		await deployContract(
+
+		const result = await deployContract(
 			mockHre,
-			mockConfig,
+			config,
 			store,
 			mockPublicClient,
 			"NewContract",
 		);
 
-		expect(mockReadArtifact).toHaveBeenCalledWith("NewContract");
-		expect(resolveBytecodeWithLinkedLibraries).toHaveBeenCalledWith(
-			mockArtifact,
-			{},
+		expect(store.getState().intentions).toHaveLength(1);
+
+		const intention = store.getState().intentions[0];
+		expect(intention.meta?.contractName).toBe("NewContract");
+		expect(intention.evmTransaction?.data).toBe(
+			encodeDeployData({
+				abi: mockArtifact.abi,
+				args: [],
+				bytecode: mockArtifact.bytecode as `0x${string}`,
+			}),
 		);
+		expect(intention.evmTransaction?.nonce).toBe(5);
+
+		const expectedFrom = getEVMAddress(
+			getDefaultAccount(config),
+			config.getState().network,
+		);
+		expect(intention.evmTransaction?.from).toBe(expectedFrom);
+
+		const expectedAddress = getContractAddress({
+			from: expectedFrom,
+			nonce: 5n,
+		});
+		expect(result).toEqual({ address: expectedAddress, abi: mockArtifact.abi });
 	});
 
-	it("encodes deploy data with correct parameters", async () => {
+	it("increments nonce based on pending intentions", async () => {
 		const mockArtifact = {
 			abi: [{ type: "constructor", inputs: [] }],
-			bytecode: "0x123456",
+			bytecode: "0x60006000",
 		};
 		mockReadArtifact.mockResolvedValue(mockArtifact);
 
+		const config = await createConnectedConfig();
 		const store = createStore();
-		const args = [100, "test"];
+
+		await deployContract(mockHre, config, store, mockPublicClient, "ContractA");
+		await deployContract(mockHre, config, store, mockPublicClient, "ContractB");
+
+		const nonces = store
+			.getState()
+			.intentions.map((it) => it.evmTransaction?.nonce);
+
+		expect(nonces).toEqual([5, 6]);
+	});
+
+	it("respects an explicit nonce override", async () => {
+		const mockArtifact = {
+			abi: [{ type: "constructor", inputs: [] }],
+			bytecode: "0x60006000",
+		};
+		mockReadArtifact.mockResolvedValue(mockArtifact);
+
+		const config = await createConnectedConfig();
+		const store = createStore();
 
 		await deployContract(
 			mockHre,
-			mockConfig,
+			config,
 			store,
 			mockPublicClient,
-			"ContractWithArgs",
-			args,
-		);
-
-		expect(encodeDeployData).toHaveBeenCalledWith({
-			abi: mockArtifact.abi,
-			args: args,
-			bytecode: "0xbytecode",
-		});
-	});
-
-	it("adds transaction intention with correct data", async () => {
-		const mockArtifact = {
-			abi: [{ type: "constructor" }],
-			bytecode: "0x123456",
-		};
-		mockReadArtifact.mockResolvedValue(mockArtifact);
-
-		const store = createStore();
-		await deployContract(
-			mockHre,
-			mockConfig,
-			store,
-			mockPublicClient,
-			"IntentionContract",
-		);
-
-		expect(addTxIntention).toHaveBeenCalledWith(mockConfig, {
-			evmTransaction: {
-				data: "0xdeploydata",
-				nonce: 5,
-				from: mockEvmAddress,
-			},
-			meta: {
-				contractName: "IntentionContract",
-			},
-		});
-	});
-
-	it("adds intention to store", async () => {
-		const mockArtifact = {
-			abi: [{ type: "constructor" }],
-			bytecode: "0x123456",
-		};
-
-		mockReadArtifact.mockResolvedValue(mockArtifact);
-
-		const store = createStore();
-		expect(store.getState().intentions).toHaveLength(0);
-
-		await deployContract(
-			mockHre,
-			mockConfig,
-			store,
-			mockPublicClient,
-			"StoreContract",
-		);
-
-		expect(store.getState().intentions).toHaveLength(1);
-	});
-
-	it("calculates contract address with correct nonce", async () => {
-		const mockArtifact = {
-			abi: [{ type: "constructor" }],
-			bytecode: "0x123456",
-		};
-		mockReadArtifact.mockResolvedValue(mockArtifact);
-
-		const store = createStore();
-		await deployContract(
-			mockHre,
-			mockConfig,
-			store,
-			mockPublicClient,
-			"NonceContract",
-		);
-
-		expect(mockGetTransactionCount).toHaveBeenCalledWith({
-			address: mockEvmAddress,
-		});
-
-		expect(getContractAddress).toHaveBeenCalledWith({
-			from: mockEvmAddress,
-			nonce: 5n, // nonce (5) + totalIntentions (1) - 1 = 5
-		});
-	});
-
-	it("returns deployment data with address and abi", async () => {
-		const mockArtifact = {
-			abi: [{ type: "constructor" }, { type: "function", name: "transfer" }],
-			bytecode: "0x123456",
-		};
-		mockReadArtifact.mockResolvedValue(mockArtifact);
-
-		const store = createStore();
-		const result = await deployContract(
-			mockHre,
-			mockConfig,
-			store,
-			mockPublicClient,
-			"ReturnContract",
-		);
-
-		expect(result).toEqual({
-			address: mockContractAddress,
-			abi: mockArtifact.abi,
-		});
-	});
-
-	it("handles linked libraries", async () => {
-		const mockArtifact = {
-			abi: [{ type: "constructor" }],
-			bytecode: "0x123456",
-		};
-		mockReadArtifact.mockResolvedValue(mockArtifact);
-
-		const libraries = {
-			LibraryA: "0x1111111111111111111111111111111111111111" as Address,
-			LibraryB: "0x2222222222222222222222222222222222222222" as Address,
-		};
-
-		const store = createStore();
-		await deployContract(
-			mockHre,
-			mockConfig,
-			store,
-			mockPublicClient,
-			"LinkedContract",
+			"ContractWithNonce",
 			[],
-			{ libraries },
+			{ nonce: 42 },
 		);
 
-		expect(resolveBytecodeWithLinkedLibraries).toHaveBeenCalledWith(
-			mockArtifact,
-			libraries,
-		);
+		expect(store.getState().intentions[0]?.evmTransaction?.nonce).toBe(42);
 	});
 
-	it("handles custom overrides", async () => {
+	it("uses a provided from address for nonce lookup and address derivation", async () => {
 		const mockArtifact = {
-			abi: [{ type: "constructor" }],
-			bytecode: "0x123456",
+			abi: [{ type: "constructor", inputs: [] }],
+			bytecode: "0x60006000",
 		};
 		mockReadArtifact.mockResolvedValue(mockArtifact);
 
+		const config = await createConnectedConfig();
 		const store = createStore();
+
+		const customFrom = "0x00000000000000000000000000000000000000AA" as Address;
+
 		await deployContract(
 			mockHre,
-			mockConfig,
+			config,
 			store,
 			mockPublicClient,
-			"OverridesContract",
+			"FromContract",
 			[],
-			{
-				value: 1000n,
-				gas: 21000n,
-			},
-		);
-
-		expect(addTxIntention).toHaveBeenCalledWith(mockConfig, {
-			evmTransaction: {
-				data: "0xdeploydata",
-				value: 1000n,
-				gas: 21000n,
-				nonce: 5,
-				from: mockEvmAddress,
-			},
-			meta: {
-				contractName: "OverridesContract",
-			},
-		});
-	});
-
-	it("uses custom nonce from intention if provided", async () => {
-		const mockArtifact = {
-			abi: [{ type: "constructor" }],
-			bytecode: "0x123456",
-		};
-		mockReadArtifact.mockResolvedValue(mockArtifact);
-
-		const customNonce = 100;
-
-		const store = createStore();
-		await deployContract(
-			mockHre,
-			mockConfig,
-			store,
-			mockPublicClient,
-			"CustomNonceContract",
-			[],
-			{
-				nonce: customNonce,
-			},
-		);
-
-		expect(getContractAddress).toHaveBeenCalledWith({
-			from: mockEvmAddress,
-			nonce: BigInt(customNonce),
-		});
-	});
-
-	it("uses evmTransaction.from when available", async () => {
-		const mockArtifact = {
-			abi: [{ type: "constructor" }],
-			bytecode: "0x123456",
-		};
-		mockReadArtifact.mockResolvedValue(mockArtifact);
-
-		const customFrom = "0xfedcba0987654321fedcba0987654321fedcba09" as Address;
-
-		const store = createStore();
-		await deployContract(
-			mockHre,
-			mockConfig,
-			store,
-			mockPublicClient,
-			"CustomFromContract",
-			[],
-			{
-				from: customFrom,
-			},
+			{ from: customFrom },
 		);
 
 		expect(mockGetTransactionCount).toHaveBeenCalledWith({
 			address: customFrom,
 		});
 
-		expect(getContractAddress).toHaveBeenCalledWith(
-			expect.objectContaining({
-				from: customFrom,
-			}),
-		);
-	});
+		const intention = store.getState().intentions[0];
+		expect(intention.evmTransaction?.from).toBe(customFrom);
 
-	it("handles multiple deployments with incremented nonce", async () => {
-		const mockArtifact = {
-			abi: [{ type: "constructor" }],
-			bytecode: "0x123456",
-		};
-		mockReadArtifact.mockResolvedValue(mockArtifact);
-
-		const store = createStore();
-
-		// First deployment
-		await deployContract(
+		const result = await deployContract(
 			mockHre,
-			mockConfig,
+			config,
 			store,
 			mockPublicClient,
-			"Contract1",
-		);
-
-		expect(getContractAddress).toHaveBeenCalledWith({
-			from: mockEvmAddress,
-			nonce: 5n, // base nonce + 0
-		});
-
-		// Second deployment
-		await deployContract(
-			mockHre,
-			mockConfig,
-			store,
-			mockPublicClient,
-			"Contract2",
+			"AnotherFromContract",
 			[],
-			{
-				value: 500n,
-			},
-			{},
+			{ from: customFrom },
 		);
 
-		expect(getContractAddress).toHaveBeenCalledWith({
-			from: mockEvmAddress,
-			nonce: 6n, // base nonce + 1
-		});
-	});
-
-	it("handles empty constructor args", async () => {
-		const mockArtifact = {
-			abi: [{ type: "constructor", inputs: [] }],
-			bytecode: "0x123456",
-		};
-		mockReadArtifact.mockResolvedValue(mockArtifact);
-
-		const store = createStore();
-		await deployContract(
-			mockHre,
-			mockConfig,
-			store,
-			mockPublicClient,
-			"NoArgsContract",
+		expect(result.address).toBe(
+			getContractAddress({ from: customFrom, nonce: 6n }),
 		);
-
-		expect(encodeDeployData).toHaveBeenCalledWith({
-			abi: mockArtifact.abi,
-			args: [],
-			bytecode: "0xbytecode",
-		});
 	});
 });

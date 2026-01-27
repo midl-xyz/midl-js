@@ -1,9 +1,7 @@
 import type { ConnectorWithMetadata } from "@midl/core";
-import { useConfig, useConnect } from "@midl/react";
 import { ArrowRightIcon } from "lucide-react";
 import { css } from "styled-system/css";
 import { Stack } from "styled-system/jsx";
-import { a } from "vitest/dist/chunks/suite.d.FvehnV49.js";
 import { Button } from "~/shared/ui/button";
 import { Text } from "~/shared/ui/text";
 import { VerifiedIcon } from "~/shared/ui/verified-icon";
@@ -32,7 +30,13 @@ export const ConnectorList = ({ onClick, connectors }: Props) => {
 	return (
 		<Stack gap={4} direction="column" w="full">
 			{Object.entries(groupedConnectors).map(([group, connectors]) => (
-				<Stack key={group} gap={2} direction="column" w="full">
+				<Stack
+					key={group}
+					gap={2}
+					direction="column"
+					w="full"
+					position="relative"
+				>
 					{connectors.length > 0 && (
 						<Stack
 							direction="row"
@@ -40,6 +44,14 @@ export const ConnectorList = ({ onClick, connectors }: Props) => {
 							justifyContent="space-between"
 							color="text.muted"
 							px={4}
+							position={{ base: "sticky", md: "relative" }}
+							top={{ base: 0, md: "auto" }}
+							zIndex={1}
+							className={css({
+								background: "bg.canvas",
+								paddingTop: "0.5rem",
+								paddingBottom: "0.5rem",
+							})}
 						>
 							<Text textStyle="md" textTransform="capitalize">
 								{group}

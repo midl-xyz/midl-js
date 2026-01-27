@@ -16,17 +16,14 @@
 	"main": "dist/index.js",
 	"module": "dist/index.js",
 	"types": "dist/index.d.ts",
-	"files": [
-		"dist",
-		"scripts"
-	],
+	"files": ["dist", "scripts"],
 	"devDependencies": {
 		"@midl/midl-js-config": "workspace:^",
 		"@playwright/test": "^1.48.2",
 		"@types/unzipper": "^0.10.10"
 	},
 	"peerDependencies": {
-		"@playwright/test": "^1.48.2"
+		"@playwright/test": ">=1.48 <2"
 	},
 	"dependencies": {
 		"@midl/core": "workspace:^",

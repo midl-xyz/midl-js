@@ -11,9 +11,7 @@
 	"main": "./dist/cjs/index.js",
 	"module": "./dist/esm/index.js",
 	"types": "./dist/types/index.d.ts",
-	"files": [
-		"dist"
-	],
+	"files": ["dist"],
 	"exports": {
 		"./package.json": "./package.json",
 		".": {
@@ -33,7 +31,7 @@
 		"hardhat-deploy": "^1.0.3"
 	},
 	"peerDependencies": {
-		"hardhat": "^2.22.17"
+		"hardhat": ">=2 <3"
 	},
 	"dependencies": {
 		"@midl/logger": "workspace:*",

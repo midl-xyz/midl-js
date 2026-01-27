@@ -1,6 +1,6 @@
 <br/>
 <div align="center">
-  <a href="https://midl-js-lib.midl.xyz">
+  <a href="https://js.midl.xyz">
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="./.github/logo-dark.svg">
       <img alt="midl logo" src="./.github/logo.svg" width="auto" height="60">
@@ -9,7 +9,7 @@
 </div>
 
 <div align="center">
-  A JavaScript library that makes it easy to interact with the Bitcoin and MIDL Protocol
+ Build Web3 dApps on Bitcoin and MIDL with TypeScript and React.
 </div>
 
 ---
@@ -25,7 +25,7 @@
 
 ### Documentation
 
-For detailed documentation, please visit our [documentation site](https://midl-js-lib.midl.xyz).
+For detailed documentation, please visit our [documentation site](https://js.midl.xyz).
 
 ### Development
 

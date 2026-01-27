@@ -1,12 +1,9 @@
-import { type Config, getDefaultAccount } from "@midl/core";
-import {
-	type PartialIntention,
-	addTxIntention,
-	getEVMAddress,
-} from "@midl/executor";
+import type { Config } from "@midl/core";
+import type { PartialIntention } from "@midl/executor";
 import type { HardhatRuntimeEnvironment } from "hardhat/types";
 import { type PublicClient, encodeFunctionData } from "viem";
 import type { StoreApi } from "zustand/vanilla";
+import { addTxIntentionToStore } from "~/actions/addTxIntentionToStore";
 import type { MidlHardhatStore } from "~/actions/createStore";
 import { getDeployment } from "~/actions/getDeployment";
 
@@ -46,32 +43,12 @@ export const writeContract = async (
 		args,
 	});
 
-	const evmAddress =
-		evmTransactionOverrides?.from ??
-		getEVMAddress(getDefaultAccount(config), config.getState().network);
-
-	const currentNonce = await publicClient.getTransactionCount({
-		address: evmAddress,
-	});
-
-	const totalIntentions = store.getState().intentions.length;
-
-	const nonce =
-		evmTransactionOverrides?.nonce ?? currentNonce + totalIntentions;
-
-	const intention = await addTxIntention(config, {
+	return addTxIntentionToStore(config, store, publicClient, {
 		...options,
 		evmTransaction: {
 			...evmTransactionOverrides,
 			to: deployment.address,
 			data: callData,
-			nonce,
 		},
 	});
-
-	store.setState((state) => ({
-		intentions: [...state.intentions, intention],
-	}));
-
-	return intention;
 };

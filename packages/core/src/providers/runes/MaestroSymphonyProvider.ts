@@ -13,7 +13,7 @@ import type { paths } from "~/providers/runes/scheme/maestro-symphony";
 type MaestroSymphonyRPC = Partial<Record<BitcoinNetwork["id"], string>>;
 
 export const maestroSymphonyRPC: MaestroSymphonyRPC = {
-	regtest: "https://runes.regtest.midl.xyz",
+	regtest: "https://runes.staging.midl.xyz",
 };
 
 export class MaestroSymphonyProvider implements AbstractRunesProvider {

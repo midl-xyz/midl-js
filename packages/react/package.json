@@ -24,19 +24,17 @@
 			"types": "./dist/types/*.d.ts"
 		}
 	},
-	"files": [
-		"dist"
-	],
+	"files": ["dist"],
 	"devDependencies": {
 		"@bitcoinerlab/secp256k1": "^1.2.0",
 		"@midl/midl-js-config": "workspace:^",
 		"@midl/node": "workspace:^",
 		"@tanstack/react-query": "*",
-		"@types/react": "^18.3.11",
+		"@types/react": "^19",
 		"bitcoinjs-lib": "^6.1.6",
 		"ecpair": "^2.1.0",
-		"react": "^18.3.1",
-		"react-dom": "^18.3.1"
+		"react": "^19.2.4",
+		"react-dom": "^19.2.4"
 	},
 	"dependencies": {
 		"@midl/core": "workspace:^",
@@ -44,9 +42,8 @@
 	},
 	"peerDependencies": {
 		"@tanstack/react-query": "*",
-		"@types/react": "^18.3.11",
-		"react": "^18.3.1",
-		"react-dom": "^18.3.1"
+		"react": ">=18 <20",
+		"react-dom": ">=18 <20"
 	},
 	"repository": {
 		"url": "git+https://github.com/midl-xyz/midl-js.git",

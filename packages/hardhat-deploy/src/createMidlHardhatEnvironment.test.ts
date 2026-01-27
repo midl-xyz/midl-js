@@ -1,9 +1,10 @@
 import { type Config, getDefaultAccount } from "@midl/core";
-import { getEVMAddress } from "@midl/executor";
+import { addRuneERC20Intention, getEVMAddress } from "@midl/executor";
 import type { HardhatRuntimeEnvironment } from "hardhat/types";
 import { http, type PublicClient, createPublicClient } from "viem";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
+	addTxIntentionToStore,
 	createStore,
 	deleteDeployment,
 	deployContract,
@@ -57,6 +58,12 @@ describe("createMidlHardhatEnvironment", () => {
 			network: "regtest",
 		})),
 	} as unknown as Config;
+	const mockIntention = {
+		evmTransaction: {
+			from: "0x1234567890abcdef1234567890abcdef12345678",
+			nonce: 1,
+		},
+	};
 
 	const mockStore = {
 		getState: vi.fn(() => ({ intentions: [] })),
@@ -78,6 +85,12 @@ describe("createMidlHardhatEnvironment", () => {
 		vi.mocked(createPublicClient).mockReturnValue(mockPublicClient);
 		vi.mocked(http).mockReturnValue({} as ReturnType<typeof http>);
 		vi.mocked(setup).mockResolvedValue(mockConfig);
+		vi.mocked(addTxIntentionToStore).mockResolvedValue(
+			mockIntention as Awaited<ReturnType<typeof addTxIntentionToStore>>,
+		);
+		vi.mocked(addRuneERC20Intention).mockResolvedValue(
+			mockIntention as Awaited<ReturnType<typeof addRuneERC20Intention>>,
+		);
 		vi.mocked(getDefaultAccount).mockReturnValue({
 			address: "tb1qtest",
 			publicKey: "0x123",
@@ -147,6 +160,22 @@ describe("createMidlHardhatEnvironment", () => {
 		);
 	});
 
+	it("throws error when calling addTxIntention before initialize", async () => {
+		const env = createMidlHardhatEnvironment(mockHre);
+
+		await expect(env.addTxIntention({})).rejects.toThrow(
+			"Midl not initialized. Call initialize() first.",
+		);
+	});
+
+	it("throws error when calling addRuneERC20Intention before initialize", async () => {
+		const env = createMidlHardhatEnvironment(mockHre);
+
+		await expect(env.addRuneERC20Intention("RUNE")).rejects.toThrow(
+			"Midl not initialized. Call initialize() first.",
+		);
+	});
+
 	it("throws error when accessing account before initialize", () => {
 		const env = createMidlHardhatEnvironment(mockHre);
 
@@ -159,6 +188,14 @@ describe("createMidlHardhatEnvironment", () => {
 		const env = createMidlHardhatEnvironment(mockHre);
 
 		expect(() => env.evm.address).toThrow(
+			"Midl not initialized. Call initialize() first.",
+		);
+	});
+
+	it("throws error when accessing config before initialize", () => {
+		const env = createMidlHardhatEnvironment(mockHre);
+
+		expect(() => env.config).toThrow(
 			"Midl not initialized. Call initialize() first.",
 		);
 	});
@@ -293,6 +330,38 @@ describe("createMidlHardhatEnvironment", () => {
 		);
 	});
 
+	it("calls addTxIntentionToStore after initialize", async () => {
+		const env = createMidlHardhatEnvironment(mockHre);
+		await env.initialize();
+
+		const data = { evmTransaction: { data: "0x" as const } };
+		const result = await env.addTxIntention(data);
+
+		expect(addTxIntentionToStore).toHaveBeenCalledWith(
+			mockConfig,
+			mockStore,
+			mockPublicClient,
+			data,
+		);
+		expect(result).toBe(mockIntention);
+	});
+
+	it("creates a rune intention then stores it", async () => {
+		const env = createMidlHardhatEnvironment(mockHre);
+		await env.initialize();
+
+		const result = await env.addRuneERC20Intention("RUNE");
+
+		expect(addRuneERC20Intention).toHaveBeenCalledWith(mockConfig, "RUNE");
+		expect(addTxIntentionToStore).toHaveBeenCalledWith(
+			mockConfig,
+			mockStore,
+			mockPublicClient,
+			mockIntention,
+		);
+		expect(result).toBe(mockIntention);
+	});
+
 	it("calls saveDeployment for save method", async () => {
 		const env = createMidlHardhatEnvironment(mockHre);
 
@@ -329,6 +398,19 @@ describe("createMidlHardhatEnvironment", () => {
 			address: "tb1qtest",
 			publicKey: "0x123",
 		});
+	});
+
+	it("returns config after initialize", async () => {
+		const env = createMidlHardhatEnvironment(mockHre);
+		await env.initialize();
+
+		expect(env.config).toBe(mockConfig);
+	});
+
+	it("exposes the public client without requiring initialize", () => {
+		const env = createMidlHardhatEnvironment(mockHre);
+
+		expect(env.publicClient).toBe(mockPublicClient);
 	});
 
 	it("returns evm address after initialize", async () => {

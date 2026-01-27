@@ -5,7 +5,7 @@ order: 1
 
 # Getting Started
 
-Install MIDL.js via your package manager of choice.
+Install MIDL JS SDK via your package manager of choice.
 
 ::: code-group
 
@@ -25,7 +25,7 @@ yarn add @midl/core @midl/react @midl/connectors
 
 ## Integration
 
-Create and export a new MIDL.js config file in your project, then wrap your app with the Midl.js context provider.
+Create and export a new MIDL JS SDK config file in your project, then wrap your app with the MIDL JS SDK context provider.
 
 ::: code-group
 
@@ -59,10 +59,10 @@ function App() {
 
 ## Usage
 
-Use MIDL.js hooks to interact with the blockchain.
+Use MIDL JS SDK hooks to interact with the blockchain.
 
 > [!TIP]
-> Use the [SatoshiKit](../satoshi-kit/index.md) to have a more complete experience with MIDL.js.
+> Use the [SatoshiKit](../satoshi-kit/index.md) to have a more complete experience with MIDL JS SDK.
 
 ::: code-group
 

@@ -27,7 +27,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 						<styled.span opacity={0}>{children}</styled.span>
 					</>
 				) : loadingText ? (
-					loadingText
+					<>{loadingText}</>
 				) : (
 					children
 				)}
