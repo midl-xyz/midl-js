@@ -31,7 +31,7 @@
 		"@midl/node": "workspace:^",
 		"@tanstack/react-query": "*",
 		"@types/react": "^19",
-		"bitcoinjs-lib": "^6.1.6",
+		"bitcoinjs-lib": "7.0.1",
 		"ecpair": "^2.1.0",
 		"react": "^19.2.4",
 		"react-dom": "^19.2.4"

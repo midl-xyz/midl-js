@@ -585,8 +585,8 @@ importers:
         specifier: ^19
         version: 19.2.9
       bitcoinjs-lib:
-        specifier: ^6.1.6
-        version: 6.1.7
+        specifier: 7.0.1
+        version: 7.0.1(typescript@5.7.2)
       ecpair:
         specifier: ^2.1.0
         version: 2.1.0
@@ -15454,7 +15454,7 @@ snapshots:
 
   bs58check@4.0.0:
     dependencies:
-      '@noble/hashes': 1.7.1
+      '@noble/hashes': 1.8.0
       bs58: 6.0.0
 
   buffer-equals@1.0.4: {}

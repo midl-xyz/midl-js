@@ -40,6 +40,7 @@ export const dialog = defineSlotRecipe({
 			background: "bg.canvas",
 			borderRadius: "2xl",
 			boxShadow: "lg",
+			color: "fg.default",
 			minW: "sm",
 			position: "relative",
 			_open: {
@@ -50,6 +51,7 @@ export const dialog = defineSlotRecipe({
 			},
 		},
 		title: {
+			color: "fg.default",
 			fontWeight: "semibold",
 			textStyle: "lg",
 		},
