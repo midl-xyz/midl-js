@@ -15,6 +15,7 @@ import {
 	extractXCoordinate,
 	getAddressType,
 } from "@midl/core";
+import { bytesToHex, hexToBytes } from "@noble/hashes/utils.js";
 import BIP32Factory from "bip32";
 import * as bip39 from "bip39";
 import * as bitcoin from "bitcoinjs-lib";
@@ -66,9 +67,8 @@ class KeyPairConnector implements Connector {
 			const keyPair = this.deriveKeyPair(AddressType.P2TR);
 
 			const p2tr = bitcoin.payments.p2tr({
-				internalPubkey: Buffer.from(
-					extractXCoordinate(keyPair.publicKey.toString("hex")),
-					"hex",
+				internalPubkey: hexToBytes(
+					extractXCoordinate(bytesToHex(keyPair.publicKey)),
 				),
 				network: bitcoinNetwork,
 			});
@@ -77,7 +77,7 @@ class KeyPairConnector implements Connector {
 				// biome-ignore lint/style/noNonNullAssertion: <explanation>
 				address: p2tr.address!,
 				purpose: AddressPurpose.Ordinals,
-				publicKey: keyPair.publicKey.toString("hex"),
+				publicKey: bytesToHex(keyPair.publicKey),
 				addressType: AddressType.P2TR,
 			});
 		}
@@ -98,7 +98,7 @@ class KeyPairConnector implements Connector {
 					// biome-ignore lint/style/noNonNullAssertion: <explanation>
 					address: p2sh.address!,
 					purpose: AddressPurpose.Payment,
-					publicKey: keyPair.publicKey.toString("hex"),
+					publicKey: bytesToHex(keyPair.publicKey),
 					addressType: AddressType.P2SH_P2WPKH,
 				});
 			}
@@ -115,7 +115,7 @@ class KeyPairConnector implements Connector {
 					// biome-ignore lint/style/noNonNullAssertion: <explanation>
 					address: p2wpkh.address!,
 					purpose: AddressPurpose.Payment,
-					publicKey: keyPair.publicKey.toString("hex"),
+					publicKey: bytesToHex(keyPair.publicKey),
 					addressType: AddressType.P2WPKH,
 				});
 			}
@@ -168,7 +168,7 @@ class KeyPairConnector implements Connector {
 			case SignMessageProtocol.Ecdsa: {
 				const signature = bitcoinMessage.sign(
 					params.message,
-					keyPair.privateKey,
+					Buffer.from(keyPair.privateKey),
 					keyPair.compressed,
 					{
 						segwitType:
@@ -230,14 +230,9 @@ class KeyPairConnector implements Connector {
 						const keyPair = this.deriveKeyPair(AddressType.P2TR);
 
 						const signer = keyPair.tweak(
-							Buffer.from(
-								bitcoin.crypto.taggedHash(
-									"TapTweak",
-									Buffer.from(
-										extractXCoordinate(keyPair.publicKey.toString("hex")),
-										"hex",
-									),
-								),
+							bitcoin.crypto.taggedHash(
+								"TapTweak",
+								hexToBytes(extractXCoordinate(bytesToHex(keyPair.publicKey))),
 							),
 						);
 

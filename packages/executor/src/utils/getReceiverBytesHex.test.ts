@@ -1,20 +1,20 @@
 import { AddressPurpose, AddressType, mainnet, regtest } from "@midl/core";
+import { bytesToHex, hexToBytes } from "@noble/hashes/utils.js";
 
 import { describe, expect, it } from "vitest";
 import { getReceiverBytesHex } from "~/utils/getReceiverBytesHex";
 
 describe("getReceiverBytesHex", () => {
 	it("returns x coords for P2TR addresses", () => {
-		const randomBytes = Buffer.from(
+		const randomBytes = hexToBytes(
 			"b4c0ffeeb4c0ffeeb4c0ffeeb4c0ffeeb4c0ffeeb4c0ffeeb4c0ffeeb4c0ffee",
-			"hex",
 		);
 
 		const bytes = getReceiverBytesHex(
 			{
 				addressType: AddressType.P2TR,
 				address: "p2tr-address",
-				publicKey: randomBytes.toString("hex"),
+				publicKey: bytesToHex(randomBytes),
 				purpose: AddressPurpose.Ordinals,
 			},
 			regtest,
@@ -26,16 +26,15 @@ describe("getReceiverBytesHex", () => {
 	});
 
 	it("returns padded scriptPubKey for P2SH_P2WPKH addresses", () => {
-		const randomBytes = Buffer.from(
+		const randomBytes = hexToBytes(
 			"0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798",
-			"hex",
 		);
 
 		const bytes = getReceiverBytesHex(
 			{
 				addressType: AddressType.P2SH_P2WPKH,
 				address: "p2sh-p2wpkh-address",
-				publicKey: randomBytes.toString("hex"),
+				publicKey: bytesToHex(randomBytes),
 				purpose: AddressPurpose.Payment,
 			},
 			regtest,
@@ -45,7 +44,7 @@ describe("getReceiverBytesHex", () => {
 			"0x000000000000000000a914bcfeb728b584253d5f3f70bcb780e9ef218a68f487",
 		);
 
-		expect(Buffer.from(bytes.slice(2), "hex").length).toBe(32);
+		expect(hexToBytes(bytes.slice(2)).length).toBe(32);
 	});
 
 	it("returns padded scriptPubKey for P2WPKH addresses", () => {

@@ -1,3 +1,4 @@
+import { Verifier } from "@midl/bip322-js";
 import {
 	AddressPurpose,
 	SignMessageProtocol,
@@ -6,8 +7,8 @@ import {
 	getDefaultAccount,
 	signMessage,
 } from "@midl/core";
+import { bytesToHex, hexToBytes } from "@noble/hashes/utils.js";
 import { schnorr } from "@noble/secp256k1";
-import { Verifier } from "bip322-js";
 import { magicHash } from "bitcoinjs-message";
 import { publicKeyConvert } from "secp256k1";
 import { hexToBigInt, keccak256, recoverAddress, recoverPublicKey } from "viem";
@@ -56,9 +57,7 @@ describe("extractEVMSignature", () => {
 		});
 
 		expect(
-			Buffer.from(
-				publicKeyConvert(Buffer.from(recovered.slice(2), "hex"), true),
-			).toString("hex"),
+			bytesToHex(publicKeyConvert(hexToBytes(recovered.slice(2)), true)),
 		).toEqual(account.publicKey);
 	});
 
@@ -106,11 +105,9 @@ describe("extractEVMSignature", () => {
 
 		expect(isValid).toBeTruthy();
 		expect(
-			Buffer.from(
-				publicKeyConvert(Buffer.from(recovered.slice(2), "hex"), true),
-			)
-				.toString("hex")
-				.substring(2),
+			bytesToHex(
+				publicKeyConvert(hexToBytes(recovered.slice(2)), true),
+			).substring(2),
 		).toEqual(pk.substring(2));
 	});
 
@@ -146,9 +143,7 @@ describe("extractEVMSignature", () => {
 		});
 
 		expect(
-			Buffer.from(
-				publicKeyConvert(Buffer.from(recovered.slice(2), "hex"), true),
-			).toString("hex"),
+			bytesToHex(publicKeyConvert(hexToBytes(recovered.slice(2)), true)),
 		).toEqual(account.publicKey);
 	});
 
@@ -207,11 +202,9 @@ describe("extractEVMSignature", () => {
 		expect(hash).toEqual(recoveredAddress);
 
 		expect(
-			Buffer.from(
-				publicKeyConvert(Buffer.from(recovered.slice(2), "hex"), true),
-			)
-				.toString("hex")
-				.substring(2),
+			bytesToHex(
+				publicKeyConvert(hexToBytes(recovered.slice(2)), true),
+			).substring(2),
 		).toEqual(pk.substring(2));
 	});
 
@@ -246,7 +239,7 @@ describe("extractEVMSignature", () => {
 		const valid = await schnorr.verify(
 			new schnorr.Signature(hexToBigInt(r), hexToBigInt(s)).toHex(),
 			getBIP322Hash(message, account.addressType, pk.substring(2)),
-			Buffer.from(pk.substring(2), "hex"),
+			hexToBytes(pk.substring(2)),
 		);
 
 		expect(valid).toBeTruthy();

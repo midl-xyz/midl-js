@@ -1,6 +1,5 @@
 import {
 	type Account,
-	type BitcoinNetwork,
 	type Connector,
 	type ConnectorConnectParams,
 	type SignMessageParams,
@@ -12,6 +11,8 @@ import {
 	getAddressPurpose,
 	getAddressType,
 } from "@midl/core";
+import { hexToBytes } from "@noble/hashes/utils.js";
+import { base64 } from "@scure/base";
 import type { Unisat } from "~/types/unisat";
 
 export class UnisatConnector implements Connector {
@@ -102,7 +103,7 @@ export class UnisatConnector implements Connector {
 			toSignInputs,
 		});
 
-		const base64Psbt = Buffer.from(signature, "hex").toString("base64");
+		const base64Psbt = base64.encode(hexToBytes(signature));
 
 		return {
 			psbt: base64Psbt,

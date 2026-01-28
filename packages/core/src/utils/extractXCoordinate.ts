@@ -1,14 +1,16 @@
+import { bytesToHex, hexToBytes } from "@noble/hashes/utils.js";
+
 /**
  * Extracts the x coordinate from a public key
  * @param publicKey hexadecimal public key
  * @returns hexadecimal x coordinate
  */
 export const extractXCoordinate = (publicKey: string) => {
-	const publicKeyBuffer = Buffer.from(publicKey, "hex");
+	const publicKeyBuffer = hexToBytes(publicKey);
 
 	if (publicKeyBuffer.length === 32) {
 		// Assume it's already the x coordinate
-		return publicKeyBuffer.toString("hex");
+		return bytesToHex(publicKeyBuffer);
 	}
 
 	if (publicKeyBuffer.length !== 33 && publicKeyBuffer.length !== 65) {
@@ -17,5 +19,5 @@ export const extractXCoordinate = (publicKey: string) => {
 
 	const xCoordinate = publicKeyBuffer.subarray(1, 33);
 
-	return xCoordinate.toString("hex");
+	return bytesToHex(xCoordinate);
 };

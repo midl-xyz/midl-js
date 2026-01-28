@@ -1,7 +1,5 @@
-import { AddressPurpose, AddressType, type Config } from "@midl/core";
-import * as bitcoin from "bitcoinjs-lib";
-import { encodeFunctionData, maxUint256, padBytes, padHex, toHex } from "viem";
-import { getPublicKey } from "~/actions";
+import { AddressPurpose, type Config } from "@midl/core";
+import { encodeFunctionData, maxUint256 } from "viem";
 import { addTxIntention } from "~/actions/addTxIntention";
 import { SystemContracts } from "~/config";
 import { executorAbi } from "~/contracts/abi";

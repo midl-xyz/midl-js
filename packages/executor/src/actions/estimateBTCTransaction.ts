@@ -4,7 +4,6 @@ import {
 	type Client,
 	type PublicClient,
 	type StateOverride,
-	type WalletClient,
 	encodeFunctionData,
 	toHex,
 	zeroAddress,
@@ -78,7 +77,7 @@ const ONE_BITCOIN = 10 ** 8;
 export const estimateBTCTransaction = async (
 	config: Config,
 	intentions: TransactionIntention[],
-	client: PublicClient | WalletClient,
+	client: PublicClient,
 	{
 		feeRate: customFeeRate,
 		gasMultiplier = 1.2,

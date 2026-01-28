@@ -1,4 +1,5 @@
 import { type Account, AddressType, type BitcoinNetwork } from "@midl/core";
+import { bytesToHex, hexToBytes } from "@noble/hashes/utils.js";
 import { publicKeyConvert } from "secp256k1";
 import { getAddress, keccak256, toHex } from "viem";
 import { getPublicKey } from "~/actions";
@@ -21,13 +22,13 @@ export const getEVMAddress = (account: Account, network: BitcoinNetwork) => {
 
 		case AddressType.P2SH_P2WPKH:
 		case AddressType.P2WPKH: {
-			let pk = Buffer.from(account.publicKey, "hex");
+			let pk = hexToBytes(account.publicKey);
 
 			if (pk.length === 33) {
-				pk = Buffer.from(publicKeyConvert(pk, false));
+				pk = publicKeyConvert(pk, false);
 			}
 
-			publicKey = `0x${pk.slice(1).toString("hex")}`;
+			publicKey = `0x${bytesToHex(pk.slice(1))}`;
 			break;
 		}
 	}
@@ -36,12 +37,8 @@ export const getEVMAddress = (account: Account, network: BitcoinNetwork) => {
 		throw new Error("No public key found for account");
 	}
 
-	const publicKeyBuffer = Buffer.from(publicKey.slice(2), "hex");
-
-	const address = Buffer.from(
-		keccak256(Uint8Array.from(publicKeyBuffer)).slice(2),
-		"hex",
-	).slice(-20);
+	const publicKeyBuffer = hexToBytes(publicKey.slice(2));
+	const address = hexToBytes(keccak256(publicKeyBuffer).slice(2)).slice(-20);
 
 	return getAddress(toHex(address));
 };

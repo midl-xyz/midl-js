@@ -32,6 +32,8 @@
 		"@types/node": "^22.8.7"
 	},
 	"dependencies": {
+		"@noble/hashes": "^2.0.1",
+		"@scure/base": "^2.0.0",
 		"bitcoinjs-lib": "7.0.1",
 		"sats-connect": "^4.2.1"
 	},

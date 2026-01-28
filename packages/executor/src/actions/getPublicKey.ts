@@ -5,6 +5,7 @@ import {
 	type BitcoinNetwork,
 	extractXCoordinate,
 } from "@midl/core";
+import { hexToBytes } from "@noble/hashes/utils.js";
 import { initEccLib, networks, payments } from "bitcoinjs-lib";
 import { toHex } from "viem";
 
@@ -32,10 +33,7 @@ export const getPublicKey = (
 	switch (addressType) {
 		case AddressType.P2TR: {
 			const p2tr = payments.p2tr({
-				internalPubkey: Buffer.from(
-					extractXCoordinate(account.publicKey),
-					"hex",
-				),
+				internalPubkey: hexToBytes(extractXCoordinate(account.publicKey)),
 				network: networks[network.network],
 			});
 

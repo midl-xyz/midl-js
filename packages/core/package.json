@@ -29,18 +29,19 @@
 		"@leather.io/rpc": "2.1.12",
 		"@midl/midl-js-config": "workspace:^",
 		"@types/node": "^22.8.7",
-		"msw": "^2.5.2"
+		"msw": "^2.5.2",
+		"viem": "npm:@midl/viem@2.45.0"
 	},
 	"dependencies": {
 		"@bitcoinerlab/secp256k1": "^1.2.0",
 		"@midl/logger": "workspace:*",
+		"@midl/runelib": "^1.0.8",
+		"@noble/hashes": "^2.0.1",
 		"bitcoinjs-lib": "7.0.1",
 		"bitcoinselect": "^1.0.0",
 		"deepmerge": "^4.3.1",
-		"ecpair": "^2.1.0",
+		"ecpair": "^3.0.0",
 		"openapi-fetch": "^0.14.0",
-		"@midl/runelib": "^1.0.7",
-		"viem": "^2.18.6",
 		"zustand": "^5.0.1"
 	},
 	"repository": {

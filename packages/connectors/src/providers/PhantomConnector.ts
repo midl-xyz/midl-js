@@ -9,6 +9,7 @@ import {
 	type SignPSBTResponse,
 	getAddressType,
 } from "@midl/core";
+import { base64 } from "@scure/base";
 import { Psbt } from "bitcoinjs-lib";
 
 export class PhantomConnector implements Connector {
@@ -43,7 +44,7 @@ export class PhantomConnector implements Connector {
 		);
 
 		return {
-			signature: Buffer.from(signature).toString("base64"),
+			signature: base64.encode(signature),
 			address: params.address,
 			protocol: SignMessageProtocol.Bip322,
 		};

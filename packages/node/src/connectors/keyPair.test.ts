@@ -1,3 +1,4 @@
+import { Verifier } from "@midl/bip322-js";
 import {
 	AddressPurpose,
 	SignMessageProtocol,
@@ -7,7 +8,6 @@ import {
 	extractXCoordinate,
 	regtest,
 } from "@midl/core";
-import { Verifier } from "bip322-js";
 import * as bitcoin from "bitcoinjs-lib";
 import { Psbt } from "bitcoinjs-lib";
 import bitcoinMessage from "bitcoinjs-message";

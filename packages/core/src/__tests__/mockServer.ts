@@ -1,4 +1,5 @@
 import { randomBytes } from "node:crypto";
+import { bytesToHex, concatBytes, hexToBytes } from "@noble/hashes/utils.js";
 import { http, HttpResponse, ws } from "msw";
 import { setupServer } from "msw/node";
 import type { UTXO } from "~/providers";
@@ -23,7 +24,7 @@ const handlers = [
 	http.get("https://mempool.staging.midl.xyz/api/address/:address/utxo", () => {
 		const utxos: UTXO[] = [
 			{
-				txid: Buffer.alloc(32).toString("hex"),
+				txid: bytesToHex(new Uint8Array(32)),
 				vout: 0,
 				value: 100000000,
 				status: {
@@ -42,7 +43,7 @@ const handlers = [
 		const runeUTXOS: any[] = [
 			{
 				height: 0,
-				txid: Buffer.alloc(32).toString("hex"),
+				txid: bytesToHex(new Uint8Array(32)),
 				vout: 0,
 				address: "address",
 				satoshis: 546,
@@ -64,18 +65,20 @@ const handlers = [
 	}),
 	http.get("https://mempool.staging.midl.xyz/api/tx/:txid/hex", () => {
 		return HttpResponse.text(
-			Buffer.concat([
-				Buffer.from("01000000", "hex"), // version
-				Buffer.from([0x01]), // input count
-				Buffer.alloc(32), // txid
-				Buffer.from("00000000", "hex"), // vout
-				Buffer.from([0x00]), // scriptSig length
-				Buffer.from("ffffffff", "hex"), // sequence
-				Buffer.from([0x01]), // output count
-				Buffer.from("00f2052a01000000", "hex"), // value (0.01 BTC)
-				Buffer.from([0x00]), // scriptPubKey length
-				Buffer.from("00000000", "hex"), // locktime
-			]).toString("hex"),
+			bytesToHex(
+				concatBytes(
+					Uint8Array.from([0x01, 0x00, 0x00, 0x00]), // version
+					Uint8Array.from([0x01]), // input count
+					new Uint8Array(32), // txid
+					Uint8Array.from([0x00, 0x00, 0x00, 0x00]), // vout
+					Uint8Array.from([0x00]), // scriptSig length
+					Uint8Array.from([0xff, 0xff, 0xff, 0xff]), // sequence
+					Uint8Array.from([0x01]), // output count
+					Uint8Array.from([0x00, 0xf2, 0x05, 0x2a, 0x01, 0x00, 0x00, 0x00]), // value (0.01 BTC)
+					Uint8Array.from([0x00]), // scriptPubKey length
+					Uint8Array.from([0x00, 0x00, 0x00, 0x00]), // locktime
+				),
+			),
 		);
 	}),
 

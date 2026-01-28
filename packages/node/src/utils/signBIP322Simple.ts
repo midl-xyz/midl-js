@@ -1,6 +1,7 @@
 import * as ecc from "@bitcoinerlab/secp256k1";
 import { AddressType, extractXCoordinate, getAddressType } from "@midl/core";
-import { sha256 } from "@noble/hashes/sha256";
+import { sha256 } from "@noble/hashes/sha2.js";
+import { bytesToHex, hexToBytes } from "@noble/hashes/utils.js";
 import * as bitcoin from "bitcoinjs-lib";
 import { ECPairFactory } from "ecpair";
 import { encode } from "varuint-bitcoin";
@@ -64,17 +65,19 @@ export const signBIP322Simple = (
 		});
 	}
 
-	psbtToSign.addOutput({ script: Buffer.from("6a", "hex"), value: 0n });
+	psbtToSign.addOutput({
+		script: new Uint8Array([0x6a]),
+		value: 0n,
+	});
 
 	switch (getAddressType(address)) {
 		case AddressType.P2TR: {
-			const internalPubKey = Buffer.from(
-				extractXCoordinate(keyPair.publicKey.toString("hex")),
-				"hex",
+			const internalPubKey = hexToBytes(
+				extractXCoordinate(bytesToHex(keyPair.publicKey)),
 			);
 
 			const signer = keyPair.tweak(
-				Buffer.from(bitcoin.crypto.taggedHash("TapTweak", internalPubKey)),
+				bitcoin.crypto.taggedHash("TapTweak", internalPubKey),
 			);
 
 			psbtToSign.updateInput(0, {

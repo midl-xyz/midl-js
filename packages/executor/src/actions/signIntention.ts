@@ -4,12 +4,7 @@ import {
 	getDefaultAccount,
 	signMessage,
 } from "@midl/core";
-import {
-	type PublicClient,
-	type WalletClient,
-	keccak256,
-	serializeTransaction,
-} from "viem";
+import { type PublicClient, keccak256, serializeTransaction } from "viem";
 import { serializeIntention } from "~/actions/serializeIntention";
 import type { TransactionIntention } from "~/types/intention";
 import { extractEVMSignature } from "~/utils";
@@ -46,14 +41,14 @@ type SignIntentionOptions = {
  *   - nonce: Next nonce registered in EVM network (optional).
  *   - txId: Transaction hash of the BTC transaction.
  *   - protocol: Protocol for signing the message (optional).
- * @returns The signed EVM transaction object.
+ * @returns The signed EVM transaction object.s
  *
  * @example
  * const signed = await signIntention(config, client, intention, intentions, { txId });
  */
 export const signIntention = async (
 	config: Config,
-	client: PublicClient | WalletClient,
+	client: PublicClient,
 	intention: TransactionIntention,
 	intentions: TransactionIntention[],
 	options: SignIntentionOptions,
