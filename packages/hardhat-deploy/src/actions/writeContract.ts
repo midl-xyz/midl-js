@@ -46,9 +46,9 @@ export const writeContract = async (
 	return addTxIntentionToStore(config, store, publicClient, {
 		...options,
 		evmTransaction: {
-			...evmTransactionOverrides,
 			to: deployment.address,
 			data: callData,
+			...evmTransactionOverrides,
 		},
 	});
 };

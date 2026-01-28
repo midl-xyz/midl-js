@@ -56,8 +56,8 @@ export const deployContract = async (
 	const intention = await addTxIntentionToStore(config, store, publicClient, {
 		...overrides,
 		evmTransaction: {
-			...options,
 			data: deployData,
+			...options,
 		},
 		meta: {
 			contractName: name,

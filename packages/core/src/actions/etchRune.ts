@@ -1,6 +1,4 @@
 import ecc from "@bitcoinerlab/secp256k1";
-import { Psbt, initEccLib, networks, payments, script } from "bitcoinjs-lib";
-import coinselect from "bitcoinselect";
 import {
 	EtchInscription,
 	Etching,
@@ -11,7 +9,9 @@ import {
 	getSpacersVal,
 	none,
 	some,
-} from "runelib";
+} from "@midl/runelib";
+import { Psbt, initEccLib, networks, payments, script } from "bitcoinjs-lib";
+import coinselect from "bitcoinselect";
 import { getDefaultAccount } from "~/actions/getDefaultAccount";
 import { getFeeRate } from "~/actions/getFeeRate";
 import { getUTXOs } from "~/actions/getUTXOs";
