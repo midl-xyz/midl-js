@@ -11,9 +11,7 @@
 	"main": "./dist/cjs/index.js",
 	"module": "./dist/esm/index.js",
 	"types": "./dist/types/index.d.ts",
-	"files": [
-		"dist"
-	],
+	"files": ["dist"],
 	"exports": {
 		"./package.json": "./package.json",
 		".": {
@@ -36,7 +34,7 @@
 	"dependencies": {
 		"@bitcoinerlab/secp256k1": "^1.2.0",
 		"@midl/logger": "workspace:*",
-		"bitcoinjs-lib": "7.0.0-rc.0",
+		"bitcoinjs-lib": "7.0.1",
 		"bitcoinselect": "^1.0.0",
 		"deepmerge": "^4.3.1",
 		"ecpair": "^2.1.0",
