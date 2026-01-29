@@ -20,6 +20,8 @@
 		"@midl/react": "workspace:^",
 		"@midl/satoshi-kit": "workspace:^",
 		"@tanstack/react-query": "5.69.0",
+		"react": "19.2.4",
+		"react-dom": "^19.2.4",
 		"vite-plugin-vitepress-auto-sidebar": "^1.7.1",
 		"vitepress-plugin-auto-sidebar": "^1.2.0",
 		"vitepress-sidebar": "^1.30.2"

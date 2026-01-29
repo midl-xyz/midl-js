@@ -1,5 +1,5 @@
+import { Runestone } from "@midl/runelib";
 import * as bitcoin from "bitcoinjs-lib";
-import { Runestone } from "runelib";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import { makeRuneUTXO } from "~/__tests__/fixtures/utxo";
 import { __TEST__MNEMONIC__ } from "~/__tests__/keyPair";

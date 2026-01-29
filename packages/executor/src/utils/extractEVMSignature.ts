@@ -1,5 +1,7 @@
 import { AddressType, SignMessageProtocol } from "@midl/core";
+import { bytesToHex, hexToBytes } from "@noble/hashes/utils.js";
 import { Signature } from "@noble/secp256k1";
+import { base64, hex } from "@scure/base";
 import { publicKeyConvert } from "secp256k1";
 import { recoverPublicKey, toBytes, toHex } from "viem";
 import { getBIP322Hash } from "~/utils";
@@ -22,7 +24,7 @@ export const extractEVMSignature = async (
 		publicKey: string;
 	},
 ) => {
-	const signatureBuffer = Buffer.from(signature, "base64");
+	const signatureBuffer = base64.decode(signature);
 
 	let r: Uint8Array | null = null;
 	let s: Uint8Array | null = null;
@@ -33,10 +35,7 @@ export const extractEVMSignature = async (
 		case SignMessageProtocol.Ecdsa: {
 			recoveryId = BigInt((signatureBuffer[0] - 27) & 3);
 
-			const signatureWithoutFirstByte = Uint8Array.prototype.slice.call(
-				signatureBuffer,
-				1,
-			);
+			const signatureWithoutFirstByte = signatureBuffer.slice(1);
 
 			let sig: Signature;
 
@@ -60,13 +59,10 @@ export const extractEVMSignature = async (
 
 		case SignMessageProtocol.Bip322: {
 			if (addressType === AddressType.P2TR) {
-				const signatureWithoutFirstByte = Uint8Array.prototype.slice.call(
-					signatureBuffer,
-					2,
-				);
+				const signatureWithoutFirstByte = signatureBuffer.slice(2);
 
-				r = Uint8Array.prototype.slice.call(signatureWithoutFirstByte, 0, 32);
-				s = Uint8Array.prototype.slice.call(signatureWithoutFirstByte, 32, 64);
+				r = signatureWithoutFirstByte.slice(0, 32);
+				s = signatureWithoutFirstByte.slice(32, 64);
 				recoveryId = 27n;
 			}
 
@@ -93,8 +89,8 @@ export const extractEVMSignature = async (
 
 				r = new Uint8Array(32);
 				s = new Uint8Array(32);
-				r.set(Buffer.from(rBig.toString(16).padStart(64, "0"), "hex"));
-				s.set(Buffer.from(sBig.toString(16).padStart(64, "0"), "hex"));
+				r.set(hexToBytes(rBig.toString(16).padStart(64, "0")));
+				s.set(hexToBytes(sBig.toString(16).padStart(64, "0")));
 
 				try {
 					await verifyBIP322Signature(message, toHex(r), toHex(s), 27n, {
@@ -149,11 +145,9 @@ export const verifyBIP322Signature = async (
 		},
 	});
 
-	const converted = Buffer.from(
-		publicKeyConvert(Buffer.from(recovered.slice(2), "hex"), true),
-	)
-		.toString("hex")
-		.substring(2);
+	const converted = bytesToHex(
+		publicKeyConvert(hexToBytes(recovered.slice(2)), true),
+	).substring(2);
 
 	if (converted !== publicKey.slice(2)) {
 		throw new Error(

@@ -38,12 +38,14 @@
 	},
 	"dependencies": {
 		"@bitcoinerlab/secp256k1": "^1.2.0",
+		"@midl/bip322-js": "^3.0.1",
 		"@midl/contracts": "^1.0.11",
 		"@midl/core": "workspace:^",
 		"@midl/logger": "workspace:*",
+		"@noble/hashes": "^2.0.1",
 		"@noble/secp256k1": "1.7.1",
+		"@scure/base": "^2.0.0",
 		"@scure/btc-signer": "1.4.0",
-		"bip322-js": "^2.0.0",
 		"secp256k1": "^4.0.3"
 	},
 	"peerDependencies": {

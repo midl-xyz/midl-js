@@ -1,3 +1,4 @@
+import { hexToBytes } from "@noble/hashes/utils.js";
 import * as bitcoin from "bitcoinjs-lib";
 import { describe, expect, it, vi } from "vitest";
 import { __TEST__MNEMONIC__ } from "~/__tests__/keyPair";
@@ -31,12 +32,12 @@ describe("core | actions | signPSBT", async () => {
 
 		await connect(config, { purposes: [AddressPurpose.Payment] });
 
-		const account = (await getDefaultAccount(config)) as Account;
+		const account = getDefaultAccount(config);
 		const psbt = new bitcoin.Psbt();
 
 		const p2sh = bitcoin.payments.p2sh({
 			redeem: bitcoin.payments.p2wpkh({
-				pubkey: Buffer.from(account.publicKey, "hex"),
+				pubkey: hexToBytes(account.publicKey),
 				network: bitcoin.networks.regtest,
 			}),
 			network: bitcoin.networks.regtest,
@@ -55,7 +56,7 @@ describe("core | actions | signPSBT", async () => {
 		});
 
 		psbt.addOutput({
-			script: Buffer.from(""),
+			script: new Uint8Array(),
 			value: 0n,
 		});
 
@@ -73,7 +74,11 @@ describe("core | actions | signPSBT", async () => {
 	it("throws error if no connection", async () => {
 		const config = createConfig({
 			networks: [regtest],
-			connectors: [],
+			connectors: [
+				keyPairConnector({
+					mnemonic: __TEST__MNEMONIC__,
+				}),
+			],
 		});
 
 		const psbt = new bitcoin.Psbt();
@@ -103,7 +108,7 @@ describe("core | actions | signPSBT", async () => {
 
 		const p2sh = bitcoin.payments.p2sh({
 			redeem: bitcoin.payments.p2wpkh({
-				pubkey: Buffer.from(account.publicKey, "hex"),
+				pubkey: hexToBytes(account.publicKey),
 				network: bitcoin.networks.regtest,
 			}),
 			network: bitcoin.networks.regtest,
@@ -122,7 +127,7 @@ describe("core | actions | signPSBT", async () => {
 		});
 
 		psbt.addOutput({
-			script: Buffer.from(""),
+			script: new Uint8Array(),
 			value: 0n,
 		});
 

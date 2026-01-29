@@ -1,4 +1,5 @@
 import { type Account, AddressType, getAddressType } from "@midl/core";
+import { hexToBytes } from "@noble/hashes/utils.js";
 
 /**
  * Returns a byte value derived from the public key of a Bitcoin account, depending on its address type.
@@ -15,21 +16,13 @@ export const getBTCAddressByte = (account: Account): bigint => {
 
 	switch (addressType) {
 		case AddressType.P2SH_P2WPKH: {
-			const pkFirstByte = Uint8Array.prototype.slice.call(
-				Buffer.from(account.publicKey, "hex"),
-				0,
-				1,
-			);
+			const pkFirstByte = hexToBytes(account.publicKey).slice(0, 1);
 
 			return BigInt(pkFirstByte[0]) + 2n;
 		}
 
 		case AddressType.P2WPKH: {
-			const pkFirstByte = Uint8Array.prototype.slice.call(
-				Buffer.from(account.publicKey, "hex"),
-				0,
-				1,
-			);
+			const pkFirstByte = hexToBytes(account.publicKey).slice(0, 1);
 
 			return BigInt(pkFirstByte[0]);
 		}

@@ -8,7 +8,12 @@ import {
 import { getEVMAddress } from "@midl/executor";
 import { keyPairConnector } from "@midl/node";
 import type { HardhatRuntimeEnvironment } from "hardhat/types";
-import { type Address, type PublicClient, encodeFunctionData } from "viem";
+import {
+	type Address,
+	type PublicClient,
+	encodeFunctionData,
+	zeroAddress,
+} from "viem";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createStore } from "~/actions/createStore";
 import { getDeployment } from "~/actions/getDeployment";
@@ -189,7 +194,7 @@ describe("writeContract", () => {
 			"NFT",
 			"mint",
 			[],
-			{ value: 123n, gas: 50_000n, nonce: 99 },
+			{ value: 123n, gas: 50_000n, nonce: 99, to: zeroAddress },
 			{ deposit: { satoshis: 200 } },
 		);
 
@@ -197,6 +202,7 @@ describe("writeContract", () => {
 		expect(intention.evmTransaction?.nonce).toBe(99);
 		expect(intention.evmTransaction?.value).toBe(123n);
 		expect(intention.evmTransaction?.gas).toBe(50_000n);
+		expect(intention.evmTransaction?.to).toBe(zeroAddress);
 		expect(intention.deposit).toEqual({ satoshis: 200 });
 	});
 

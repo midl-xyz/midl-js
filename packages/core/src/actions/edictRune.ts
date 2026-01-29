@@ -1,7 +1,7 @@
 import ecc from "@bitcoinerlab/secp256k1";
-import { Psbt, initEccLib, networks, payments } from "bitcoinjs-lib";
+import { Edict, RuneId, Runestone, none, some } from "@midl/runelib";
+import { Psbt, initEccLib, networks } from "bitcoinjs-lib";
 import coinSelect from "bitcoinselect";
-import { Edict, RuneId, Runestone, none, some } from "runelib";
 import { getDefaultAccount } from "~/actions";
 import { broadcastTransaction } from "~/actions/broadcastTransaction";
 import { getFeeRate } from "~/actions/getFeeRate";
@@ -10,7 +10,7 @@ import { getUTXOs } from "~/actions/getUTXOs";
 import { AddressPurpose } from "~/constants";
 import type { Config } from "~/createConfig";
 import type { RuneUTXO } from "~/providers";
-import { extractXCoordinate, makePSBTInputs, runeUTXOSelect } from "~/utils";
+import { makePSBTInputs, runeUTXOSelect } from "~/utils";
 
 initEccLib(ecc);
 

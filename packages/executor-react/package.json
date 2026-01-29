@@ -36,7 +36,7 @@
 		"happy-dom": "^15.11.7",
 		"react": "^19.2.4",
 		"viem": "npm:@midl/viem",
-		"wagmi": "^2.14.16",
+		"wagmi": "^3.4.1",
 		"zustand": "^5.0.1"
 	},
 	"dependencies": {
@@ -50,7 +50,7 @@
 		"bitcoinjs-lib": ">=7 <8",
 		"react": ">=18 <20",
 		"react-dom": ">=18 <20",
-		"wagmi": ">=2 <=2.14.16",
+		"wagmi": ">=2 <=4",
 		"zustand": ">=5"
 	},
 	"repository": {
