@@ -1,6 +1,6 @@
 {
 	"name": "@midl/satoshi-kit",
-	"version": "3.0.0",
+	"version": "3.0.1-next.0",
 	"license": "MIT",
 	"type": "module",
 	"scripts": {
@@ -31,7 +31,10 @@
 		"./styles.css": "./dist/styles.css",
 		"./styled-system/*": "./styled-system/*"
 	},
-	"files": ["dist", "styled-system"],
+	"files": [
+		"dist",
+		"styled-system"
+	],
 	"devDependencies": {
 		"@midl/midl-js-config": "workspace:^",
 		"@midl/connectors": "workspace:^",

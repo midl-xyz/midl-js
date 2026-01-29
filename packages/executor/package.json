@@ -1,6 +1,6 @@
 {
 	"name": "@midl/executor",
-	"version": "3.0.0",
+	"version": "3.0.1-next.0",
 	"license": "MIT",
 	"scripts": {
 		"build": "pnpm run clean && tspc --project tsconfig.esm.json && tspc --project tsconfig.cjs.json",
@@ -25,7 +25,9 @@
 			"require": "./dist/cjs/*.js"
 		}
 	},
-	"files": ["dist"],
+	"files": [
+		"dist"
+	],
 	"devDependencies": {
 		"@midl/midl-js-config": "workspace:^",
 		"@midl/node": "workspace:^",

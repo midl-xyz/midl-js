@@ -1,5 +1,18 @@
 # @midl/hardhat-deploy
 
+## 3.0.1-next.0
+
+### Patch Changes
+
+- fbe9367: feat: upgrade bitcoinjs-lib to stable version 7.0.1
+- c796a94: feat(hardhat-deploy): refactor & add new methods
+- Updated dependencies [fbe9367]
+- Updated dependencies [8787448]
+  - @midl/executor@3.0.1-next.0
+  - @midl/logger@3.0.1-next.0
+  - @midl/core@3.0.1-next.0
+  - @midl/node@3.0.1-next.0
+
 ## 3.0.0
 
 ### Minor Changes
