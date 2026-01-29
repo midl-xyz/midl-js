@@ -1,3 +1,5 @@
+import { mkdirSync, writeFileSync } from "node:fs";
+import { dirname, join } from "node:path";
 import { defineConfig } from "@pandacss/dev";
 import postcss from "postcss";
 import prefixGlobals from "./plugins/postcss-prefix-globals.cjs";
@@ -26,6 +28,21 @@ export default defineConfig({
 	},
 
 	hooks: {
+		"codegen:done": () => {
+			const styledSystemDir = join(__dirname, "styled-system");
+			const folders = ["css", "jsx", "recipes", "tokens", "patterns"];
+			const contents = 'export * from "./index.mjs";\n';
+
+			for (const folder of folders) {
+				const dir = join(styledSystemDir, folder);
+				mkdirSync(dir, { recursive: true });
+				writeFileSync(join(dir, "index.js"), contents, "utf8");
+			}
+
+			const helpersMjs = join(styledSystemDir, "helpers.js");
+			const helpersContent = 'export * from "./index.mjs";\n';
+			writeFileSync(helpersMjs, helpersContent, "utf8");
+		},
 		"cssgen:done": ({ artifact, content }) => {
 			if (artifact === "styles.css") {
 				const result = postcss([
@@ -45,4 +62,10 @@ export default defineConfig({
 		},
 	},
 	outdir: "styled-system",
+	importMap: {
+		css: "@midl/satoshi-kit/styled-system/css",
+		recipes: "@midl/satoshi-kit/styled-system/recipes",
+		patterns: "@midl/satoshi-kit/styled-system/patterns",
+		jsx: "@midl/satoshi-kit/styled-system/jsx",
+	},
 });
