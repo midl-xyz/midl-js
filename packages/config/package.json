@@ -1,6 +1,6 @@
 {
 	"name": "@midl/midl-js-config",
-	"version": "3.0.1-next.0",
+	"version": "3.0.1",
 	"license": "MIT",
 	"private": true,
 	"files": [
