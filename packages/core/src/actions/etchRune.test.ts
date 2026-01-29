@@ -1,4 +1,4 @@
-import { applySpacers, getSpacersVal } from "runelib";
+import { applySpacers, getSpacersVal } from "@midl/runelib";
 import { describe, expect, it } from "vitest";
 
 describe("core | actions | etchRune", () => {

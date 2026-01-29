@@ -1,10 +1,5 @@
 import { type Config, getDefaultAccount } from "@midl/core";
-import {
-	type PublicClient,
-	type WalletClient,
-	isHex,
-	serializeTransaction,
-} from "viem";
+import { type PublicClient, isHex, serializeTransaction } from "viem";
 import { getTransactionCount } from "viem/actions";
 import { getPublicKey } from "~/actions";
 import { GAS_PRICE } from "~/config";
@@ -42,7 +37,7 @@ type PrepareIntentionOptions = {
  */
 export const serializeIntention = async (
 	config: Config,
-	client: PublicClient | WalletClient,
+	client: PublicClient,
 	intention: TransactionIntention,
 	intentions: TransactionIntention[],
 	options: PrepareIntentionOptions,

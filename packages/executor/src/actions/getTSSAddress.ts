@@ -1,14 +1,12 @@
 import type { Config } from "@midl/core";
+import { hexToBytes } from "@noble/hashes/utils.js";
 import * as bitcoin from "bitcoinjs-lib";
-import type { PublicClient, WalletClient } from "viem";
+import type { PublicClient } from "viem";
 import { readContract } from "viem/actions";
 import { SystemContracts } from "~/config";
 import { globalParamsAbi } from "~/contracts";
 
-export const getTSSAddress = async (
-	config: Config,
-	client: PublicClient | WalletClient,
-) => {
+export const getTSSAddress = async (config: Config, client: PublicClient) => {
 	const { network } = config.getState();
 
 	if (!network) {
@@ -23,7 +21,7 @@ export const getTSSAddress = async (
 
 	const scriptPubKey = bitcoin.script.compile([
 		bitcoin.opcodes.OP_1,
-		Buffer.from(data.slice(2), "hex"),
+		hexToBytes(data.slice(2)),
 	]);
 
 	return bitcoin.address.fromOutputScript(

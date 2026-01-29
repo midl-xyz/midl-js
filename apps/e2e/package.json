@@ -18,7 +18,7 @@
 		"bip32": "5.0.0-rc.0",
 		"bip39": "^3.1.0",
 		"dotenv": "^16.4.5",
-		"ecpair": "^2.1.0",
+		"ecpair": "^3.0.0",
 		"globals": "^15.11.0",
 		"typescript": "~5.6.2",
 		"bitcoinjs-lib": "7.0.1"

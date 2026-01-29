@@ -1,3 +1,4 @@
+import { hexToBytes } from "@noble/hashes/utils.js";
 import { type Psbt, networks, payments } from "bitcoinjs-lib";
 import type { UTXO } from "bitcoinselect";
 import type { Account } from "~/connectors";
@@ -32,7 +33,7 @@ export const makePSBTInputs = async (
 		case AddressType.P2SH_P2WPKH: {
 			const { redeem } = payments.p2sh({
 				redeem: payments.p2wpkh({
-					pubkey: Buffer.from(account.publicKey, "hex"),
+					pubkey: hexToBytes(account.publicKey),
 					network,
 				}),
 				network,
@@ -47,7 +48,7 @@ export const makePSBTInputs = async (
 				inputs.push({
 					hash: utxo.txid as string,
 					index: utxo.vout,
-					nonWitnessUtxo: Buffer.from(hex, "hex"),
+					nonWitnessUtxo: hexToBytes(hex),
 					redeemScript: redeem?.output,
 				});
 			}
@@ -56,7 +57,7 @@ export const makePSBTInputs = async (
 		}
 
 		case AddressType.P2TR: {
-			const xOnly = Buffer.from(extractXCoordinate(account.publicKey), "hex");
+			const xOnly = hexToBytes(extractXCoordinate(account.publicKey));
 
 			const p2tr = payments.p2tr({
 				internalPubkey: xOnly,
@@ -81,7 +82,7 @@ export const makePSBTInputs = async (
 
 		case AddressType.P2WPKH: {
 			const p2wpkh = payments.p2wpkh({
-				pubkey: Buffer.from(account.publicKey, "hex"),
+				pubkey: hexToBytes(account.publicKey),
 				network,
 			});
 

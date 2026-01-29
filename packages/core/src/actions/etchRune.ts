@@ -1,6 +1,4 @@
 import ecc from "@bitcoinerlab/secp256k1";
-import { Psbt, initEccLib, networks, payments, script } from "bitcoinjs-lib";
-import coinselect from "bitcoinselect";
 import {
 	EtchInscription,
 	Etching,
@@ -11,7 +9,10 @@ import {
 	getSpacersVal,
 	none,
 	some,
-} from "runelib";
+} from "@midl/runelib";
+import { concatBytes, hexToBytes, utf8ToBytes } from "@noble/hashes/utils.js";
+import { Psbt, initEccLib, networks, payments, script } from "bitcoinjs-lib";
+import coinselect from "bitcoinselect";
 import { getDefaultAccount } from "~/actions/getDefaultAccount";
 import { getFeeRate } from "~/actions/getFeeRate";
 import { getUTXOs } from "~/actions/getUTXOs";
@@ -167,7 +168,7 @@ export const etchRune = async (
 
 	if (content) {
 		// TODO: Support other content types
-		inscription.setContent("text/plain", Buffer.from(content, "utf-8"));
+		inscription.setContent("text/plain", utf8ToBytes(content));
 	}
 
 	inscription.setRune(runeName);
@@ -176,17 +177,17 @@ export const etchRune = async (
 
 	const etchingScriptAsm = `${xCoordinate} OP_CHECKSIG`;
 
-	const etchingScript = Buffer.concat([
+	const etchingScript = concatBytes(
 		script.fromASM(etchingScriptAsm),
 		inscription.encipher(),
-	]);
+	);
 
 	const scriptTree: payments.Payment["scriptTree"] = {
 		output: etchingScript,
 	};
 
 	const scriptP2TR = payments.p2tr({
-		internalPubkey: Buffer.from(xCoordinate, "hex"),
+		internalPubkey: hexToBytes(xCoordinate),
 		scriptTree,
 		network,
 	});
@@ -197,7 +198,7 @@ export const etchRune = async (
 	};
 
 	const etchingP2TR = payments.p2tr({
-		internalPubkey: Buffer.from(xCoordinate, "hex"),
+		internalPubkey: hexToBytes(xCoordinate),
 		scriptTree,
 		redeem: etchingRedeem,
 		network,

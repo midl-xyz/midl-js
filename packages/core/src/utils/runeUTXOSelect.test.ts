@@ -1,4 +1,3 @@
-import { formatUnits } from "viem";
 import { describe, expect, it } from "vitest";
 import type { RuneUTXO } from "~/providers";
 import { runeUTXOSelect } from "~/utils";

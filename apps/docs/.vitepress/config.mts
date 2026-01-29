@@ -59,9 +59,6 @@ export default withSidebar(
 			math: true,
 		},
 		vite: {
-			esbuild: {
-				target: "esnext",
-			},
 			plugins: [llmstxt()],
 		},
 	}),

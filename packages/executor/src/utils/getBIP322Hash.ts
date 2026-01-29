@@ -1,20 +1,21 @@
+import { BIP322 } from "@midl/bip322-js";
 import { AddressType } from "@midl/core";
+import { hexToBytes } from "@noble/hashes/utils.js";
 import { OutScript, Transaction, p2sh, p2wpkh } from "@scure/btc-signer";
-import { BIP322 } from "bip322-js";
 
 function getBIP322HashP2TR(message: string, publicKey: string) {
 	const scriptPubKey = new Uint8Array(34);
-	const publicKeyBuffer = Buffer.from(publicKey, "hex");
+	const publicKeyBuffer = hexToBytes(publicKey);
 
 	scriptPubKey[0] = 0x51;
 	scriptPubKey[1] = 0x20;
 	scriptPubKey.set(publicKeyBuffer, 2);
 
-	const toSpendTx = BIP322.buildToSpendTx(message, Buffer.from(scriptPubKey));
+	const toSpendTx = BIP322.buildToSpendTx(message, scriptPubKey);
 
 	const toSignTx = BIP322.buildToSignTx(
 		toSpendTx.getId(),
-		Buffer.from(scriptPubKey),
+		scriptPubKey,
 		false,
 		publicKeyBuffer,
 	);
@@ -24,16 +25,13 @@ function getBIP322HashP2TR(message: string, publicKey: string) {
 }
 
 function getBIP322HashP2WPKH(message: string, publicKey: string) {
-	const publicKeyBuffer = Buffer.from(publicKey, "hex");
+	const publicKeyBuffer = hexToBytes(publicKey);
 
 	const scriptPubKey = p2wpkh(publicKeyBuffer).script;
 
-	const toSpendTx = BIP322.buildToSpendTx(message, Buffer.from(scriptPubKey));
+	const toSpendTx = BIP322.buildToSpendTx(message, scriptPubKey);
 
-	const toSignTx = BIP322.buildToSignTx(
-		toSpendTx.getId(),
-		Buffer.from(scriptPubKey),
-	);
+	const toSignTx = BIP322.buildToSignTx(toSpendTx.getId(), scriptPubKey);
 	toSignTx.updateInput(0, {
 		sighashType: 1,
 	});
@@ -49,7 +47,7 @@ function getBIP322HashP2WPKH(message: string, publicKey: string) {
 }
 
 function getBIP322HashP2SHP2WPKH(message: string, publicKey: string) {
-	const publicKeyBuffer = Buffer.from(publicKey, "hex");
+	const publicKeyBuffer = hexToBytes(publicKey);
 
 	const p2wpkhResult = p2wpkh(publicKeyBuffer);
 
@@ -61,11 +59,8 @@ function getBIP322HashP2SHP2WPKH(message: string, publicKey: string) {
 	}
 	const scriptPubKey = p2shResult.script;
 
-	const toSpendTx = BIP322.buildToSpendTx(message, Buffer.from(scriptPubKey));
-	const toSignTx = BIP322.buildToSignTx(
-		toSpendTx.getId(),
-		Buffer.from(scriptPubKey),
-	);
+	const toSpendTx = BIP322.buildToSpendTx(message, scriptPubKey);
+	const toSignTx = BIP322.buildToSignTx(toSpendTx.getId(), scriptPubKey);
 
 	toSignTx.updateInput(0, { sighashType: 1 });
 

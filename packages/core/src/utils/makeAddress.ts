@@ -1,8 +1,9 @@
+import ecc from "@bitcoinerlab/secp256k1";
+import { hexToBytes } from "@noble/hashes/utils.js";
+import * as bitcoin from "bitcoinjs-lib";
 import { AddressPurpose } from "~/constants";
 import type { BitcoinNetwork } from "~/createConfig";
-import * as bitcoin from "bitcoinjs-lib";
 import { extractXCoordinate } from "~/utils/extractXCoordinate";
-import ecc from "@bitcoinerlab/secp256k1";
 
 bitcoin.initEccLib(ecc);
 
@@ -15,7 +16,7 @@ export const makeAddress = async (
 		case AddressPurpose.Payment:
 			return bitcoin.payments.p2sh({
 				redeem: bitcoin.payments.p2wpkh({
-					pubkey: Buffer.from(publicKey, "hex"),
+					pubkey: hexToBytes(publicKey),
 					network: bitcoin.networks[network.network],
 				}),
 				network: bitcoin.networks[network.network],
@@ -23,7 +24,7 @@ export const makeAddress = async (
 
 		case AddressPurpose.Ordinals:
 			return bitcoin.payments.p2tr({
-				internalPubkey: Buffer.from(extractXCoordinate(publicKey), "hex"),
+				internalPubkey: hexToBytes(extractXCoordinate(publicKey)),
 				network: bitcoin.networks[network.network],
 			}).address;
 		default:

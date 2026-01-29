@@ -1,4 +1,5 @@
 import { type Account, AddressType, type BitcoinNetwork } from "@midl/core";
+import { hexToBytes } from "@noble/hashes/utils.js";
 import * as bitcoin from "bitcoinjs-lib";
 import { padBytes, toHex } from "viem";
 import { getPublicKey } from "~/actions";
@@ -14,7 +15,7 @@ export const getReceiverBytesHex = (
 
 		case AddressType.P2SH_P2WPKH: {
 			const p2wpkh = bitcoin.payments.p2wpkh({
-				pubkey: Buffer.from(account.publicKey, "hex"),
+				pubkey: hexToBytes(account.publicKey),
 				network: bitcoin.networks[network.network],
 			});
 			const p2sh = bitcoin.payments.p2sh({

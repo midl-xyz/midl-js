@@ -2,15 +2,9 @@ import {
 	type Config,
 	type SignMessageProtocol,
 	getDefaultAccount,
-	signMessage,
 	signMessages,
 } from "@midl/core";
-import {
-	type PublicClient,
-	type WalletClient,
-	keccak256,
-	serializeTransaction,
-} from "viem";
+import { type PublicClient, keccak256, serializeTransaction } from "viem";
 import { serializeIntention } from "~/actions/serializeIntention";
 import type { TransactionIntention } from "~/types/intention";
 import { extractEVMSignature } from "~/utils";
@@ -37,7 +31,7 @@ type SignIntentionOptions = {
 
 export const signIntentions = async (
 	config: Config,
-	client: PublicClient | WalletClient,
+	client: PublicClient,
 	intentions: TransactionIntention[],
 	options: SignIntentionOptions,
 ) => {
