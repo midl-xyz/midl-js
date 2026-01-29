@@ -1,5 +1,14 @@
 # @midl/react
 
+## 3.0.1-next.0
+
+### Patch Changes
+
+- fbe9367: feat: upgrade bitcoinjs-lib to stable version 7.0.1
+- Updated dependencies [fbe9367]
+- Updated dependencies [8787448]
+  - @midl/core@3.0.1-next.0
+
 ## 3.0.0
 
 ### Patch Changes
