@@ -1,5 +1,18 @@
 # @midl/satoshi-kit
 
+## 3.0.1
+
+### Patch Changes
+
+- c796a94: chore(satoshi-kit): fix mobile layout
+- 109dc65: fix(satoshi-kit): re-export mjs to support bundler like vite
+- fbe9367: feat: upgrade bitcoinjs-lib to stable version 7.0.1
+- Updated dependencies [fbe9367]
+- Updated dependencies [8787448]
+  - @midl/connectors@3.0.1
+  - @midl/react@3.0.1
+  - @midl/core@3.0.1
+
 ## 3.0.1-next.0
 
 ### Patch Changes

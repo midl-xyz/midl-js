@@ -1,5 +1,14 @@
 # @midl/core
 
+## 3.0.1
+
+### Patch Changes
+
+- fbe9367: feat: upgrade bitcoinjs-lib to stable version 7.0.1
+- 8787448: chore(core): update runelib
+- Updated dependencies [fbe9367]
+  - @midl/logger@3.0.1
+
 ## 3.0.1-next.0
 
 ### Patch Changes
