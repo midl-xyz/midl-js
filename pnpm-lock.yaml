@@ -108,9 +108,15 @@ importers:
       '@tanstack/react-query':
         specifier: 5.69.0
         version: 5.69.0(react@19.2.4)
+      react:
+        specifier: 19.2.4
+        version: 19.2.4
+      react-dom:
+        specifier: ^19.2.4
+        version: 19.2.4(react@19.2.4)
       vite-plugin-vitepress-auto-sidebar:
         specifier: ^1.7.1
-        version: 1.7.1(@typescript-eslint/parser@8.22.0(eslint@9.19.0(jiti@2.4.2))(typescript@5.7.2))(eslint@9.19.0(jiti@2.4.2))(typescript@5.7.2)(vite@5.4.14(@types/node@22.12.0)(lightningcss@1.25.1))(vitepress@1.6.3(@algolia/client-search@5.20.0)(@types/node@22.12.0)(@types/react@18.3.18)(axios@1.13.3)(change-case@5.4.4)(idb-keyval@6.2.1)(lightningcss@1.25.1)(markdown-it-mathjax3@4.3.2)(postcss@8.5.1)(qrcode@1.5.3)(react-dom@18.3.1(react@19.2.4))(react@19.2.4)(search-insights@2.17.3)(typescript@5.7.2))
+        version: 1.7.1(@typescript-eslint/parser@8.22.0(eslint@9.19.0(jiti@2.4.2))(typescript@5.7.2))(eslint@9.19.0(jiti@2.4.2))(typescript@5.7.2)(vite@5.4.14(@types/node@22.12.0)(lightningcss@1.25.1))(vitepress@1.6.3(@algolia/client-search@5.20.0)(@types/node@22.12.0)(@types/react@18.3.18)(axios@1.13.3)(change-case@5.4.4)(idb-keyval@6.2.1)(lightningcss@1.25.1)(markdown-it-mathjax3@4.3.2)(postcss@8.5.1)(qrcode@1.5.3)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(search-insights@2.17.3)(typescript@5.7.2))
       vitepress-plugin-auto-sidebar:
         specifier: ^1.2.0
         version: 1.2.0
@@ -123,7 +129,7 @@ importers:
         version: 4.3.2
       vitepress:
         specifier: ^1.6.3
-        version: 1.6.3(@algolia/client-search@5.20.0)(@types/node@22.12.0)(@types/react@18.3.18)(axios@1.13.3)(change-case@5.4.4)(idb-keyval@6.2.1)(lightningcss@1.25.1)(markdown-it-mathjax3@4.3.2)(postcss@8.5.1)(qrcode@1.5.3)(react-dom@18.3.1(react@19.2.4))(react@19.2.4)(search-insights@2.17.3)(typescript@5.7.2)
+        version: 1.6.3(@algolia/client-search@5.20.0)(@types/node@22.12.0)(@types/react@18.3.18)(axios@1.13.3)(change-case@5.4.4)(idb-keyval@6.2.1)(lightningcss@1.25.1)(markdown-it-mathjax3@4.3.2)(postcss@8.5.1)(qrcode@1.5.3)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(search-insights@2.17.3)(typescript@5.7.2)
       vitepress-plugin-llms:
         specifier: ^1.10.0
         version: 1.10.0
@@ -316,8 +322,8 @@ importers:
         specifier: workspace:*
         version: link:../logger
       '@midl/runelib':
-        specifier: ^1.0.8
-        version: 1.0.8(typescript@5.7.2)
+        specifier: 1.0.9
+        version: 1.0.9(typescript@5.7.2)
       '@noble/hashes':
         specifier: ^2.0.1
         version: 2.0.1
@@ -2280,8 +2286,8 @@ packages:
   '@midl/contracts@1.0.11':
     resolution: {integrity: sha512-3kn2qlxI5EoBNqxz5e2QS4lr+MvUP3vboCDEh1sWgJue89xRrAtBEbJVewQZ4QhN8acjly9C5zFOgsSsBCun+g==}
 
-  '@midl/runelib@1.0.8':
-    resolution: {integrity: sha512-BYlGgYvtkGKKvm01V8LwOX3lHP8stj0Ze+tQr/HI3XBm0P5t/hpcYtR4iZdo/5GowMCZbLmfQpi/y1kyF8HcnA==}
+  '@midl/runelib@1.0.9':
+    resolution: {integrity: sha512-mVzmorqfIh7LT1TE5mzCq4KxzkZ39wftB7M6re+oKDsU6MkxnR4Ojv9B6vP47hSrAWbbkfJiNCGSM5ObnjeV7g==}
 
   '@midl/viem@2.21.39':
     resolution: {integrity: sha512-Hnu/tmjFfaqGFXgLk/kxMmOsRcfLo/FFXK/yEVB+KFcXZ2OCSGT9WMCorRfwKLeKVAyFIUjYqJXjTw3es7+4bA==}
@@ -7688,11 +7694,6 @@ packages:
     resolution: {integrity: sha512-8zGqypfENjCIqGhgXToC8aB2r7YrBX+AQAfIPs/Mlk+BtPTztOvTS01NRW/3Eh60J+a48lt8qsCzirQ6loCVfA==}
     engines: {node: '>= 0.8'}
 
-  react-dom@18.3.1:
-    resolution: {integrity: sha512-5m4nQKp+rZRb09LNH59GM4BxTh9251/ylbKIbpe7TpGxfJ+9kv6BLkLBXIjjspbgbnIBNqlI23tRnTWT0snUIw==}
-    peerDependencies:
-      react: 19.2.4
-
   react-dom@19.2.4:
     resolution: {integrity: sha512-AXJdLo8kgMbimY95O2aKQqsz2iWi9jMgKJhRBAxECE4IFxfcazB2LmzloIoibJI3C12IlY20+KFaLv+71bUJeQ==}
     peerDependencies:
@@ -7938,9 +7939,6 @@ packages:
   saxes@6.0.0:
     resolution: {integrity: sha512-xAg7SOnEhrm5zI3puOOKyy1OMcMlIJZYNJY7xLBwSze0UjhPLnWfj2GF2EpT0jmzaJKIWKHLsaSSajf35bcYnA==}
     engines: {node: '>=v12.22.7'}
-
-  scheduler@0.23.2:
-    resolution: {integrity: sha512-UOShsPwz7NrMUqhR6t0hWjFduvOzbtv7toDH1/hIrfRNIDBnnBWd0CwJTGvTpngVlmwGCdP9/Zl/tVrDqcuYzQ==}
 
   scheduler@0.27.0:
     resolution: {integrity: sha512-eNv+WrVbKu1f3vbYJT/xtiF5syA5HPIMtf9IgY/nKg0sWqzAUEvqY/xm7OcZc/qafLx/iO9FgOmeSAp4v5ti/Q==}
@@ -9949,9 +9947,9 @@ snapshots:
 
   '@docsearch/css@3.8.2': {}
 
-  '@docsearch/js@3.8.2(@algolia/client-search@5.20.0)(@types/react@18.3.18)(react-dom@18.3.1(react@19.2.4))(react@19.2.4)(search-insights@2.17.3)':
+  '@docsearch/js@3.8.2(@algolia/client-search@5.20.0)(@types/react@18.3.18)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(search-insights@2.17.3)':
     dependencies:
-      '@docsearch/react': 3.8.2(@algolia/client-search@5.20.0)(@types/react@18.3.18)(react-dom@18.3.1(react@19.2.4))(react@19.2.4)(search-insights@2.17.3)
+      '@docsearch/react': 3.8.2(@algolia/client-search@5.20.0)(@types/react@18.3.18)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(search-insights@2.17.3)
       preact: 10.25.4
     transitivePeerDependencies:
       - '@algolia/client-search'
@@ -9960,7 +9958,7 @@ snapshots:
       - react-dom
       - search-insights
 
-  '@docsearch/react@3.8.2(@algolia/client-search@5.20.0)(@types/react@18.3.18)(react-dom@18.3.1(react@19.2.4))(react@19.2.4)(search-insights@2.17.3)':
+  '@docsearch/react@3.8.2(@algolia/client-search@5.20.0)(@types/react@18.3.18)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(search-insights@2.17.3)':
     dependencies:
       '@algolia/autocomplete-core': 1.17.7(@algolia/client-search@5.20.0)(algoliasearch@5.20.0)(search-insights@2.17.3)
       '@algolia/autocomplete-preset-algolia': 1.17.7(@algolia/client-search@5.20.0)(algoliasearch@5.20.0)
@@ -9969,7 +9967,7 @@ snapshots:
     optionalDependencies:
       '@types/react': 18.3.18
       react: 19.2.4
-      react-dom: 18.3.1(react@19.2.4)
+      react-dom: 19.2.4(react@19.2.4)
       search-insights: 2.17.3
     transitivePeerDependencies:
       - '@algolia/client-search'
@@ -10978,7 +10976,7 @@ snapshots:
 
   '@midl/contracts@1.0.11': {}
 
-  '@midl/runelib@1.0.8(typescript@5.7.2)':
+  '@midl/runelib@1.0.9(typescript@5.7.2)':
     dependencies:
       '@noble/hashes': 2.0.1
       bitcoinjs-lib: 7.0.1(typescript@5.7.2)
@@ -17940,13 +17938,6 @@ snapshots:
       iconv-lite: 0.4.24
       unpipe: 1.0.0
 
-  react-dom@18.3.1(react@19.2.4):
-    dependencies:
-      loose-envify: 1.4.0
-      react: 19.2.4
-      scheduler: 0.23.2
-    optional: true
-
   react-dom@19.2.4(react@19.2.4):
     dependencies:
       react: 19.2.4
@@ -18253,11 +18244,6 @@ snapshots:
   saxes@6.0.0:
     dependencies:
       xmlchars: 2.2.0
-
-  scheduler@0.23.2:
-    dependencies:
-      loose-envify: 1.4.0
-    optional: true
 
   scheduler@0.27.0: {}
 
@@ -19309,7 +19295,7 @@ snapshots:
     transitivePeerDependencies:
       - typescript
 
-  vite-plugin-vitepress-auto-sidebar@1.7.1(@typescript-eslint/parser@8.22.0(eslint@9.19.0(jiti@2.4.2))(typescript@5.7.2))(eslint@9.19.0(jiti@2.4.2))(typescript@5.7.2)(vite@5.4.14(@types/node@22.12.0)(lightningcss@1.25.1))(vitepress@1.6.3(@algolia/client-search@5.20.0)(@types/node@22.12.0)(@types/react@18.3.18)(axios@1.13.3)(change-case@5.4.4)(idb-keyval@6.2.1)(lightningcss@1.25.1)(markdown-it-mathjax3@4.3.2)(postcss@8.5.1)(qrcode@1.5.3)(react-dom@18.3.1(react@19.2.4))(react@19.2.4)(search-insights@2.17.3)(typescript@5.7.2)):
+  vite-plugin-vitepress-auto-sidebar@1.7.1(@typescript-eslint/parser@8.22.0(eslint@9.19.0(jiti@2.4.2))(typescript@5.7.2))(eslint@9.19.0(jiti@2.4.2))(typescript@5.7.2)(vite@5.4.14(@types/node@22.12.0)(lightningcss@1.25.1))(vitepress@1.6.3(@algolia/client-search@5.20.0)(@types/node@22.12.0)(@types/react@18.3.18)(axios@1.13.3)(change-case@5.4.4)(idb-keyval@6.2.1)(lightningcss@1.25.1)(markdown-it-mathjax3@4.3.2)(postcss@8.5.1)(qrcode@1.5.3)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(search-insights@2.17.3)(typescript@5.7.2)):
     dependencies:
       eslint-config-love: 110.0.0(@typescript-eslint/parser@8.22.0(eslint@9.19.0(jiti@2.4.2))(typescript@5.7.2))(eslint@9.19.0(jiti@2.4.2))(typescript@5.7.2)
       front-matter: 4.0.2
@@ -19317,7 +19303,7 @@ snapshots:
       picocolors: 1.1.1
       typescript-eslint: 8.22.0(eslint@9.19.0(jiti@2.4.2))(typescript@5.7.2)
       vite: 5.4.14(@types/node@22.12.0)(lightningcss@1.25.1)
-      vitepress: 1.6.3(@algolia/client-search@5.20.0)(@types/node@22.12.0)(@types/react@18.3.18)(axios@1.13.3)(change-case@5.4.4)(idb-keyval@6.2.1)(lightningcss@1.25.1)(markdown-it-mathjax3@4.3.2)(postcss@8.5.1)(qrcode@1.5.3)(react-dom@18.3.1(react@19.2.4))(react@19.2.4)(search-insights@2.17.3)(typescript@5.7.2)
+      vitepress: 1.6.3(@algolia/client-search@5.20.0)(@types/node@22.12.0)(@types/react@18.3.18)(axios@1.13.3)(change-case@5.4.4)(idb-keyval@6.2.1)(lightningcss@1.25.1)(markdown-it-mathjax3@4.3.2)(postcss@8.5.1)(qrcode@1.5.3)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(search-insights@2.17.3)(typescript@5.7.2)
     transitivePeerDependencies:
       - '@typescript-eslint/parser'
       - eslint
@@ -19375,10 +19361,10 @@ snapshots:
       glob: 10.4.5
       gray-matter: 4.0.3
 
-  vitepress@1.6.3(@algolia/client-search@5.20.0)(@types/node@22.12.0)(@types/react@18.3.18)(axios@1.13.3)(change-case@5.4.4)(idb-keyval@6.2.1)(lightningcss@1.25.1)(markdown-it-mathjax3@4.3.2)(postcss@8.5.1)(qrcode@1.5.3)(react-dom@18.3.1(react@19.2.4))(react@19.2.4)(search-insights@2.17.3)(typescript@5.7.2):
+  vitepress@1.6.3(@algolia/client-search@5.20.0)(@types/node@22.12.0)(@types/react@18.3.18)(axios@1.13.3)(change-case@5.4.4)(idb-keyval@6.2.1)(lightningcss@1.25.1)(markdown-it-mathjax3@4.3.2)(postcss@8.5.1)(qrcode@1.5.3)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(search-insights@2.17.3)(typescript@5.7.2):
     dependencies:
       '@docsearch/css': 3.8.2
-      '@docsearch/js': 3.8.2(@algolia/client-search@5.20.0)(@types/react@18.3.18)(react-dom@18.3.1(react@19.2.4))(react@19.2.4)(search-insights@2.17.3)
+      '@docsearch/js': 3.8.2(@algolia/client-search@5.20.0)(@types/react@18.3.18)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(search-insights@2.17.3)
       '@iconify-json/simple-icons': 1.2.22
       '@shikijs/core': 2.1.0
       '@shikijs/transformers': 2.1.0

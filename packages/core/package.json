@@ -35,7 +35,7 @@
 	"dependencies": {
 		"@bitcoinerlab/secp256k1": "^1.2.0",
 		"@midl/logger": "workspace:*",
-		"@midl/runelib": "^1.0.8",
+		"@midl/runelib": "1.0.9",
 		"@noble/hashes": "^2.0.1",
 		"bitcoinjs-lib": "7.0.1",
 		"bitcoinselect": "^1.0.0",
