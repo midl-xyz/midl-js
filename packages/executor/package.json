@@ -1,6 +1,6 @@
 {
 	"name": "@midl/executor",
-	"version": "3.0.1",
+	"version": "3.0.2-next.0",
 	"license": "MIT",
 	"scripts": {
 		"build": "tsdown --format cjs,esm -d dist",
@@ -33,7 +33,9 @@
 			}
 		}
 	},
-	"files": ["dist"],
+	"files": [
+		"dist"
+	],
 	"devDependencies": {
 		"@midl/node": "workspace:^",
 		"@types/node": "^22.8.7",

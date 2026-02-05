@@ -1,6 +1,6 @@
 {
 	"name": "@midl/react",
-	"version": "3.0.1",
+	"version": "3.0.2-next.0",
 	"license": "MIT",
 	"scripts": {
 		"build": "tsdown --format cjs,esm -d dist",
@@ -32,7 +32,9 @@
 			}
 		}
 	},
-	"files": ["dist"],
+	"files": [
+		"dist"
+	],
 	"devDependencies": {
 		"@bitcoinerlab/secp256k1": "^1.2.0",
 		"@midl/node": "workspace:^",
