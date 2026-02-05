@@ -8,9 +8,8 @@ import {
 	signMessage,
 } from "@midl/core";
 import { bytesToHex, hexToBytes } from "@noble/hashes/utils.js";
-import { schnorr } from "@noble/secp256k1";
+import { Point, schnorr } from "@noble/secp256k1";
 import { magicHash } from "bitcoinjs-message";
-import { publicKeyConvert } from "secp256k1";
 import { hexToBigInt, keccak256, recoverAddress, recoverPublicKey } from "viem";
 import { afterEach, describe, expect, it } from "vitest";
 import { midlConfig, midlConfigP2SH } from "~/__tests__/midlConfig";
@@ -57,7 +56,7 @@ describe("extractEVMSignature", () => {
 		});
 
 		expect(
-			bytesToHex(publicKeyConvert(hexToBytes(recovered.slice(2)), true)),
+			bytesToHex(Point.fromHex(recovered.slice(2)).toRawBytes(true)),
 		).toEqual(account.publicKey);
 	});
 
@@ -105,9 +104,9 @@ describe("extractEVMSignature", () => {
 
 		expect(isValid).toBeTruthy();
 		expect(
-			bytesToHex(
-				publicKeyConvert(hexToBytes(recovered.slice(2)), true),
-			).substring(2),
+			bytesToHex(Point.fromHex(recovered.slice(2)).toRawBytes(true)).substring(
+				2,
+			),
 		).toEqual(pk.substring(2));
 	});
 
@@ -143,7 +142,7 @@ describe("extractEVMSignature", () => {
 		});
 
 		expect(
-			bytesToHex(publicKeyConvert(hexToBytes(recovered.slice(2)), true)),
+			bytesToHex(Point.fromHex(recovered.slice(2)).toRawBytes(true)),
 		).toEqual(account.publicKey);
 	});
 
@@ -202,9 +201,9 @@ describe("extractEVMSignature", () => {
 		expect(hash).toEqual(recoveredAddress);
 
 		expect(
-			bytesToHex(
-				publicKeyConvert(hexToBytes(recovered.slice(2)), true),
-			).substring(2),
+			bytesToHex(Point.fromHex(recovered.slice(2)).toRawBytes(true)).substring(
+				2,
+			),
 		).toEqual(pk.substring(2));
 	});
 
@@ -213,7 +212,7 @@ describe("extractEVMSignature", () => {
 			purposes: [AddressPurpose.Ordinals],
 		});
 
-		const account = await getDefaultAccount(midlConfig);
+		const account = getDefaultAccount(midlConfig);
 
 		const message = keccak256(new TextEncoder().encode("test"));
 
