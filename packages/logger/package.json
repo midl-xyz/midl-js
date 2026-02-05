@@ -1,6 +1,6 @@
 {
 	"name": "@midl/logger",
-	"version": "3.0.1",
+	"version": "3.0.2-next.0",
 	"license": "MIT",
 	"type": "module",
 	"dependencies": {

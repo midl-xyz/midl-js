@@ -1,5 +1,14 @@
 # @midl/executor
 
+## 3.0.2-next.0
+
+### Patch Changes
+
+- dc23347: feat: migrate esm/cjs build to tsdown
+- Updated dependencies [dc23347]
+  - @midl/core@3.0.2-next.0
+  - @midl/logger@3.0.2-next.0
+
 ## 3.0.1
 
 ### Patch Changes
