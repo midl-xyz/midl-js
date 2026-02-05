@@ -1,5 +1,14 @@
 # @midl/executor
 
+## 3.0.2-next.1
+
+### Patch Changes
+
+- c73353e: fix: mark viem as an external dep
+- Updated dependencies [c73353e]
+  - @midl/logger@3.0.2-next.1
+  - @midl/core@3.0.2-next.1
+
 ## 3.0.2-next.0
 
 ### Patch Changes
