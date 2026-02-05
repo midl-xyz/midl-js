@@ -325,9 +325,6 @@ importers:
       '@scure/btc-signer':
         specifier: 1.4.0
         version: 1.4.0
-      secp256k1:
-        specifier: ^4.0.3
-        version: 4.0.4
       viem:
         specifier: npm:@midl/viem@2.45.0
         version: '@midl/viem@2.45.0(bufferutil@4.0.9)(typescript@5.7.2)(utf-8-validate@5.0.10)(zod@3.24.1)'

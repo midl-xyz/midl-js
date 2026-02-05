@@ -1,6 +1,6 @@
 import { type Account, AddressType, type BitcoinNetwork } from "@midl/core";
 import { bytesToHex, hexToBytes } from "@noble/hashes/utils.js";
-import { publicKeyConvert } from "secp256k1";
+import { Point } from "@noble/secp256k1";
 import { getAddress, keccak256, toHex } from "viem";
 import { getPublicKey } from "~/actions";
 
@@ -25,7 +25,7 @@ export const getEVMAddress = (account: Account, network: BitcoinNetwork) => {
 			let pk = hexToBytes(account.publicKey);
 
 			if (pk.length === 33) {
-				pk = publicKeyConvert(pk, false);
+				pk = Point.fromHex(pk).toRawBytes(false);
 			}
 
 			publicKey = `0x${bytesToHex(pk.slice(1))}`;

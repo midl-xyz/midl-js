@@ -1,8 +1,7 @@
 import { AddressType, SignMessageProtocol } from "@midl/core";
 import { bytesToHex, hexToBytes } from "@noble/hashes/utils.js";
-import { Signature } from "@noble/secp256k1";
-import { base64, hex } from "@scure/base";
-import { publicKeyConvert } from "secp256k1";
+import { Point, Signature } from "@noble/secp256k1";
+import { base64 } from "@scure/base";
 import { recoverPublicKey, toBytes, toHex } from "viem";
 import { getBIP322Hash } from "~/utils";
 
@@ -146,7 +145,7 @@ export const verifyBIP322Signature = async (
 	});
 
 	const converted = bytesToHex(
-		publicKeyConvert(hexToBytes(recovered.slice(2)), true),
+		Point.fromHex(recovered.slice(2)).toRawBytes(true),
 	).substring(2);
 
 	if (converted !== publicKey.slice(2)) {

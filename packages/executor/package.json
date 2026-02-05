@@ -1,6 +1,6 @@
 {
 	"name": "@midl/executor",
-	"version": "3.0.2-next.1",
+	"version": "3.0.2-next.2",
 	"license": "MIT",
 	"scripts": {
 		"build": "tsdown --format cjs,esm -d dist",
@@ -33,9 +33,7 @@
 			}
 		}
 	},
-	"files": [
-		"dist"
-	],
+	"files": ["dist"],
 	"devDependencies": {
 		"@midl/node": "workspace:^",
 		"@types/node": "^22.8.7",
@@ -52,15 +50,14 @@
 		"@midl/core": "workspace:^",
 		"@midl/logger": "workspace:*",
 		"@noble/hashes": "^2.0.1",
-		"@noble/secp256k1": "1.7.1",
+		"@noble/secp256k1": "^3.0.0",
 		"@scure/base": "^2.0.0",
-		"@scure/btc-signer": "1.4.0",
-		"secp256k1": "^4.0.3"
+		"@scure/btc-signer": "1.4.0"
 	},
 	"peerDependencies": {
 		"@midl/viem": "*",
-		"viem": "*",
-		"bitcoinjs-lib": ">=7 <8"
+		"bitcoinjs-lib": ">=7 <8",
+		"viem": "*"
 	},
 	"repository": {
 		"url": "git+https://github.com/midl-xyz/midl-js.git",
