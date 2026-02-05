@@ -1,6 +1,6 @@
 import { AddressPurpose, connect, createConfig, disconnect } from "@midl/core";
 import { keyPairConnector } from "@midl/node";
-import { http, createWalletClient, zeroAddress } from "viem";
+import { http, createPublicClient, zeroAddress } from "viem";
 import * as viemActions from "viem/actions";
 import {
 	type Mock,
@@ -41,7 +41,7 @@ vi.mock("~/actions/getBTCFeeRate", async (importOriginal) => ({
 describe("executor | actions | estimateTransaction", () => {
 	const chain = getEVMFromBitcoinNetwork(midlConfig.getState().network);
 
-	const walletClient = createWalletClient({
+	const walletClient = createPublicClient({
 		chain,
 		transport: http(chain.rpcUrls.default.http[0]),
 	});

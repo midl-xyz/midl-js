@@ -1,5 +1,13 @@
 # @midl/executor
 
+## 3.0.2-next.3
+
+### Patch Changes
+
+- fix(executor): secp256k1 version
+  - @midl/core@3.0.2-next.3
+  - @midl/logger@3.0.2-next.3
+
 ## 3.0.2-next.2
 
 ### Patch Changes

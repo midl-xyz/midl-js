@@ -1,6 +1,6 @@
 {
 	"name": "@midl/executor",
-	"version": "3.0.2-next.2",
+	"version": "3.0.2-next.3",
 	"license": "MIT",
 	"scripts": {
 		"build": "tsdown --format cjs,esm -d dist",
@@ -50,7 +50,7 @@
 		"@midl/core": "workspace:^",
 		"@midl/logger": "workspace:*",
 		"@noble/hashes": "^2.0.1",
-		"@noble/secp256k1": "^3.0.0",
+		"@noble/secp256k1": "^1.7.1",
 		"@scure/base": "^2.0.0",
 		"@scure/btc-signer": "1.4.0"
 	},

@@ -15,5 +15,10 @@
 		"@midl/react": "3.0.1",
 		"@midl/satoshi-kit": "3.0.1"
 	},
-	"changesets": ["big-pigs-double", "quick-fans-own", "spicy-clouds-raise"]
+	"changesets": [
+		"big-pigs-double",
+		"quick-fans-own",
+		"spicy-clouds-raise",
+		"tame-houses-explode"
+	]
 }
