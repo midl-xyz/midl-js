@@ -1,8 +1,11 @@
 import deepmerge from "deepmerge";
-import type { SignMessageParams, SignMessageResponse } from "~/actions";
-import type { SignPSBTParams, SignPSBTResponse } from "~/actions/signPSBT";
-import type { AddressPurpose, AddressType } from "~/constants";
-import type { BitcoinNetwork } from "~/createConfig";
+import type {
+	SignMessageParams,
+	SignMessageResponse,
+} from "~/actions/index.js";
+import type { SignPSBTParams, SignPSBTResponse } from "~/actions/signPSBT.js";
+import type { AddressPurpose, AddressType } from "~/constants/index.js";
+import type { BitcoinNetwork } from "~/createConfig.js";
 
 export type Account = {
 	readonly address: string;

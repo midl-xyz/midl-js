@@ -1,4 +1,4 @@
-import type { Config } from "~/createConfig";
+import type { Config } from "~/createConfig.js";
 
 /**
  * Disconnects the current wallet connection and clears associated accounts.

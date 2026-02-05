@@ -1,5 +1,5 @@
-import { getBlockNumber } from "~/actions/getBlockNumber";
-import type { Config } from "~/createConfig";
+import { getBlockNumber } from "~/actions/getBlockNumber.js";
+import type { Config } from "~/createConfig.js";
 
 /**
  * Waits for a transaction to be confirmed

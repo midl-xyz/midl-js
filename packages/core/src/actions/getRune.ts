@@ -1,4 +1,4 @@
-import type { Config } from "~/createConfig";
+import type { Config } from "~/createConfig.js";
 
 /**
  * Gets a rune by its ID

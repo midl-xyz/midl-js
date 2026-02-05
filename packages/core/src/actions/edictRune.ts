@@ -2,15 +2,15 @@ import ecc from "@bitcoinerlab/secp256k1";
 import { Edict, RuneId, Runestone, none, some } from "@midl/runelib";
 import { Psbt, initEccLib, networks } from "bitcoinjs-lib";
 import coinSelect from "bitcoinselect";
-import { getDefaultAccount } from "~/actions";
-import { broadcastTransaction } from "~/actions/broadcastTransaction";
-import { getFeeRate } from "~/actions/getFeeRate";
-import { getRuneUTXO } from "~/actions/getRuneUTXO";
-import { getUTXOs } from "~/actions/getUTXOs";
-import { AddressPurpose } from "~/constants";
-import type { Config } from "~/createConfig";
-import type { RuneUTXO } from "~/providers";
-import { makePSBTInputs, runeUTXOSelect } from "~/utils";
+import { broadcastTransaction } from "~/actions/broadcastTransaction.js";
+import { getFeeRate } from "~/actions/getFeeRate.js";
+import { getRuneUTXO } from "~/actions/getRuneUTXO.js";
+import { getUTXOs } from "~/actions/getUTXOs.js";
+import { getDefaultAccount } from "~/actions/index.js";
+import { AddressPurpose } from "~/constants/index.js";
+import type { Config } from "~/createConfig.js";
+import type { RuneUTXO } from "~/providers/index.js";
+import { makePSBTInputs, runeUTXOSelect } from "~/utils/index.js";
 
 initEccLib(ecc);
 

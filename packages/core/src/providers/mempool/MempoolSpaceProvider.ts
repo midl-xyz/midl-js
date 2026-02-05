@@ -1,11 +1,11 @@
-import type { BitcoinNetwork } from "~/createConfig";
+import type { BitcoinNetwork } from "~/createConfig.js";
 import type {
 	AbstractProvider,
 	FeeRateResponse,
 	TransactionStatusResponse,
 	UTXO,
-} from "~/providers/AbstractProvider";
-import { MempoolSpaceWSProvider } from "~/providers/mempool/MempoolSpaceWSProvider";
+} from "~/providers/AbstractProvider.js";
+import { MempoolSpaceWSProvider } from "~/providers/mempool/MempoolSpaceWSProvider.js";
 
 type RPCUrlMap = Partial<Record<BitcoinNetwork["id"], string>>;
 

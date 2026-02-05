@@ -10,7 +10,7 @@ import { edictRune } from "~/actions/edictRune";
 import { AddressPurpose } from "~/constants";
 import { type Config, createConfig } from "~/createConfig";
 import { regtest } from "~/networks";
-import * as mod from "./getRuneUTXO";
+import * as mod from "./getRuneUTXO.js";
 
 describe("core | actions | edictRune", async () => {
 	const { keyPairConnector } = await import("@midl/node");

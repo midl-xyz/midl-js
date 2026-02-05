@@ -4,7 +4,7 @@ import { WalletConnectionError, connect } from "~/actions/connect";
 import { AddressPurpose } from "~/constants";
 import { createConfig } from "~/createConfig";
 import { regtest } from "~/networks";
-import { getDefaultAccount } from "./getDefaultAccount";
+import { getDefaultAccount } from "./getDefaultAccount.js";
 
 describe("core | actions | getDefaultAccount", async () => {
 	const { keyPairConnector } = await import("@midl/node");

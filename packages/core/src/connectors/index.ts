@@ -1,1 +1,1 @@
-export * from "./createConnector";
+export * from "./createConnector.js";

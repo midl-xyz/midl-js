@@ -1,5 +1,5 @@
-import type { Config } from "~/createConfig";
-import type { UTXO } from "~/providers";
+import type { Config } from "~/createConfig.js";
+import type { UTXO } from "~/providers/index.js";
 
 const RUNE_MAGIC_VALUE = 546;
 

@@ -13,13 +13,17 @@ import {
 import { concatBytes, hexToBytes, utf8ToBytes } from "@noble/hashes/utils.js";
 import { Psbt, initEccLib, networks, payments, script } from "bitcoinjs-lib";
 import coinselect from "bitcoinselect";
-import { getDefaultAccount } from "~/actions/getDefaultAccount";
-import { getFeeRate } from "~/actions/getFeeRate";
-import { getUTXOs } from "~/actions/getUTXOs";
-import { signPSBT } from "~/actions/signPSBT";
-import { AddressPurpose } from "~/constants";
-import type { Config } from "~/createConfig";
-import { extractXCoordinate, formatRuneName, makePSBTInputs } from "~/utils";
+import { getDefaultAccount } from "~/actions/getDefaultAccount.js";
+import { getFeeRate } from "~/actions/getFeeRate.js";
+import { getUTXOs } from "~/actions/getUTXOs.js";
+import { signPSBT } from "~/actions/signPSBT.js";
+import { AddressPurpose } from "~/constants/index.js";
+import type { Config } from "~/createConfig.js";
+import {
+	extractXCoordinate,
+	formatRuneName,
+	makePSBTInputs,
+} from "~/utils/index.js";
 
 initEccLib(ecc);
 

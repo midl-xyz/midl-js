@@ -1,8 +1,8 @@
 import { randomBytes } from "node:crypto";
-import { bytesToHex, concatBytes, hexToBytes } from "@noble/hashes/utils.js";
+import { bytesToHex, concatBytes } from "@noble/hashes/utils.js";
 import { http, HttpResponse, ws } from "msw";
 import { setupServer } from "msw/node";
-import type { UTXO } from "~/providers";
+import type { UTXO } from "~/providers/index.js";
 
 const wsApi = ws.link("wss://mempool.staging.midl.xyz/api/v1/ws");
 

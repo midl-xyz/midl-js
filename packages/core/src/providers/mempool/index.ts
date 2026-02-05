@@ -1,2 +1,2 @@
-export * from "./MempoolSpaceProvider";
-export * from "./MempoolSpaceWSProvider";
+export * from "./MempoolSpaceProvider.js";
+export * from "./MempoolSpaceWSProvider.js";

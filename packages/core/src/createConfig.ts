@@ -1,12 +1,19 @@
 import { createJSONStorage, persist } from "zustand/middleware";
 import { createStore } from "zustand/vanilla";
-import type { Account, Connector, ConnectorWithMetadata } from "~/connectors";
-import type { AddressPurpose } from "~/constants";
-import { type AbstractProvider, MempoolSpaceProvider } from "~/providers";
+import type {
+	Account,
+	Connector,
+	ConnectorWithMetadata,
+} from "~/connectors/index.js";
+import type { AddressPurpose } from "~/constants/index.js";
+import {
+	type AbstractProvider,
+	MempoolSpaceProvider,
+} from "~/providers/index.js";
 import {
 	type AbstractRunesProvider,
 	MaestroSymphonyProvider,
-} from "~/providers/runes";
+} from "~/providers/runes/index.js";
 
 export type BitcoinNetwork = {
 	/**

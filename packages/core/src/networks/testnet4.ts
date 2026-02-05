@@ -1,4 +1,4 @@
-import type { BitcoinNetwork } from "~/createConfig";
+import type { BitcoinNetwork } from "~/createConfig.js";
 
 export const testnet4 = {
 	id: "testnet4",

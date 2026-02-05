@@ -1,7 +1,7 @@
 import { Psbt, networks } from "bitcoinjs-lib";
-import { broadcastTransaction } from "~/actions/broadcastTransaction";
-import { WalletConnectionError } from "~/actions/connect";
-import type { Config } from "~/createConfig";
+import { broadcastTransaction } from "~/actions/broadcastTransaction.js";
+import { WalletConnectionError } from "~/actions/connect.js";
+import type { Config } from "~/createConfig.js";
 
 export type SignPSBTParams = {
 	/**

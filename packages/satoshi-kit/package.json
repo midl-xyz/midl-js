@@ -31,10 +31,7 @@
 		"./styles.css": "./dist/styles.css",
 		"./styled-system/*": "./styled-system/*"
 	},
-	"files": [
-		"dist",
-		"styled-system"
-	],
+	"files": ["dist", "styled-system"],
 	"devDependencies": {
 		"@midl/midl-js-config": "workspace:^",
 		"@midl/connectors": "workspace:^",
@@ -63,7 +60,7 @@
 		"react-dom": "*"
 	},
 	"dependencies": {
-		"@ark-ui/react": "^5.0.1",
+		"@ark-ui/react": "^5.31.0",
 		"boring-avatars": "^2.0.1",
 		"lucide-react": "^0.453.0"
 	},

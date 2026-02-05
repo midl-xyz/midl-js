@@ -1,9 +1,9 @@
 import ecc from "@bitcoinerlab/secp256k1";
 import { hexToBytes } from "@noble/hashes/utils.js";
 import * as bitcoin from "bitcoinjs-lib";
-import { AddressPurpose } from "~/constants";
-import type { BitcoinNetwork } from "~/createConfig";
-import { extractXCoordinate } from "~/utils/extractXCoordinate";
+import { AddressPurpose } from "~/constants/index.js";
+import type { BitcoinNetwork } from "~/createConfig.js";
+import { extractXCoordinate } from "~/utils/extractXCoordinate.js";
 
 bitcoin.initEccLib(ecc);
 

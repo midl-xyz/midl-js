@@ -1,2 +1,2 @@
-export * from "./addressPurpose";
-export * from "./addressType";
+export * from "./addressPurpose.js";
+export * from "./addressType.js";

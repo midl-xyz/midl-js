@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { formatRuneName } from "./formatRuneName";
+import { formatRuneName } from "./formatRuneName.js";
 
 describe("core | utils | formatRuneName", () => {
 	it("throws error if name is empty string", () => {

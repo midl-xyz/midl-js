@@ -1,20 +1,20 @@
 import createClient, { type Client } from "openapi-fetch";
-import { logger } from "~/config";
-import type { BitcoinNetwork } from "~/createConfig";
+import { logger } from "~/config/index.js";
+import type { BitcoinNetwork } from "~/createConfig.js";
 import type {
 	AbstractProvider,
 	FeeRateResponse,
 	TransactionStatusResponse,
 	UTXO,
-} from "~/providers/AbstractProvider";
+} from "~/providers/AbstractProvider.js";
 import type {
 	AbstractRunesProvider,
 	RuneBalanceResponse,
 	RuneResponse,
 	RuneUTXO,
 	RunesResponse,
-} from "~/providers/runes";
-import type { components, paths } from "./scheme/maestro";
+} from "~/providers/runes/index.js";
+import type { components, paths } from "./scheme/maestro.js";
 
 type RPCUrlMap = Partial<Record<BitcoinNetwork["id"], string>>;
 

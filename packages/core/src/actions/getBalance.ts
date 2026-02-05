@@ -1,5 +1,5 @@
-import { getUTXOs } from "~/actions/getUTXOs";
-import type { Config } from "~/createConfig";
+import { getUTXOs } from "~/actions/getUTXOs.js";
+import type { Config } from "~/createConfig.js";
 
 /**
  * Gets the balance of an address accumulated from UTXOs

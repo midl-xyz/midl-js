@@ -1,4 +1,4 @@
-import { AddressType } from "~/constants";
+import { AddressType } from "~/constants/index.js";
 
 export const getAddressType = (address: string): AddressType => {
 	if (address.startsWith("3") || address.startsWith("2")) {

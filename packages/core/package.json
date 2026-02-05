@@ -8,12 +8,11 @@
 		"clean": "rm -rf dist",
 		"test": "vitest"
 	},
+	"type": "module",
 	"main": "./dist/cjs/index.js",
 	"module": "./dist/esm/index.js",
 	"types": "./dist/types/index.d.ts",
-	"files": [
-		"dist"
-	],
+	"files": ["dist"],
 	"exports": {
 		"./package.json": "./package.json",
 		".": {
@@ -43,6 +42,7 @@
 		"bitcoinselect": "^1.0.0",
 		"deepmerge": "^4.3.1",
 		"ecpair": "^3.0.0",
+		"isows": "^1.0.7",
 		"openapi-fetch": "^0.14.0",
 		"zustand": "^5.0.1"
 	},

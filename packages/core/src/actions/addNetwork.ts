@@ -1,5 +1,5 @@
-import type { NetworkConfig } from "~/connectors";
-import type { Config } from "~/createConfig";
+import type { NetworkConfig } from "~/connectors/index.js";
+import type { Config } from "~/createConfig.js";
 
 /**
  * Adds a new network configuration to a connector.

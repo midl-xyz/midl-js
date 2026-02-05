@@ -1,14 +1,14 @@
 import createClient, { type Client } from "openapi-fetch";
-import { logger } from "~/config";
-import type { BitcoinNetwork } from "~/createConfig";
+import { logger } from "~/config/index.js";
+import type { BitcoinNetwork } from "~/createConfig.js";
 import type {
 	AbstractRunesProvider,
 	RuneBalanceResponse,
 	RuneResponse,
 	RuneUTXO,
 	RunesResponse,
-} from "~/providers/runes/AbstractRunesProvider";
-import type { paths } from "~/providers/runes/scheme/maestro-symphony";
+} from "~/providers/runes/AbstractRunesProvider.js";
+import type { paths } from "~/providers/runes/scheme/maestro-symphony.js";
 
 type MaestroSymphonyRPC = Partial<Record<BitcoinNetwork["id"], string>>;
 

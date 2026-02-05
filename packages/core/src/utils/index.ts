@@ -1,14 +1,14 @@
-export * from "./ensureMoreThanDust";
+export * from "./ensureMoreThanDust.js";
 
-export * from "./extractXCoordinate";
+export * from "./extractXCoordinate.js";
 
-export * from "./formatRuneName";
-export * from "./get";
-export * from "./getAddressPurpose";
-export * from "./getAddressType";
-export * from "./isCorrectAddress";
+export * from "./formatRuneName.js";
+export * from "./get.js";
+export * from "./getAddressPurpose.js";
+export * from "./getAddressType.js";
+export * from "./isCorrectAddress.js";
 
-export * from "./makeAddress";
-export * from "./makePSBTInputs";
+export * from "./makeAddress.js";
+export * from "./makePSBTInputs.js";
 
-export * from "./runeUTXOSelect";
+export * from "./runeUTXOSelect.js";

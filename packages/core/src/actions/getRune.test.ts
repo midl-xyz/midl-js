@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { mockRuneProvider } from "~/__tests__/runeProvider";
 import { createConfig } from "~/createConfig";
 import { mainnet } from "~/networks";
-import { getRune } from "./getRune";
+import { getRune } from "./getRune.js";
 
 const runeId = "66981:1";
 

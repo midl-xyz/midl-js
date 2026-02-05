@@ -1,7 +1,10 @@
-import { EmptyAccountsError, WalletConnectionError } from "~/actions/connect";
-import type { Account } from "~/connectors";
-import { AddressPurpose } from "~/constants";
-import type { Config } from "~/createConfig";
+import {
+	EmptyAccountsError,
+	WalletConnectionError,
+} from "~/actions/connect.js";
+import type { Account } from "~/connectors/index.js";
+import { AddressPurpose } from "~/constants/index.js";
+import type { Config } from "~/createConfig.js";
 
 class PredicateError extends Error {
 	constructor(msg: string) {

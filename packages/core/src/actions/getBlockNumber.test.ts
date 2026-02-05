@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { mockProvider } from "~/__tests__/provider";
 import { createConfig } from "~/createConfig";
 import { regtest } from "~/networks";
-import { getBlockNumber } from "./getBlockNumber";
+import { getBlockNumber } from "./getBlockNumber.js";
 
 describe("core | actions | getBlockNumber", () => {
 	it("returns the correct block number", async () => {

@@ -1,4 +1,4 @@
-import type { Config } from "~/createConfig";
+import type { Config } from "~/createConfig.js";
 
 /**
  * Retrieves the UTXOs associated with a specific rune for a given address.

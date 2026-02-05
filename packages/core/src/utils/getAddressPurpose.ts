@@ -1,6 +1,6 @@
-import { AddressPurpose } from "~/constants";
-import type { BitcoinNetwork } from "~/createConfig";
-import { isCorrectAddress } from "~/utils/isCorrectAddress";
+import { AddressPurpose } from "~/constants/index.js";
+import type { BitcoinNetwork } from "~/createConfig.js";
+import { isCorrectAddress } from "~/utils/isCorrectAddress.js";
 
 export class AddressNetworkMismatch extends Error {
 	constructor() {

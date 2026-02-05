@@ -1,6 +1,6 @@
-import { AddressPurpose } from "~/constants";
-import type { BitcoinNetwork, Config } from "~/createConfig";
-import type { EnsureAllEnum } from "~/types";
+import { AddressPurpose } from "~/constants/index.js";
+import type { BitcoinNetwork, Config } from "~/createConfig.js";
+import type { EnsureAllEnum } from "~/types/index.js";
 
 export type ConnectParams = {
 	purposes: AddressPurpose[];

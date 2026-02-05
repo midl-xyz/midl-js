@@ -3,8 +3,8 @@ import {
 	SignMessageProtocol,
 	type SignMessageResponse,
 	signMessage,
-} from "~/actions/signMessage";
-import type { Config } from "~/createConfig";
+} from "~/actions/signMessage.js";
+import type { Config } from "~/createConfig.js";
 
 /**
  * Signs multiple messages in a single request.

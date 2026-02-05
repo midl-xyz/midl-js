@@ -1,4 +1,4 @@
-import type { RuneUTXO } from "~/providers";
+import type { RuneUTXO } from "~/providers/index.js";
 
 export const runeUTXOSelect = (
 	utxos: RuneUTXO[],

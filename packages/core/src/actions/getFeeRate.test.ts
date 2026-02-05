@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { mockProvider } from "~/__tests__/provider";
 import { createConfig } from "~/createConfig";
 import { regtest } from "~/networks";
-import { getFeeRate } from "./getFeeRate";
+import { getFeeRate } from "./getFeeRate.js";
 
 describe("core | actions | getFeeRate", () => {
 	it("returns the fee rate correctly", async () => {

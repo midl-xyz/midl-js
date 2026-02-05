@@ -1,4 +1,5 @@
-import type { BitcoinNetwork } from "~/createConfig";
+import { WebSocket } from "isows";
+import type { BitcoinNetwork } from "~/createConfig.js";
 
 type Action = "track-tx" | "blocks";
 
@@ -153,7 +154,7 @@ export class MempoolSpaceWSProvider {
 				resolve(ws);
 			});
 
-			ws.addEventListener("error", (event) => {
+			ws.addEventListener("error", () => {
 				this.connectionPromises.delete(network.id);
 				reject(new Error("WebSocket connection failed"));
 			});

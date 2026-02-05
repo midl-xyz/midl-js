@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { mockRuneProvider } from "~/__tests__/runeProvider";
 import { createConfig } from "~/createConfig";
 import { mainnet } from "~/networks";
-import { getRunes } from "./getRunes";
+import { getRunes } from "./getRunes.js";
 
 describe("core | actions | getRunes", () => {
 	it("returns the runes for the address", async () => {

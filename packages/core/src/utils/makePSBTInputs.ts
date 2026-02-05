@@ -1,10 +1,10 @@
 import { hexToBytes } from "@noble/hashes/utils.js";
 import { type Psbt, networks, payments } from "bitcoinjs-lib";
 import type { UTXO } from "bitcoinselect";
-import type { Account } from "~/connectors";
-import { AddressType } from "~/constants";
-import type { Config } from "~/createConfig";
-import { extractXCoordinate } from "~/utils/extractXCoordinate";
+import type { Account } from "~/connectors/index.js";
+import { AddressType } from "~/constants/index.js";
+import type { Config } from "~/createConfig.js";
+import { extractXCoordinate } from "~/utils/extractXCoordinate.js";
 
 type PSBTInput = Parameters<typeof Psbt.prototype.addInput>[0];
 

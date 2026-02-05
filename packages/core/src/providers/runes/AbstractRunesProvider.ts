@@ -1,4 +1,4 @@
-import type { BitcoinNetwork } from "~/createConfig";
+import type { BitcoinNetwork } from "~/createConfig.js";
 
 // TODO: Update types for supply and mint_terms fields.
 export type RuneResponse = {

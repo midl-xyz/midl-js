@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { mockRuneProvider } from "~/__tests__/runeProvider";
 import { createConfig } from "~/createConfig";
 import { mainnet } from "~/networks";
-import { getRuneUTXO } from "./getRuneUTXO";
+import { getRuneUTXO } from "./getRuneUTXO.js";
 
 describe("core | actions | getRuneUTXO", () => {
 	it("returns the rune UTXO", async () => {

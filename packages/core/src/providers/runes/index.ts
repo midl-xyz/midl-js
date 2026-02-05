@@ -1,2 +1,2 @@
-export * from "./AbstractRunesProvider";
-export * from "./MaestroSymphonyProvider";
+export * from "./AbstractRunesProvider.js";
+export * from "./MaestroSymphonyProvider.js";

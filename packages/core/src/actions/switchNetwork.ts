@@ -1,10 +1,9 @@
-import type { BitcoinNetwork, Config } from "~/createConfig";
+import type { BitcoinNetwork, Config } from "~/createConfig.js";
 
 // TODO: rename Wrong Usage error
 class CommonError extends Error {}
 
-// TODO: misleading error
-export class NetworkError extends CommonError {}
+export class NetworkMismatchError extends CommonError {}
 
 /**
  * Switches the network to the given network
@@ -26,7 +25,7 @@ export const switchNetwork = async (
 	const { networks, connection } = config.getState();
 
 	if (!networks.includes(network)) {
-		throw new NetworkError();
+		throw new NetworkMismatchError();
 	}
 
 	config.setState({
