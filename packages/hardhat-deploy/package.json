@@ -9,9 +9,7 @@
 	"main": "./dist/index.cjs",
 	"module": "./dist/index.mjs",
 	"types": "./dist/index.d.cts",
-	"files": [
-		"dist"
-	],
+	"files": ["dist"],
 	"exports": {
 		"./package.json": "./package.json",
 		".": {
@@ -40,15 +38,16 @@
 		"hardhat-deploy": "^1.0.3"
 	},
 	"peerDependencies": {
-		"hardhat": ">=2 <3"
-	},
-	"dependencies": {
+		"hardhat": ">=2 <3",
 		"@midl/logger": "workspace:*",
 		"@midl/core": "workspace:^",
 		"@midl/executor": "workspace:^",
 		"@midl/node": "workspace:^",
+		"viem": "*",
+		"@midl/viem": "*"
+	},
+	"dependencies": {
 		"@nomicfoundation/hardhat-viem": "^2.0.6",
-		"viem": "npm:@midl/viem",
 		"zustand": "^5.0.1"
 	},
 	"repository": {
