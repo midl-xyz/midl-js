@@ -13,4 +13,5 @@ export default defineConfig({
 			target: ["esnext"],
 		},
 	},
+	external: [/^node:/, /node_modules/],
 });

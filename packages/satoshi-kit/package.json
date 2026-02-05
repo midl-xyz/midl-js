@@ -2,41 +2,47 @@
 	"name": "@midl/satoshi-kit",
 	"version": "3.0.1",
 	"license": "MIT",
-	"type": "module",
 	"scripts": {
 		"build": "pnpm run build:lib && pnpm run build:styles",
 		"dev": "concurrently \"pnpm run dev:lib\" \"pnpm run dev:styles\" \"pnpm run dev:vite\"",
-		"build:lib": "pnpm run clean && tspc --project tsconfig.esm.json",
-		"dev:lib": "tspc --watch --preserveWatchOutput --project tsconfig.esm.json",
-		"clean": "rm -rf dist",
+		"build:lib": "tsdown --format cjs,esm -d dist",
+		"dev:lib": "tsdown --watch --format cjs,esm -d dist",
 		"test": "vitest",
 		"prepare": "panda codegen",
 		"build:styles": "panda cssgen --outfile dist/styles.css --polyfill",
 		"dev:styles": "chokidar \"src/**/*.{ts,tsx}\" -c \"pnpm run build:styles\"",
 		"dev:vite": "vite ./app -c vite.config.ts"
 	},
-	"main": "./dist/esm/index.js",
-	"module": "./dist/esm/index.js",
-	"types": "./dist/types/index.d.ts",
+	"main": "./dist/index.cjs",
+	"module": "./dist/index.mjs",
+	"types": "./dist/index.d.cts",
 	"exports": {
 		"./package.json": "./package.json",
 		".": {
-			"types": "./dist/types/index.d.ts",
-			"import": "./dist/esm/index.js"
+			"import": {
+				"types": "./dist/index.d.mts",
+				"default": "./dist/index.mjs"
+			},
+			"require": {
+				"types": "./dist/index.d.cts",
+				"default": "./dist/index.cjs"
+			}
 		},
 		"./*": {
-			"types": "./dist/types/*.d.ts",
-			"import": "./dist/esm/*.js"
+			"import": {
+				"types": "./dist/*.d.mts",
+				"default": "./dist/*.mjs"
+			},
+			"require": {
+				"types": "./dist/*.d.cts",
+				"default": "./dist/*.cjs"
+			}
 		},
 		"./styles.css": "./dist/styles.css",
 		"./styled-system/*": "./styled-system/*"
 	},
-	"files": [
-		"dist",
-		"styled-system"
-	],
+	"files": ["dist", "styled-system"],
 	"devDependencies": {
-		"@midl/midl-js-config": "workspace:^",
 		"@midl/connectors": "workspace:^",
 		"@midl/core": "workspace:^",
 		"@midl/node": "workspace:^",
