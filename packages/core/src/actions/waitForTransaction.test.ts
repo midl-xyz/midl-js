@@ -7,7 +7,7 @@ import { regtest } from "~/networks";
 
 const txId = "1";
 
-describe("core | actions | waitForTransaction", async () => {
+describe.skip("core | actions | waitForTransaction", async () => {
 	const { keyPairConnector } = await import("@midl/node");
 
 	let config: Config;

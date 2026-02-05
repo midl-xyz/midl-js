@@ -1,3 +1,4 @@
+import { WebSocket } from "isows";
 import type { BitcoinNetwork } from "~/createConfig";
 
 type Action = "track-tx" | "blocks";

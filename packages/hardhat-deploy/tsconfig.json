@@ -1,17 +1,20 @@
 {
-	"extends": "@midl/midl-js-config/tsconfig.base.json",
 	"include": ["./src/**/*.ts"],
 	"compilerOptions": {
-		"moduleResolution": "Bundler",
+		"target": "esnext",
+		"module": "nodenext",
+		"moduleResolution": "nodenext",
+		"resolveJsonModule": true,
+		"strict": true,
+		"esModuleInterop": true,
+		"isolatedModules": true,
+		"skipLibCheck": true,
 		"baseUrl": ".",
 		"sourceMap": true,
 		"inlineSources": true,
+		"allowSyntheticDefaultImports": true,
 		"paths": {
 			"~/*": ["./src/*"]
-		},
-		"plugins": [
-			{ "transform": "typescript-transform-paths" },
-			{ "transform": "typescript-transform-paths", "afterDeclarations": true }
-		]
+		}
 	}
 }

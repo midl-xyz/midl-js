@@ -2,26 +2,39 @@
 	"name": "@midl/playwright",
 	"version": "3.0.1",
 	"license": "MIT",
-	"bin": {
-		"playwright-btc-wallets": "./dist/index.js"
-	},
 	"scripts": {
-		"build": "pnpm run clean && tsc --project tsconfig.build.json && tsc-alias -p tsconfig.build.json",
-		"dev": "concurrently \"tsc --watch --preserveWatchOutput --project tsconfig.build.json\" \"tsc-alias -w -p tsconfig.build.json\"",
-		"clean": "rm -rf dist",
+		"build": "tsdown --format cjs,esm -d dist",
 		"test": "vitest",
 		"postinstall": "tsx ./scripts/prepare.ts"
 	},
-	"type": "module",
-	"main": "dist/index.js",
-	"module": "dist/index.js",
-	"types": "dist/index.d.ts",
-	"files": [
-		"dist",
-		"scripts"
-	],
+	"main": "./dist/index.cjs",
+	"module": "./dist/index.mjs",
+	"types": "./dist/index.d.cts",
+	"files": ["dist", "scripts"],
+	"exports": {
+		"./package.json": "./package.json",
+		".": {
+			"import": {
+				"types": "./dist/index.d.mts",
+				"default": "./dist/index.mjs"
+			},
+			"require": {
+				"types": "./dist/index.d.cts",
+				"default": "./dist/index.cjs"
+			}
+		},
+		"./*": {
+			"import": {
+				"types": "./dist/*.d.mts",
+				"default": "./dist/*.mjs"
+			},
+			"require": {
+				"types": "./dist/*.d.cts",
+				"default": "./dist/*.cjs"
+			}
+		}
+	},
 	"devDependencies": {
-		"@midl/midl-js-config": "workspace:^",
 		"@playwright/test": "^1.48.2",
 		"@types/unzipper": "^0.10.10"
 	},
