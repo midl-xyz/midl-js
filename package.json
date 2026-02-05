@@ -2,7 +2,7 @@
 	"name": "@midl/midl-js",
 	"private": true,
 	"description": "",
-	"packageManager": "pnpm@10.13.1",
+	"packageManager": "pnpm@10.28.2",
 	"license": "MIT",
 	"scripts": {
 		"ci:publish": "pnpm publish -r",
@@ -31,6 +31,7 @@
 		"ts-patch": "^3.3.0",
 		"tsc-alias": "^1.8.10",
 		"tsconfig-paths": "^4.2.0",
+		"tsdown": "^0.20.2",
 		"tsx": "^4.16.2",
 		"turbo": "^2.0.9",
 		"typescript": "^5.5.3",
@@ -54,5 +55,9 @@
 		"*": [
 			"biome check --no-errors-on-unmatched --apply --files-ignore-unknown=true"
 		]
+	},
+	"engines": {
+		"node": ">=24.13.0",
+		"pnpm": ">=10.28.0"
 	}
 }

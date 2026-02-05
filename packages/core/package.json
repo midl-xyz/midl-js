@@ -3,9 +3,10 @@
 	"version": "3.0.1",
 	"license": "MIT",
 	"scripts": {
-		"build": "pnpm run clean && tspc --project tsconfig.esm.json && tspc --project tsconfig.cjs.json",
-		"dev": "concurrently \"tspc --watch --preserveWatchOutput --project tsconfig.esm.json\" \"tspc --watch --preserveWatchOutput --project tsconfig.cjs.json\"",
-		"clean": "rm -rf dist",
+		"build": "pnpm run build:cjs && pnpm run build:esm && pnpm run build:dts",
+		"build:cjs": "tsdown --format cjs -d dist/cjs",
+		"build:esm": "tsdown --format esm -d dist/esm",
+		"build:dts": "tsdown --dts -d dist/types",
 		"test": "vitest"
 	},
 	"type": "module",
