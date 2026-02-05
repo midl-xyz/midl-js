@@ -116,52 +116,6 @@ importers:
         specifier: ^1.10.0
         version: 1.10.0
 
-  apps/e2e:
-    dependencies:
-      '@midl/core':
-        specifier: workspace:^
-        version: link:../../packages/core
-      '@midl/executor':
-        specifier: workspace:^
-        version: link:../../packages/executor
-      '@midl/playwright':
-        specifier: workspace:^
-        version: link:../../packages/playwright
-      viem:
-        specifier: npm:@midl/viem@2.45.0
-        version: '@midl/viem@2.45.0(bufferutil@4.0.9)(typescript@5.6.3)(utf-8-validate@5.0.10)(zod@3.25.76)'
-    devDependencies:
-      '@midl/midl-js-config':
-        specifier: workspace:^
-        version: link:../../packages/config
-      '@playwright/test':
-        specifier: ^1.48.2
-        version: 1.50.0
-      '@types/node':
-        specifier: ^20.16.11
-        version: 20.17.16
-      bip32:
-        specifier: 5.0.0-rc.0
-        version: 5.0.0-rc.0(typescript@5.6.3)
-      bip39:
-        specifier: ^3.1.0
-        version: 3.1.0
-      bitcoinjs-lib:
-        specifier: 7.0.1
-        version: 7.0.1(typescript@5.6.3)
-      dotenv:
-        specifier: ^16.4.5
-        version: 16.4.7
-      ecpair:
-        specifier: ^3.0.0
-        version: 3.0.0(typescript@5.6.3)
-      globals:
-        specifier: ^15.11.0
-        version: 15.14.0
-      typescript:
-        specifier: ~5.6.2
-        version: 5.6.3
-
   apps/rune-etcher:
     dependencies:
       '@hookform/resolvers':
@@ -265,8 +219,6 @@ importers:
         specifier: ^5
         version: 5.6.3
 
-  packages/config: {}
-
   packages/connectors:
     dependencies:
       '@noble/hashes':
@@ -288,9 +240,6 @@ importers:
       '@midl/core':
         specifier: workspace:^
         version: link:../core
-      '@midl/midl-js-config':
-        specifier: workspace:^
-        version: link:../config
       '@types/node':
         specifier: ^22.8.7
         version: 22.12.0
@@ -334,9 +283,6 @@ importers:
       '@leather.io/rpc':
         specifier: 2.1.12
         version: 2.1.12
-      '@midl/midl-js-config':
-        specifier: workspace:^
-        version: link:../config
       '@types/node':
         specifier: ^22.8.7
         version: 22.12.0
@@ -383,9 +329,6 @@ importers:
         specifier: ^4.0.3
         version: 4.0.4
     devDependencies:
-      '@midl/midl-js-config':
-        specifier: workspace:^
-        version: link:../config
       '@midl/node':
         specifier: workspace:^
         version: link:../node
@@ -423,9 +366,6 @@ importers:
         specifier: '>=18 <20'
         version: 19.2.4(react@19.2.4)
     devDependencies:
-      '@midl/midl-js-config':
-        specifier: workspace:^
-        version: link:../config
       '@midl/node':
         specifier: workspace:^
         version: link:../node
@@ -484,9 +424,6 @@ importers:
         specifier: ^5.0.1
         version: 5.0.3(@types/react@19.2.9)(react@19.2.4)(use-sync-external-store@1.4.0(react@19.2.4))
     devDependencies:
-      '@midl/midl-js-config':
-        specifier: workspace:^
-        version: link:../config
       hardhat:
         specifier: ^2.22.17
         version: 2.22.18(bufferutil@4.0.9)(ts-node@10.9.2(@swc/core@1.10.11(@swc/helpers@0.5.15))(@types/node@22.12.0)(typescript@5.7.2))(typescript@5.7.2)(utf-8-validate@5.0.10)
@@ -533,9 +470,6 @@ importers:
       '@midl/core':
         specifier: workspace:^
         version: link:../core
-      '@midl/midl-js-config':
-        specifier: workspace:^
-        version: link:../config
       '@types/node':
         specifier: ^22.8.7
         version: 22.12.0
@@ -555,9 +489,6 @@ importers:
         specifier: ^0.12.3
         version: 0.12.3
     devDependencies:
-      '@midl/midl-js-config':
-        specifier: workspace:^
-        version: link:../config
       '@playwright/test':
         specifier: ^1.48.2
         version: 1.50.0
@@ -577,9 +508,6 @@ importers:
       '@bitcoinerlab/secp256k1':
         specifier: ^1.2.0
         version: 1.2.0
-      '@midl/midl-js-config':
-        specifier: workspace:^
-        version: link:../config
       '@midl/node':
         specifier: workspace:^
         version: link:../node
@@ -620,9 +548,6 @@ importers:
       '@midl/core':
         specifier: workspace:^
         version: link:../core
-      '@midl/midl-js-config':
-        specifier: workspace:^
-        version: link:../config
       '@midl/node':
         specifier: workspace:^
         version: link:../node
@@ -10254,23 +10179,6 @@ snapshots:
       - utf-8-validate
       - zod
 
-  '@midl/viem@2.45.0(bufferutil@4.0.9)(typescript@5.6.3)(utf-8-validate@5.0.10)(zod@3.25.76)':
-    dependencies:
-      '@noble/curves': 1.9.1
-      '@noble/hashes': 1.8.0
-      '@scure/bip32': 1.7.0
-      '@scure/bip39': 1.6.0
-      abitype: 1.2.3(typescript@5.6.3)(zod@3.25.76)
-      isows: 1.0.7(ws@8.18.3(bufferutil@4.0.9)(utf-8-validate@5.0.10))
-      ox: 0.11.3(typescript@5.6.3)(zod@3.25.76)
-      ws: 8.18.3(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-    optionalDependencies:
-      typescript: 5.6.3
-    transitivePeerDependencies:
-      - bufferutil
-      - utf-8-validate
-      - zod
-
   '@midl/viem@2.45.0(bufferutil@4.0.9)(typescript@5.7.2)(utf-8-validate@5.0.10)(zod@3.24.1)':
     dependencies:
       '@noble/curves': 1.9.1
@@ -11681,7 +11589,7 @@ snapshots:
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@bcoe/v8-coverage': 1.0.2
-      debug: 4.4.0
+      debug: 4.4.0(supports-color@8.1.1)
       istanbul-lib-coverage: 3.2.2
       istanbul-lib-report: 3.0.1
       istanbul-lib-source-maps: 5.0.6
@@ -12906,11 +12814,6 @@ snapshots:
       typescript: 5.7.2
       zod: 3.24.1
 
-  abitype@1.2.3(typescript@5.6.3)(zod@3.25.76):
-    optionalDependencies:
-      typescript: 5.6.3
-      zod: 3.25.76
-
   abitype@1.2.3(typescript@5.7.2)(zod@3.24.1):
     optionalDependencies:
       typescript: 5.7.2
@@ -13202,16 +13105,6 @@ snapshots:
       uint8array-tools: 0.0.9
       varuint-bitcoin: 2.0.0
 
-  bip32@5.0.0-rc.0(typescript@5.6.3):
-    dependencies:
-      '@noble/hashes': 1.8.0
-      '@scure/base': 1.2.6
-      uint8array-tools: 0.0.8
-      valibot: 0.37.0(typescript@5.6.3)
-      wif: 5.0.0
-    transitivePeerDependencies:
-      - typescript
-
   bip32@5.0.0-rc.0(typescript@5.7.2):
     dependencies:
       '@noble/hashes': 1.8.0
@@ -13239,18 +13132,6 @@ snapshots:
       base58-js: 3.0.3
       bech32: 2.0.0
       sha256-uint8array: 0.10.7
-
-  bitcoinjs-lib@7.0.1(typescript@5.6.3):
-    dependencies:
-      '@noble/hashes': 1.8.0
-      bech32: 2.0.0
-      bip174: 3.0.0
-      bs58check: 4.0.0
-      uint8array-tools: 0.0.9
-      valibot: 1.2.0(typescript@5.6.3)
-      varuint-bitcoin: 2.0.0
-    transitivePeerDependencies:
-      - typescript
 
   bitcoinjs-lib@7.0.1(typescript@5.7.2):
     dependencies:
@@ -13739,10 +13620,6 @@ snapshots:
     dependencies:
       ms: 2.1.3
 
-  debug@4.4.0:
-    dependencies:
-      ms: 2.1.3
-
   debug@4.4.0(supports-color@8.1.1):
     dependencies:
       ms: 2.1.3
@@ -13873,14 +13750,6 @@ snapshots:
       readable-stream: 2.3.8
 
   eastasianwidth@0.2.0: {}
-
-  ecpair@3.0.0(typescript@5.6.3):
-    dependencies:
-      uint8array-tools: 0.0.8
-      valibot: 0.37.0(typescript@5.6.3)
-      wif: 5.0.0
-    transitivePeerDependencies:
-      - typescript
 
   ecpair@3.0.0(typescript@5.7.2):
     dependencies:
@@ -14902,7 +14771,7 @@ snapshots:
   http-proxy-agent@7.0.2:
     dependencies:
       agent-base: 7.1.3
-      debug: 4.4.0
+      debug: 4.4.0(supports-color@8.1.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -14916,7 +14785,7 @@ snapshots:
   https-proxy-agent@7.0.6:
     dependencies:
       agent-base: 7.1.3
-      debug: 4.4.0
+      debug: 4.4.0(supports-color@8.1.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -15155,7 +15024,7 @@ snapshots:
   istanbul-lib-source-maps@5.0.6:
     dependencies:
       '@jridgewell/trace-mapping': 0.3.29
-      debug: 4.4.0
+      debug: 4.4.0(supports-color@8.1.1)
       istanbul-lib-coverage: 3.2.2
     transitivePeerDependencies:
       - supports-color
@@ -15346,7 +15215,7 @@ snapshots:
     dependencies:
       chalk: 5.4.1
       commander: 13.1.0
-      debug: 4.4.0
+      debug: 4.4.0(supports-color@8.1.1)
       execa: 8.0.1
       lilconfig: 3.1.3
       listr2: 8.3.2
@@ -16060,21 +15929,6 @@ snapshots:
       get-intrinsic: 1.2.7
       object-keys: 1.1.1
       safe-push-apply: 1.0.0
-
-  ox@0.11.3(typescript@5.6.3)(zod@3.25.76):
-    dependencies:
-      '@adraffy/ens-normalize': 1.11.1
-      '@noble/ciphers': 1.3.0
-      '@noble/curves': 1.9.1
-      '@noble/hashes': 1.8.0
-      '@scure/bip32': 1.7.0
-      '@scure/bip39': 1.6.0
-      abitype: 1.2.3(typescript@5.6.3)(zod@3.25.76)
-      eventemitter3: 5.0.1
-    optionalDependencies:
-      typescript: 5.6.3
-    transitivePeerDependencies:
-      - zod
 
   ox@0.11.3(typescript@5.7.2)(zod@3.24.1):
     dependencies:
@@ -17588,10 +17442,6 @@ snapshots:
   v8-compile-cache-lib@3.0.1:
     optional: true
 
-  valibot@0.37.0(typescript@5.6.3):
-    optionalDependencies:
-      typescript: 5.6.3
-
   valibot@0.37.0(typescript@5.7.2):
     optionalDependencies:
       typescript: 5.7.2
@@ -17599,10 +17449,6 @@ snapshots:
   valibot@1.1.0(typescript@5.7.2):
     optionalDependencies:
       typescript: 5.7.2
-
-  valibot@1.2.0(typescript@5.6.3):
-    optionalDependencies:
-      typescript: 5.6.3
 
   valibot@1.2.0(typescript@5.7.2):
     optionalDependencies:
@@ -17631,7 +17477,7 @@ snapshots:
   vite-node@3.1.2(@types/node@22.12.0)(lightningcss@1.25.1):
     dependencies:
       cac: 6.7.14
-      debug: 4.4.0
+      debug: 4.4.0(supports-color@8.1.1)
       es-module-lexer: 1.6.0
       pathe: 2.0.3
       vite: 5.4.14(@types/node@22.12.0)(lightningcss@1.25.1)
@@ -17653,7 +17499,7 @@ snapshots:
       '@volar/typescript': 2.4.11
       '@vue/language-core': 2.2.0(typescript@5.6.3)
       compare-versions: 6.1.1
-      debug: 4.4.0
+      debug: 4.4.0(supports-color@8.1.1)
       kolorist: 1.8.0
       local-pkg: 0.5.1
       magic-string: 0.30.17
@@ -17691,7 +17537,7 @@ snapshots:
 
   vite-tsconfig-paths@4.3.2(typescript@5.6.3)(vite@5.4.14(@types/node@22.12.0)(lightningcss@1.25.1)):
     dependencies:
-      debug: 4.4.0
+      debug: 4.4.0(supports-color@8.1.1)
       globrex: 0.1.2
       tsconfck: 3.1.4(typescript@5.6.3)
     optionalDependencies:
@@ -17798,7 +17644,7 @@ snapshots:
       '@vitest/spy': 3.1.2
       '@vitest/utils': 3.1.2
       chai: 5.2.0
-      debug: 4.4.0
+      debug: 4.4.0(supports-color@8.1.1)
       expect-type: 1.2.1
       magic-string: 0.30.17
       pathe: 2.0.3
