@@ -16,6 +16,7 @@
     "@midl/satoshi-kit": "3.0.1"
   },
   "changesets": [
+    "quick-fans-own",
     "spicy-clouds-raise"
   ]
 }
