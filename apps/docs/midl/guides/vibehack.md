@@ -98,7 +98,7 @@ pnpm add @midl/executor @midl/executor-react @midl/connectors @midl/core @midl/r
 Follow these guides in order:
 
 1. [Getting Started](../getting-started.md) — Set up providers and wallet connection
-2. [Connect Wallet](../../core/guides/connect-wallet.md) — Connect Xverse to your app
+2. [Connect Wallet](/core/guides/connect-wallet) — Connect Xverse to your app
 3. [Interact with Contract](./interact-contract.md) — Read and write to your deployed contract
 
 ## Step 5: Work with Runes (Optional)
