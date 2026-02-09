@@ -9,6 +9,10 @@ MIDL JS SDK is a framework for building decentralized applications on Bitcoin, p
 
 It provides a set of tools and libraries to help developers build, test, and deploy smart contracts and Bitcoin-native apps.
 
+::: tip VibeHack Participants
+Building for the MIDL VibeHack? Head to the [VibeHack Guide](./guides/vibehack.md) for a step-by-step walkthrough covering wallet setup, contract deployment, and frontend integration.
+:::
+
 ## Installation
 
 The executor packages allow you to interact with and deploy contracts on the MIDL Protocol from your JavaScript or React application. Install MIDL JS SDK executor packages via your package manager of choice.

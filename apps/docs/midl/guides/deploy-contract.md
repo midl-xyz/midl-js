@@ -93,13 +93,13 @@ import "@midl/hardhat-deploy";
 import "hardhat-deploy";
 import "@nomicfoundation/hardhat-verify";
 import { vars, type HardhatUserConfig } from "hardhat/config";
-import { midl } from "@midl/executor";
+import { midlRegtest } from "@midl/executor";
 
 const config: HardhatUserConfig = {
   solidity: "0.8.28",
   midl: {
     networks: {
-      default: {
+      regtest: {
         mnemonic: vars.get("MNEMONIC"),
         confirmationsRequired: 1,
         btcConfirmationsRequired: 1,
@@ -107,22 +107,22 @@ const config: HardhatUserConfig = {
     },
   },
   networks: {
-    default: {
-      url: midl.rpcUrls.default.http[0],
-      chainId: midl.id,
+    regtest: {
+      url: midlRegtest.rpcUrls.default.http[0],
+      chainId: midlRegtest.id,
     },
   },
   etherscan: {
     apiKey: {
-      "midl": "empty",
+      "regtest": "empty",
     },
     customChains: [
       {
-        network: "midl",
-        chainId: midl.id,
+        network: "regtest",
+        chainId: midlRegtest.id,
         urls: {
-          apiURL: "https://blockscout.midl.xyz/api",
-          browserURL: "https://blockscout.midl.xyz",
+          apiURL: "https://blockscout.staging.midl.xyz/api",
+          browserURL: "https://blockscout.staging.midl.xyz",
         },
       },
     ],
@@ -240,7 +240,7 @@ After the deployment is complete, you will see a folder named `deployments` in y
 Now that your contract is deployed, you can verify it's source code on the block explorer using the following command:
 
 ```bash
-pnpm hardhat verify REPLACE_WITH_CONTRACT_ADDRESS "Hello from MIDL" --network default
+pnpm hardhat verify REPLACE_WITH_CONTRACT_ADDRESS "Hello from MIDL" --network regtest
 ```
 
 Successful verification will return the link to the contract on the block explorer. 

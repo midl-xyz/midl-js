@@ -84,8 +84,8 @@ export default (<HardhatUserConfig>{
 				network: "regtest",
 				chainId: midlRegtest.id,
 				urls: {
-					apiURL: "https://blockscout.regtest.midl.xyz/api",
-					browserURL: "https://blockscout.regtest.midl.xyz",
+					apiURL: "https://blockscout.staging.midl.xyz/api",
+					browserURL: "https://blockscout.staging.midl.xyz",
 				},
 			},
 		],
