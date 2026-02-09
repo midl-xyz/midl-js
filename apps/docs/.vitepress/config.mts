@@ -60,6 +60,11 @@ export default withSidebar(
 		},
 		vite: {
 			plugins: [llmstxt()],
+			resolve: {
+				alias: {
+					runelib: "@midl/runelib",
+				},
+			},
 		},
 	}),
 	[
