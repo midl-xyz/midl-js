@@ -1,6 +1,6 @@
 {
 	"name": "@midl/core",
-	"version": "3.0.2-next.3",
+	"version": "3.0.2",
 	"license": "MIT",
 	"scripts": {
 		"build": "tsdown --format cjs,esm -d dist",
@@ -9,7 +9,9 @@
 	"main": "./dist/index.cjs",
 	"module": "./dist/index.mjs",
 	"types": "./dist/index.d.cts",
-	"files": ["dist"],
+	"files": [
+		"dist"
+	],
 	"exports": {
 		"./package.json": "./package.json",
 		".": {

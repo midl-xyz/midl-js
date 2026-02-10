@@ -1,5 +1,15 @@
 # @midl/node
 
+## 3.0.2
+
+### Patch Changes
+
+- c73353e: fix: mark viem as an external dep
+- dc23347: feat: migrate esm/cjs build to tsdown
+- Updated dependencies [c73353e]
+- Updated dependencies [dc23347]
+  - @midl/core@3.0.2
+
 ## 3.0.2-next.3
 
 ### Patch Changes

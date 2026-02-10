@@ -1,5 +1,11 @@
 # @midl/logger
 
+## 3.0.2
+
+### Patch Changes
+
+- c73353e: fix: mark viem as an external dep
+
 ## 3.0.2-next.3
 
 ## 3.0.2-next.2
