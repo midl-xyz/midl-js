@@ -1,5 +1,5 @@
-import { AddressPurpose, connect, disconnect, transferBTC } from "@midl/core";
-import { http, type Chain, createWalletClient } from "viem";
+import { AddressPurpose, connect, disconnect } from "@midl/core";
+import { http, type Chain, createPublicClient } from "viem";
 import {
 	type Mock,
 	afterEach,
@@ -50,7 +50,7 @@ vi.mock("./getTSSAddress", async (importActual) => {
 describe("finalizeBTCTransaction", () => {
 	const chain = getEVMFromBitcoinNetwork(midlConfig.getState().network);
 
-	const walletClient = createWalletClient({
+	const walletClient = createPublicClient({
 		chain: chain as Chain,
 		transport: http(chain.rpcUrls.default.http[0]),
 	});

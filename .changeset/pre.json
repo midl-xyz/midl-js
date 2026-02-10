@@ -1,0 +1,24 @@
+{
+	"mode": "pre",
+	"tag": "next",
+	"initialVersions": {
+		"@midl/docs": "1.0.0",
+		"@midl/rune-etcher": "0.1.27",
+		"@midl/connectors": "3.0.1",
+		"@midl/core": "3.0.1",
+		"@midl/executor": "3.0.1",
+		"@midl/executor-react": "3.0.1",
+		"@midl/hardhat-deploy": "3.0.1",
+		"@midl/logger": "3.0.1",
+		"@midl/node": "3.0.1",
+		"@midl/playwright": "3.0.1",
+		"@midl/react": "3.0.1",
+		"@midl/satoshi-kit": "3.0.1"
+	},
+	"changesets": [
+		"big-pigs-double",
+		"quick-fans-own",
+		"spicy-clouds-raise",
+		"tame-houses-explode"
+	]
+}

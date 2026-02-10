@@ -6,15 +6,16 @@ import { MaestroSymphonyProvider } from "~/providers/runes/MaestroSymphonyProvid
 const fetchMock = vi.fn();
 
 vi.mock("openapi-fetch", async (importActual) => {
-	const actual = await importActual<typeof import("openapi-fetch")>();
+	const actual =
+		await importActual<typeof import("openapi-fetch/dist/index.mjs")>();
 
 	return {
-		...actual,
-		default: (options: ClientOptions) =>
-			actual.default({
+		default: (options: ClientOptions) => {
+			return actual.default({
 				...options,
 				fetch: fetchMock,
-			}),
+			});
+		},
 	};
 });
 

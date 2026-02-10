@@ -1,34 +1,39 @@
 {
 	"name": "@midl/node",
-	"version": "3.0.1",
+	"version": "3.0.2-next.3",
 	"license": "MIT",
 	"scripts": {
-		"build": "pnpm run clean && tspc --project tsconfig.esm.json && tspc --project tsconfig.cjs.json",
-		"dev": "concurrently \"tspc --watch --preserveWatchOutput --project tsconfig.esm.json\" \"tspc --watch --preserveWatchOutput --project tsconfig.cjs.json\"",
-		"clean": "rm -rf dist",
+		"build": "tsdown --format cjs,esm -d dist",
 		"test": "vitest"
 	},
-	"main": "./dist/cjs/index.js",
-	"module": "./dist/esm/index.js",
-	"types": "./dist/types/index.d.ts",
-	"files": [
-		"dist"
-	],
+	"main": "./dist/index.cjs",
+	"module": "./dist/index.mjs",
+	"types": "./dist/index.d.cts",
+	"files": ["dist"],
 	"exports": {
 		"./package.json": "./package.json",
 		".": {
-			"types": "./dist/types/index.d.ts",
-			"import": "./dist/esm/index.js",
-			"require": "./dist/cjs/index.js"
+			"import": {
+				"types": "./dist/index.d.mts",
+				"default": "./dist/index.mjs"
+			},
+			"require": {
+				"types": "./dist/index.d.cts",
+				"default": "./dist/index.cjs"
+			}
 		},
 		"./*": {
-			"types": "./dist/types/*.d.ts",
-			"import": "./dist/esm/*.js",
-			"require": "./dist/cjs/*.js"
+			"import": {
+				"types": "./dist/*.d.mts",
+				"default": "./dist/*.mjs"
+			},
+			"require": {
+				"types": "./dist/*.d.cts",
+				"default": "./dist/*.cjs"
+			}
 		}
 	},
 	"devDependencies": {
-		"@midl/midl-js-config": "workspace:^",
 		"@midl/core": "workspace:^",
 		"@types/node": "^22.8.7",
 		"@midl/bip322-js": "^3.0.1"

@@ -1,5 +1,43 @@
 # @midl/executor-react
 
+## 3.0.2-next.3
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl/executor@3.0.2-next.3
+  - @midl/core@3.0.2-next.3
+  - @midl/react@3.0.2-next.3
+
+## 3.0.2-next.2
+
+### Patch Changes
+
+- Updated dependencies
+  - @midl/executor@3.0.2-next.2
+  - @midl/core@3.0.2-next.2
+  - @midl/react@3.0.2-next.2
+
+## 3.0.2-next.1
+
+### Patch Changes
+
+- c73353e: fix: mark viem as an external dep
+- Updated dependencies [c73353e]
+  - @midl/executor@3.0.2-next.1
+  - @midl/react@3.0.2-next.1
+  - @midl/core@3.0.2-next.1
+
+## 3.0.2-next.0
+
+### Patch Changes
+
+- dc23347: feat: migrate esm/cjs build to tsdown
+- Updated dependencies [dc23347]
+  - @midl/executor@3.0.2-next.0
+  - @midl/react@3.0.2-next.0
+  - @midl/core@3.0.2-next.0
+
 ## 3.0.1
 
 ### Patch Changes

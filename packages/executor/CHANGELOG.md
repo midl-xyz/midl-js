@@ -1,5 +1,39 @@
 # @midl/executor
 
+## 3.0.2-next.3
+
+### Patch Changes
+
+- fix(executor): secp256k1 version
+  - @midl/core@3.0.2-next.3
+  - @midl/logger@3.0.2-next.3
+
+## 3.0.2-next.2
+
+### Patch Changes
+
+- fix: replace secp256k1
+  - @midl/core@3.0.2-next.2
+  - @midl/logger@3.0.2-next.2
+
+## 3.0.2-next.1
+
+### Patch Changes
+
+- c73353e: fix: mark viem as an external dep
+- Updated dependencies [c73353e]
+  - @midl/logger@3.0.2-next.1
+  - @midl/core@3.0.2-next.1
+
+## 3.0.2-next.0
+
+### Patch Changes
+
+- dc23347: feat: migrate esm/cjs build to tsdown
+- Updated dependencies [dc23347]
+  - @midl/core@3.0.2-next.0
+  - @midl/logger@3.0.2-next.0
+
 ## 3.0.1
 
 ### Patch Changes
