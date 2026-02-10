@@ -1,5 +1,18 @@
 # @midl/executor
 
+## 3.0.2
+
+### Patch Changes
+
+- 8e94a75: fix: replace secp256k1
+- c73353e: fix: mark viem as an external dep
+- dc23347: feat: migrate esm/cjs build to tsdown
+- 1a166bf: fix(executor): secp256k1 version
+- Updated dependencies [c73353e]
+- Updated dependencies [dc23347]
+  - @midl/logger@3.0.2
+  - @midl/core@3.0.2
+
 ## 3.0.2-next.3
 
 ### Patch Changes

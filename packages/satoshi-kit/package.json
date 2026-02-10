@@ -1,6 +1,6 @@
 {
 	"name": "@midl/satoshi-kit",
-	"version": "3.0.2-next.3",
+	"version": "3.0.2",
 	"license": "MIT",
 	"scripts": {
 		"build": "pnpm run build:lib && pnpm run build:styles",
@@ -41,7 +41,10 @@
 		"./styles.css": "./dist/styles.css",
 		"./styled-system/*": "./styled-system/*"
 	},
-	"files": ["dist", "styled-system"],
+	"files": [
+		"dist",
+		"styled-system"
+	],
 	"devDependencies": {
 		"@midl/connectors": "workspace:^",
 		"@midl/core": "workspace:^",
