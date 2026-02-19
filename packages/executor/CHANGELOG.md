@@ -1,5 +1,13 @@
 # @midl/executor
 
+## 3.0.3
+
+### Patch Changes
+
+- aa379d8: feat(executor): add transfers to finalizeBTCTransaction
+  - @midl/core@3.0.3
+  - @midl/logger@3.0.3
+
 ## 3.0.2
 
 ### Patch Changes

@@ -1,5 +1,15 @@
 # @midl/executor-react
 
+## 3.0.3
+
+### Patch Changes
+
+- aa379d8: feat(executor): add transfers to finalizeBTCTransaction
+- Updated dependencies [aa379d8]
+  - @midl/executor@3.0.3
+  - @midl/core@3.0.3
+  - @midl/react@3.0.3
+
 ## 3.0.2
 
 ### Patch Changes
