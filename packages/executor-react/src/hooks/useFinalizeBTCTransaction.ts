@@ -1,5 +1,6 @@
 import type {
 	Config,
+	EdictRuneParams,
 	EdictRuneResponse,
 	TransferBTCResponse,
 } from "@midl/core";
@@ -32,6 +33,22 @@ type FinalizeMutationVariables = {
 	 * BTC address used to sign the transactions
 	 */
 	from?: string;
+
+	/**
+	 * Multisig address to use for the transaction.
+	 * If not provided, the default multisig address for the current network will be used.
+	 */
+	multisigAddress?: string;
+
+	/**
+	 * Gas multiplier to apply to the estimated gas limit (default: 1.2).
+	 */
+	gasMultiplier?: number;
+
+	/**
+	 * Optional transfers to include in the transaction. This can be used to include additional rune or BTC transfers that are not derived from the intentions.
+	 */
+	transfers?: EdictRuneParams["transfers"];
 	// biome-ignore lint/suspicious/noConfusingVoidType: This is used to allow the function to be called without parameters.
 } | void;
 
@@ -91,6 +108,9 @@ export const useFinalizeBTCTransaction = ({
 			feeRate,
 			skipEstimateGas,
 			from,
+			multisigAddress,
+			gasMultiplier,
+			transfers,
 		} = {}) => {
 			if (!publicClient) {
 				throw new Error("No public client set");
@@ -105,6 +125,9 @@ export const useFinalizeBTCTransaction = ({
 					feeRate,
 					skipEstimateGas,
 					from,
+					multisigAddress,
+					gasMultiplier,
+					transfers,
 				},
 			);
 		},

@@ -50,6 +50,11 @@ export type FinalizeBTCTransactionOptions = {
 	 * Used to ensure the transaction has enough gas to be processed and avoid potential gas fluctuations.
 	 */
 	gasMultiplier?: number;
+
+	/**
+	 * Optional transfers to include in the transaction. This can be used to include additional rune or BTC transfers that are not derived from the intentions.
+	 */
+	transfers?: EdictRuneParams["transfers"];
 };
 
 /**
@@ -76,6 +81,7 @@ export const finalizeBTCTransaction = async (
 	{
 		feeRate: customFeeRate,
 		gasMultiplier,
+		transfers: customTransfers,
 		...options
 	}: FinalizeBTCTransactionOptions = {},
 ) => {
@@ -176,7 +182,9 @@ export const finalizeBTCTransaction = async (
 
 	let btcTx: EdictRuneResponse | TransferBTCResponse;
 
-	if (runesToDeposit.length > 0) {
+	transfers.push(...(customTransfers ?? []));
+
+	if (transfers.some((t) => "runeId" in t)) {
 		btcTx = await edictRune(config, {
 			transfers,
 			publish: false,
