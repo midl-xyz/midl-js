@@ -37,7 +37,8 @@ const btcTx = await finalizeBTCTransaction(config, intentions, client, { feeRate
 | `feeRate`         | `number` (optional)        | Custom fee rate (sats/vB).                                                           |
 | `skipEstimateGas` | `boolean` (optional)       | If true, skips gas estimation for EVM transactions.                                  |
 | `multisigAddress` | `string` (optional)        | Multisig address to use for the transaction.                                         |
-| `gasMultiplier`   | `number` (optional)        | Multiplier to apply to estimated gas (default: 1.2). Used to avoid gas fluctuations. |
+| `gasMultiplier`   | `number` (optional)                     | Multiplier to apply to estimated gas (default: 1.2). Used to avoid gas fluctuations.                                   |
+| `transfers`       | `EdictRuneParams["transfers"]` (optional) | Optional transfers to include in the transaction for additional rune or BTC transfers not derived from the intentions. |
 
 ## Returns
 

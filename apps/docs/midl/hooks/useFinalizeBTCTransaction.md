@@ -36,7 +36,10 @@ finalizeBTCTransaction({ feeRate: 10 });
 
 | Name              | Type                       | Description                                             |
 | ----------------- | -------------------------- | ------------------------------------------------------- |
-| `stateOverride`   | `StateOverride` (optional) | State override to estimate the cost of the transaction. |
-| `feeRate`         | `number` (optional)        | Custom fee rate in sats/vB.                             |
-| `skipEstimateGas` | `boolean` (optional)       | If true, skip the gas estimation for EVM transactions.  |
-| `from`            | `string` (optional)        | BTC address used to sign the transactions.              |
+| `stateOverride`   | `StateOverride` (optional)              | State override to estimate the cost of the transaction.                                                              |
+| `feeRate`         | `number` (optional)                     | Custom fee rate in sats/vB.                                                                                          |
+| `skipEstimateGas` | `boolean` (optional)                    | If true, skip the gas estimation for EVM transactions.                                                               |
+| `from`            | `string` (optional)                     | BTC address used to sign the transactions.                                                                           |
+| `multisigAddress` | `string` (optional)                     | Multisig address to use for the transaction. If not provided, the default multisig address for the network is used.  |
+| `gasMultiplier`   | `number` (optional)                     | Gas multiplier to apply to the estimated gas limit (default: 1.2).                                                   |
+| `transfers`       | `EdictRuneParams["transfers"]` (optional) | Optional transfers to include in the transaction for additional rune or BTC transfers not derived from the intentions. |
