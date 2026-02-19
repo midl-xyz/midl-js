@@ -1,5 +1,11 @@
 # @midl/node
 
+## 3.0.3
+
+### Patch Changes
+
+- @midl/core@3.0.3
+
 ## 3.0.2
 
 ### Patch Changes
