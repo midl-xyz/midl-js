@@ -3,7 +3,7 @@ import { bytesToHex, hexToBytes } from "@noble/hashes/utils.js";
 import { Point, Signature } from "@noble/secp256k1";
 import { base64 } from "@scure/base";
 import { recoverPublicKey, toBytes, toHex } from "viem";
-import { getBIP322Hash } from "~/utils";
+import { getBIP322Hash } from "~/utils/getBIP322Hash";
 
 /**
  *  Extracts EVM signature from a base64 encoded signature.

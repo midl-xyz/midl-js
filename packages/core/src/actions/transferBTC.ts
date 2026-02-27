@@ -1,9 +1,9 @@
 import ecc from "@bitcoinerlab/secp256k1";
 import { Psbt, initEccLib, networks } from "bitcoinjs-lib";
 import coinSelect, { type Target } from "bitcoinselect";
-import { getDefaultAccount } from "~/actions";
 import { broadcastTransaction } from "~/actions/broadcastTransaction";
 import { WalletConnectionError } from "~/actions/connect";
+import { getDefaultAccount } from "~/actions/getDefaultAccount";
 import { getFeeRate } from "~/actions/getFeeRate";
 import { getUTXOs } from "~/actions/getUTXOs";
 import type { Config } from "~/createConfig";
