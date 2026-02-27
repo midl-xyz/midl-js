@@ -1,5 +1,14 @@
 # @midl/executor
 
+## 3.0.5
+
+### Patch Changes
+
+- 011ba57: fix: linter & circular deps
+- Updated dependencies [011ba57]
+  - @midl/core@3.0.5
+  - @midl/logger@3.0.5
+
 ## 3.0.4
 
 ### Patch Changes
