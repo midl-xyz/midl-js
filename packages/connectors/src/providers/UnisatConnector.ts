@@ -2,14 +2,14 @@ import {
 	type Account,
 	type Connector,
 	type ConnectorConnectParams,
+	get,
+	getAddressPurpose,
+	getAddressType,
 	type SignMessageParams,
 	SignMessageProtocol,
 	type SignMessageResponse,
 	type SignPSBTParams,
 	type SignPSBTResponse,
-	get,
-	getAddressPurpose,
-	getAddressType,
 } from "@midl/core";
 import { hexToBytes } from "@noble/hashes/utils.js";
 import { base64 } from "@scure/base";

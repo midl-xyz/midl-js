@@ -1,1 +1,1 @@
-export * from './WagmiMidlProvider';
+export * from "./WagmiMidlProvider";

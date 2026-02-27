@@ -5,8 +5,8 @@ import type {
 	AbstractRunesProvider,
 	RuneBalanceResponse,
 	RuneResponse,
-	RuneUTXO,
 	RunesResponse,
+	RuneUTXO,
 } from "~/providers/runes/AbstractRunesProvider";
 import type { paths } from "~/providers/runes/scheme/maestro-symphony";
 

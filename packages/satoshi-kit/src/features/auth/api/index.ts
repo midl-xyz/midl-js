@@ -1,2 +1,2 @@
-export * from './createAuthenticationAdapter';
-export * from './useAuthentication';
+export * from "./createAuthenticationAdapter";
+export * from "./useAuthentication";

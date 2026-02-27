@@ -1,10 +1,10 @@
 import {
 	type Config,
-	type SignMessageProtocol,
 	getDefaultAccount,
+	type SignMessageProtocol,
 	signMessage,
 } from "@midl/core";
-import { type PublicClient, keccak256, serializeTransaction } from "viem";
+import { keccak256, type PublicClient, serializeTransaction } from "viem";
 import { serializeIntention } from "~/actions/serializeIntention";
 import type { TransactionIntention } from "~/types/intention";
 import { extractEVMSignature } from "~/utils";

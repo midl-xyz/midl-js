@@ -1,4 +1,4 @@
-import { http, type Chain, createPublicClient } from "viem";
+import { type Chain, createPublicClient, http } from "viem";
 import { describe, expect, it, vi } from "vitest";
 import { getBTCFeeRate } from "~/actions/getBTCFeeRate";
 import { midlRegtest } from "~/config";

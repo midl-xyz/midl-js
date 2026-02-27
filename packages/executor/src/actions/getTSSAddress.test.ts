@@ -1,6 +1,6 @@
-import { http, createPublicClient } from "viem";
+import { createPublicClient, http } from "viem";
 import * as viemActions from "viem/actions";
-import { type Mock, describe, expect, it, vi } from "vitest";
+import { describe, expect, it, type Mock, vi } from "vitest";
 import { midlConfig } from "~/__tests__/midlConfig";
 import { getTSSAddress } from "~/actions/getTSSAddress";
 import { midlRegtest } from "~/config";

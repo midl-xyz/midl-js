@@ -1,8 +1,8 @@
 import {
 	type Config,
 	type GetRunesParams,
-	type RunesResponse,
 	getRunes,
+	type RunesResponse,
 } from "@midl/core";
 import { type UseQueryOptions, useQuery } from "@tanstack/react-query";
 import { useAccounts } from "~/hooks/useAccounts";

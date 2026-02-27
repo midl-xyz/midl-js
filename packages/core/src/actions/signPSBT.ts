@@ -1,4 +1,4 @@
-import { Psbt, networks } from "bitcoinjs-lib";
+import { networks, Psbt } from "bitcoinjs-lib";
 import { broadcastTransaction } from "~/actions/broadcastTransaction";
 import { WalletConnectionError } from "~/actions/connect";
 import type { Config } from "~/createConfig";

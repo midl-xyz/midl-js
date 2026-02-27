@@ -5,7 +5,7 @@ import {
 	getRune,
 } from "@midl/core";
 import { addTxIntention } from "~/actions/addTxIntention";
-import { getEVMAddress } from "~/utils";
+import { getEVMAddress } from "~/utils/getEVMAddress";
 
 /**
  * Creates an intention to add a Rune ERC20 token by transferring the minting fee and the Rune to the multisig address.

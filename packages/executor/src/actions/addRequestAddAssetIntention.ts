@@ -1,4 +1,4 @@
-import { type Config, getDefaultAccount, getRune } from "@midl/core";
+import type { Config } from "@midl/core";
 import { encodeFunctionData } from "viem";
 import { addTxIntention } from "~/actions/addTxIntention";
 import { SystemContracts } from "~/config";

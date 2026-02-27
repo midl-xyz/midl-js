@@ -16,9 +16,9 @@ import { keyPairConnector } from "@midl/node";
 import type { HardhatRuntimeEnvironment } from "hardhat/types";
 import {
 	type Address,
-	type PublicClient,
 	getContractAddress,
 	keccak256,
+	type PublicClient,
 } from "viem";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createStore } from "~/actions/createStore";

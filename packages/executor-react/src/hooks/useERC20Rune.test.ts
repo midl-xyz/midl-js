@@ -1,4 +1,3 @@
-import { Config } from "@midl/core";
 import { renderHook, waitFor } from "@testing-library/react";
 import { zeroAddress } from "viem";
 import { describe, expect, it, vi } from "vitest";

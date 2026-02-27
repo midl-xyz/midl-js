@@ -1,7 +1,7 @@
 import { type Config, getDefaultAccount } from "@midl/core";
 import { addRuneERC20Intention, getEVMAddress } from "@midl/executor";
 import type { HardhatRuntimeEnvironment } from "hardhat/types";
-import { http, type PublicClient, createPublicClient } from "viem";
+import { createPublicClient, http, type PublicClient } from "viem";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
 	addTxIntentionToStore,

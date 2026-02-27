@@ -7,13 +7,13 @@ import {
 	type Connector,
 	type ConnectorConnectParams,
 	type CreateConnectorFn,
+	createConnector,
+	extractXCoordinate,
+	getAddressType,
 	type SignMessageParams,
 	SignMessageProtocol,
 	type SignMessageResponse,
 	type SignPSBTParams,
-	createConnector,
-	extractXCoordinate,
-	getAddressType,
 } from "@midl/core";
 import { bytesToHex, hexToBytes } from "@noble/hashes/utils.js";
 import BIP32Factory from "bip32";
@@ -74,7 +74,7 @@ class KeyPairConnector implements Connector {
 			});
 
 			accounts.push({
-				// biome-ignore lint/style/noNonNullAssertion: <explanation>
+				// biome-ignore lint/style/noNonNullAssertion: this is intentional
 				address: p2tr.address!,
 				purpose: AddressPurpose.Ordinals,
 				publicKey: bytesToHex(keyPair.publicKey),
@@ -95,7 +95,7 @@ class KeyPairConnector implements Connector {
 				});
 
 				accounts.push({
-					// biome-ignore lint/style/noNonNullAssertion: <explanation>
+					// biome-ignore lint/style/noNonNullAssertion: this is intentional
 					address: p2sh.address!,
 					purpose: AddressPurpose.Payment,
 					publicKey: bytesToHex(keyPair.publicKey),
@@ -112,7 +112,7 @@ class KeyPairConnector implements Connector {
 				});
 
 				accounts.push({
-					// biome-ignore lint/style/noNonNullAssertion: <explanation>
+					// biome-ignore lint/style/noNonNullAssertion: this is intentional
 					address: p2wpkh.address!,
 					purpose: AddressPurpose.Payment,
 					publicKey: bytesToHex(keyPair.publicKey),

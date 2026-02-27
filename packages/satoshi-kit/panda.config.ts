@@ -1,5 +1,5 @@
 import { mkdirSync, writeFileSync } from "node:fs";
-import { dirname, join } from "node:path";
+import { join } from "node:path";
 import { defineConfig } from "@pandacss/dev";
 import postcss from "postcss";
 import prefixGlobals from "./plugins/postcss-prefix-globals.cjs";

@@ -1,7 +1,7 @@
 import {
 	type Chain,
-	SystemContracts,
 	getEVMFromBitcoinNetwork,
+	SystemContracts,
 } from "@midl/executor";
 import type {
 	HardhatRuntimeEnvironment,

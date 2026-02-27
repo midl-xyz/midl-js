@@ -1,7 +1,7 @@
 import type { Config } from "@midl/core";
 import type { PartialIntention } from "@midl/executor";
 import type { HardhatRuntimeEnvironment } from "hardhat/types";
-import { type PublicClient, encodeFunctionData } from "viem";
+import { encodeFunctionData, type PublicClient } from "viem";
 import type { StoreApi } from "zustand/vanilla";
 import { addTxIntentionToStore } from "~/actions/addTxIntentionToStore";
 import type { MidlHardhatStore } from "~/actions/createStore";

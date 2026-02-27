@@ -1,9 +1,9 @@
 import { AddressPurpose, connect, disconnect } from "@midl/core";
-import { type TransactionIntention, midlRegtest } from "@midl/executor";
+import { midlRegtest, type TransactionIntention } from "@midl/executor";
 import { createStore } from "@midl/react";
 import { renderHook } from "@testing-library/react";
 import { zeroAddress } from "viem";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { wrapper } from "~/__tests__";
 import { midlConfig } from "~/__tests__/midlConfig";
 import { useSignIntention } from "~/hooks/useSignIntention";

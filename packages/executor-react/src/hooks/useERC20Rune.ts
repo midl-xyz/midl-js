@@ -1,5 +1,5 @@
 import type { Config } from "@midl/core";
-import { SystemContracts, executorAbi, runeIdToBytes32 } from "@midl/executor";
+import { executorAbi, runeIdToBytes32, SystemContracts } from "@midl/executor";
 import { useRune } from "@midl/react";
 import { type UseReadContractParameters, useReadContract } from "wagmi";
 

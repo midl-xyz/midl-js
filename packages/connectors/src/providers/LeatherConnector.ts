@@ -4,15 +4,15 @@ import {
 	type BitcoinNetwork,
 	type Connector,
 	type ConnectorConnectParams,
+	getAddressPurpose,
+	getAddressType,
 	type SignMessageParams,
 	SignMessageProtocol,
 	type SignMessageResponse,
 	type SignPSBTParams,
 	type SignPSBTResponse,
-	getAddressPurpose,
-	getAddressType,
 } from "@midl/core";
-import { Psbt, networks } from "bitcoinjs-lib";
+import { networks, Psbt } from "bitcoinjs-lib";
 
 export class LeatherConnector implements Connector {
 	public readonly id = "leather";

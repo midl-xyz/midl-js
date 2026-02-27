@@ -1,6 +1,6 @@
 import ecc from "@bitcoinerlab/secp256k1";
-import * as bitcoin from "bitcoinjs-lib";
 import type { Network } from "bitcoinjs-lib";
+import * as bitcoin from "bitcoinjs-lib";
 import { ECPairFactory } from "ecpair";
 
 const ECPair = ECPairFactory(ecc);

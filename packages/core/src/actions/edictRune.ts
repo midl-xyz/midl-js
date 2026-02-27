@@ -1,6 +1,6 @@
 import ecc from "@bitcoinerlab/secp256k1";
-import { Edict, RuneId, Runestone, none, some } from "@midl/runelib";
-import { Psbt, initEccLib, networks } from "bitcoinjs-lib";
+import { Edict, none, RuneId, Runestone, some } from "@midl/runelib";
+import { initEccLib, networks, Psbt } from "bitcoinjs-lib";
 import coinSelect from "bitcoinselect";
 import { broadcastTransaction } from "~/actions/broadcastTransaction";
 import { getDefaultAccount } from "~/actions/getDefaultAccount";
@@ -272,7 +272,7 @@ export const edictRune = async (
 			(_input, index) => index,
 		);
 		signInputs[runesAccount.address] = runeUTXOs.map(
-			// biome-ignore lint/style/noNonNullAssertion: <explanation>
+			// biome-ignore lint/style/noNonNullAssertion: this is intentional
 			(_input, index) => (selectedUTXOs.inputs!.length ?? 0) + index,
 		);
 	} else {

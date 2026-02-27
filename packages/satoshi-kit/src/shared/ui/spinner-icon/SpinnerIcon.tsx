@@ -1,6 +1,7 @@
 import type { SVGProps } from "react";
+
 const SvgComponent = (props: SVGProps<SVGSVGElement>) => (
-	// biome-ignore lint/a11y/noSvgWithoutTitle: <explanation>
+	// biome-ignore lint/a11y/noSvgWithoutTitle: this is intentional
 	<svg
 		xmlns="http://www.w3.org/2000/svg"
 		viewBox="0 0 24 24"

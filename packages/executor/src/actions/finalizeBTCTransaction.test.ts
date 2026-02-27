@@ -1,12 +1,12 @@
 import { AddressPurpose, connect, disconnect } from "@midl/core";
-import { http, type Chain, createPublicClient } from "viem";
+import { type Chain, createPublicClient, http } from "viem";
 import {
-	type Mock,
 	afterEach,
 	beforeEach,
 	describe,
 	expect,
 	it,
+	type Mock,
 	vi,
 } from "vitest";
 import { midlConfig } from "~/__tests__/midlConfig";

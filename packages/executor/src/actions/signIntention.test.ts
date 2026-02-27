@@ -5,8 +5,8 @@ import {
 	getDefaultAccount,
 } from "@midl/core";
 import {
-	type PublicClient,
 	keccak256,
+	type PublicClient,
 	parseTransaction,
 	recoverAddress,
 	serializeTransaction,

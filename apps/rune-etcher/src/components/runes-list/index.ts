@@ -1,1 +1,1 @@
-export * from './RunesList';
+export * from "./RunesList";

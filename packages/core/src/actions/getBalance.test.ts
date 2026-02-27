@@ -1,6 +1,6 @@
 import { randomBytes } from "node:crypto";
 import { keyPairConnector } from "@midl/node";
-import { http, HttpResponse } from "msw";
+import { HttpResponse, http } from "msw";
 import { setupServer } from "msw/node";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { makeRandomAddress } from "~/__tests__/makeRandomAddress";

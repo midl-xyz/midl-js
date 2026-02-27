@@ -1,5 +1,5 @@
 import ecc from "@bitcoinerlab/secp256k1";
-import { Psbt, initEccLib, networks } from "bitcoinjs-lib";
+import { initEccLib, networks, Psbt } from "bitcoinjs-lib";
 import coinSelect, { type Target } from "bitcoinselect";
 import { broadcastTransaction } from "~/actions/broadcastTransaction";
 import { WalletConnectionError } from "~/actions/connect";

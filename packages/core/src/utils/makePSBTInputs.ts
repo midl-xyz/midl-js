@@ -1,5 +1,5 @@
 import { hexToBytes } from "@noble/hashes/utils.js";
-import { type Psbt, networks, payments } from "bitcoinjs-lib";
+import { networks, type Psbt, payments } from "bitcoinjs-lib";
 import type { UTXO } from "bitcoinselect";
 import type { Account } from "~/connectors";
 import { AddressType } from "~/constants";

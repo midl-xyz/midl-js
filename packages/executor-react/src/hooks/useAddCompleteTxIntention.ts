@@ -1,7 +1,7 @@
 import type { Config } from "@midl/core";
 import {
-	type TransactionIntention,
 	addCompleteTxIntention,
+	type TransactionIntention,
 } from "@midl/executor";
 import {
 	type MidlContextStore,

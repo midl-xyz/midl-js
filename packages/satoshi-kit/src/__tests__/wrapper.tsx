@@ -25,7 +25,10 @@ export const midlConfig = createConfig({
 export const Wrapper = ({
 	children,
 	adapter,
-}: { children: ReactNode; adapter?: AuthenticationAdapter }) => {
+}: {
+	children: ReactNode;
+	adapter?: AuthenticationAdapter;
+}) => {
 	return (
 		<MidlProvider config={midlConfig}>
 			<SatoshiKitProvider authenticationAdapter={adapter}>

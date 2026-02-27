@@ -3,15 +3,15 @@ import {
 	type BitcoinNetwork,
 	type Connector,
 	type ConnectorConnectParams,
+	getAddressPurpose,
+	getAddressType,
+	mainnet,
+	regtest,
 	type SignMessageParams,
 	SignMessageProtocol,
 	type SignMessageResponse,
 	type SignPSBTParams,
 	type SignPSBTResponse,
-	getAddressPurpose,
-	getAddressType,
-	mainnet,
-	regtest,
 	signet,
 	testnet,
 	testnet4,
@@ -163,11 +163,7 @@ export class SatsConnectConnector implements Connector {
 		return this.getAccounts({ network });
 	}
 
-	async getAccounts({
-		network,
-	}: {
-		network: BitcoinNetwork;
-	}) {
+	async getAccounts({ network }: { network: BitcoinNetwork }) {
 		const data = await request("wallet_getAccount", null, this.providerId);
 
 		if (data.status === "error") {

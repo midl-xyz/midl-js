@@ -2,9 +2,9 @@ import { type Config, getDefaultAccount } from "@midl/core";
 import { getLogger } from "@midl/logger";
 import {
 	type Client,
+	encodeFunctionData,
 	type PublicClient,
 	type StateOverride,
-	encodeFunctionData,
 	toHex,
 	zeroAddress,
 } from "viem";
@@ -214,7 +214,7 @@ export const estimateBTCTransaction = async (
 							},
 						],
 					}),
-					// @ts-ignore Viem supports from field override but types are wrong
+					// @ts-expect-error Viem supports from field override but types are wrong
 					from: validatorAddress,
 				},
 				...evmTransactions,

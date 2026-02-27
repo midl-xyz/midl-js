@@ -8,7 +8,7 @@ import { mockServer } from "~/__tests__/mockServer";
 import { connect } from "~/actions/connect";
 import { edictRune } from "~/actions/edictRune";
 import { AddressPurpose } from "~/constants";
-import { type Config, createConfig } from "~/createConfig";
+import { createConfig } from "~/createConfig";
 import { regtest } from "~/networks";
 import * as mod from "./getRuneUTXO";
 

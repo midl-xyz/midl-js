@@ -11,8 +11,8 @@ import type {
 	AbstractRunesProvider,
 	RuneBalanceResponse,
 	RuneResponse,
-	RuneUTXO,
 	RunesResponse,
+	RuneUTXO,
 } from "~/providers/runes";
 import type { components, paths } from "./scheme/maestro";
 
@@ -152,7 +152,7 @@ export class MaestroProvider
 	async getRunes(
 		network: BitcoinNetwork,
 		address: string,
-		params?: { limit?: number; offset?: number },
+		_params?: { limit?: number; offset?: number },
 	): Promise<RunesResponse> {
 		const { data } = await this.client.GET("/addresses/{address}/runes", {
 			baseUrl: this.getApURL(network),

@@ -154,7 +154,7 @@ export class MempoolSpaceWSProvider {
 				resolve(ws);
 			});
 
-			ws.addEventListener("error", (event) => {
+			ws.addEventListener("error", () => {
 				this.connectionPromises.delete(network.id);
 				reject(new Error("WebSocket connection failed"));
 			});

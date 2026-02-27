@@ -1,7 +1,7 @@
 import {
 	type Config,
-	type ConnectParams,
 	type Connector,
+	type ConnectParams,
 	connect,
 } from "@midl/core";
 import {

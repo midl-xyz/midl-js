@@ -1,5 +1,10 @@
 "use client";
 
+import { useAccounts, useEdictRune, useRune, useRunes } from "@midl/react";
+import { SendIcon } from "lucide-react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { parseUnits } from "viem";
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
@@ -14,11 +19,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { useAccounts, useEdictRune, useRune, useRunes } from "@midl/react";
-import { SendIcon } from "lucide-react";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { parseUnits } from "viem";
 
 type FormValues = {
 	address: string;
@@ -30,7 +30,7 @@ export const RunesList = () => {
 	const { ordinalsAccount } = useAccounts();
 	const [rune, setRune] = useState<string | undefined>();
 	const { rune: runeData } = useRune({
-		// biome-ignore lint/style/noNonNullAssertion: <explanation>
+		// biome-ignore lint/style/noNonNullAssertion: this is intentional
 		runeId: rune!,
 		query: {
 			enabled: Boolean(rune),
@@ -72,7 +72,7 @@ export const RunesList = () => {
 			return;
 		}
 
-		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+		// biome-ignore lint/suspicious/noExplicitAny: this is intentional
 		const transfers: any = [
 			{
 				receiver: address,
@@ -81,7 +81,10 @@ export const RunesList = () => {
 			},
 		];
 
-		const parseBTCAmount = Number.parseInt(parseUnits(btcAmount, 8).toString());
+		const parseBTCAmount = Number.parseInt(
+			parseUnits(btcAmount, 8).toString(),
+			10,
+		);
 
 		if (parseBTCAmount > 0) {
 			transfers.push({

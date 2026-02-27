@@ -1,6 +1,6 @@
 import { AddressPurpose, connect } from "@midl/core";
 import { zeroAddress } from "viem";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import { midlConfig } from "~/__tests__/midlConfig";
 import { addRequestAddAssetIntention } from "~/actions/addRequestAddAssetIntention";
 import { SystemContracts } from "~/config";

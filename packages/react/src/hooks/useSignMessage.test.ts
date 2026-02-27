@@ -4,11 +4,11 @@ import { wrapper } from "~/__tests__/wrapper";
 import { useSignMessage } from "~/hooks/useSignMessage";
 
 describe("useSignMessage", () => {
-  it("returns the correct values", () => {
-    const { result } = renderHook(() => useSignMessage(), { wrapper });
+	it("returns the correct values", () => {
+		const { result } = renderHook(() => useSignMessage(), { wrapper });
 
-    expect("signMessage" in result.current).toBeTruthy();
-    expect("signMessageAsync" in result.current).toBeTruthy();
-    expect("isPending" in result.current).toBeTruthy();
-  });
+		expect("signMessage" in result.current).toBeTruthy();
+		expect("signMessageAsync" in result.current).toBeTruthy();
+		expect("isPending" in result.current).toBeTruthy();
+	});
 });

@@ -1,5 +1,5 @@
 import { regtest } from "@midl/core";
-import { SystemContracts, getEVMFromBitcoinNetwork } from "@midl/executor";
+import { getEVMFromBitcoinNetwork, SystemContracts } from "@midl/executor";
 import type { HardhatRuntimeEnvironment } from "hardhat/types";
 import { describe, expect, it } from "vitest";
 import type { MidlNetworkConfig } from "~/type-extensions";

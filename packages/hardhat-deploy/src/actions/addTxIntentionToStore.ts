@@ -1,8 +1,8 @@
 import { type Config, getDefaultAccount } from "@midl/core";
 import {
-	type PartialIntention,
 	addTxIntention,
 	getEVMAddress,
+	type PartialIntention,
 } from "@midl/executor";
 import type { PublicClient } from "viem";
 import type { StoreApi } from "zustand/vanilla";

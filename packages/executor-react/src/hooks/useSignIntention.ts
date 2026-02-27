@@ -1,5 +1,5 @@
 import { type Config, SignMessageProtocol } from "@midl/core";
-import { type TransactionIntention, signIntention } from "@midl/executor";
+import { signIntention, type TransactionIntention } from "@midl/executor";
 import {
 	type MidlContextStore,
 	useConfigInternal,

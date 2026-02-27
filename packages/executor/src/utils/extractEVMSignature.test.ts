@@ -1,10 +1,10 @@
 import { Verifier } from "@midl/bip322-js";
 import {
 	AddressPurpose,
-	SignMessageProtocol,
 	connect,
 	disconnect,
 	getDefaultAccount,
+	SignMessageProtocol,
 	signMessage,
 } from "@midl/core";
 import { bytesToHex, hexToBytes } from "@noble/hashes/utils.js";

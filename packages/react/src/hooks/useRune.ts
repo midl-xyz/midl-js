@@ -1,4 +1,4 @@
-import { type Config, type RuneResponse, getRune } from "@midl/core";
+import { type Config, getRune, type RuneResponse } from "@midl/core";
 import { type UseQueryOptions, useQuery } from "@tanstack/react-query";
 import { useConfigInternal } from "~/hooks/useConfigInternal";
 

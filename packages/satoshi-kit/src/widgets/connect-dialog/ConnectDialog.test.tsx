@@ -7,7 +7,7 @@ import {
 	waitForElementToBeRemoved,
 } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-import { Wrapper, testConnector } from "~/__tests__/wrapper";
+import { testConnector, Wrapper } from "~/__tests__/wrapper";
 import { createAuthenticationAdapter } from "~/features/auth";
 import { ConnectDialog } from "~/widgets/connect-dialog/ConnectDialog";
 

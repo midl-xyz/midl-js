@@ -3,8 +3,8 @@ import { WagmiMidlProvider } from "@midl/executor-react";
 import { MidlProvider } from "@midl/react";
 import {
 	ConnectButton,
-	SatoshiKitProvider,
 	createMidlConfig,
+	SatoshiKitProvider,
 } from "@midl/satoshi-kit";
 import "@midl/satoshi-kit/styles.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
