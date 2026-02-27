@@ -10,8 +10,8 @@ import { keyPairConnector } from "@midl/node";
 import type { HardhatRuntimeEnvironment } from "hardhat/types";
 import {
 	type Address,
-	type PublicClient,
 	encodeFunctionData,
+	type PublicClient,
 	zeroAddress,
 } from "viem";
 import { beforeEach, describe, expect, it, vi } from "vitest";

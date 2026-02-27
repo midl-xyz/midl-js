@@ -1,8 +1,8 @@
 import path from "node:path";
 import { type BrowserContext, test as base, chromium } from "@playwright/test";
 import { extensions } from "~/config";
-import type { Wallet, WalletConstructor } from "~/wallets/Wallet";
 import type LeatherWallet from "~/wallets/leather";
+import type { Wallet, WalletConstructor } from "~/wallets/Wallet";
 
 type Extensions = {
 	leather: LeatherWallet;

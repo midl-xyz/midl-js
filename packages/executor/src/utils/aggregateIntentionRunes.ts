@@ -30,7 +30,7 @@ export const aggregateIntentionRunes = (
 					acc.set(rune.id, {
 						id: rune.id,
 						value: acc.get(rune.id)
-							? // biome-ignore lint/style/noNonNullAssertion: <explanation>
+							? // biome-ignore lint/style/noNonNullAssertion: this is intentional
 								acc.get(rune.id)!.value + rune.amount
 							: rune.amount,
 						address: rune.address,

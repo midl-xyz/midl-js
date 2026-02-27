@@ -2,16 +2,16 @@ import ecc from "@bitcoinerlab/secp256k1";
 import {
 	EtchInscription,
 	Etching,
+	getSpacersVal,
+	none,
 	Range,
 	Rune,
 	Runestone,
-	Terms,
-	getSpacersVal,
-	none,
 	some,
+	Terms,
 } from "@midl/runelib";
 import { concatBytes, hexToBytes, utf8ToBytes } from "@noble/hashes/utils.js";
-import { Psbt, initEccLib, networks, payments, script } from "bitcoinjs-lib";
+import { initEccLib, networks, Psbt, payments, script } from "bitcoinjs-lib";
 import coinselect from "bitcoinselect";
 import { getDefaultAccount } from "~/actions/getDefaultAccount";
 import { getFeeRate } from "~/actions/getFeeRate";
@@ -321,7 +321,7 @@ export const etchRune = async (
 		index: 0,
 		witnessUtxo: {
 			value: BigInt(RUNE_MAGIC_VALUE + feeRate * ETCHING_TX_SIZE),
-			// biome-ignore lint/style/noNonNullAssertion: <explanation>
+			// biome-ignore lint/style/noNonNullAssertion: this is intentional
 			script: scriptP2TR.output!,
 		},
 		tapLeafScript: [
@@ -335,7 +335,7 @@ export const etchRune = async (
 	});
 
 	psbt.addOutput({
-		// biome-ignore lint/style/noNonNullAssertion: <explanation>
+		// biome-ignore lint/style/noNonNullAssertion: this is intentional
 		address: scriptP2TR.address!,
 		value: BigInt(RUNE_MAGIC_VALUE),
 	});
@@ -361,7 +361,7 @@ export const etchRune = async (
 		index: 1,
 		witnessUtxo: {
 			value: BigInt(RUNE_MAGIC_VALUE + feeRate * ETCHING_TX_SIZE),
-			// biome-ignore lint/style/noNonNullAssertion: <explanation>
+			// biome-ignore lint/style/noNonNullAssertion: this is intentional
 			script: scriptP2TR.output!,
 		},
 		tapLeafScript: [

@@ -6,15 +6,15 @@ import {
 	getDefaultAccount,
 } from "@midl/core";
 import { keyPairConnector } from "@midl/node";
-import { http, type PublicClient, createPublicClient } from "viem";
+import { createPublicClient, http, type PublicClient } from "viem";
 import * as viemActions from "viem/actions";
 import {
-	type Mock,
 	afterEach,
 	beforeEach,
 	describe,
 	expect,
 	it,
+	type Mock,
 	vi,
 } from "vitest";
 import { __TEST__MNEMONIC__ } from "~/__tests__/keyPair";

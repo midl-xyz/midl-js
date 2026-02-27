@@ -18,7 +18,7 @@ export const runeIdToBytes32 = (runeId: string): `0x${string}` => {
 			toHex((BigInt(blockHeight) << BigInt(32)) | BigInt(txIndex)),
 			{ size: 32 },
 		);
-	} catch (e) {
+	} catch {
 		// do nothing
 	}
 

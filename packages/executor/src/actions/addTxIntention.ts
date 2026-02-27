@@ -4,7 +4,7 @@ import type {
 	IntentionEVMTransaction,
 	TransactionIntention,
 } from "~/types/intention";
-import { getEVMAddress } from "~/utils";
+import { getEVMAddress } from "~/utils/getEVMAddress";
 
 export type PartialIntention = Omit<
 	TransactionIntention,

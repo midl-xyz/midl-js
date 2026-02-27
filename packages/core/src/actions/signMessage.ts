@@ -1,4 +1,4 @@
-import type { BitcoinNetwork, Config } from "~/createConfig";
+import type { Config } from "~/createConfig";
 
 export enum SignMessageProtocol {
 	Ecdsa = "ECDSA",

@@ -15,6 +15,6 @@ export const makeRandomAddress = (network = bitcoin.networks.regtest) => {
 		network,
 	});
 
-	// biome-ignore lint/style/noNonNullAssertion: <explanation>
+	// biome-ignore lint/style/noNonNullAssertion: this is intentional
 	return p2tr.address!;
 };

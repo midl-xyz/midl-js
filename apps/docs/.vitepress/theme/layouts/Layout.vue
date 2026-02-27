@@ -2,6 +2,7 @@
 import { useData } from "vitepress";
 import DefaultTheme, { useSidebar } from "vitepress/theme";
 import { computed } from "vue";
+
 const { Layout } = DefaultTheme;
 const { hasSidebar } = useSidebar();
 const { frontmatter } = useData();

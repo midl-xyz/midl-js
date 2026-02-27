@@ -1,10 +1,9 @@
-import { useStore as useZustandStore } from "zustand";
 import { useMidlContext } from "~/context";
 import type { MidlContextStore } from "~/types";
 
 /**
  * Accesses the global state within the Midl context.
- * For internal use only.
+ * For internal use only.s
  *
  * @example
  * ```typescript

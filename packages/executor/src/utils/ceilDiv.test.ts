@@ -12,17 +12,18 @@ describe("utils | ceilDiv", () => {
 			{ a: 5n, b: 0n, expected: 0n }, // Edge case: division by zero
 		];
 
-		it.each(testCases)(
-			"ceilDiv($a, $b) should return $expected",
-			({ a, b, expected }) => {
-				if (b === 0n) {
-					// Handle division by zero case
-					expect(() => ceilDiv(a, b)).toThrow();
-				} else {
-					const result = ceilDiv(a, b);
-					expect(result).toBe(expected);
-				}
-			},
-		);
+		it.each(testCases)("ceilDiv($a, $b) should return $expected", ({
+			a,
+			b,
+			expected,
+		}) => {
+			if (b === 0n) {
+				// Handle division by zero case
+				expect(() => ceilDiv(a, b)).toThrow();
+			} else {
+				const result = ceilDiv(a, b);
+				expect(result).toBe(expected);
+			}
+		});
 	});
 });

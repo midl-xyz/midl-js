@@ -1,19 +1,19 @@
 import {
 	type Config,
-	SignMessageProtocol,
 	getDefaultAccount,
+	SignMessageProtocol,
 	waitForTransaction,
 } from "@midl/core";
 import {
-	type FinalizeBTCTransactionOptions,
-	type Withdrawal,
 	addCompleteTxIntention,
+	type FinalizeBTCTransactionOptions,
 	finalizeBTCTransaction,
 	getEVMAddress,
 	signIntention,
+	type Withdrawal,
 } from "@midl/executor";
 import type { HardhatRuntimeEnvironment } from "hardhat/types";
-import { type PublicClient, getContractAddress, keccak256 } from "viem";
+import { getContractAddress, keccak256, type PublicClient } from "viem";
 import type { StoreApi } from "zustand/vanilla";
 import type { MidlHardhatStore } from "~/actions/createStore";
 import { saveDeployment } from "~/actions/saveDeployment";

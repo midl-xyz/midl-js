@@ -2,7 +2,7 @@ import { type Account, AddressType, type BitcoinNetwork } from "@midl/core";
 import { hexToBytes } from "@noble/hashes/utils.js";
 import * as bitcoin from "bitcoinjs-lib";
 import { padBytes, toHex } from "viem";
-import { getPublicKey } from "~/actions";
+import { getPublicKey } from "~/actions/getPublicKey";
 
 export const getReceiverBytesHex = (
 	account: Account,

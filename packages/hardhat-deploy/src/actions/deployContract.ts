@@ -7,9 +7,9 @@ import {
 import type { HardhatRuntimeEnvironment } from "hardhat/types";
 import {
 	type Address,
-	type PublicClient,
 	encodeDeployData,
 	getContractAddress,
+	type PublicClient,
 } from "viem";
 import type { StoreApi } from "zustand/vanilla";
 import { addTxIntentionToStore } from "~/actions/addTxIntentionToStore";

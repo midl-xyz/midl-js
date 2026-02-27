@@ -20,7 +20,7 @@ describe("executor | actions | addCompleteTxIntention", () => {
 		const txData = decodeFunctionData({
 			abi: executorAbi,
 			// biome-ignore lint/style/noNonNullAssertion: Data is guaranteed to be present
-			data: intention.evmTransaction?.data!,
+			data: intention.evmTransaction!.data!,
 		});
 
 		expect(txData.args[1]).toBe(txData.args[0]);
@@ -42,7 +42,7 @@ describe("executor | actions | addCompleteTxIntention", () => {
 		const txData = decodeFunctionData({
 			abi: executorAbi,
 			// biome-ignore lint/style/noNonNullAssertion: Data is guaranteed to be present
-			data: intention.evmTransaction?.data!,
+			data: intention.evmTransaction!.data!,
 		});
 
 		expect(txData.args[3]).toStrictEqual([maxUint256]);
@@ -57,7 +57,7 @@ describe("executor | actions | addCompleteTxIntention", () => {
 		const txData = decodeFunctionData({
 			abi: executorAbi,
 			// biome-ignore lint/style/noNonNullAssertion: Data is guaranteed to be present
-			data: intention.evmTransaction?.data!,
+			data: intention.evmTransaction!.data!,
 		});
 
 		expect(txData.args[0]).not.toBe(txData.args[1]);
@@ -77,7 +77,7 @@ describe("executor | actions | addCompleteTxIntention", () => {
 		const txData = decodeFunctionData({
 			abi: executorAbi,
 			// biome-ignore lint/style/noNonNullAssertion: Data is guaranteed to be present
-			data: intention.evmTransaction?.data!,
+			data: intention.evmTransaction!.data!,
 		});
 
 		expect(txData.args[0]).not.toBe(txData.args[1]);
@@ -98,7 +98,7 @@ describe("executor | actions | addCompleteTxIntention", () => {
 		const txData = decodeFunctionData({
 			abi: executorAbi,
 			// biome-ignore lint/style/noNonNullAssertion: Data is guaranteed to be present
-			data: intention.evmTransaction?.data!,
+			data: intention.evmTransaction!.data!,
 		});
 
 		expect(txData.args[0]).toBe(
@@ -120,7 +120,7 @@ describe("executor | actions | addCompleteTxIntention", () => {
 		const txData = decodeFunctionData({
 			abi: executorAbi,
 			// biome-ignore lint/style/noNonNullAssertion: Data is guaranteed to be present
-			data: intention.evmTransaction?.data!,
+			data: intention.evmTransaction!.data!,
 		});
 
 		expect(txData.args[0]).toBe(

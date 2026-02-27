@@ -20,7 +20,7 @@ export const useDefaultAccount = ({
 
 	try {
 		return getDefaultAccount(configInternal);
-	} catch (e) {
+	} catch {
 		return null;
 	}
 };

@@ -1,10 +1,11 @@
 import { type Config, getDefaultAccount } from "@midl/core";
-import { type PublicClient, isHex, serializeTransaction } from "viem";
+import { isHex, type PublicClient, serializeTransaction } from "viem";
 import { getTransactionCount } from "viem/actions";
-import { getPublicKey } from "~/actions";
+import { getPublicKey } from "~/actions/getPublicKey";
 import { GAS_PRICE } from "~/config";
 import type { TransactionIntention } from "~/types";
-import { getBTCAddressByte, getEVMAddress } from "~/utils";
+import { getBTCAddressByte } from "~/utils/getBTCAddressByte";
+import { getEVMAddress } from "~/utils/getEVMAddress";
 
 type PrepareIntentionOptions = {
 	/**
@@ -87,9 +88,7 @@ export const serializeIntention = async (
 		from: intention.evmTransaction.from ?? evmAddress,
 		nonce:
 			nonce +
-			intentions
-				.filter((it) => Boolean(it.evmTransaction))
-				.findIndex((it) => it === intention),
+			intentions.filter((it) => Boolean(it.evmTransaction)).indexOf(intention),
 		gasPrice: GAS_PRICE,
 		publicKey,
 		btcAddressByte: getBTCAddressByte(account),

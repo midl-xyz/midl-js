@@ -1,6 +1,7 @@
 import type { SVGProps } from "react";
+
 const SvgComponent = (props: SVGProps<SVGSVGElement>) => (
-	// biome-ignore lint/a11y/noSvgWithoutTitle: <explanation>
+	// biome-ignore lint/a11y/noSvgWithoutTitle: this is intentional
 	<svg xmlns="http://www.w3.org/2000/svg" {...props} viewBox="0 0 600 600">
 		<g fill="none" fillRule="evenodd">
 			<path fill="#171717" d="M0 0h600v600H0z" />

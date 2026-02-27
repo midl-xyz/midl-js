@@ -4,7 +4,7 @@ import { type Chain, getEVMFromBitcoinNetwork } from "@midl/executor";
 import { useConfig } from "@midl/react";
 import { useEffect, useMemo } from "react";
 import { http, zeroAddress } from "viem";
-import { WagmiProvider, createConfig, useConnect, useSwitchChain } from "wagmi";
+import { createConfig, useConnect, useSwitchChain, WagmiProvider } from "wagmi";
 import { mock } from "wagmi/connectors";
 import { useEVMAddress, useEVMChain } from "~/hooks";
 

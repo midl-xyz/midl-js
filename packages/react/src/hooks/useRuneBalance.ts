@@ -1,8 +1,8 @@
 import {
 	type Config,
 	type GetRuneBalanceParams,
-	type RuneBalanceResponse,
 	getRuneBalance,
+	type RuneBalanceResponse,
 } from "@midl/core";
 import { type UseQueryOptions, useQuery } from "@tanstack/react-query";
 import { useAccounts } from "~/hooks/useAccounts";

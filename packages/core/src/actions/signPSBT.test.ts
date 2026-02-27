@@ -3,7 +3,7 @@ import * as bitcoin from "bitcoinjs-lib";
 import { describe, expect, it, vi } from "vitest";
 import { __TEST__MNEMONIC__ } from "~/__tests__/keyPair";
 import { broadcastTransaction } from "~/actions/broadcastTransaction";
-import { WalletConnectionError, connect } from "~/actions/connect";
+import { connect, WalletConnectionError } from "~/actions/connect";
 import { getDefaultAccount } from "~/actions/getDefaultAccount";
 import { signPSBT } from "~/actions/signPSBT";
 import type { Account } from "~/connectors";
@@ -47,11 +47,11 @@ describe("core | actions | signPSBT", async () => {
 			hash: "e2d7f2123d9351f4f12a7cdb8b1d1aeb3e8d53d556cb6b564a3f2b093cf02fa3",
 			index: 0,
 			witnessUtxo: {
-				// biome-ignore lint/style/noNonNullAssertion: <explanation>
+				// biome-ignore lint/style/noNonNullAssertion: output exists
 				script: p2sh.output!,
 				value: 50000n, // Amount in satoshis
 			},
-			// biome-ignore lint/style/noNonNullAssertion: <explanation>
+			// biome-ignore lint/style/noNonNullAssertion: redeem exists
 			redeemScript: p2sh.redeem!.output,
 		});
 
@@ -118,11 +118,11 @@ describe("core | actions | signPSBT", async () => {
 			hash: "e2d7f2123d9351f4f12a7cdb8b1d1aeb3e8d53d556cb6b564a3f2b093cf02fa3",
 			index: 0,
 			witnessUtxo: {
-				// biome-ignore lint/style/noNonNullAssertion: <explanation>
+				// biome-ignore lint/style/noNonNullAssertion: output exist
 				script: p2sh.output!,
 				value: 50000n, // Amount in satoshis
 			},
-			// biome-ignore lint/style/noNonNullAssertion: <explanation>
+			// biome-ignore lint/style/noNonNullAssertion: redeem exists
 			redeemScript: p2sh.redeem!.output,
 		});
 

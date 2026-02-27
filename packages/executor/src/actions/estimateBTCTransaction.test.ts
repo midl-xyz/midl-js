@@ -1,14 +1,14 @@
 import { AddressPurpose, connect, createConfig, disconnect } from "@midl/core";
 import { keyPairConnector } from "@midl/node";
-import { http, createPublicClient, zeroAddress } from "viem";
+import { createPublicClient, http, zeroAddress } from "viem";
 import * as viemActions from "viem/actions";
 import {
-	type Mock,
 	afterEach,
 	beforeEach,
 	describe,
 	expect,
 	it,
+	type Mock,
 	vi,
 } from "vitest";
 import { __TEST__MNEMONIC__ } from "~/__tests__/keyPair";

@@ -2,7 +2,7 @@ import { type Account, AddressType, type BitcoinNetwork } from "@midl/core";
 import { bytesToHex, hexToBytes } from "@noble/hashes/utils.js";
 import { Point } from "@noble/secp256k1";
 import { getAddress, keccak256, toHex } from "viem";
-import { getPublicKey } from "~/actions";
+import { getPublicKey } from "~/actions/getPublicKey";
 
 /**
  * Derives the EVM (Ethereum) address from a Bitcoin account and network.

@@ -2,7 +2,7 @@ import type { Client } from "viem";
 import { readContract } from "viem/actions";
 import { SystemContracts } from "~/config";
 import { globalParamsAbi } from "~/contracts/abi";
-import { ceilDiv } from "~/utils";
+import { ceilDiv } from "~/utils/ceilDiv";
 
 export type GetBTCFeeRateResponse = bigint;
 

@@ -1,2 +1,2 @@
-export * from './SatoshiKItProvider';
-export * from './createMidlConfig';
+export * from "./createMidlConfig";
+export * from "./SatoshiKItProvider";

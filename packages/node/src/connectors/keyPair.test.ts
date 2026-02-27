@@ -1,12 +1,12 @@
 import { Verifier } from "@midl/bip322-js";
 import {
 	AddressPurpose,
-	SignMessageProtocol,
 	connect,
 	createConfig,
 	disconnect,
 	extractXCoordinate,
 	regtest,
+	SignMessageProtocol,
 } from "@midl/core";
 import * as bitcoin from "bitcoinjs-lib";
 import { Psbt } from "bitcoinjs-lib";
@@ -147,11 +147,11 @@ describe("core | connectors | keyPair", () => {
 			hash: "e2d7f2123d9351f4f12a7cdb8b1d1aeb3e8d53d556cb6b564a3f2b093cf02fa3",
 			index: 0,
 			witnessUtxo: {
-				// biome-ignore lint/style/noNonNullAssertion: <explanation>
+				// biome-ignore lint/style/noNonNullAssertion: this is intentional
 				script: p2sh.output!,
 				value: 50000n, // Amount in satoshis
 			},
-			// biome-ignore lint/style/noNonNullAssertion: <explanation>
+			// biome-ignore lint/style/noNonNullAssertion: this is intentional
 			redeemScript: p2sh.redeem!.output,
 		});
 
@@ -201,7 +201,7 @@ describe("core | connectors | keyPair", () => {
 			hash: "e2d7f2123d9351f4f12a7cdb8b1d1aeb3e8d53d556cb6b564a3f2b093cf02fa3",
 			index: 0,
 			witnessUtxo: {
-				// biome-ignore lint/style/noNonNullAssertion: <explanation>
+				// biome-ignore lint/style/noNonNullAssertion: this is intentional
 				script: p2tr.output!,
 				value: 50000n, // Amount in satoshis
 			},

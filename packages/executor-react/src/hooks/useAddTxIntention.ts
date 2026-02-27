@@ -1,5 +1,5 @@
 import type { Config } from "@midl/core";
-import { type PartialIntention, addTxIntention } from "@midl/executor";
+import { addTxIntention, type PartialIntention } from "@midl/executor";
 import {
 	type MidlContextStore,
 	useConfigInternal,

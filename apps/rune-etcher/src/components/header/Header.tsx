@@ -1,5 +1,9 @@
 "use client";
 
+import { useConfig, useSwitchNetwork } from "@midl/react";
+import { ConnectButton } from "@midl/satoshi-kit";
+import { useEffect } from "react";
+import { useController, useForm } from "react-hook-form";
 import {
 	Select,
 	SelectContent,
@@ -7,20 +11,14 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
-import { useConfig, useHydrated, useSwitchNetwork } from "@midl/react";
-import { ConnectButton } from "@midl/satoshi-kit";
-import { useEffect } from "react";
-import { useController, useForm } from "react-hook-form";
 
 export const Header = () => {
 	return (
-		<>
-			<div className="flex justify-end p-4 px-8 gap-4">
-				<HeaderNetworkSwitch />
+		<div className="flex justify-end p-4 px-8 gap-4">
+			<HeaderNetworkSwitch />
 
-				<ConnectButton hideBalance />
-			</div>
-		</>
+			<ConnectButton hideBalance />
+		</div>
 	);
 };
 
@@ -36,7 +34,7 @@ const HeaderNetworkSwitch = () => {
 		defaultValue: network?.id ?? "",
 	});
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+	// biome-ignore lint/correctness/useExhaustiveDependencies: this is intentional
 	useEffect(() => {
 		if (selectedNetwork) {
 			const network = networks.find(

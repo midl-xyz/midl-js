@@ -1,5 +1,5 @@
 import type { Config } from "@midl/core";
-import { SystemContracts, bytes32toRuneId, executorAbi } from "@midl/executor";
+import { bytes32toRuneId, executorAbi, SystemContracts } from "@midl/executor";
 import { useRune } from "@midl/react";
 import type { Address } from "viem";
 import { type UseReadContractParameters, useReadContract } from "wagmi";
@@ -63,7 +63,7 @@ export const useToken = (
 
 	try {
 		runeId = bytes32toRuneId(bytes32RuneId as `0x${string}`);
-	} catch (e) {
+	} catch {
 		// do nothing
 	}
 

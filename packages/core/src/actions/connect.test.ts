@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { __TEST__MNEMONIC__ } from "~/__tests__/keyPair";
-import { EmptyAccountsError, connect } from "~/actions/connect";
+import { connect, EmptyAccountsError } from "~/actions/connect";
 import { AddressPurpose } from "~/constants";
 import { createConfig } from "~/createConfig";
 import { regtest } from "~/networks";

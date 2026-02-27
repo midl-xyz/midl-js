@@ -36,7 +36,7 @@ export const useEVMChain = ({
 
 	try {
 		return getEVMFromBitcoinNetwork(network);
-	} catch (error) {
+	} catch {
 		return null;
 	}
 };

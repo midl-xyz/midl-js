@@ -1,4 +1,4 @@
 export enum AddressPurpose {
-  Payment = "payment",
-  Ordinals = "ordinals",
+	Payment = "payment",
+	Ordinals = "ordinals",
 }

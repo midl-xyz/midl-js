@@ -1,5 +1,20 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMaskito } from "@maskito/react";
+import {
+	useBroadcastTransaction,
+	useConfig,
+	useEtchRune,
+	useRune,
+	useWaitForTransaction,
+} from "@midl/react";
+import { useMutation } from "@tanstack/react-query";
+import { Loader2Icon } from "lucide-react";
+import { useRef, useState } from "react";
+import { useForm } from "react-hook-form";
+import { formatUnits } from "viem";
+import * as z from "zod";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
@@ -21,21 +36,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMaskito } from "@maskito/react";
-import {
-	useBroadcastTransaction,
-	useConfig,
-	useEtchRune,
-	useRune,
-	useWaitForTransaction,
-} from "@midl/react";
-import { useMutation } from "@tanstack/react-query";
-import { Loader2Icon } from "lucide-react";
-import { useRef, useState } from "react";
-import { useForm } from "react-hook-form";
-import { formatUnits } from "viem";
-import * as z from "zod";
 
 const formSchema = z.object({
 	name: z.string().min(4),
@@ -287,7 +287,7 @@ export const RuneForm = () => {
 										<Button
 											type="button"
 											aria-label="Add bullet"
-											onClick={(e) => {
+											onClick={() => {
 												const inputElement = inputRef.current;
 
 												if (!inputElement) {

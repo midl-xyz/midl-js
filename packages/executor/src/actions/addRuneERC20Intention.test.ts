@@ -1,5 +1,4 @@
 import { AddressPurpose, connect, disconnect } from "@midl/core";
-import { http, createPublicClient } from "viem";
 import {
 	afterAll,
 	afterEach,
@@ -11,7 +10,6 @@ import {
 } from "vitest";
 import { midlConfig } from "~/__tests__/midlConfig";
 import { addRuneERC20Intention } from "~/actions/addRuneERC20Intention";
-import { midlRegtest } from "~/config";
 
 vi.mock("./getTSSAddress", async (importActual) => {
 	const actual = await importActual<typeof import("./getTSSAddress")>();

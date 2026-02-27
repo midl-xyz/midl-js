@@ -2,12 +2,12 @@ import {
 	type Account,
 	type Connector,
 	type ConnectorConnectParams,
+	getAddressType,
 	type SignMessageParams,
 	SignMessageProtocol,
 	type SignMessageResponse,
 	type SignPSBTParams,
 	type SignPSBTResponse,
-	getAddressType,
 } from "@midl/core";
 import { base64 } from "@scure/base";
 import { Psbt } from "bitcoinjs-lib";
@@ -72,7 +72,7 @@ export class PhantomConnector implements Connector {
 	}
 
 	private getProvider(): Phantom {
-		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+		// biome-ignore lint/suspicious/noExplicitAny: this is intentional
 		const provider = (window as any).phantom?.bitcoin as Phantom | undefined;
 
 		if (!provider) {

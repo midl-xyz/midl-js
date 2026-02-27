@@ -1,7 +1,7 @@
 import { BIP322 } from "@midl/bip322-js";
 import { AddressType } from "@midl/core";
 import { hexToBytes } from "@noble/hashes/utils.js";
-import { OutScript, Transaction, p2sh, p2wpkh } from "@scure/btc-signer";
+import { OutScript, p2sh, p2wpkh, Transaction } from "@scure/btc-signer";
 
 function getBIP322HashP2TR(message: string, publicKey: string) {
 	const scriptPubKey = new Uint8Array(34);

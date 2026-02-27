@@ -1,4 +1,4 @@
-import { Psbt, networks } from "bitcoinjs-lib";
+import { networks, Psbt } from "bitcoinjs-lib";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { __TEST__MNEMONIC__ } from "~/__tests__/keyPair";
 import { makeRandomAddress } from "~/__tests__/makeRandomAddress";

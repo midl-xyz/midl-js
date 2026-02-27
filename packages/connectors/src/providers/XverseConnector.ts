@@ -7,8 +7,8 @@ import {
 import {
 	BitcoinNetworkType,
 	MessageSigningProtocols,
-	type SignMessageResult,
 	request,
+	type SignMessageResult,
 } from "sats-connect";
 import { SatsConnectConnector } from "~/providers/SatsConnectConnector";
 

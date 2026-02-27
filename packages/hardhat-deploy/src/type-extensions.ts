@@ -1,11 +1,9 @@
 import type {
 	AbstractProvider,
 	AbstractRunesProvider,
-	Account,
 	AddressPurpose,
 	AddressType,
 	BitcoinNetwork,
-	Config,
 	Connector,
 	ConnectorWithMetadata,
 } from "@midl/core";

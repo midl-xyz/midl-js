@@ -2,7 +2,7 @@
 
 import { mainnet, regtest, signet, testnet, testnet4 } from "@midl/core";
 import { MidlProvider } from "@midl/react";
-import { SatoshiKitProvider, createMidlConfig } from "@midl/satoshi-kit";
+import { createMidlConfig, SatoshiKitProvider } from "@midl/satoshi-kit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
 

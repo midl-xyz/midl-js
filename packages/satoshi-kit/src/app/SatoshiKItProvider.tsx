@@ -1,6 +1,6 @@
 import { AddressPurpose, type Config } from "@midl/core";
 import { useConfigInternal } from "@midl/react";
-import { type ReactNode, createContext, useContext, useEffect } from "react";
+import { createContext, type ReactNode, useContext, useEffect } from "react";
 import type { AuthenticationAdapter } from "~/features/auth";
 
 type SatoshiKitContext = {

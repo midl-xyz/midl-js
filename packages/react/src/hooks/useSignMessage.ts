@@ -1,9 +1,9 @@
 import {
 	type Config,
+	getDefaultAccount,
 	type SignMessageParams,
 	SignMessageProtocol,
 	type SignMessageResponse,
-	getDefaultAccount,
 	signMessage,
 } from "@midl/core";
 import { type UseMutationOptions, useMutation } from "@tanstack/react-query";

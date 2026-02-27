@@ -1,7 +1,7 @@
-import { MainMenu } from "@/components/main-menu";
-import { Web3Provider } from "@/components/web3-provider/Web3Provider";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { MainMenu } from "@/components/main-menu";
+import { Web3Provider } from "@/components/web3-provider/Web3Provider";
 import "./globals.css";
 import "@midl/satoshi-kit/styles.css";
 import { Header } from "@/components/header/Header";

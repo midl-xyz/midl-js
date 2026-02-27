@@ -30,15 +30,15 @@ export abstract class Wallet {
 		throw new Error("Method not implemented.");
 	}
 
-	async unlock(page?: Page): Promise<void> {
+	async unlock(_page?: Page): Promise<void> {
 		throw new Error("Method not implemented.");
 	}
 
-	async isLocked(page: Page): Promise<boolean> {
+	async isLocked(_page: Page): Promise<boolean> {
 		throw new Error("Method not implemented.");
 	}
 
-	async changeNetwork(networkName: NetworkName): Promise<void> {
+	async changeNetwork(_networkName: NetworkName): Promise<void> {
 		throw new Error("Method not implemented.");
 	}
 
