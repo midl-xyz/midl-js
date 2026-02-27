@@ -1,5 +1,14 @@
 # @midl/executor-react
 
+## 3.0.4
+
+### Patch Changes
+
+- Updated dependencies [ea28841]
+  - @midl/executor@3.0.4
+  - @midl/core@3.0.4
+  - @midl/react@3.0.4
+
 ## 3.0.3
 
 ### Patch Changes
