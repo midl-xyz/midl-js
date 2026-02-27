@@ -1,5 +1,12 @@
 # @midl/core
 
+## 3.0.5
+
+### Patch Changes
+
+- 011ba57: fix: linter & circular deps
+  - @midl/logger@3.0.5
+
 ## 3.0.4
 
 ### Patch Changes
