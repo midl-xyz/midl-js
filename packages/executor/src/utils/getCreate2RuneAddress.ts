@@ -3,10 +3,9 @@ import {
 	encodePacked,
 	getContractAddress,
 	keccak256,
-	toBytes,
 } from "viem";
 import { SystemContracts } from "~/config";
-import { runeIdToBytes32 } from "~/utils";
+import { runeIdToBytes32 } from "~/utils/runeIdToBytes32";
 
 export const getCreate2RuneAddress = (runeId: string): Address => {
 	const salt = keccak256(encodePacked(["bytes32"], [runeIdToBytes32(runeId)]));
