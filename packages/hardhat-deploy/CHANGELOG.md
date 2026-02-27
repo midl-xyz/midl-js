@@ -1,5 +1,15 @@
 # @midl/hardhat-deploy
 
+## 3.0.4
+
+### Patch Changes
+
+- Updated dependencies [ea28841]
+  - @midl/executor@3.0.4
+  - @midl/core@3.0.4
+  - @midl/logger@3.0.4
+  - @midl/node@3.0.4
+
 ## 3.0.3
 
 ### Patch Changes

@@ -1,5 +1,12 @@
 # @midl/core
 
+## 3.0.4
+
+### Patch Changes
+
+- ea28841: fix: remove circular dependencies
+  - @midl/logger@3.0.4
+
 ## 3.0.3
 
 ### Patch Changes
