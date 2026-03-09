@@ -92,7 +92,7 @@ export const calculateTransactionsCost = (
 	}
 
 	const fees =
-		BTC_MIN_DEPOSIT + // We start with the sats deposit. This amount is later returned to the user. We add 546 bytes to avoid dust limits on the mempool for the outgoing tx;
+		BTC_MIN_DEPOSIT + // We start with the sats deposit. This amount is later returned to the user. We add 546 sats to avoid dust limits on the mempool for the outgoing tx;
 		ceilDiv(GAS_PRICE * totalGas, ONE_SATOSHI) + // Fee for gas
 		(scriptSize +
 			KEYGEN_TX_SIZE +
