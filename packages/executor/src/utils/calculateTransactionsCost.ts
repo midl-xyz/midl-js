@@ -6,6 +6,7 @@ export const ONE_SATOSHI = parseUnits("1", 10);
 export const KEYGEN_TX_SIZE = 11n;
 export const BTC_TX_MIN_OUTGOING_BYTES = 363n;
 export const RUNES_MAGIC_VALUE = 546n;
+export const BTC_MIN_TX_SIZE = 546n;
 export const BTC_TX_INPUT_VBYTES = 58n;
 export const BTC_EDICT_SIZE = 32n;
 export const BTC_TX_MAX_OUTPUT_VBYTES = 43n;
@@ -91,6 +92,7 @@ export const calculateTransactionsCost = (
 	}
 
 	const fees =
+		BTC_MIN_TX_SIZE + // We start with the minimum transaction size deposit. This amount is later returned to the user. We add 546 bytes to avoid dust limits on the mempool for the outgoing tx;
 		ceilDiv(GAS_PRICE * totalGas, ONE_SATOSHI) + // Fee for gas
 		(scriptSize +
 			KEYGEN_TX_SIZE +
