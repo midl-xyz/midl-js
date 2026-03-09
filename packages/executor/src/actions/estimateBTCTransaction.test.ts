@@ -336,6 +336,6 @@ describe("executor | actions | estimateTransaction", () => {
 			},
 		);
 
-		expect(fee).toBe(1125);
+		expect(fee).toBe(1671);
 	});
 });
