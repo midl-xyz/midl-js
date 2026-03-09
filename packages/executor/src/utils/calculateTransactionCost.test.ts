@@ -5,17 +5,17 @@ import { calculateTransactionsCost } from "~/utils/calculateTransactionsCost";
 
 describe("calculateTransactionCost", () => {
 	it("deposit", async () => {
-		expect(calculateTransactionsCost(0n, { feeRate: 2 })).toBe(748);
+		expect(calculateTransactionsCost(0n, { feeRate: 2 })).toBe(1294);
 	});
 
 	it("withdraw", async () => {
-		expect(calculateTransactionsCost(736676n, { feeRate: 2 })).toBe(822);
+		expect(calculateTransactionsCost(736676n, { feeRate: 2 })).toBe(1368);
 	});
 
 	it("withdraw", async () => {
 		expect(
 			calculateTransactionsCost(0n, { feeRate: 2, hasWithdraw: true }),
-		).toBe(788);
+		).toBe(1334);
 	});
 
 	it("runes deposit", async () => {
@@ -24,7 +24,7 @@ describe("calculateTransactionCost", () => {
 				feeRate: 2,
 				hasRunesDeposit: true,
 			}),
-		).toBe(864);
+		).toBe(1410);
 	});
 
 	it("runes withdraw", async () => {
@@ -34,10 +34,10 @@ describe("calculateTransactionCost", () => {
 				hasRunesWithdraw: true,
 				assetsToWithdrawSize: 1,
 			}),
-		).toBe(1990);
+		).toBe(2536);
 	});
 
 	it("deposit", async () => {
-		expect(calculateTransactionsCost(0n, { feeRate: 2 })).toBe(748);
+		expect(calculateTransactionsCost(0n, { feeRate: 2 })).toBe(1294);
 	});
 });
