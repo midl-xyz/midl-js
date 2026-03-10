@@ -1,5 +1,16 @@
 # @midl/executor
 
+## 3.1.0
+
+### Minor Changes
+
+- 7f1460f: feat: update tx costs formula
+
+### Patch Changes
+
+- @midl/core@3.1.0
+- @midl/logger@3.1.0
+
 ## 3.0.5
 
 ### Patch Changes

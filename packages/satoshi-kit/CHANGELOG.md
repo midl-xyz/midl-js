@@ -1,5 +1,13 @@
 # @midl/satoshi-kit
 
+## 3.1.0
+
+### Patch Changes
+
+- @midl/connectors@3.1.0
+- @midl/core@3.1.0
+- @midl/react@3.1.0
+
 ## 3.0.5
 
 ### Patch Changes
