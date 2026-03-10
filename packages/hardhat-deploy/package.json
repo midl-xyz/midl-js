@@ -41,14 +41,14 @@
 	},
 	"peerDependencies": {
 		"hardhat": ">=2 <3",
-		"@midl/logger": "workspace:*",
-		"@midl/core": "workspace:^",
-		"@midl/executor": "workspace:^",
-		"@midl/node": "workspace:^",
 		"viem": "*",
 		"@midl/viem": "*"
 	},
 	"dependencies": {
+		"@midl/logger": "workspace:*",
+		"@midl/core": "workspace:^",
+		"@midl/executor": "workspace:^",
+		"@midl/node": "workspace:^",
 		"@nomicfoundation/hardhat-viem": "^2.0.6",
 		"zustand": "^5.0.1"
 	},

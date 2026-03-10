@@ -41,13 +41,11 @@
 		"@types/node": "^22.8.7"
 	},
 	"dependencies": {
+		"@midl/core": "workspace:^",
 		"@noble/hashes": "^2.0.1",
 		"@scure/base": "^2.0.0",
 		"bitcoinjs-lib": "7.0.1",
 		"sats-connect": "^4.2.1"
-	},
-	"peerDependencies": {
-		"@midl/core": "workspace:^"
 	},
 	"repository": {
 		"url": "git+https://github.com/midl-xyz/midl-js.git",
