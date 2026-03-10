@@ -15,7 +15,7 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.4.4",
-		"@changesets/cli": "^2.27.7",
+		"@changesets/cli": "^2.30.0",
 		"@commitlint/cli": "^19.6.1",
 		"@commitlint/config-conventional": "^19.6.0",
 		"@testing-library/react": "^16.0.0",

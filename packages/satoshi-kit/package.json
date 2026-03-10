@@ -63,9 +63,6 @@
 		"vite": "^5.4.10"
 	},
 	"peerDependencies": {
-		"@midl/connectors": "workspace:^",
-		"@midl/core": "workspace:^",
-		"@midl/react": "workspace:^",
 		"@tanstack/react-query": ">=5 <6",
 		"@types/react": "*",
 		"react": "*",
@@ -73,6 +70,9 @@
 	},
 	"dependencies": {
 		"@ark-ui/react": "^5.0.1",
+		"@midl/connectors": "workspace:^",
+		"@midl/core": "workspace:^",
+		"@midl/react": "workspace:^",
 		"boring-avatars": "^2.0.1",
 		"lucide-react": "^0.453.0"
 	},

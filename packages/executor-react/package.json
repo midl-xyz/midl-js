@@ -50,10 +50,10 @@
 	},
 	"dependencies": {
 		"@midl/core": "workspace:^",
-		"@midl/executor": "workspace:^"
+		"@midl/executor": "workspace:^",
+		"@midl/react": "workspace:^"
 	},
 	"peerDependencies": {
-		"@midl/react": "workspace:^",
 		"@midl/viem": "*",
 		"@tanstack/react-query": ">=5 <6",
 		"bitcoinjs-lib": ">=7 <8",
