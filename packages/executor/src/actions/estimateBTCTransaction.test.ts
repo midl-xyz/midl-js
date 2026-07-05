@@ -336,6 +336,8 @@ describe("executor | actions | estimateTransaction", () => {
 			},
 		);
 
-		expect(fee).toBe(1671);
+		// 2.59 sat/vB is below MIN_ATTACHED_FEE_RATE, so the attached value is
+		// priced at the 25 sat/vB floor: 546 dust buffer + 3 sats gas + 374 vB × 25.
+		expect(fee).toBe(9899);
 	});
 });

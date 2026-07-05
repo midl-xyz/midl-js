@@ -3,6 +3,14 @@ import { GAS_PRICE } from "~/config";
 import { ceilDiv } from "~/utils/ceilDiv";
 
 export const ONE_SATOSHI = parseUnits("1", 10);
+/**
+ * Minimum fee rate (sat/vB) used to price the BTC value attached for the
+ * future outgoing transaction. The node enforces the same floor on its side
+ * of the check, so attaching fees priced below it would get the deposit
+ * discarded. Only the attached value is affected — the fee rate of the
+ * user's own BTC transaction is not floored.
+ */
+export const MIN_ATTACHED_FEE_RATE = 25;
 export const KEYGEN_TX_SIZE = 11n;
 export const BTC_TX_MIN_OUTGOING_BYTES = 363n;
 export const RUNES_MAGIC_VALUE = 546n;
@@ -91,6 +99,10 @@ export const calculateTransactionsCost = (
 		) as bigint;
 	}
 
+	// The attached value is priced at no less than MIN_ATTACHED_FEE_RATE,
+	// mirroring the node-side floor on the same check.
+	const attachedFeeRate = Math.max(MIN_ATTACHED_FEE_RATE, Math.ceil(feeRate));
+
 	const fees =
 		BTC_MIN_DEPOSIT + // We start with the sats deposit. This amount is later returned to the user. We add 546 sats to avoid dust limits on the mempool for the outgoing tx;
 		ceilDiv(GAS_PRICE * totalGas, ONE_SATOSHI) + // Fee for gas
@@ -99,7 +111,7 @@ export const calculateTransactionsCost = (
 			(hasRunesDeposit ? BTC_TX_INPUT_VBYTES : 0n) +
 			BigInt(assetsToWithdrawSize) * BTC_EDICT_SIZE +
 			(assetsToWithdrawSize > 0 ? RUNES_MAGIC_VALUE : 0n)) *
-			BigInt(Math.ceil(feeRate));
+			BigInt(attachedFeeRate);
 
 	return Number(fees);
 };
